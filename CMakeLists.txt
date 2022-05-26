@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.14.0 FATAL_ERROR)
-project(litext)
+
+set(appName smooth-comic)
+
+project($appName)
 
 # 自己实现的 CMake 工具
 include(CMake/find_source_files.cmake)
