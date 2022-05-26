@@ -72,11 +72,11 @@ execute_process(
 )
 
 add_subdirectory(src)
-add_subdirectory(third EXCLUDE_FROM_ALL)
+#add_subdirectory(third EXCLUDE_FROM_ALL)
 
 
 set_target_properties(
-    litext_body litext
+    $appName
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
@@ -84,7 +84,7 @@ set_target_properties(
 
 if(MSVC)
     set_target_properties(
-        litextcmd
+        ${appName}cmd
         PROPERTIES
             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
             RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
