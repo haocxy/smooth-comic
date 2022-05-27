@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14.0 FATAL_ERROR)
 
 set(appName smooth-comic)
 
-project($appName)
+project(${appName})
 
 # 自己实现的 CMake 工具
 include(CMake/find_source_files.cmake)
@@ -11,6 +11,7 @@ include(CMake/find_source_files.cmake)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_FIND_LIBRARY_PREFIXES "lib;")
 
+if(FALSE)
 find_package(Python3 REQUIRED)
 message(STATUS "Python3 Executable: [${Python3_EXECUTABLE}]")
 
@@ -19,6 +20,9 @@ execute_process(
     COMMAND ${Python3_EXECUTABLE} tools/prepare.py ${CMAKE_SOURCE_DIR}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
+endif()
+
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 set(PREPARE_DIR ${CMAKE_SOURCE_DIR}/prepare)
 set(MY_FREETYPE_ROOT ${CMAKE_SOURCE_DIR}/prepare/freetype/install)
@@ -60,47 +64,4 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     message(STATUS "option: -lpthread")
 endif()
 
-
-# 更新Qt翻译文件(.ts)和发布文件(.qm文件)
-execute_process(
-    COMMAND "lupdate" "src/lib/qt" "-ts" "trans/trans.zh_CN.ts"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
-execute_process(
-    COMMAND "lrelease" "trans/trans.zh_CN.ts" "-qm" "trans/trans.zh_CN.qm"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
-
 add_subdirectory(src)
-#add_subdirectory(third EXCLUDE_FROM_ALL)
-
-
-set_target_properties(
-    $appName
-    PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
-)
-
-if(MSVC)
-    set_target_properties(
-        ${appName}cmd
-        PROPERTIES
-            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
-    )
-endif()
-
-include(release_version.cmake)
-get_release_version(release_version)
-
-set(LITEXT_RELEASE_VERSION ${release_version})
-message(STATUS "Release Version: [${release_version}]")
-
-if(MSVC)
-    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/pack.bat" DESTINATION ${CMAKE_BINARY_DIR})
-    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/repack.bat" DESTINATION ${CMAKE_BINARY_DIR})
-    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/build.bat" DESTINATION ${CMAKE_BINARY_DIR})
-    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/rebuild.bat" DESTINATION ${CMAKE_BINARY_DIR})
-    include(install_for_windows.cmake)
-endif()
