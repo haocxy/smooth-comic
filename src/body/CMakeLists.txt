@@ -1,6 +1,8 @@
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+include_directories(.)
+
 findSourceFiles(src_files)
 
 add_library(${appName}-body STATIC ${src_files})

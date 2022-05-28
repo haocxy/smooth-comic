@@ -3,7 +3,7 @@
 #include <QApplication>
 
 
-#include "artboard-widget.h"
+#include "gui/book-viewer-widget.h"
 
 
 
@@ -13,7 +13,7 @@ int body_entry(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    ArtboardWidget w;
+    BookViewerWidget w;
     w.show();
 
     return QApplication::exec();
