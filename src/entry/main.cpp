@@ -6,17 +6,16 @@
 #include <Windows.h>
 #endif
 
-
-int entry(int argc, char *argv[]);
+#include "loader/loader.h"
 
 
 #ifdef SMOOTH_COMIC_ENTRY_WINDOWS_GUI
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
-    return entry(__argc, __argv);
+    return myapp::load(__argc, __argv);
 }
 #else
 int main(int argc, char *argv[])
 {
-    return entry(argc, argv);
+    return myapp::load(argc, argv);
 }
 #endif

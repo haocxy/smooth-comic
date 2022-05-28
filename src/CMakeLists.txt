@@ -1,3 +1,5 @@
+include_directories(.)
+
 add_subdirectory(core)
 add_subdirectory(body)
 add_subdirectory(body-dynamic)

@@ -1,13 +1,12 @@
-#include <iostream>
+#include "loader.h"
 
 #include <QApplication>
 #include <QWidget>
 
+namespace myapp {
 
-int entry(int argc, char *argv[])
+int load(int argc, char *argv[])
 {
-    std::cout << "Hello, smooth-comic" << std::endl;
-
     QApplication app(argc, argv);
 
     QWidget widget;
@@ -15,4 +14,6 @@ int entry(int argc, char *argv[])
     widget.show();
 
     return QApplication::exec();
+}
+
 }
