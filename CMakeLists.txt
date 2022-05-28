@@ -21,18 +21,13 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
+# 设置第三方库搜索路径
+set(prepareDir ${CMAKE_SOURCE_DIR}/prepare)
+list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/libarchive/install)
 
+# 查找第三方库
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
-
-set(PREPARE_DIR ${CMAKE_SOURCE_DIR}/prepare)
-set(MY_FREETYPE_ROOT ${CMAKE_SOURCE_DIR}/prepare/freetype/install)
-
-list(APPEND CMAKE_PREFIX_PATH ${PREPARE_DIR}/zlib/install)
-list(APPEND CMAKE_PREFIX_PATH ${PREPARE_DIR}/zlib/install/bin)
-list(APPEND CMAKE_PREFIX_PATH ${PREPARE_DIR}/libpng/install)
-list(APPEND CMAKE_PREFIX_PATH ${PREPARE_DIR}/libpng/install/bin)
-list(APPEND CMAKE_PREFIX_PATH ${PREPARE_DIR}/freetype/install)
-list(APPEND CMAKE_PREFIX_PATH ${PREPARE_DIR}/freetype/install/bin)
+find_package(LibArchive REQUIRED)
 
 # VS专用全局设置
 if(MSVC)
