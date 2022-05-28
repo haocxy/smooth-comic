@@ -1,6 +1,7 @@
-findSourceFiles(src_files)
-add_executable(${appName} ${src_files})
-target_link_libraries(${appName}
-    Qt6::Core
-    Qt6::Widgets
-)
+add_subdirectory(core)
+add_subdirectory(body)
+add_subdirectory(body-dynamic)
+add_subdirectory(body-static)
+add_subdirectory(loader)
+add_subdirectory(entry)
+

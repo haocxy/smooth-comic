@@ -4,7 +4,7 @@
 #include <QWidget>
 
 
-int main(int argc, char *argv[])
+int entry(int argc, char *argv[])
 {
     std::cout << "Hello, smooth-comic" << std::endl;
 
