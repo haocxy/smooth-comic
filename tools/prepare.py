@@ -7,6 +7,7 @@ from third_lib_tool import lib_boost
 from third_lib_tool import lib_openssl
 from third_lib_tool import lib_protobuf
 from third_lib_tool import lib_freetype
+from third_lib_tool import lib_libarchive
 from third_lib_tool import repo_thirdlibs
 
 if sys.platform == 'win32':
@@ -20,6 +21,7 @@ NEED_PROTOBUF: bool = False
 NEED_NASM: bool = False and (sys.platform == 'win32')
 NEED_OPENSSL: bool = False
 NEED_FREETYPE: bool = True
+NEED_LIBARCHIVE: bool = True
 
 
 def main():
@@ -67,6 +69,11 @@ def main():
         lib_freetype.prepare(
             thirdlibs_repo_dir=thirdlib_repo_dir,
             base_dir=cmake_source_dir / 'prepare' / 'freetype'
+        )
+    if NEED_LIBARCHIVE:
+        lib_libarchive.prepare(
+            thirdlibs_repo_dir=thirdlib_repo_dir,
+            base_dir=cmake_source_dir / 'prepare' / 'libarchive'
         )
 
 

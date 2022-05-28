@@ -11,7 +11,7 @@ include(CMake/find_source_files.cmake)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_FIND_LIBRARY_PREFIXES "lib;")
 
-if(FALSE)
+# 准备第三方库
 find_package(Python3 REQUIRED)
 message(STATUS "Python3 Executable: [${Python3_EXECUTABLE}]")
 
@@ -20,7 +20,7 @@ execute_process(
     COMMAND ${Python3_EXECUTABLE} tools/prepare.py ${CMAKE_SOURCE_DIR}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
-endif()
+
 
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
