@@ -6,8 +6,10 @@
 
 namespace myapp {
 
-BookViewerWidget::BookViewerWidget(QWidget *parent)
-    : QWidget(parent) {
+BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
+    : QWidget(parent)
+    , mEngine(engine)
+{
 
 
     resize(1000, 800);
@@ -21,7 +23,7 @@ BookViewerWidget::BookViewerWidget(QWidget *parent)
 
 
 
-    mBook = new Book(this);
+    mBook = new Book(mEngine, this);
 }
 
 }

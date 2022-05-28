@@ -9,10 +9,15 @@
 
 namespace myapp {
 
+class Engine;
+
 class BookViewerWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit BookViewerWidget(QWidget *parent = nullptr);
+    explicit BookViewerWidget(Engine &engine, QWidget *parent = nullptr);
+
+private:
+    Engine &mEngine;
 
 private: // UI Components
     QPointer<QStackedLayout> mLayout;

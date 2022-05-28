@@ -3,8 +3,15 @@
 
 namespace myapp {
 
-Book::Book(QObject *parent)
-    : QObject(parent) {
+Book::Book(Engine &engine, QObject *parent)
+    : QObject(parent)
+    , mEngine(engine)
+    , mLoader(engine) {
+
+}
+
+Book::~Book()
+{
 }
 
 }
