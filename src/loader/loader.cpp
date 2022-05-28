@@ -1,19 +1,13 @@
 #include "loader.h"
 
-#include <QApplication>
-#include <QWidget>
+#include "body/body-entry.h"
+
 
 namespace myapp {
 
 int load(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-
-    QWidget widget;
-    widget.setWindowTitle("Hello, smooth-comic");
-    widget.show();
-
-    return QApplication::exec();
+    return body_entry(argc, argv);
 }
 
 }
