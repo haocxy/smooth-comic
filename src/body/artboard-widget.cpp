@@ -1,7 +1,7 @@
 #include "artboard-widget.h"
 
 
-TelescopeWidget::TelescopeWidget(QWidget *parent)
+ArtboardWidget::ArtboardWidget(QWidget *parent)
     : QWidget(parent)
 {
 }

@@ -3,8 +3,8 @@
 #include <QWidget>
 
 
-class TelescopeWidget : public QWidget {
+class ArtboardWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit TelescopeWidget(QWidget *parent = nullptr);
+    explicit ArtboardWidget(QWidget *parent = nullptr);
 };

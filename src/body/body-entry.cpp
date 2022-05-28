@@ -13,7 +13,7 @@ int body_entry(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    TelescopeWidget w;
+    ArtboardWidget w;
     w.show();
 
     return QApplication::exec();
