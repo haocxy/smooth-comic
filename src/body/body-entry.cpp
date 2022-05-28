@@ -3,7 +3,7 @@
 #include <QApplication>
 
 
-#include "telescope-widget.h"
+#include "artboard-widget.h"
 
 
 
