@@ -13,5 +13,3 @@ target_link_libraries(${appName}-body
     ${libQt}::Core
     ${libQt}::Widgets
 )
-
-

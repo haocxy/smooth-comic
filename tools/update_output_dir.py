@@ -20,9 +20,7 @@ def move_dynamic_libs(prepare_root: Path, output_root: Path):
     if sys.platform != 'win32':
         return
     tool = PreparedDynamicLibTool(prepare_root=prepare_root, output_root=output_root)
-    tool.copy_dlib('zlib/install/bin/zlib.dll')
-    tool.copy_dlib('libpng/install/bin/libpng16.dll')
-    tool.copy_dlib('freetype/install/bin/freetype.dll')
+    tool.copy_dlib('libarchive/install/bin/archive.dll')
 
 
 def main():

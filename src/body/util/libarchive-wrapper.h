@@ -13,6 +13,8 @@ public:
 
     ~Archive();
 
+    bool nextEntry();
+
 private:
     ArchiveImpl *impl_{};
 };

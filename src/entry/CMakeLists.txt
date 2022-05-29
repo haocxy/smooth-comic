@@ -21,3 +21,7 @@ if(MSVC)
     target_compile_definitions(${appName}-cmd PRIVATE SMOOTH_COMIC_WINDOWS_CONSOLE)
     target_link_libraries(${appName}-cmd ${deps})
 endif()
+
+add_custom_command(TARGET ${appName} POST_BUILD
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/update_output_dir.py ${CMAKE_SOURCE_DIR}/prepare $<TARGET_FILE_DIR:${appName}>
+)

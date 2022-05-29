@@ -56,17 +56,40 @@ public:
         }
     }
 
+    bool nextEntry() {
+        if (finished_) {
+            return false;
+        }
+        int r = ::archive_read_next_header(archive_, &curEntry_);
+        if (r != ARCHIVE_OK) {
+            finished_ = true;
+            curEntry_ = nullptr;
+            return false;
+        }
+        return true;
+    }
+
 
 private:
     ::archive *archive_{};
+    ::archive_entry *curEntry_{};
+    bool finished_{ false };
 };
 
 Archive::Archive(const fs::path &file)
+    : impl_(new ArchiveImpl(file))
 {
 }
 
 Archive::~Archive()
 {
+    delete impl_;
+    impl_ = nullptr;
+}
+
+bool Archive::nextEntry()
+{
+    return impl_->nextEntry();
 }
 
 
