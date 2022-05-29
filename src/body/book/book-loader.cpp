@@ -10,7 +10,8 @@ namespace myapp {
 
 
 BookLoader::BookLoader(Engine &engine, QObject *parent)
-    : mEngine(engine)
+    : QObject(parent)
+    , mEngine(engine)
 {
 
     mLoadThread.setObjectName("BookLoader");
@@ -40,9 +41,9 @@ void BookLoader::doStartLoadFromLocalFile(const QString &path)
 {
     ImgArchive archive;
     try {
-        archive.load(fs::path(path.toStdWString()), [](int32_t i, const QString &path, const QImage &img) {
+        archive.load(fs::path(path.toStdU32String()), [](int32_t i, const QString &path, const QImage &img) {
             int n = 0;
-            });
+        });
     }
     catch (const std::exception &e) {
         std::string s = e.what();

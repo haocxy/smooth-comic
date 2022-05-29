@@ -26,7 +26,8 @@ set(prepareDir ${CMAKE_SOURCE_DIR}/prepare)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/libarchive/install)
 
 # 查找第三方库
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+set(libQt Qt6)
+find_package(${libQt} REQUIRED COMPONENTS Core Widgets)
 find_package(LibArchive REQUIRED)
 
 # VS专用全局设置
@@ -40,7 +41,8 @@ if(MSVC)
     # Debug配置启用AddressSanitizer技术
     #add_compile_options($<$<CONFIG:Debug>:/fsanitize=address>)
     # 使用静态运行库
-    add_compile_options(/MT)
+    # 注意！必须根据配置选择 /MDd 或 /MD
+    add_compile_options(/MD$<$<CONFIG:Debug>:d>)
     # 定义支持的最低windows版本(本项暂时定位面向win10及以上的windows版本)
     add_definitions(/D_WIN32_WINNT=0x0A00)
 else()

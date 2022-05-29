@@ -10,8 +10,8 @@ add_library(${appName}-body STATIC ${src_files})
 target_link_libraries(${appName}-body
     ${appName}-core
     LibArchive::LibArchive
-    Qt6::Core
-    Qt6::Widgets
+    ${libQt}::Core
+    ${libQt}::Widgets
 )
 
 
