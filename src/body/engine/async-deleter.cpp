@@ -3,23 +3,29 @@
 
 namespace myapp {
 
-AsyncDeleter::AsyncDeleter(QObject *parent)
-    : QObject(parent) {
-
-    moveToThread(&mThread);
-
-    connect(this, &AsyncDeleter::asyncDelete, this, [](QObject *obj) {
-        delete obj;
-    });
-
-    mThread.setObjectName("AsyncDeleter");
-    mThread.start();
+AsyncDeleter::AsyncDeleter()
+    : thread_([this] { loop(); }) {
 }
 
 AsyncDeleter::~AsyncDeleter()
 {
-    mThread.quit();
-    mThread.wait();
+    taskQueue_.stop();
+}
+
+void AsyncDeleter::loop()
+{
+    ThreadUtil::setNameForCurrentThread("myapp.async-deleter");
+
+    while (true) {
+        std::optional<std::function<void()>> taskOpt = taskQueue_.pop();
+        if (!taskOpt) {
+            break;
+        }
+        std::function<void()> &task = *taskOpt;
+        if (task) {
+            task();
+        }
+    }
 }
 
 }

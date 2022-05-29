@@ -21,7 +21,7 @@ BookLoader::BookLoader(Engine &engine, QObject *parent)
 
 BookLoader::~BookLoader()
 {
-    mEngine.asyncDeleter().asyncDelete(mLoadThread);
+    mEngine.asyncDeleter().asyncDelete(mLoadThread.get());
 }
 
 }
