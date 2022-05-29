@@ -3,8 +3,11 @@
 
 namespace myapp {
 
-void ImgArchive::load(const fs::path &archiveFile)
+void ImgArchive::load(const fs::path &archiveFile, OnImgLoad &&cb)
 {
+    cb_ = std::move(cb);
+
+
 }
 
 }
