@@ -73,7 +73,8 @@ def main():
     if NEED_LIBARCHIVE:
         lib_libarchive.prepare(
             thirdlibs_repo_dir=thirdlib_repo_dir,
-            base_dir=cmake_source_dir / 'prepare' / 'libarchive'
+            base_dir=cmake_source_dir / 'prepare' / 'libarchive',
+            zlib_base_dir=zlib_base_dir / 'install'
         )
 
 

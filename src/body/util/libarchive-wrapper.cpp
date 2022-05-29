@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include <archive.h>
+#include <archive_entry.h>
 
 
 namespace {
@@ -69,6 +70,21 @@ public:
         return true;
     }
 
+    std::u8string path() const {
+        return std::u8string(reinterpret_cast<const char8_t *>(::archive_entry_pathname_utf8(curEntry_)));
+    }
+
+    std::string readData() {
+        size_t size = ::archive_entry_size(curEntry_);
+        std::string buff;
+        buff.resize(size);
+        auto r = ::archive_read_data(archive_, buff.data(), buff.size());
+        if (r < 0) {
+            throw ArchiveErr("archive_read_data", r);
+        }
+        return buff;
+    }
+
 
 private:
     ::archive *archive_{};
@@ -90,6 +106,16 @@ Archive::~Archive()
 bool Archive::nextEntry()
 {
     return impl_->nextEntry();
+}
+
+std::u8string Archive::path() const
+{
+    return impl_->path();
+}
+
+std::string Archive::readData()
+{
+    return impl_->readData();
 }
 
 

@@ -15,6 +15,10 @@ public:
 
     bool nextEntry();
 
+    std::u8string path() const;
+
+    std::string readData();
+
 private:
     ArchiveImpl *impl_{};
 };
