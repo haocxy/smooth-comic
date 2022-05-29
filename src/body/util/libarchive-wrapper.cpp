@@ -51,7 +51,7 @@ public:
         if (archive_) {
             int r = ::archive_read_free(archive_);
             if (r != ARCHIVE_OK) {
-                throw ArchiveErr("archive_read_free", r);
+                // TODO 析构函数的错误如何处理？
             }
         }
     }
