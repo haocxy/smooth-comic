@@ -1,5 +1,9 @@
 #include "book.h"
 
+#include <cstring>
+
+#include "util/fs.h"
+
 
 namespace myapp {
 
@@ -29,15 +33,24 @@ void Book::initSignalsAndSlots()
     connect(loader_.get(), &BookLoader::onPageLoaded, this, &Book::handleOnPageLoaded);
 }
 
-void Book::handleOnPageLoaded(PageNum pageNum, const QImage &img)
+static std::u8string toU8String(const QString &qs)
 {
-    pageNumToImg_[pageNum] = img;
+    const std::string s = qs.toUtf8().toStdString();
+    std::u8string u8s;
+    u8s.resize(s.size());
+    std::memcpy(u8s.data(), s.data(), s.size());
+    return u8s;
+}
 
-    QString file = QString::asprintf("D:/tmp/save/page-%2d.bmp", int(pageNum));
+void Book::handleOnPageLoaded(const QString &pagePath, const QImage &img)
+{
+    pageKeyToImg_[PageKey(toU8String(pagePath))] = img;
 
+    const fs::path outfile = QString("D:/tmp/save-by-class-Book/%1").arg(pagePath).toStdU32String();
 
+    fs::create_directories(outfile.parent_path());
 
-    img.save(file, "BMP");
+    img.save(QString::fromStdU32String(outfile.generic_u32string()), "BMP");
 }
 
 }

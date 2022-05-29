@@ -1,12 +1,16 @@
 #pragma once
 
+#include <map>
+
 #include <QObject>
 #include <QHash>
 #include <QImage>
 
 #include "engine/engine.h"
-#include "page-num.h"
+
 #include "book-loader.h"
+#include "page-num.h"
+#include "page-key.h"
 
 
 namespace myapp {
@@ -23,12 +27,12 @@ public:
 private:
     void initSignalsAndSlots();
 
-    void handleOnPageLoaded(PageNum pageNum, const QImage &img);
+    void handleOnPageLoaded(const QString &pagePath, const QImage &img);
 
 private:
     Engine &engine_;
     std::unique_ptr<BookLoader> loader_;
-    QHash<PageNum, QImage> pageNumToImg_;
+    std::map<PageKey, QImage, PageKey::CmpAsc> pageKeyToImg_;
 };
 
 
