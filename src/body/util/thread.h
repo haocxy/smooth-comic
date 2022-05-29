@@ -53,7 +53,7 @@ public:
         return *this;
     }
 
-    BlockQueue &operator=(BlockQueue &b) {
+    BlockQueue &operator=(BlockQueue &&b) {
         if (this != &b) {
             Lock lockThis(mtx_);
             Lock lockThat(b.mtx_);
