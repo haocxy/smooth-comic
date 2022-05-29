@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <QImage>
 
 #include "util/fs.h"
 
@@ -11,7 +12,7 @@ namespace myapp {
 
 class ImgArchive {
 public:
-    using OnImgLoad = std::function<void(int32_t index, const std::string &path, Image &&img)>;
+    using OnImgLoad = std::function<void(int32_t index, const QString &path, const QImage &img)>;
 
     void load(const fs::path &archiveFile, OnImgLoad &&cb);
 

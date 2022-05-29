@@ -11,7 +11,7 @@ Book::Book(Engine &engine, QObject *parent)
     initSignalsAndSlots();
 
 
-    loader_->startLoadFromLocalFile("D:/tmp/a.pdf");
+    loader_->startLoadFromLocalFile("D:/tmp/a.zip");
 }
 
 Book::~Book()

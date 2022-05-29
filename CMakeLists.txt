@@ -26,7 +26,7 @@ set(prepareDir ${CMAKE_SOURCE_DIR}/prepare)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/libarchive/install)
 
 # 查找第三方库
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets Pdf)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(LibArchive REQUIRED)
 
 # VS专用全局设置
