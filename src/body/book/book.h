@@ -10,7 +10,6 @@
 
 #include "book-loader.h"
 #include "page-num.h"
-#include "page-key.h"
 
 
 namespace myapp {
@@ -27,12 +26,12 @@ public:
 private:
     void initSignalsAndSlots();
 
-    void handleOnPageLoaded(const QString &pagePath, const QImage &img);
+    void handleOnPageLoaded(PageNum pageNum, const QImage &img);
 
 private:
     Engine &engine_;
     std::unique_ptr<BookLoader> loader_;
-    std::map<PageKey, QImage, PageKey::CmpAsc> pageKeyToImg_;
+    std::map<PageNum, QImage> pageKeyToImg_;
 };
 
 

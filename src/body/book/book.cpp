@@ -42,11 +42,11 @@ static std::u8string toU8String(const QString &qs)
     return u8s;
 }
 
-void Book::handleOnPageLoaded(const QString &pagePath, const QImage &img)
+void Book::handleOnPageLoaded(PageNum pageNum, const QImage &img)
 {
-    pageKeyToImg_[PageKey(toU8String(pagePath))] = img;
+    pageKeyToImg_[pageNum] = img;
 
-    const fs::path outfile = QString("D:/tmp/save-by-class-Book/%1").arg(pagePath).toStdU32String();
+    const fs::path outfile = QString("D:/tmp/save-by-class-Book/%1.bmp").arg(pageNum).toStdU32String();
 
     fs::create_directories(outfile.parent_path());
 

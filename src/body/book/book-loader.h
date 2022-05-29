@@ -27,7 +27,7 @@ public:
 signals:
     void startLoadFromLocalFile(const QString &path);
 
-    void onPageLoaded(const QString &pagePath, const QImage &img);
+    void onPageLoaded(PageNum pageNum, const QImage &img);
 
 private:
     void initSignalsAndSlots();
