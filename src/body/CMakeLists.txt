@@ -12,6 +12,7 @@ target_link_libraries(${appName}-body
     LibArchive::LibArchive
     Qt6::Core
     Qt6::Widgets
+    Qt6::Pdf
 )
 
 

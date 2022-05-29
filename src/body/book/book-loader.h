@@ -1,9 +1,12 @@
 #pragma once
 
+#include <atomic>
+
 #include <QObject>
 #include <QPointer>
 
 #include "util/autojoin-qthread.h"
+#include "page-num.h"
 
 
 namespace myapp {
@@ -17,9 +20,24 @@ public:
 
     virtual ~BookLoader();
 
+    void stop() {
+        stopped_ = true;
+    }
+
+signals:
+    void startLoadFromLocalFile(const QString &path);
+
+    void onPageLoaded(PageNum pageNum, const QImage &img);
+
+private:
+    void initSignalsAndSlots();
+
+    void doStartLoadFromLocalFile(const QString &path);
+
 private:
     Engine &mEngine;
-    QPointer<AutojoinQThread> mLoadThread;
+    AutojoinQThread mLoadThread;
+    std::atomic_bool stopped_{ false };
 };
 
 }
