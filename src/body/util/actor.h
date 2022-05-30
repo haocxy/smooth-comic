@@ -171,4 +171,10 @@ private:
     friend class Actor;
 };
 
+
+class Message : public Event {
+public:
+    // TODO
+};
+
 }
