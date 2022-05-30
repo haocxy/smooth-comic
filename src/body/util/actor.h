@@ -60,13 +60,11 @@ public:
 
     virtual ~Actor() {}
 
-public: // 这部分是为业务逻辑提供的
-    void sendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
-
-    template <typename ResponseType>
-    void sendTo(Actor &receiver, std::unique_ptr<Request> req, std::function<void(ResponseType &)> &&cb) {
-        sendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
-            cb(static_cast<ResponseType &>(resp));
+public:
+    template <typename RequestType>
+    void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
+        doSendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
+            cb(static_cast<typename RequestType::Response &>(resp));
         });
     }
 
@@ -109,7 +107,10 @@ protected:
     std::atomic_bool stopped_{ false };
 
 private:
+    void doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
+
     void handleRequest(Request &action);
+
     void handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult);
 
 private:

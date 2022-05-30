@@ -9,13 +9,13 @@
 
 namespace myapp {
 
-class SumAction : public actor::Request {
+class SumRequest : public actor::Request {
 public:
-    SumAction(int a, int b) : a(a), b(b) {}
+    SumRequest(int a, int b) : a(a), b(b) {}
 
-    class Result : public actor::Response {
+    class Response : public actor::Response {
     public:
-        Result(int n) : n(n) {}
+        Response(int n) : n(n) {}
         int n{};
     };
 
@@ -32,8 +32,8 @@ protected:
     }
 
     virtual std::unique_ptr<actor::Response> dispatch(const actor::Request &action) override {
-        if (const SumAction *a = action.tryAs<SumAction>()) {
-            return std::unique_ptr<actor::Response>(new SumAction::Result(a->a + a->b));
+        if (const SumRequest *a = action.tryAs<SumRequest>()) {
+            return std::unique_ptr<actor::Response>(new SumRequest::Response(a->a + a->b));
         }
 
         return nullptr;
@@ -50,7 +50,7 @@ protected:
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("AskActor");
 
-        sendTo<SumAction::Result>(calcActor_, std::unique_ptr<actor::Request>(new SumAction(1, 2)), [](SumAction::Result &r) {
+        sendTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
             int sum = r.n;
             std::cout << "sum: " << sum << std::endl;
         });
