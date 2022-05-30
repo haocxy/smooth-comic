@@ -12,18 +12,18 @@ void Actor::sendTo(Actor &receiver, std::unique_ptr<Request> action, ActionCallb
 
 void Actor::handleAction(Request &action)
 {
-    std::unique_ptr<Result> result = dispatch(action);
+    std::unique_ptr<Response> result = dispatch(action);
 
     if (std::shared_ptr<Actor::Handle> senderHandle = action.sender_.lock()) {
 
-        std::unique_ptr<ActionResult> resultEvent = std::make_unique<ActionResult>(
+        std::unique_ptr<RequestCallbackEvent> resultEvent = std::make_unique<RequestCallbackEvent>(
             std::move(action.callback_), std::move(result));
 
         senderHandle->actor().post(std::move(resultEvent));
     }
 }
 
-void Actor::handleActionResult(ActionResult &actionResult)
+void Actor::handleActionResult(RequestCallbackEvent &actionResult)
 {
     if (actionResult.callback_ && actionResult.result_) {
         actionResult.callback_(*actionResult.result_);

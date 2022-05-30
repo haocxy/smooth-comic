@@ -13,7 +13,7 @@ class SumAction : public actor::Request {
 public:
     SumAction(int a, int b) : a(a), b(b) {}
 
-    class Result : public actor::Result {
+    class Result : public actor::Response {
     public:
         Result(int n) : n(n) {}
         int n{};
@@ -31,9 +31,9 @@ protected:
         ThreadUtil::setNameForCurrentThread("CalcActor");
     }
 
-    virtual std::unique_ptr<actor::Result> dispatch(const actor::Request &action) override {
+    virtual std::unique_ptr<actor::Response> dispatch(const actor::Request &action) override {
         if (const SumAction *a = action.tryAs<SumAction>()) {
-            return std::unique_ptr<actor::Result>(new SumAction::Result(a->a + a->b));
+            return std::unique_ptr<actor::Response>(new SumAction::Result(a->a + a->b));
         }
 
         return nullptr;
@@ -47,7 +47,7 @@ public:
 
 protected:
 
-    virtual std::unique_ptr<actor::Result> dispatch(const actor::Request &action) override {
+    virtual std::unique_ptr<actor::Response> dispatch(const actor::Request &action) override {
         return nullptr;
     }
 

@@ -12,26 +12,35 @@ namespace myapp::actor {
 
 class Actor;
 class Request;
-class ActionResult;
+class RequestCallbackEvent;
+class Message;
 
 
 // 消息
 // 消息是 actor 模式中在不同 Actor 中传递信息的实体
+// 该类是用于 actor 模块内部实现的类，外部用户请使用 Message 或 Request
 class Event {
 public:
-    Event() {}
-
     virtual ~Event() {}
 
-    virtual void handle(Actor &receiver) {};
+    virtual void handle(Actor &receiver) {}
+
+private:
+
+    // 仅用于内部实现
+    Event() {}
+
+    friend class Request;
+    friend class RequestCallbackEvent;
+    friend class Message;
 };
 
-class Result {
+class Response {
 public:
-    virtual ~Result() {}
+    virtual ~Response() {}
 };
 
-using ActionCallback = std::function<void(Result &)>;
+using ActionCallback = std::function<void(Response &)>;
 
 class Actor {
 public:
@@ -43,10 +52,10 @@ public:
 public: // 这部分是为业务逻辑提供的
     void sendTo(Actor &receiver, std::unique_ptr<Request> action, ActionCallback &&cb);
 
-    template <typename ResultType>
-    void sendTo(Actor &receiver, std::unique_ptr<Request> action, std::function<void(ResultType &)> &&cb) {
-        sendTo(receiver, std::move(action), [cb = std::move(cb)](Result &result) mutable {
-            cb(static_cast<ResultType &>(result));
+    template <typename ResponseType>
+    void sendTo(Actor &receiver, std::unique_ptr<Request> action, std::function<void(ResponseType &)> &&cb) {
+        sendTo(receiver, std::move(action), [cb = std::move(cb)](Response &resp) mutable {
+            cb(static_cast<ResponseType &>(resp));
         });
     }
 
@@ -78,7 +87,7 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
         e.handle(*this);
     }
 
-    virtual std::unique_ptr<Result> dispatch(const Request &a) = 0;
+    virtual std::unique_ptr<Response> dispatch(const Request &a) = 0;
 
 protected:
 
@@ -88,14 +97,14 @@ protected:
 
 private:
     void handleAction(Request &action);
-    void handleActionResult(ActionResult &actionResult);
+    void handleActionResult(RequestCallbackEvent &actionResult);
 
 private:
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
     std::shared_ptr<Handle> handle_;
 
     friend class Request;
-    friend class ActionResult;
+    friend class RequestCallbackEvent;
 };
 
 
@@ -111,7 +120,6 @@ private:
 private:
     std::jthread recvThread_;
 };
-
 
 
 class Request : public Event {
@@ -151,22 +159,23 @@ private:
     friend class Actor;
 };
 
-class ActionResult : public Event {
+class RequestCallbackEvent : public Event {
 public:
     using Callback = Request::Callback;
 
-    ActionResult(Callback &&callback, std::unique_ptr<Result> &&result)
+    // 仅用于内部实现
+    RequestCallbackEvent(Callback &&callback, std::unique_ptr<Response> &&result)
         : callback_(std::move(callback)), result_(std::move(result)) {}
 
     virtual void handle(Actor &receiver) override {
         receiver.handleActionResult(*this);
     }
 
-    virtual ~ActionResult() {}
+    virtual ~RequestCallbackEvent() {}
 
 private:
     Callback callback_;
-    std::unique_ptr<Result> result_;
+    std::unique_ptr<Response> result_;
 
     friend class Actor;
 };
