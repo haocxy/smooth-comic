@@ -16,14 +16,14 @@ void Actor::handleRequest(Request &action)
 
     if (std::shared_ptr<Actor::Handle> senderHandle = action.sender_.lock()) {
 
-        std::unique_ptr<RequestCallbackEvent> resultEvent = std::make_unique<RequestCallbackEvent>(
+        std::unique_ptr<detail::RequestCallbackEvent> resultEvent = std::make_unique<detail::RequestCallbackEvent>(
             std::move(action.callback_), std::move(result));
 
         senderHandle->actor().post(std::move(resultEvent));
     }
 }
 
-void Actor::handleRequestCallbackEvent(RequestCallbackEvent &actionResult)
+void Actor::handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult)
 {
     if (actionResult.callback_ && actionResult.resp_) {
         actionResult.callback_(*actionResult.resp_);

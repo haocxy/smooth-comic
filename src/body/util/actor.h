@@ -11,8 +11,13 @@
 namespace myapp::actor {
 
 class Actor;
+
 class Request;
+
+namespace detail {
 class RequestCallbackEvent;
+}
+
 class Message;
 
 
@@ -105,14 +110,14 @@ protected:
 
 private:
     void handleRequest(Request &action);
-    void handleRequestCallbackEvent(RequestCallbackEvent &actionResult);
+    void handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult);
 
 private:
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
     std::shared_ptr<Handle> handle_;
 
     friend class Request;
-    friend class RequestCallbackEvent;
+    friend class detail::RequestCallbackEvent;
 };
 
 
@@ -167,11 +172,13 @@ private:
     friend class Actor;
 };
 
+
+namespace detail {
+
 class RequestCallbackEvent : public detail::Event {
 public:
     using Callback = Request::Callback;
 
-    // 仅用于内部实现
     RequestCallbackEvent(Callback &&callback, std::unique_ptr<Response> &&resp)
         : callback_(std::move(callback)), resp_(std::move(resp)) {}
 
@@ -187,6 +194,8 @@ private:
 
     friend class Actor;
 };
+
+} // namespace detail
 
 
 class Message : public detail::Event {
