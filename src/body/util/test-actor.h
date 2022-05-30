@@ -9,7 +9,7 @@
 
 namespace myapp {
 
-class SumAction : public actor::Action {
+class SumAction : public actor::Request {
 public:
     SumAction(int a, int b) : a(a), b(b) {}
 
@@ -31,7 +31,7 @@ protected:
         ThreadUtil::setNameForCurrentThread("CalcActor");
     }
 
-    virtual std::unique_ptr<actor::Result> dispatch(const actor::Action &action) override {
+    virtual std::unique_ptr<actor::Result> dispatch(const actor::Request &action) override {
         if (const SumAction *a = action.tryAs<SumAction>()) {
             return std::unique_ptr<actor::Result>(new SumAction::Result(a->a + a->b));
         }
@@ -47,14 +47,14 @@ public:
 
 protected:
 
-    virtual std::unique_ptr<actor::Result> dispatch(const actor::Action &action) override {
+    virtual std::unique_ptr<actor::Result> dispatch(const actor::Request &action) override {
         return nullptr;
     }
 
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("AskActor");
 
-        sendTo<SumAction::Result>(calcActor_, std::unique_ptr<actor::Action>(new SumAction(1, 2)), [](SumAction::Result &r) {
+        sendTo<SumAction::Result>(calcActor_, std::unique_ptr<actor::Request>(new SumAction(1, 2)), [](SumAction::Result &r) {
             int sum = r.n;
             std::cout << "sum: " << sum << std::endl;
         });

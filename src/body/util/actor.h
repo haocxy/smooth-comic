@@ -11,7 +11,7 @@
 namespace myapp::actor {
 
 class Actor;
-class Action;
+class Request;
 class ActionResult;
 
 
@@ -41,10 +41,10 @@ public:
     virtual ~Actor() {}
 
 public: // 这部分是为业务逻辑提供的
-    void sendTo(Actor &receiver, std::unique_ptr<Action> action, ActionCallback &&cb);
+    void sendTo(Actor &receiver, std::unique_ptr<Request> action, ActionCallback &&cb);
 
     template <typename ResultType>
-    void sendTo(Actor &receiver, std::unique_ptr<Action> action, std::function<void(ResultType &)> &&cb) {
+    void sendTo(Actor &receiver, std::unique_ptr<Request> action, std::function<void(ResultType &)> &&cb) {
         sendTo(receiver, std::move(action), [cb = std::move(cb)](Result &result) mutable {
             cb(static_cast<ResultType &>(result));
         });
@@ -78,7 +78,7 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
         e.handle(*this);
     }
 
-    virtual std::unique_ptr<Result> dispatch(const Action &a) = 0;
+    virtual std::unique_ptr<Result> dispatch(const Request &a) = 0;
 
 protected:
 
@@ -87,14 +87,14 @@ protected:
     std::atomic_bool stopped_{ false };
 
 private:
-    void handleAction(Action &action);
+    void handleAction(Request &action);
     void handleActionResult(ActionResult &actionResult);
 
 private:
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
     std::shared_ptr<Handle> handle_;
 
-    friend class Action;
+    friend class Request;
     friend class ActionResult;
 };
 
@@ -114,15 +114,13 @@ private:
 
 
 
-// 动作
-// 和消息（Event）不同，消息通常是单向的，而动作是需要回调的
-class Action : public Event {
+class Request : public Event {
 public:
     using Callback = ActionCallback;
 
-    Action() {}
+    Request() {}
 
-    Action(std::weak_ptr<Actor::Handle> senderHandle, Callback &&callback)
+    Request(std::weak_ptr<Actor::Handle> senderHandle, Callback &&callback)
         : sender_(senderHandle)
         , callback_(std::move(callback)) {}
 
@@ -136,7 +134,7 @@ public:
         return dynamic_cast<T *>(this);
     }
 
-    virtual ~Action() {}
+    virtual ~Request() {}
 
 protected:
     virtual void callback() {}
@@ -155,7 +153,7 @@ private:
 
 class ActionResult : public Event {
 public:
-    using Callback = Action::Callback;
+    using Callback = Request::Callback;
 
     ActionResult(Callback &&callback, std::unique_ptr<Result> &&result)
         : callback_(std::move(callback)), result_(std::move(result)) {}
