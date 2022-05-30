@@ -26,6 +26,13 @@ public:
     virtual void handle(Actor &receiver) {};
 };
 
+class Result {
+public:
+    virtual ~Result() {}
+};
+
+using ActionCallback = std::function<void(Result &)>;
+
 class Actor {
 public:
 
@@ -33,9 +40,20 @@ public:
 
     virtual ~Actor() {}
 
-protected: // 这部分是为业务逻辑提供的
-    void sendTo(Actor &receiver, std::unique_ptr<Action> action, std::function<void()> &&cb);
+public: // 这部分是为业务逻辑提供的
+    void sendTo(Actor &receiver, std::unique_ptr<Action> action, ActionCallback &&cb);
 
+    template <typename ResultType>
+    void sendTo(Actor &receiver, std::unique_ptr<Action> action, std::function<void(ResultType &)> &&cb) {
+        sendTo(receiver, std::move(action), [cb = std::move(cb)](Result &result) mutable {
+            cb(static_cast<ResultType &>(result));
+        });
+    }
+
+protected:
+    virtual void onActorStarted() {}
+
+    virtual void onActorStopped() {}
 
 protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
 
@@ -60,7 +78,7 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
         e.handle(*this);
     }
 
-    virtual void dispatch(const Action &a) = 0;
+    virtual std::unique_ptr<Result> dispatch(const Action &a) = 0;
 
 protected:
 
@@ -100,9 +118,11 @@ private:
 // 和消息（Event）不同，消息通常是单向的，而动作是需要回调的
 class Action : public Event {
 public:
+    using Callback = ActionCallback;
+
     Action() {}
 
-    Action(std::weak_ptr<Actor::Handle> senderHandle, std::function<void()> &&callback)
+    Action(std::weak_ptr<Actor::Handle> senderHandle, Callback &&callback)
         : sender_(senderHandle)
         , callback_(std::move(callback)) {}
 
@@ -128,15 +148,17 @@ private:
 
 private:
     std::weak_ptr<Actor::Handle> sender_{};
-    std::function<void()> callback_;
+    Callback callback_;
 
     friend class Actor;
 };
 
 class ActionResult : public Event {
 public:
-    ActionResult(std::function<void()> &&callback)
-        : callback_(std::move(callback)) {}
+    using Callback = Action::Callback;
+
+    ActionResult(Callback &&callback, std::unique_ptr<Result> &&result)
+        : callback_(std::move(callback)), result_(std::move(result)) {}
 
     virtual void handle(Actor &receiver) override {
         receiver.handleActionResult(*this);
@@ -145,7 +167,8 @@ public:
     virtual ~ActionResult() {}
 
 private:
-    std::function<void()> callback_;
+    Callback callback_;
+    std::unique_ptr<Result> result_;
 
     friend class Actor;
 };
