@@ -50,11 +50,11 @@ public:
     virtual ~Actor() {}
 
 public: // 这部分是为业务逻辑提供的
-    void sendTo(Actor &receiver, std::unique_ptr<Request> action, ActionCallback &&cb);
+    void sendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
 
     template <typename ResponseType>
-    void sendTo(Actor &receiver, std::unique_ptr<Request> action, std::function<void(ResponseType &)> &&cb) {
-        sendTo(receiver, std::move(action), [cb = std::move(cb)](Response &resp) mutable {
+    void sendTo(Actor &receiver, std::unique_ptr<Request> req, std::function<void(ResponseType &)> &&cb) {
+        sendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
             cb(static_cast<ResponseType &>(resp));
         });
     }
@@ -87,7 +87,9 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
         e.handle(*this);
     }
 
-    virtual std::unique_ptr<Response> dispatch(const Request &a) = 0;
+    virtual std::unique_ptr<Response> dispatch(const Request &a) {
+        return nullptr;
+    }
 
 protected:
 
@@ -96,8 +98,8 @@ protected:
     std::atomic_bool stopped_{ false };
 
 private:
-    void handleAction(Request &action);
-    void handleActionResult(RequestCallbackEvent &actionResult);
+    void handleRequest(Request &action);
+    void handleRequestCallbackEvent(RequestCallbackEvent &actionResult);
 
 private:
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
@@ -149,7 +151,7 @@ protected:
 
 private:
     virtual void handle(Actor &receiver) override {
-        receiver.handleAction(*this);
+        receiver.handleRequest(*this);
     }
 
 private:
@@ -164,18 +166,18 @@ public:
     using Callback = Request::Callback;
 
     // 仅用于内部实现
-    RequestCallbackEvent(Callback &&callback, std::unique_ptr<Response> &&result)
-        : callback_(std::move(callback)), result_(std::move(result)) {}
+    RequestCallbackEvent(Callback &&callback, std::unique_ptr<Response> &&resp)
+        : callback_(std::move(callback)), resp_(std::move(resp)) {}
 
     virtual void handle(Actor &receiver) override {
-        receiver.handleActionResult(*this);
+        receiver.handleRequestCallbackEvent(*this);
     }
 
     virtual ~RequestCallbackEvent() {}
 
 private:
     Callback callback_;
-    std::unique_ptr<Response> result_;
+    std::unique_ptr<Response> resp_;
 
     friend class Actor;
 };

@@ -47,10 +47,6 @@ public:
 
 protected:
 
-    virtual std::unique_ptr<actor::Response> dispatch(const actor::Request &action) override {
-        return nullptr;
-    }
-
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("AskActor");
 

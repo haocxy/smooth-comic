@@ -4,13 +4,13 @@
 namespace myapp::actor {
 // 这部分是为业务逻辑提供的
 
-void Actor::sendTo(Actor &receiver, std::unique_ptr<Request> action, ActionCallback &&cb) {
-    action->sender_ = this->handle_;
-    action->callback_ = std::move(cb);
-    receiver.post(std::unique_ptr<Event>(action.release()));
+void Actor::sendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
+    req->sender_ = this->handle_;
+    req->callback_ = std::move(cb);
+    receiver.post(std::move(req));
 }
 
-void Actor::handleAction(Request &action)
+void Actor::handleRequest(Request &action)
 {
     std::unique_ptr<Response> result = dispatch(action);
 
@@ -23,10 +23,10 @@ void Actor::handleAction(Request &action)
     }
 }
 
-void Actor::handleActionResult(RequestCallbackEvent &actionResult)
+void Actor::handleRequestCallbackEvent(RequestCallbackEvent &actionResult)
 {
-    if (actionResult.callback_ && actionResult.result_) {
-        actionResult.callback_(*actionResult.result_);
+    if (actionResult.callback_ && actionResult.resp_) {
+        actionResult.callback_(*actionResult.resp_);
     }
 }
 
