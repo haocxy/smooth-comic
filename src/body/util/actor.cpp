@@ -47,9 +47,9 @@ void ThreadedActor::loop()
     onActorStarted();
 
     while (!stopped_) {
-        std::optional<std::unique_ptr<Event>> evOpt = eventQueue_.pop();
+        std::optional<std::unique_ptr<detail::Event>> evOpt = eventQueue_.pop();
         if (evOpt) {
-            std::unique_ptr<Event> &ev = *evOpt;
+            std::unique_ptr<detail::Event> &ev = *evOpt;
             if (ev) {
                 handleEvent(*ev);
             }

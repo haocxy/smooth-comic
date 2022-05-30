@@ -16,24 +16,30 @@ class RequestCallbackEvent;
 class Message;
 
 
+namespace detail {
+
 // 消息
 // 消息是 actor 模式中在不同 Actor 中传递信息的实体
 // 该类是用于 actor 模块内部实现的类，外部用户请使用 Message 或 Request
 class Event {
 public:
+    Event() {}
+
     virtual ~Event() {}
 
     virtual void handle(Actor &receiver) {}
 
 private:
 
-    // 仅用于内部实现
-    Event() {}
+
 
     friend class Request;
     friend class RequestCallbackEvent;
     friend class Message;
 };
+
+} // namespace detail
+
 
 class Response {
 public:
@@ -77,13 +83,13 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
         Actor &actor_;
     };
 
-    void post(std::unique_ptr<Event> e) {
+    void post(std::unique_ptr<detail::Event> e) {
         eventQueue_.push(std::move(e));
     }
 
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
-    void handleEvent(Event &e) {
+    void handleEvent(detail::Event &e) {
         e.handle(*this);
     }
 
@@ -93,7 +99,7 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
 
 protected:
 
-    BlockQueue<std::unique_ptr<Event>> eventQueue_;
+    BlockQueue<std::unique_ptr<detail::Event>> eventQueue_;
 
     std::atomic_bool stopped_{ false };
 
@@ -124,7 +130,7 @@ private:
 };
 
 
-class Request : public Event {
+class Request : public detail::Event {
 public:
     using Callback = ActionCallback;
 
@@ -161,7 +167,7 @@ private:
     friend class Actor;
 };
 
-class RequestCallbackEvent : public Event {
+class RequestCallbackEvent : public detail::Event {
 public:
     using Callback = Request::Callback;
 
@@ -183,7 +189,7 @@ private:
 };
 
 
-class Message : public Event {
+class Message : public detail::Event {
 public:
     // TODO
 };
