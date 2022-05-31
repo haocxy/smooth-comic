@@ -7,7 +7,7 @@
 #include "engine/engine.h"
 #include "gui/book-viewer-widget.h"
 
-#include "util/test-actor.h"
+#include "util/actor-demo.h"
 
 
 using namespace logger::global_loggers;
