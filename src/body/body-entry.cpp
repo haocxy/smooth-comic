@@ -26,13 +26,7 @@ int body_entry(int argc, char *argv[])
 
     logInfo << "body_entry()";
 
-    CalcActor calcActor;
-    AskActor askActor(calcActor);
-
-    while (true) {
-        std::string line;
-        std::getline(std::cin, line);
-    }
+    demo::actor::actor_demo_01();
 
 
     return 0;

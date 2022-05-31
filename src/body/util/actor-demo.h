@@ -7,7 +7,9 @@
 
 using namespace logger::global_loggers;
 
-namespace myapp {
+namespace myapp::demo::actor {
+
+namespace actor = myapp::actor;
 
 class SumRequest : public actor::Request {
 public:
@@ -64,6 +66,7 @@ private:
 };
 
 
+void actor_demo_01();
 
 
 }
