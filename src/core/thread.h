@@ -16,7 +16,11 @@
 namespace ThreadUtil
 {
 
+uint32_t currentThreadShortId();
+
 void setNameForCurrentThread(const std::string &name);
+
+const std::string &currentThreadName();
 
 }
 

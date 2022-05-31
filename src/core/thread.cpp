@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <sstream>
+#include <iomanip>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -11,13 +12,33 @@
 namespace ThreadUtil
 {
 
-#ifndef NDEBUG
+static std::string mkDefaultThreadName()
+{
+    std::ostringstream ss;
+    ss << "Thread-" << std::setw(2) << std::setfill('0') << currentThreadShortId();
+    return ss.str();
+}
+
+static std::string &getCurrentThreadNameObjRef()
+{
+    thread_local std::string threadName = mkDefaultThreadName();
+    return threadName;
+}
+
+uint32_t currentThreadShortId() {
+    static std::atomic<uint32_t> s_nextShortId = 1;
+    thread_local uint32_t tl_curThreadShortId = s_nextShortId++;
+    return tl_curThreadShortId;
+}
 
 void setNameForCurrentThread(const std::string &name)
 {
     if (name.empty()) {
         return;
     }
+
+    getCurrentThreadNameObjRef() = name;
+
 #ifdef WIN32
     constexpr UINT page = CP_UTF8;
     constexpr DWORD flags = MB_PRECOMPOSED;
@@ -42,9 +63,10 @@ void setNameForCurrentThread(const std::string &name)
 #endif
 }
 
-#else
-void setNameForCurrentThread(const std::string &name) {}
-#endif
+const std::string &currentThreadName()
+{
+    return getCurrentThreadNameObjRef();
+}
 
 }
 

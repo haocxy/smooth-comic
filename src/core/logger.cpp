@@ -9,6 +9,7 @@
 #include <system_error>
 
 #include "fs.h"
+#include "thread.h"
 
 #ifdef WIN32
 #include <Windows.h>
@@ -31,12 +32,6 @@ static void safeLocalTime(std::tm &tm, std::time_t sec) {
 #else
     localtime_r(&sec, &tm);
 #endif
-}
-
-static uint32_t currentThreadShortId() {
-    static std::atomic<uint32_t> s_nextShortId = 1;
-    thread_local uint32_t tl_curThreadShortId = s_nextShortId++;
-    return tl_curThreadShortId;
 }
 
 
@@ -177,7 +172,8 @@ static std::string makeContent(logger::Level level, const std::string &content) 
     buffer << '.';
     buffer << std::setw(3) << std::setfill('0') << ms;
     buffer << '|';
-    buffer << 't' << currentThreadShortId();
+    buffer << "t:" << ThreadUtil::currentThreadName();
+    buffer << "(" << ThreadUtil::currentThreadShortId() << ")";
     buffer << '|';
     buffer << ' ' << content;
     buffer << '\n';
