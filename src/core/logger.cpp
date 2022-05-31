@@ -113,7 +113,17 @@ void Writer::write(const void *data, size_t len) {
     out_.write(reinterpret_cast<const char *>(data), len);
 }
 
-} // namespace logger
+namespace global_loggers {
+
+Logger<Level::Debug> logDebug;
+
+Logger<Level::Error> logError;
+
+Logger<Level::Info> logInfo;
+
+} // namespace global_loggers
+
+
 
 #ifndef NDEBUG
 static const bool DefaultAlwaysFlush = true;
@@ -142,7 +152,7 @@ static bool shouldFlush(logger::Level level) {
     }
 }
 
-static std::string makeContent(logger::Level level, const LogDebugInfo &info, const std::string &content) {
+static std::string makeContent(logger::Level level, const std::string &content) {
     std::timespec ts;
     std::memset(&ts, 0, sizeof(ts));
     if (TIME_UTC != std::timespec_get(&ts, TIME_UTC)) {
@@ -181,8 +191,8 @@ static bool isConsole(const FILE *f)
     return true; // TODO
 }
 
-void writeLog(logger::Level level, const LogDebugInfo &info, const std::string &content) {
-    std::string data = makeContent(level, info, content);
+void writeLog(logger::Level level, const std::string &content) {
+    std::string data = makeContent(level, content);
 
     std::lock_guard<std::mutex> lock(g_writeLogMutex);
 
@@ -216,6 +226,9 @@ void LogLine::printPath(const fs::path &p) {
     buffer_ << p.generic_string();
 }
 
+} // namespace logger
+
+
 namespace logger::control
 {
 
@@ -233,16 +246,18 @@ static std::string normalizeBaseName(const std::string &basename) {
 
 void init(const Option &opt) {
 
+    using namespace global_loggers;
+
     const char *title = "logger::control::initLogger ";
 
     g_Level = opt.level();
 
     if (!opt.dir().empty()) {
         const std::string basename = normalizeBaseName(opt.basename());
-        LOGI << title << "log will be write to dir: [" << opt.dir() << "] with base name [" << opt.basename() << "]";
+        logInfo << title << "log will be write to dir: [" << opt.dir() << "] with base name [" << opt.basename() << "]";
         g_writer = new Writer(opt.dir(), basename);
     } else {
-        LOGE << title << "error: [dir is empty string]. log will be write to stdout";
+        logError << title << "error: [dir is empty string]. log will be write to stdout";
     }
 
     gAlwaysFlush = opt.isAlwaysFlush();

@@ -2,8 +2,10 @@
 
 #include "actor.h"
 
-#include <iostream>
+#include "core/logger.h"
 
+
+using namespace logger::global_loggers;
 
 namespace myapp {
 
@@ -27,10 +29,12 @@ public:
 protected:
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("CalcActor");
+        logInfo << "CalcActor started";
     }
 
     virtual std::unique_ptr<actor::Response> dispatch(const actor::Request &action) override {
         if (const SumRequest *a = action.tryAs<SumRequest>()) {
+            logInfo << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
             return std::unique_ptr<actor::Response>(new SumRequest::Response(a->a + a->b));
         }
 
@@ -48,9 +52,10 @@ protected:
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("AskActor");
 
+        logInfo << "AskActor started";
+
         sendTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
-            int sum = r.n;
-            std::cout << "sum: " << sum << std::endl;
+            logInfo << "AskActor handle SumRequest::Response(" << r.n << ")";
         });
     }
 
