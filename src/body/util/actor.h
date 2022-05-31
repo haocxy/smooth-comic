@@ -34,10 +34,17 @@ public:
 
     virtual void handle(Actor &receiver) {}
 
+    template <typename T>
+    const T *tryAs() const {
+        return dynamic_cast<const T *>(this);
+    }
+
+    template <typename T>
+    T *tryAs() {
+        return dynamic_cast<T *>(this);
+    }
+
 private:
-
-
-
     friend class Request;
     friend class RequestCallbackEvent;
     friend class Message;
@@ -96,9 +103,11 @@ protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
         e.handle(*this);
     }
 
-    virtual std::unique_ptr<Response> dispatch(const Request &a) {
+    virtual std::unique_ptr<Response> onRequest(const Request &a) {
         return nullptr;
     }
+
+    virtual void onMessage(const Message &msg) {}
 
 protected:
 
@@ -113,12 +122,17 @@ private:
 
     void handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult);
 
+    void handleMessage(Message &message) {
+        onMessage(message);
+    }
+
 private:
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
     std::shared_ptr<Handle> handle_;
 
     friend class Request;
     friend class detail::RequestCallbackEvent;
+    friend class Message;
 };
 
 
@@ -145,16 +159,6 @@ public:
     Request(std::weak_ptr<Actor::Handle> senderHandle, Callback &&callback)
         : sender_(senderHandle)
         , callback_(std::move(callback)) {}
-
-    template <typename T>
-    const T *tryAs() const {
-        return dynamic_cast<const T *>(this);
-    }
-
-    template <typename T>
-    T *tryAs() {
-        return dynamic_cast<T *>(this);
-    }
 
     virtual ~Request() {}
 
@@ -201,7 +205,13 @@ private:
 
 class Message : public detail::Event {
 public:
-    // TODO
+    Message() {}
+
+    virtual ~Message() {}
+
+    virtual void handle(Actor &receiver) override {
+        receiver.handleMessage(*this);
+    }
 };
 
 }

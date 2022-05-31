@@ -32,7 +32,7 @@ protected:
         logInfo << "CalcActor started";
     }
 
-    virtual std::unique_ptr<actor::Response> dispatch(const actor::Request &action) override {
+    virtual std::unique_ptr<actor::Response> onRequest(const actor::Request &action) override {
         if (const SumRequest *a = action.tryAs<SumRequest>()) {
             logInfo << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
             return std::unique_ptr<actor::Response>(new SumRequest::Response(a->a + a->b));

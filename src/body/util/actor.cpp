@@ -10,14 +10,14 @@ void Actor::doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallba
     receiver.post(std::move(req));
 }
 
-void Actor::handleRequest(Request &action)
+void Actor::handleRequest(Request &req)
 {
-    std::unique_ptr<Response> result = dispatch(action);
+    std::unique_ptr<Response> result = onRequest(req);
 
-    if (std::shared_ptr<Actor::Handle> senderHandle = action.sender_.lock()) {
+    if (std::shared_ptr<Actor::Handle> senderHandle = req.sender_.lock()) {
 
         std::unique_ptr<detail::RequestCallbackEvent> resultEvent = std::make_unique<detail::RequestCallbackEvent>(
-            std::move(action.callback_), std::move(result));
+            std::move(req.callback_), std::move(result));
 
         senderHandle->actor().post(std::move(resultEvent));
     }
