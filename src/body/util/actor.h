@@ -32,8 +32,6 @@ public:
 
     virtual ~Event() {}
 
-    virtual void handle(Actor &receiver) {}
-
     template <typename T>
     const T *tryAs() const {
         return dynamic_cast<const T *>(this);
@@ -44,7 +42,11 @@ public:
         return dynamic_cast<T *>(this);
     }
 
+protected:
+    virtual void handle(Actor &receiver) {}
+
 private:
+    friend class Actor;
     friend class Request;
     friend class RequestCallbackEvent;
     friend class Message;
@@ -63,6 +65,18 @@ using ActionCallback = std::function<void(Response &)>;
 class Actor {
 public:
 
+    // Actor 句柄
+    // 用于检测所属的 Actor 的生命周期是否结束
+    // 简化代码，通过这个类，就不需要特殊关注 Actor 类本身是如何构造的
+    class Handle : public std::enable_shared_from_this<Handle> {
+    public:
+        Handle(Actor &actor) : actor_(actor) {}
+        virtual ~Handle() {}
+        Actor &actor() { return actor_; }
+    private:
+        Actor &actor_;
+    };
+
     Actor() : handle_(std::make_shared<Handle>(*this)) {}
 
     virtual ~Actor() {}
@@ -75,23 +89,18 @@ public:
         });
     }
 
+    template <typename MessageType>
+    void sendTo(Actor &receiver, std::unique_ptr<MessageType> msg) {
+        msg->sender_ = this->handle_;
+        receiver.post(std::move(msg));
+    }
+
 protected:
     virtual void onActorStarted() {}
 
     virtual void onActorStopped() {}
 
 protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
-
-    // 用于检测所属的 Actor 的生命周期是否结束
-    // 简化代码，通过这个类，就不需要特殊关注 Actor 类本身是如何构造的
-    class Handle : public std::enable_shared_from_this<Handle> {
-    public:
-        Handle(Actor &actor) : actor_(actor) {}
-        virtual ~Handle() {}
-        Actor &actor() { return actor_; }
-    private:
-        Actor &actor_;
-    };
 
     void post(std::unique_ptr<detail::Event> e) {
         eventQueue_.push(std::move(e));
@@ -149,29 +158,40 @@ private:
     std::jthread recvThread_;
 };
 
+namespace detail {
 
-class Request : public detail::Event {
+class SenderAwaredEvent : public Event {
+public:
+    SenderAwaredEvent() {}
+
+    virtual ~SenderAwaredEvent() {}
+
+    std::shared_ptr<Actor::Handle> sender() {
+        return sender_.lock();
+    }
+
+protected:
+    std::weak_ptr<Actor::Handle> sender_;
+
+    friend class Actor;
+};
+
+}
+
+class Request : public detail::SenderAwaredEvent {
 public:
     using Callback = ActionCallback;
 
     Request() {}
 
-    Request(std::weak_ptr<Actor::Handle> senderHandle, Callback &&callback)
-        : sender_(senderHandle)
-        , callback_(std::move(callback)) {}
-
     virtual ~Request() {}
 
 protected:
-    virtual void callback() {}
-
-private:
     virtual void handle(Actor &receiver) override {
         receiver.handleRequest(*this);
     }
 
 private:
-    std::weak_ptr<Actor::Handle> sender_{};
     Callback callback_;
 
     friend class Actor;
@@ -187,11 +207,12 @@ public:
     RequestCallbackEvent(Callback &&callback, std::unique_ptr<Response> &&resp)
         : callback_(std::move(callback)), resp_(std::move(resp)) {}
 
+    virtual ~RequestCallbackEvent() {}
+
+protected:
     virtual void handle(Actor &receiver) override {
         receiver.handleRequestCallbackEvent(*this);
     }
-
-    virtual ~RequestCallbackEvent() {}
 
 private:
     Callback callback_;
@@ -203,12 +224,13 @@ private:
 } // namespace detail
 
 
-class Message : public detail::Event {
+class Message : public detail::SenderAwaredEvent {
 public:
     Message() {}
 
     virtual ~Message() {}
 
+protected:
     virtual void handle(Actor &receiver) override {
         receiver.handleMessage(*this);
     }

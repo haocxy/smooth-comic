@@ -25,6 +25,12 @@ public:
     int b{};
 };
 
+class ActorStartedMessage : public actor::Message {
+public:
+    ActorStartedMessage(const std::string &actorName) : actorName(actorName) {}
+    std::string actorName;
+};
+
 class CalcActor : public actor::ThreadedActor {
 public:
 
@@ -42,6 +48,12 @@ protected:
 
         return nullptr;
     }
+
+    virtual void onMessage(const actor::Message &msg) override {
+        if (const ActorStartedMessage *m = msg.tryAs<ActorStartedMessage>()) {
+            logInfo << "CalcActor handle ActorStartedMessage(" << m->actorName << ")";
+        }
+    }
 };
 
 
@@ -55,6 +67,8 @@ protected:
         ThreadUtil::setNameForCurrentThread("AskActor");
 
         logInfo << "AskActor started";
+
+        sendTo(calcActor_, std::make_unique<ActorStartedMessage>("AskActor"));
 
         sendTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
             logInfo << "AskActor handle SumRequest::Response(" << r.n << ")";
