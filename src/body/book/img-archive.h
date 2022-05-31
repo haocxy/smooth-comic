@@ -3,7 +3,7 @@
 #include <functional>
 #include <QImage>
 
-#include "util/fs.h"
+#include "core/fs.h"
 
 #include "image.h"
 

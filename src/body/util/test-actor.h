@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-#include "thread.h"
-
 
 namespace myapp {
 

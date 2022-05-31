@@ -5,7 +5,7 @@
 #include <memory>
 #include <map>
 
-#include "thread.h"
+#include "core/thread.h"
 
 
 namespace myapp::actor {

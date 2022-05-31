@@ -3,7 +3,7 @@
 #include <memory>
 #include <functional>
 
-#include "util/thread.h"
+#include "core/thread.h"
 
 
 namespace myapp {
