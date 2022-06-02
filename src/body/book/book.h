@@ -28,8 +28,6 @@ protected:
     virtual void onNotice(actor::Notice &notice) override;
 
 private:
-    void initSignalsAndSlots();
-
     void handleOnPageLoaded(PageNum pageNum, const QImage &img);
 
 private:

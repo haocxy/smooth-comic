@@ -14,21 +14,15 @@ namespace myapp {
 Book::Book(Engine &engine, QObject *parent)
     : QObjectActor(parent)
     , engine_(engine)
-    , loader_(std::make_unique<BookLoader>(engine)) {
+    , loader_(std::make_unique<BookLoader>()) {
 
-    initSignalsAndSlots();
+    listen<BookLoader::PageLoaded>(*loader_);
 
-
-
-    loader_->startLoadFromLocalFile("D:/tmp/a.zip");
-
-    listen<TestActor::RequestTimesNotice>(engine_.testActor());
+    sendTo(*loader_, std::make_unique<BookLoader::StartLoadMsg>("D:/tmp/a.zip"));
 }
 
 Book::~Book()
 {
-    loader_->stop();
-
     disconnect();
 
     engine_.asyncDeleter().post(std::make_unique<AsyncDeleter::AsyncDeleteMsg>(std::move(loader_)));
@@ -36,14 +30,10 @@ Book::~Book()
 
 void Book::onNotice(actor::Notice &notice)
 {
-    if (TestActor::RequestTimesNotice *n = notice.tryAs<TestActor::RequestTimesNotice>()) {
-        logInfo << "Book onNotice: RequestTimesNotice(" << n->times << ")";
+    if (BookLoader::PageLoaded *n = notice.tryAs<BookLoader::PageLoaded>()) {
+        handleOnPageLoaded(n->pageNum, n->img);
+        return;
     }
-}
-
-void Book::initSignalsAndSlots()
-{
-    connect(loader_.get(), &BookLoader::onPageLoaded, this, &Book::handleOnPageLoaded);
 }
 
 static std::u8string toU8String(const QString &qs)
@@ -64,10 +54,6 @@ void Book::handleOnPageLoaded(PageNum pageNum, const QImage &img)
     fs::create_directories(outfile.parent_path());
 
     img.save(QString::fromStdU32String(outfile.generic_u32string()), "BMP");
-
-    sendTo(engine_.testActor(), std::make_unique<TestActor::SumRequest>(pageNum, 1), [pageNum](TestActor::SumRequest::Response &rsp) {
-        logInfo << "test actor by sum, " << pageNum << " + 1 = " << rsp.result;
-    });
 }
 
 }

@@ -16,35 +16,14 @@ namespace myapp {
 
 
 
-BookLoader::BookLoader(Engine &engine, QObject *parent)
-    : QObject(parent)
-    , mEngine(engine)
+BookLoader::BookLoader()
 {
-
-    mLoadThread.setObjectName("BookLoader");
-
-    moveToThread(&mLoadThread);
-
-    initSignalsAndSlots();
-
-    mLoadThread.start();
+    setActorName("BookLoader");
 }
 
 BookLoader::~BookLoader()
 {
     logInfo << "BookLoader destructing";
-
-    disconnect();
-
-    stopped_ = true;
-}
-
-void BookLoader::initSignalsAndSlots()
-{
-    using Class = BookLoader;
-
-    connect(this, &Class::startLoadFromLocalFile, this, &Class::doStartLoadFromLocalFile);
-
 }
 
 static std::u32string getNameFromPagePath(const QString &filePath)
@@ -81,12 +60,19 @@ static PageNum getPageNumFromPagePath(const QString &filePath)
     return n;
 }
 
-void BookLoader::doStartLoadFromLocalFile(const QString &filePath)
+void BookLoader::onMessage(actor::Message &msg)
+{
+    if (StartLoadMsg *m = msg.tryAs<StartLoadMsg>()) {
+        doStartLoadFromLocalFile(m->archive);
+    }
+}
+
+void BookLoader::doStartLoadFromLocalFile(const fs::path &archiveFile)
 {
     ImgArchive archive;
-    archive.load(filePath.toStdU32String(), [this](const QString &pagePath, const QImage &img) {
+    archive.load(archiveFile, [this](const QString &pagePath, const QImage &img) {
         const PageNum pageNum = getPageNumFromPagePath(pagePath);
-        emit onPageLoaded(pageNum, img);
+        notify(std::make_unique<PageLoaded>(pageNum, img));
         return !stopped_;
     });
 }

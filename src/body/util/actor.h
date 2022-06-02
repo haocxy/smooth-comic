@@ -207,6 +207,9 @@ public:
         eventQueue_.push(std::move(e));
     }
 
+protected:
+    std::atomic_bool stopped_{ false };
+
 private:
     void loop();
 
@@ -214,7 +217,6 @@ private:
 
 private:
     BlockQueue<std::unique_ptr<detail::Event>> eventQueue_;
-    std::atomic_bool stopped_{ false };
     std::jthread recvThread_;
     std::atomic_bool nameModified_{ false };
 };

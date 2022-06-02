@@ -1,43 +1,52 @@
 #pragma once
 
-#include <atomic>
+#include <QImage>
 
-#include <QObject>
-#include <QPointer>
-
-#include "util/autojoin-qthread.h"
+#include "core/fs.h"
+#include "util/actor.h"
 #include "page-num.h"
 
 
 namespace myapp {
 
-class Engine;
-
-class BookLoader : public QObject {
-    Q_OBJECT
+class BookLoader : public actor::ThreadedActor {
 public:
-    explicit BookLoader(Engine &engine, QObject *parent = nullptr);
+
+    class StartLoadMsg : public actor::Message {
+    public:
+        StartLoadMsg(const fs::path &archive) : archive(archive) {}
+
+        fs::path archive;
+    };
+
+    class PageLoaded : public actor::Notice {
+    public:
+        PageLoaded() {}
+
+        PageLoaded(PageNum pageNum, const QImage &img)
+            : pageNum(pageNum), img(img) {}
+
+        PageLoaded(const PageLoaded &other)
+            : actor::Notice(other), pageNum(other.pageNum), img(other.img) {}
+
+        virtual actor::Notice *clone() const override {
+            return new PageLoaded(pageNum, img);
+        }
+
+        PageNum pageNum = 0;
+        QImage img;
+    };
+
+    BookLoader();
 
     virtual ~BookLoader();
 
-    void stop() {
-        stopped_ = true;
-    }
-
-signals:
-    void startLoadFromLocalFile(const QString &path);
-
-    void onPageLoaded(PageNum pageNum, const QImage &img);
+protected:
+    virtual void onMessage(actor::Message &msg) override;
 
 private:
-    void initSignalsAndSlots();
 
-    void doStartLoadFromLocalFile(const QString &filePath);
-
-private:
-    Engine &mEngine;
-    AutojoinQThread mLoadThread;
-    std::atomic_bool stopped_{ false };
+    void doStartLoadFromLocalFile(const fs::path &archiveFile);
 };
 
 }
