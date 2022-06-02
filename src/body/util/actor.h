@@ -89,7 +89,7 @@ public:
         return actorName_;
     }
 
-    virtual void post(std::unique_ptr<detail::Event> e) = 0;
+    virtual void post(std::unique_ptr<detail::Event> &&e) = 0;
 
     template <typename RequestType>
     void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
@@ -155,7 +155,7 @@ public:
         nameModified_ = true;
     }
 
-    virtual void post(std::unique_ptr<detail::Event> e) override {
+    virtual void post(std::unique_ptr<detail::Event> &&e) override {
         eventQueue_.push(std::move(e));
     }
 

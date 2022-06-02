@@ -3,12 +3,16 @@
 #include <cstring>
 
 #include "core/fs.h"
+#include "core/logger.h"
+
+
+using namespace logger::global_loggers;
 
 
 namespace myapp {
 
 Book::Book(Engine &engine, QObject *parent)
-    : QObject(parent)
+    : QObjectActor(parent)
     , engine_(engine)
     , loader_(std::make_unique<BookLoader>(engine)) {
 
@@ -51,6 +55,10 @@ void Book::handleOnPageLoaded(PageNum pageNum, const QImage &img)
     fs::create_directories(outfile.parent_path());
 
     img.save(QString::fromStdU32String(outfile.generic_u32string()), "BMP");
+
+    sendTo(engine_.testActor(), std::make_unique<TestActor::SumRequest>(pageNum, 1), [pageNum](TestActor::SumRequest::Response &rsp) {
+        logInfo << "test actor by sum, " << pageNum << " + 1 = " << rsp.result;
+    });
 }
 
 }

@@ -4,6 +4,7 @@
 #include <QApplication>
 
 #include "core/logger.h"
+#include "core/thread.h"
 #include "engine/engine.h"
 #include "gui/book-viewer-widget.h"
 
@@ -15,6 +16,8 @@ namespace myapp {
 
 int body_entry(int argc, char *argv[])
 {
+    ThreadUtil::setNameForCurrentThread("GUI");
+
     logger::control::Option opt;
     opt.setAlwaysFlush(true);
     opt.setLevel(logger::Level::All);
