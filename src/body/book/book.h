@@ -24,6 +24,9 @@ public:
 
     virtual ~Book();
 
+protected:
+    virtual void onNotice(actor::Notice &notice) override;
+
 private:
     void initSignalsAndSlots();
 

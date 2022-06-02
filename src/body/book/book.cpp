@@ -21,6 +21,8 @@ Book::Book(Engine &engine, QObject *parent)
 
 
     loader_->startLoadFromLocalFile("D:/tmp/a.zip");
+
+    listen<TestActor::RequestTimesNotice>(engine_.testActor());
 }
 
 Book::~Book()
@@ -30,6 +32,13 @@ Book::~Book()
     disconnect();
 
     engine_.asyncDeleter().post(std::make_unique<AsyncDeleter::AsyncDeleteMsg>(std::move(loader_)));
+}
+
+void Book::onNotice(actor::Notice &notice)
+{
+    if (TestActor::RequestTimesNotice *n = notice.tryAs<TestActor::RequestTimesNotice>()) {
+        logInfo << "Book onNotice: RequestTimesNotice(" << n->times << ")";
+    }
 }
 
 void Book::initSignalsAndSlots()

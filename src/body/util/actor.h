@@ -12,14 +12,19 @@ namespace myapp::actor {
 
 class Actor;
 
+// 请求：从 actor A 发送到指定的 actor B，actor B 执行完成后一定发回配套的响应
 class Request;
+
+// 消息：从 actor A 发送到指定的 actor B，无配套响应
+class Message;
+
+// 通知：actor A 发送到若干通知订阅者，发送时不关心有哪些订阅者
+class Notice;
 
 namespace detail {
 class RequestCallbackEvent;
+class AddListenerMessage;
 }
-
-class Message;
-
 
 namespace detail {
 
@@ -99,9 +104,19 @@ public:
     }
 
     template <typename MessageType>
-    void sendTo(Actor &receiver, std::unique_ptr<MessageType> msg) {
+    void sendTo(Actor &receiver, std::unique_ptr<MessageType> &&msg) {
         msg->sender_ = this->handle_;
         receiver.post(std::move(msg));
+    }
+
+    template <typename NoticeType>
+    void listen(Actor &receiver) {
+        doAddListenerTo(receiver, typeid(NoticeType));
+    }
+
+    template <typename NoticeType>
+    void notify(std::unique_ptr<NoticeType> &&notice) {
+        doNotify(typeid(NoticeType), std::move(notice));
     }
 
 protected:
@@ -112,6 +127,8 @@ protected:
     virtual std::unique_ptr<Response> onRequest(Request &a) { return nullptr; }
 
     virtual void onMessage(Message &msg) {}
+
+    virtual void onNotice(Notice &notice) {}
 
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
@@ -130,6 +147,24 @@ private:
         onMessage(message);
     }
 
+    void handleNotice(Notice &notice) {
+        onNotice(notice);
+    }
+
+    void handleAddListenerMessage(detail::AddListenerMessage &msg);
+
+    bool hasListener(std::vector<std::weak_ptr<Handle>> &vec, std::shared_ptr<Handle> handle) {
+        for (std::weak_ptr<Handle> item : vec) {
+            if (item.lock() == handle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void doAddListenerTo(Actor &receiver, const std::type_index &noticeType);
+
+    void doNotify(std::type_index type, std::unique_ptr<Notice> &&notice);
 
 private:
 
@@ -138,9 +173,22 @@ private:
 
     std::string actorName_;
 
+    struct CmpWeakPtrToHandle {
+        bool operator()(const std::weak_ptr<Handle> &a, const std::weak_ptr<Handle> &b) const {
+            return a.lock().get() < b.lock().get();
+        }
+    };
+
+    using HandleSet = std::set<std::weak_ptr<Handle>, CmpWeakPtrToHandle>;
+
+    std::map<std::type_index, HandleSet> listeners_;
+
     friend class Request;
-    friend class detail::RequestCallbackEvent;
     friend class Message;
+    friend class Notice;
+
+    friend class detail::RequestCallbackEvent;
+    friend class detail::AddListenerMessage;
 };
 
 
@@ -177,10 +225,17 @@ class SenderAwaredEvent : public Event {
 public:
     SenderAwaredEvent() {}
 
+    SenderAwaredEvent(const SenderAwaredEvent &other)
+        : sender_(other.sender_) {}
+
     virtual ~SenderAwaredEvent() {}
 
     std::shared_ptr<Actor::Handle> sender() {
         return sender_.lock();
+    }
+
+    void setSender(std::weak_ptr<Actor::Handle> handle) {
+        sender_ = handle;
     }
 
 protected:
@@ -246,6 +301,51 @@ public:
 protected:
     virtual void handle(Actor &receiver) override {
         receiver.handleMessage(*this);
+    }
+};
+
+
+namespace detail {
+
+class AddListenerMessage : public Message {
+public:
+
+    AddListenerMessage(const std::type_index &noticeType) : noticeType_(noticeType) {}
+
+    virtual ~AddListenerMessage() {}
+
+    const std::type_index &noticeType() const {
+        return noticeType_;
+    }
+
+protected:
+    virtual void handle(Actor &receiver) override {
+        receiver.handleAddListenerMessage(*this);
+    }
+
+private:
+    std::type_index noticeType_;
+
+    friend class Actor;
+};
+
+}
+
+
+class Notice : public detail::SenderAwaredEvent {
+public:
+    Notice() {}
+
+    Notice(const Notice &other)
+        : detail::SenderAwaredEvent(*this) {}
+
+    virtual ~Notice() {}
+
+    virtual Notice *clone() const = 0;
+
+protected:
+    virtual void handle(Actor &receiver) override {
+        receiver.handleNotice(*this);
     }
 };
 

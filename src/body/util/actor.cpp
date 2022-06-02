@@ -2,7 +2,6 @@
 
 
 namespace myapp::actor {
-// 这部分是为业务逻辑提供的
 
 void Actor::doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
     req->sender_ = this->handle_;
@@ -31,6 +30,41 @@ void Actor::handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResul
 {
     if (actionResult.callback_ && actionResult.resp_) {
         actionResult.callback_(*actionResult.resp_);
+    }
+}
+
+void Actor::handleAddListenerMessage(detail::AddListenerMessage &msg) {
+    HandleSet &handles = listeners_[msg.noticeType()];
+    std::shared_ptr<Handle> sender = msg.sender();
+    if (!handles.contains(sender)) {
+        handles.insert(sender);
+    }
+}
+
+void Actor::doAddListenerTo(Actor &receiver, const std::type_index &noticeType)
+{
+    std::unique_ptr<detail::AddListenerMessage> msg = std::make_unique<detail::AddListenerMessage>(noticeType);
+    sendTo(receiver, std::move(msg));
+}
+
+void Actor::doNotify(std::type_index type, std::unique_ptr<Notice> &&notice)
+{
+    notice->setSender(handle_);
+
+    std::vector<std::weak_ptr<Handle>> badHandles;
+
+    HandleSet &handles = listeners_[type];
+    for (std::weak_ptr<Handle> weakHandle : handles) {
+        std::shared_ptr<Handle> handle = weakHandle.lock();
+        if (handle) {
+            handle->actor().post(std::unique_ptr<Notice>(notice->clone()));
+        } else {
+            badHandles.push_back(weakHandle);
+        }
+    }
+
+    for (std::weak_ptr<Handle> badHandle : badHandles) {
+        handles.erase(badHandle);
     }
 }
 

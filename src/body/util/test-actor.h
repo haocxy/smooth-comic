@@ -24,12 +24,31 @@ public:
         int numB = 0;
     };
 
+    class RequestTimesNotice : public actor::Notice {
+    public:
+        RequestTimesNotice() {}
+
+        RequestTimesNotice(int times) : times(times) {}
+
+        RequestTimesNotice(const RequestTimesNotice &other)
+            : actor::Notice(other), times(other.times) {}
+
+        virtual RequestTimesNotice *clone() const override {
+            return new RequestTimesNotice(*this);
+        }
+
+        int times = 0;
+    };
+
     TestActor();
 
     virtual ~TestActor();
 
 protected:
     virtual std::unique_ptr<actor::Response> onRequest(actor::Request &req) override;
+
+private:
+    int handleRequestTimes_{};
 };
 
 }
