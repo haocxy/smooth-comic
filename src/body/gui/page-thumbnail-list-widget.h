@@ -15,10 +15,6 @@ public:
 
     virtual ~PageThumbnailListWidget() {}
 
-    virtual QSize sizeHint() const {
-        return { 200, 1000 };
-    }
-
 private:
     QPointer<QVBoxLayout> layout_;
 };
