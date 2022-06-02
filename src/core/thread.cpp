@@ -31,18 +31,20 @@ uint32_t currentThreadShortId() {
     return tl_curThreadShortId;
 }
 
-void setNameForCurrentThread(const std::string &name)
+void setNameForCurrentThread(const std::string_view &name)
 {
     if (name.empty()) {
         return;
     }
 
-    getCurrentThreadNameObjRef() = name;
+    std::string &curNameRef = getCurrentThreadNameObjRef();
+
+    curNameRef = name;
 
 #ifdef WIN32
     constexpr UINT page = CP_UTF8;
     constexpr DWORD flags = MB_PRECOMPOSED;
-    const char *mbstr = name.c_str();
+    const char *mbstr = curNameRef.c_str();
     const int mblen = static_cast<int>(name.size());
     const int wstrlen = MultiByteToWideChar(page, flags, mbstr, mblen, nullptr, 0);
     if (wstrlen <= 0) {

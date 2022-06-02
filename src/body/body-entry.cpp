@@ -7,8 +7,6 @@
 #include "engine/engine.h"
 #include "gui/book-viewer-widget.h"
 
-#include "util/actor-demo.h"
-
 
 using namespace logger::global_loggers;
 
@@ -26,10 +24,6 @@ int body_entry(int argc, char *argv[])
 
     logInfo << "body_entry()";
 
-    demo::actor::actor_demo_01();
-
-
-    return 0;
     QApplication app(argc, argv);
 
     Engine engine;

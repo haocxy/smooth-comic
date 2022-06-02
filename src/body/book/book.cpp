@@ -25,7 +25,7 @@ Book::~Book()
 
     disconnect();
 
-    engine_.asyncDeleter().asyncDelete(std::move(loader_));
+    engine_.asyncDeleter().post(std::make_unique<AsyncDeleter::AsyncDeleteMsg>(std::move(loader_)));
 }
 
 void Book::initSignalsAndSlots()

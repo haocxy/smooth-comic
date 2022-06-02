@@ -3,44 +3,29 @@
 #include <memory>
 #include <functional>
 
-#include "core/thread.h"
+#include "util/actor.h"
 
 
 namespace myapp {
 
-class AsyncDeleter {
-private:
+class AsyncDeleter : public actor::ThreadedActor {
+public:
 
-    // 解决 lambda 表达式不支持移动语义的问题，通过拷贝语义实现移动操作
-    template <typename T>
-    class UniquePtrMover {
+    class Deleter {
     public:
-        UniquePtrMover() {}
+        virtual ~Deleter() {}
 
-        UniquePtrMover(std::unique_ptr<T> &&ptr)
-            : ptr_(std::move(ptr)) {}
+        virtual void doDelete() = 0;
+    };
 
-        UniquePtrMover(const UniquePtrMover &other) {
-            *this = other;
-        }
+    template <typename T>
+    class DeleterImpl : public Deleter {
+    public:
+        DeleterImpl(std::unique_ptr<T> &&ptr) : ptr_(std::move(ptr)) {}
 
-        UniquePtrMover(UniquePtrMover &&other) {
-            *this = other;
-        }
+        virtual ~DeleterImpl() {}
 
-        UniquePtrMover &operator=(const UniquePtrMover &other) {
-            if (this != &other) {
-                ptr_ = std::move(const_cast<UniquePtrMover &>(other).ptr_);
-            }
-            return *this;
-        }
-
-        UniquePtrMover &operator=(UniquePtrMover &&other) {
-            *this = other;
-            return *this;
-        }
-
-        void deleteObj() {
+        virtual void doDelete() override {
             delete ptr_.release();
         }
 
@@ -48,30 +33,30 @@ private:
         std::unique_ptr<T> ptr_;
     };
 
+    class AsyncDeleteMsg : public actor::Message {
+    public:
+        template <typename T>
+        AsyncDeleteMsg(std::unique_ptr<T> &&ptr)
+            : deleter_(std::make_unique<DeleterImpl<T>>(std::move(ptr))) {}
+
+        virtual ~AsyncDeleteMsg() {}
+
+        void doDelete() {
+            if (deleter_) {
+                deleter_->doDelete();
+            }
+        }
+
+    private:
+        std::unique_ptr<Deleter> deleter_;
+    };
+
 public:
-    explicit AsyncDeleter();
+    AsyncDeleter();
 
     virtual ~AsyncDeleter();
 
-    template <typename T>
-    void asyncDelete(std::unique_ptr<T> &&ptr) {
-        UniquePtrMover<T> ptrMover(std::move(ptr));
-        taskQueue_.push([ptrMover]() mutable {
-            ptrMover.deleteObj();
-        });
-    }
-
-    template <typename T>
-    void asyncDelete(T *ptr) {
-        asyncDelete(std::unique_ptr<T>(ptr));
-    }
-
-private:
-    void loop();
-
-private:
-    std::jthread thread_;
-    BlockQueue<std::function<void()>> taskQueue_;
+    virtual void onMessage(actor::Message &msg);
 };
 
 

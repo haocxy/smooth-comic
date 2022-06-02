@@ -3,9 +3,13 @@
 #include <string>
 #include <sstream>
 
+#include "core/logger.h"
 #include "engine/engine.h"
 
 #include "img-archive.h"
+
+
+using namespace logger::global_loggers;
 
 
 namespace myapp {
@@ -28,6 +32,8 @@ BookLoader::BookLoader(Engine &engine, QObject *parent)
 
 BookLoader::~BookLoader()
 {
+    logInfo << "BookLoader destructing";
+
     disconnect();
 
     stopped_ = true;

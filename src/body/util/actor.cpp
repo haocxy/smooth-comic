@@ -11,7 +11,7 @@ void Actor::doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallba
 }
 
 void Actor::handleRequest(Request &req)
-{
+{   
     std::unique_ptr<Response> result = onRequest(req);
 
     if (std::shared_ptr<Actor::Handle> senderHandle = req.sender_.lock()) {
@@ -44,6 +44,8 @@ ThreadedActor::~ThreadedActor()
 
 void ThreadedActor::loop()
 {
+    updateThreadName();
+
     onActorStarted();
 
     while (!stopped_) {
@@ -57,6 +59,16 @@ void ThreadedActor::loop()
     }
 
     onActorStopped();
+}
+
+void ThreadedActor::updateThreadName()
+{
+    if (!nameModified_) {
+        return;
+    }
+
+    ThreadUtil::setNameForCurrentThread(actorName());
+    nameModified_ = false;
 }
 
 }

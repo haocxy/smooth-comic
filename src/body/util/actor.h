@@ -81,6 +81,18 @@ public:
 
     virtual ~Actor() {}
 
+    virtual void setActorName(const std::string_view &name) {
+        actorName_ = name;
+    }
+
+    virtual const std::string &actorName() const {
+        return actorName_;
+    }
+
+    void post(std::unique_ptr<detail::Event> e) {
+        eventQueue_.push(std::move(e));
+    }
+
 public:
     template <typename RequestType>
     void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
@@ -102,21 +114,17 @@ protected:
 
 protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
 
-    void post(std::unique_ptr<detail::Event> e) {
-        eventQueue_.push(std::move(e));
-    }
-
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
     void handleEvent(detail::Event &e) {
         e.handle(*this);
     }
 
-    virtual std::unique_ptr<Response> onRequest(const Request &a) {
+    virtual std::unique_ptr<Response> onRequest(Request &a) {
         return nullptr;
     }
 
-    virtual void onMessage(const Message &msg) {}
+    virtual void onMessage(Message &msg) {}
 
 protected:
 
@@ -139,6 +147,8 @@ private:
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
     std::shared_ptr<Handle> handle_;
 
+    std::string actorName_;
+
     friend class Request;
     friend class detail::RequestCallbackEvent;
     friend class Message;
@@ -151,11 +161,19 @@ public:
 
     virtual ~ThreadedActor();
 
+    virtual void setActorName(const std::string_view &name) override {
+        Actor::setActorName(name);
+        nameModified_ = true;
+    }
+
 private:
     void loop();
 
+    void updateThreadName();
+
 private:
     std::jthread recvThread_;
+    std::atomic_bool nameModified_{ false };
 };
 
 namespace detail {
