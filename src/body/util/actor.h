@@ -89,11 +89,8 @@ public:
         return actorName_;
     }
 
-    void post(std::unique_ptr<detail::Event> e) {
-        eventQueue_.push(std::move(e));
-    }
+    virtual void post(std::unique_ptr<detail::Event> e) = 0;
 
-public:
     template <typename RequestType>
     void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
         doSendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
@@ -112,25 +109,15 @@ protected:
 
     virtual void onActorStopped() {}
 
-protected: // 这部分是用于实现 Actor 框架内部逻辑的代码
+    virtual std::unique_ptr<Response> onRequest(Request &a) { return nullptr; }
+
+    virtual void onMessage(Message &msg) {}
 
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
     void handleEvent(detail::Event &e) {
         e.handle(*this);
     }
-
-    virtual std::unique_ptr<Response> onRequest(Request &a) {
-        return nullptr;
-    }
-
-    virtual void onMessage(Message &msg) {}
-
-protected:
-
-    BlockQueue<std::unique_ptr<detail::Event>> eventQueue_;
-
-    std::atomic_bool stopped_{ false };
 
 private:
     void doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
@@ -143,7 +130,9 @@ private:
         onMessage(message);
     }
 
+
 private:
+
     // Handle 类的核心逻辑就是配合 std::shared_ptr 实现的，必须由 shared_ptr 管理
     std::shared_ptr<Handle> handle_;
 
@@ -166,12 +155,18 @@ public:
         nameModified_ = true;
     }
 
+    virtual void post(std::unique_ptr<detail::Event> e) override {
+        eventQueue_.push(std::move(e));
+    }
+
 private:
     void loop();
 
     void updateThreadName();
 
 private:
+    BlockQueue<std::unique_ptr<detail::Event>> eventQueue_;
+    std::atomic_bool stopped_{ false };
     std::jthread recvThread_;
     std::atomic_bool nameModified_{ false };
 };
