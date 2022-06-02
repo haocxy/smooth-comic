@@ -49,11 +49,16 @@ void Book::handleOnPageLoaded(PageNum pageNum, const QImage &img)
 {
     pageKeyToImg_[pageNum] = img;
 
-    const fs::path outfile = QString("D:/tmp/save-by-class-Book/%1.bmp").arg(pageNum).toStdU32String();
+    const bool writeToFile = false;
 
-    fs::create_directories(outfile.parent_path());
+    if (writeToFile) {
 
-    img.save(QString::fromStdU32String(outfile.generic_u32string()), "BMP");
+        const fs::path outfile = QString("D:/tmp/save-by-class-Book/%1.bmp").arg(pageNum).toStdU32String();
+
+        fs::create_directories(outfile.parent_path());
+
+        img.save(QString::fromStdU32String(outfile.generic_u32string()), "BMP");
+    }
 }
 
 }
