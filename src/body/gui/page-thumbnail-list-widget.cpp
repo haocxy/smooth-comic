@@ -3,10 +3,17 @@
 
 namespace myapp {
 
-PageThumbnailListWidget::PageThumbnailListWidget(QWidget *parent)
-    : QWidget(parent)
-{
+static constexpr int widthHint = 200;
 
+PageThumbnailListWidget::PageThumbnailListWidget(QWidget *parent)
+    : QScrollArea(parent)
+{
+    setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
+
+    setMinimumWidth(widthHint);
+    setMaximumWidth(widthHint * 2);
 }
+
 
 }
