@@ -9,7 +9,7 @@ QObjectActor::QObjectActor(QObject *parent)
 {
     qRegisterMetaType<MyApp_ActorEventWrapperForQtMetaObjSys>();
 
-    connect(this, &QObjectActor::qtSigRecvActorEvent, this, &QObjectActor::qtSlotRecvActorEvent);
+    connect(this, &QObjectActor::qtSigRecvActorEvent, this, &QObjectActor::qtSlotRecvActorEvent, Qt::ConnectionType::QueuedConnection);
 }
 
 QObjectActor::~QObjectActor()
@@ -36,7 +36,7 @@ QWidgetActor::QWidgetActor(QWidget *parent)
 {
     qRegisterMetaType<MyApp_ActorEventWrapperForQtMetaObjSys>();
 
-    connect(this, &QWidgetActor::qtSigRecvActorEvent, this, &QWidgetActor::qtSlotRecvActorEvent);
+    connect(this, &QWidgetActor::qtSigRecvActorEvent, this, &QWidgetActor::qtSlotRecvActorEvent, Qt::ConnectionType::QueuedConnection);
 }
 
 QWidgetActor::~QWidgetActor()

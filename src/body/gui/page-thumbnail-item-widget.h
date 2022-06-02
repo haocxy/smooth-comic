@@ -5,6 +5,8 @@
 #include <QPointer>
 #include <QPixmap>
 
+#include "thumb-img-widget.h"
+
 
 namespace myapp {
 
@@ -15,10 +17,8 @@ public:
 
     virtual ~PageThumbnailItemWidget() {}
 
-    virtual void paintEvent(QPaintEvent *) override;
-
 private:
-    QPointer<QLabel> img_;
+    QPointer<ThumbImgWidget> img_;
     QPointer<QLabel> text_;
 };
 

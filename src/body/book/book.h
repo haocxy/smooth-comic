@@ -24,6 +24,9 @@ public:
 
     virtual ~Book();
 
+signals:
+    void sigPageLoaded(PageNum pageNum, const QPixmap &img);
+
 protected:
     virtual void onNotice(actor::Notice &notice) override;
 

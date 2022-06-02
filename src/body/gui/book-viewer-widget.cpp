@@ -21,14 +21,18 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
     setMinimumSize(800, 600);
 
     thumbnailList_ = new PageThumbnailListWidget(this);
-    setHStreachFactor(thumbnailList_, 1);
+    //setHStreachFactor(thumbnailList_, 1);
     addWidget(thumbnailList_);
 
     artboard_ = new ArtboardWidget(this);
-    setHStreachFactor(artboard_, 9);
+    //setHStreachFactor(artboard_, 9);
     addWidget(artboard_);
 
     book_ = new Book(mEngine, this);
+
+    connect(book_, &Book::sigPageLoaded, this, [this](PageNum pageNum, const QPixmap &img) {
+        thumbnailList_->addPageThumbnailItemWidget(pageNum, img);
+    });
 }
 
 }

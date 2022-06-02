@@ -47,7 +47,11 @@ static std::u8string toU8String(const QString &qs)
 
 void Book::handleOnPageLoaded(PageNum pageNum, const QPixmap &img)
 {
-    pageKeyToImg_[pageNum] = img;
+    QPixmap &page = pageKeyToImg_[pageNum];
+
+    page = img;
+
+    emit sigPageLoaded(pageNum, page);
 
     const bool writeToFile = false;
 
