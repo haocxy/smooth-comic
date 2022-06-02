@@ -1,16 +1,13 @@
 #pragma once
 
-#include <QObject>
-
 #include "async-deleter.h"
 
 
 namespace myapp {
 
-class Engine : public QObject {
-    Q_OBJECT
+class Engine {
 public:
-    explicit Engine(QObject *parent = nullptr);
+    Engine();
 
     AsyncDeleter &asyncDeleter() {
         return mAsyncDeleter;

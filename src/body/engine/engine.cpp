@@ -3,8 +3,8 @@
 
 namespace myapp {
 
-Engine::Engine(QObject *parent)
-    : QObject(parent) {
+Engine::Engine() {
+
 }
 
 }
