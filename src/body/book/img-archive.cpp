@@ -18,8 +18,8 @@ void ImgArchive::load(const fs::path &archiveFile, OnImgLoad &&cb)
         qInfo() << "path:" << qPath;
         std::string data = archive.readData();
         qInfo() << "data bytes:" << data.size() << "B";
-        QImage img;
-        img.loadFromData(QByteArrayView(data.data(), data.size()));
+        QPixmap img;
+        img.loadFromData(QByteArray(data.data(), data.size()));
         qInfo() << "img size: (" << img.width() << ", " << img.height() << ")";
 
         const bool goon = cb(qPath, img);

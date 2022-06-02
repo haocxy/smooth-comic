@@ -70,7 +70,7 @@ void BookLoader::onMessage(actor::Message &msg)
 void BookLoader::doStartLoadFromLocalFile(const fs::path &archiveFile)
 {
     ImgArchive archive;
-    archive.load(archiveFile, [this](const QString &pagePath, const QImage &img) {
+    archive.load(archiveFile, [this](const QString &pagePath, const QPixmap &img) {
         const PageNum pageNum = getPageNumFromPagePath(pagePath);
         notify(std::make_unique<PageLoaded>(pageNum, img));
         return !stopped_;

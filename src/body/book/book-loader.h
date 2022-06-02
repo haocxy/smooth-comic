@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QImage>
+#include <QPixmap>
 
 #include "core/fs.h"
 #include "util/actor.h"
@@ -23,7 +23,7 @@ public:
     public:
         PageLoaded() {}
 
-        PageLoaded(PageNum pageNum, const QImage &img)
+        PageLoaded(PageNum pageNum, const QPixmap &img)
             : pageNum(pageNum), img(img) {}
 
         PageLoaded(const PageLoaded &other)
@@ -34,7 +34,7 @@ public:
         }
 
         PageNum pageNum = 0;
-        QImage img;
+        QPixmap img;
     };
 
     BookLoader();

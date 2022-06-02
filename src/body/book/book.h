@@ -4,7 +4,7 @@
 
 #include <QObject>
 #include <QHash>
-#include <QImage>
+#include <QPixmap>
 
 #include "engine/engine.h"
 #include "util/qobject-actor.h"
@@ -28,12 +28,12 @@ protected:
     virtual void onNotice(actor::Notice &notice) override;
 
 private:
-    void handleOnPageLoaded(PageNum pageNum, const QImage &img);
+    void handleOnPageLoaded(PageNum pageNum, const QPixmap &img);
 
 private:
     Engine &engine_;
     std::unique_ptr<BookLoader> loader_;
-    std::map<PageNum, QImage> pageKeyToImg_;
+    std::map<PageNum, QPixmap> pageKeyToImg_;
 };
 
 
