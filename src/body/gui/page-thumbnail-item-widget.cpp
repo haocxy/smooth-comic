@@ -5,10 +5,11 @@
 
 namespace myapp {
 
-PageThumbnailItemWidget::PageThumbnailItemWidget(const QPixmap &img, const QString &text, QWidget *parent)
+PageThumbnailItemWidget::PageThumbnailItemWidget(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent)
     : QWidget(parent)
+    , pageNum_(pageNum)
 {
-    img_ = new ThumbImgWidget(img, this);
+    img_ = new ThumbImgWidget(pageNum_, img, this);
     QSizePolicy spImg = img_->sizePolicy();
     spImg.setVerticalPolicy(QSizePolicy::Policy::Ignored);
     spImg.setHorizontalPolicy(QSizePolicy::Policy::Expanding);

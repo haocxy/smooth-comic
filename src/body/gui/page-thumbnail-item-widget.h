@@ -13,11 +13,12 @@ namespace myapp {
 class PageThumbnailItemWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit PageThumbnailItemWidget(const QPixmap &img, const QString &text, QWidget *parent = nullptr);
+    explicit PageThumbnailItemWidget(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent = nullptr);
 
     virtual ~PageThumbnailItemWidget() {}
 
 private:
+    PageNum pageNum_{};
     QPointer<ThumbImgWidget> img_;
     QPointer<QLabel> text_;
 };

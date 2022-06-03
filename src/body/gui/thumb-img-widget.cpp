@@ -2,11 +2,16 @@
 
 #include <QPainter>
 
+#include "core/logger.h"
+
+
+using namespace logger::global_loggers;
 
 namespace myapp {
 
-ThumbImgWidget::ThumbImgWidget(const QPixmap &img, QWidget *parent)
+ThumbImgWidget::ThumbImgWidget(PageNum pageNum, const QPixmap &img, QWidget *parent)
     : QWidget(parent)
+    , pageNum_(pageNum)
     , img_(img)
 {
     QSizePolicy sp(sizePolicy());

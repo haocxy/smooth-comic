@@ -28,7 +28,7 @@ PageThumbnailListWidget::PageThumbnailListWidget(QWidget *parent)
 
 void PageThumbnailListWidget::addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img)
 {
-    PageThumbnailItemWidget *itemWidget = new PageThumbnailItemWidget(img, QString::number(pageNum), this);
+    PageThumbnailItemWidget *itemWidget = new PageThumbnailItemWidget(pageNum, img, QString::number(pageNum), this);
     layout_->addWidget(itemWidget);
 }
 
