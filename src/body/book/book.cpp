@@ -51,7 +51,7 @@ void Book::handleOnPageLoaded(PageNum pageNum, const QPixmap &img)
 
     page = img;
 
-    emit sigPageLoaded(pageNum, page);
+    emit sigPageLoaded(pageNum, page, pageKeyToImg_.size());
 
     const bool writeToFile = false;
 

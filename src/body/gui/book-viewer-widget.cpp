@@ -21,6 +21,8 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
     : QMainWindow(parent)
     , mEngine(engine)
 {
+    book_ = new Book(mEngine, this);
+
     resize(1000, 800);
     setMinimumSize(800, 600);
 
@@ -37,12 +39,12 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
     //addWidget(artboard_);
     setCentralWidget(artboard_);
 
-    statusBar_ = new BookViewerStatusBarWidget(this);
+    statusBar_ = new BookViewerStatusBarWidget(*book_, this);
     statusBar()->addWidget(statusBar_);
 
-    book_ = new Book(mEngine, this);
+    
 
-    connect(book_, &Book::sigPageLoaded, this, [this](PageNum pageNum, const QPixmap &img) {
+    connect(book_, &Book::sigPageLoaded, this, [this](PageNum pageNum, const QPixmap &img, PageNum totalPages) {
         thumbnailList_->addPageThumbnailItemWidget(pageNum, img);
     });
 }

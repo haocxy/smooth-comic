@@ -21,13 +21,13 @@ public:
 private:
     Engine &mEngine;
 
+private: // non-UI Components
+    QPointer<Book> book_;
+
 private: // UI Components
     QPointer<PageThumbnailListWidget> thumbnailList_;
     QPointer<QWidget> artboard_;
     QPointer<QWidget> statusBar_;
-
-private: // non-UI Components
-    QPointer<Book> book_;
 };
 
 }
