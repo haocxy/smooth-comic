@@ -35,3 +35,4 @@
 /*build*/
 /*prepare*/
 .vscode
+/src/**/gen.*.h
