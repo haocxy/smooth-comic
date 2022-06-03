@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QSplitter>
 #include <QPointer>
 #include <QStackedLayout>
@@ -13,7 +13,7 @@ namespace myapp {
 
 class Engine;
 
-class BookViewerWidget : public QSplitter {
+class BookViewerWidget : public QMainWindow {
     Q_OBJECT
 public:
     explicit BookViewerWidget(Engine &engine, QWidget *parent = nullptr);

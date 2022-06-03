@@ -14,7 +14,7 @@ PageThumbnailListWidget::PageThumbnailListWidget(QWidget *parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
 
     setMinimumWidth(widthHint);
-    setMaximumWidth(widthHint * 2);
+    //setMaximumWidth(widthHint * 2);
 
     layout_ = new QVBoxLayout(root_);
 

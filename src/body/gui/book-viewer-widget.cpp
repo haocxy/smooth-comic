@@ -1,5 +1,7 @@
 #include "book-viewer-widget.h"
 
+#include <QDockWidget>
+
 #include "artboard-widget.h"
 
 
@@ -14,7 +16,7 @@ static void setHStreachFactor(QWidget *w, int strechFactor)
 }
 
 BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
-    : QSplitter(parent)
+    : QMainWindow(parent)
     , mEngine(engine)
 {
     resize(1000, 800);
@@ -22,11 +24,16 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
 
     thumbnailList_ = new PageThumbnailListWidget(this);
     //setHStreachFactor(thumbnailList_, 1);
-    addWidget(thumbnailList_);
+    //addWidget(thumbnailList_);
+    QDockWidget *thumbDock = new QDockWidget(tr("Thumbnail Area"), this);
+    thumbDock->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea | Qt::DockWidgetArea::RightDockWidgetArea);
+    thumbDock->setWidget(thumbnailList_);
+    addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thumbDock);
 
     artboard_ = new ArtboardWidget(this);
     //setHStreachFactor(artboard_, 9);
-    addWidget(artboard_);
+    //addWidget(artboard_);
+    setCentralWidget(artboard_);
 
     book_ = new Book(mEngine, this);
 
