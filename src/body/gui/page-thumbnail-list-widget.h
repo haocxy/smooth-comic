@@ -8,6 +8,8 @@
 
 #include "book/page-num.h"
 
+#include "jump-bar.h"
+
 
 namespace myapp {
 
@@ -24,6 +26,7 @@ protected:
     virtual void resizeEvent(QResizeEvent *) override;
 
 private:
+    QPointer<JumpBar> jumpBar_;
     QPointer<QWidget> root_;
     QPointer<QVBoxLayout> layout_;
 };

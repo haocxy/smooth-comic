@@ -16,6 +16,9 @@ PageThumbnailListWidget::PageThumbnailListWidget(QWidget *parent)
     setMinimumWidth(widthHint);
     //setMaximumWidth(widthHint * 2);
 
+    jumpBar_ = new JumpBar(this);
+    setVerticalScrollBar(jumpBar_);
+
     layout_ = new QVBoxLayout(root_);
 
     root_ = new QWidget(this);
