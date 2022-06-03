@@ -3,9 +3,9 @@
 
 namespace myapp {
 
-ImgCache::ImgCache(QObject *parent)
-    : QObjectActor(parent)
+ImgCache::ImgCache()
 {
+    setActorName("ImgCache");
 }
 
 }

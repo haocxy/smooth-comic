@@ -5,13 +5,12 @@
 
 #include "core/fs.h"
 
-#include "util/qobject-actor.h"
+#include "util/actor.h"
 
 
 namespace myapp {
 
-class ImgCache : public QObjectActor {
-    Q_OBJECT
+class ImgCache : public actor::ThreadedActor {
 public:
 
     class ImgKey {
@@ -65,7 +64,7 @@ public:
     };
 
 public:
-    explicit ImgCache(QObject *parent = 0);
+    ImgCache();
 
     virtual ~ImgCache() {}
 };
