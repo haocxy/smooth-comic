@@ -24,7 +24,7 @@ void JumpBar::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton || e->button() == Qt::RightButton) {
         jumping_ = true;
-        jumpToY(e->y());
+        jumpToY(e->position().y());
     }
 }
 
@@ -42,7 +42,7 @@ void JumpBar::mouseReleaseEvent(QMouseEvent *e)
 void JumpBar::mouseMoveEvent(QMouseEvent *e)
 {
     if (jumping_) {
-        jumpToY(e->y());
+        jumpToY(e->position().y());
     }
 }
 
