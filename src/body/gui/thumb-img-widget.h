@@ -13,6 +13,10 @@ public:
 
     virtual ~ThumbImgWidget() {}
 
+    virtual int heightForWidth(int width) const override {
+        return int(width * (float(img_.height()) / float(img_.width())));
+    }
+
 protected:
     virtual void paintEvent(QPaintEvent *) override;
 
