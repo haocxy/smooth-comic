@@ -78,3 +78,10 @@ if(MSVC)
             RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
     )
 endif()
+
+if(MSVC)
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/pack.bat" DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/repack.bat" DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/build.bat" DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/rebuild.bat" DESTINATION ${CMAKE_BINARY_DIR})
+endif()
