@@ -57,7 +57,7 @@ void JumpBar::jumpToY(int y)
 
     const int min = minimum();
     const int max = maximum();
-    const int pos = y - recGroove.y();
+    const int pos = y - recGroove.y() - recSlider.height() / 2;
     const int space = recGroove.bottom() - recGroove.y() - recSlider.height() + 1;
     const bool upsideDown = opt.upsideDown;
 
