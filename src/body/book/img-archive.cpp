@@ -1,7 +1,6 @@
 #include "img-archive.h"
 
 #include <iostream>
-#include <QDebug>
 
 #include "util/libarchive-wrapper.h"
 
@@ -15,12 +14,9 @@ void ImgArchive::load(const fs::path &archiveFile, OnImgLoad &&cb)
     while (archive.nextEntry()) {
         std::u8string path = archive.path();
         QString qPath = QString::fromUtf8(path.c_str());
-        qInfo() << "path:" << qPath;
         std::string data = archive.readData();
-        qInfo() << "data bytes:" << data.size() << "B";
         QPixmap img;
         img.loadFromData(QByteArray(data.data(), data.size()));
-        qInfo() << "img size: (" << img.width() << ", " << img.height() << ")";
 
         const bool goon = cb(qPath, img);
         if (!goon) {
