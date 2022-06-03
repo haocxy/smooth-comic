@@ -33,11 +33,12 @@ void PageThumbnailListWidget::addPageThumbnailItemWidget(PageNum pageNum, const 
 {
     PageThumbnailItemWidget *itemWidget = new PageThumbnailItemWidget(pageNum, img, QString::number(pageNum), this);
     layout_->addWidget(itemWidget);
+    root_->adjustSize();
 }
 
 void PageThumbnailListWidget::resizeEvent(QResizeEvent *)
 {
-    root_->resize(childrenRect().width(), root_->height());
+    root_->adjustSize();
 }
 
 
