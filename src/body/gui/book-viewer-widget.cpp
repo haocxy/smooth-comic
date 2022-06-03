@@ -1,8 +1,10 @@
 #include "book-viewer-widget.h"
 
 #include <QDockWidget>
+#include <QStatusBar>
 
 #include "artboard-widget.h"
+#include "book-viewer-status-bar-widget.h"
 
 
 
@@ -34,6 +36,9 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
     //setHStreachFactor(artboard_, 9);
     //addWidget(artboard_);
     setCentralWidget(artboard_);
+
+    statusBar_ = new BookViewerStatusBarWidget(this);
+    statusBar()->addWidget(statusBar_);
 
     book_ = new Book(mEngine, this);
 
