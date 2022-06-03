@@ -62,3 +62,19 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 add_subdirectory(src)
+
+set_target_properties(
+    ${appName}
+    PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
+)
+
+if(MSVC)
+    set_target_properties(
+        ${appName}-cmd
+        PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out$<CONFIG>"
+    )
+endif()
