@@ -3,7 +3,7 @@
 #include <QDockWidget>
 #include <QStatusBar>
 
-#include "artboard-widget.h"
+#include "page-viewer-widget.h"
 #include "book-viewer-status-bar-widget.h"
 
 

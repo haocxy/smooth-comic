@@ -1,4 +1,4 @@
-#include "artboard-widget.h"
+#include "page-viewer-widget.h"
 
 #include <QPainter>
 
