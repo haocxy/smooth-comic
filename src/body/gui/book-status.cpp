@@ -1,7 +1,7 @@
 #include "book-status.h"
 
 #include "book/book.h"
-#include "gen.book-viewer-status-bar.ui.h"
+#include "gen.book-status.ui.h"
 
 
 namespace myapp {
