@@ -1,4 +1,4 @@
-#include "page-viewer-widget.h"
+#include "page-viewer.h"
 
 #include <QPainter>
 
