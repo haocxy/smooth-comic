@@ -6,6 +6,8 @@
 
 namespace myapp {
 
+// 图片位置
+// 用于唯一地定位图片
 class ImgLoc {
 public:
     ImgLoc() {}
