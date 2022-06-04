@@ -87,7 +87,7 @@ public:
 
     LogLine &operator<<(const std::u32string &s) {
         if (shouldLog_) {
-            buffer_ << u8str(s);
+            buffer_ << static_cast<std::string>(u8str(s));
         }
         return *this;
     }

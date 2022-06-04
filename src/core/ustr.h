@@ -144,52 +144,59 @@ inline std::u32string convertToU32(const std::string &u8s)
 }
 
 
-class u8str : public std::string {
+class u8str : public std::u8string {
 public:
     u8str() {}
 
-    explicit u8str(const std::string &s)
-        : std::string(s) {}
+    explicit u8str(const std::u8string &s)
+        : std::u8string(s) {}
 
-    explicit u8str(std::string &&s)
-        : std::string(std::move(s)) {}
+    explicit u8str(std::u8string &&s)
+        : std::u8string(std::move(s)) {}
+
+    explicit u8str(const std::string &s)
+        : std::u8string(s.begin(), s.end()) {}
 
     u8str(const u8str &b)
-        : std::string(b) {}
+        : std::u8string(b) {}
 
     u8str(u8str &&b) noexcept
-        : std::string(std::move(b)) {}
+        : std::u8string(std::move(b)) {}
 
     u8str(allocator_type allocator)
-        : std::string(allocator) {}
+        : std::u8string(allocator) {}
 
     u8str(const char *cstr)
-        : std::string(cstr) {}
+        : u8str(std::string(cstr)) {}
 
     u8str(short n)
-        : std::string(std::to_string(n)) {}
+        : u8str(std::to_string(n)) {}
 
     u8str(int n)
-        : std::string(std::to_string(n)) {}
+        : u8str(std::to_string(n)) {}
 
     u8str(long n)
-        : std::string(std::to_string(n)) {}
+        : u8str(std::to_string(n)) {}
 
     u8str(long long n)
-        : std::string(std::to_string(n)) {}
+        : u8str(std::to_string(n)) {}
 
     u8str(const std::u32string &s)
-        : std::string(ustrdetail::convertToU8(s)) {}
+        : u8str(ustrdetail::convertToU8(s)) {}
+
+    operator std::string() const {
+        return std::string(begin(), end());
+    }
 
     virtual ~u8str() {}
 
     u8str &operator=(const u8str &b) {
-        std::string::operator=(b);
+        std::u8string::operator=(b);
         return *this;
     }
 
     u8str &operator=(u8str &&b) noexcept {
-        std::string::operator=(std::move(b));
+        std::u8string::operator=(std::move(b));
         return *this;
     }
 
@@ -206,13 +213,13 @@ public:
     }
 };
 
-class u8view : public std::string_view {
+class u8view : public std::u8string_view {
 public:
 
     u8view() {}
 
     u8view(const u8str &s)
-        : std::string_view(s) {}
+        : std::u8string_view(s) {}
 
     virtual ~u8view() {}
 };
