@@ -36,3 +36,6 @@
 /*prepare*/
 .vscode
 /src/**/gen.*.h
+/src/**/asset.*.h
+/src/**/asset.*.cpp
+
