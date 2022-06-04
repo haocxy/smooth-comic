@@ -31,7 +31,7 @@ int body_entry(int argc, char *argv[])
 
     Engine engine;
 
-    BookViewerWidget w(engine);
+    BookViewer w(engine);
     w.show();
 
     return QApplication::exec();

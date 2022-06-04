@@ -10,14 +10,8 @@
 
 namespace myapp {
 
-static void setHStreachFactor(QWidget *w, int strechFactor)
-{
-    QSizePolicy p = w->sizePolicy();
-    p.setHorizontalStretch(strechFactor);
-    w->setSizePolicy(p);
-}
 
-BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
+BookViewer::BookViewer(Engine &engine, QWidget *parent)
     : QMainWindow(parent)
     , mEngine(engine)
 {
