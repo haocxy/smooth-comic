@@ -26,27 +26,17 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
     resize(1000, 800);
     setMinimumSize(800, 600);
 
-    thumbnailList_ = new PageThumbnailListWidget(this);
-    //setHStreachFactor(thumbnailList_, 1);
-    //addWidget(thumbnailList_);
+    thumbnailList_ = new PageThumbnailListWidget(*book_, this);
     QDockWidget *thumbDock = new QDockWidget(tr("Thumbnail Area"), this);
     thumbDock->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea | Qt::DockWidgetArea::RightDockWidgetArea);
     thumbDock->setWidget(thumbnailList_);
     addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thumbDock);
 
     pageViewer_ = new PageViewerWidget(this);
-    //setHStreachFactor(artboard_, 9);
-    //addWidget(artboard_);
     setCentralWidget(pageViewer_);
 
     statusBar_ = new BookViewerStatusBarWidget(*book_, this);
     statusBar()->addWidget(statusBar_);
-
-    
-
-    connect(book_, &Book::sigPageLoaded, this, [this](PageNum pageNum, const QPixmap &img, PageNum totalPages) {
-        thumbnailList_->addPageThumbnailItemWidget(pageNum, img);
-    });
 }
 
 }

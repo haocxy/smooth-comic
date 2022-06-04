@@ -13,17 +13,23 @@
 
 namespace myapp {
 
+class Book;
+
 class PageThumbnailListWidget : public QScrollArea {
     Q_OBJECT
 public:
-    explicit PageThumbnailListWidget(QWidget *parent = nullptr);
+    explicit PageThumbnailListWidget(Book &book, QWidget *parent = nullptr);
 
     virtual ~PageThumbnailListWidget() {}
 
+private:
     void addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img);
 
 protected:
     virtual void resizeEvent(QResizeEvent *) override;
+
+private:
+    Book &book_;
 
 private:
     QPointer<JumpBar> jumpBar_;
