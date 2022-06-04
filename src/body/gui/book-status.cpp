@@ -8,7 +8,7 @@ namespace myapp {
 
 
 
-BookViewerStatusBarWidget::BookViewerStatusBarWidget(Book &book, QWidget *parent)
+BookStatus::BookStatus(Book &book, QWidget *parent)
     : book_(book),
      ui_(new Ui::BookViewerStatusBar)
 {
@@ -19,7 +19,7 @@ BookViewerStatusBarWidget::BookViewerStatusBarWidget(Book &book, QWidget *parent
     });
 }
 
-BookViewerStatusBarWidget::~BookViewerStatusBarWidget()
+BookStatus::~BookStatus()
 {
     delete ui_;
     ui_ = nullptr;

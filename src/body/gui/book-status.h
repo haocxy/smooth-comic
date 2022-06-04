@@ -12,11 +12,11 @@ namespace myapp {
 
 class Book;
 
-class BookViewerStatusBarWidget : public QWidget {
+class BookStatus : public QWidget {
 public:
-    explicit BookViewerStatusBarWidget(Book &book, QWidget *parent = nullptr);
+    explicit BookStatus(Book &book, QWidget *parent = nullptr);
 
-    virtual ~BookViewerStatusBarWidget();
+    virtual ~BookStatus();
 
 private:
     Book &book_;

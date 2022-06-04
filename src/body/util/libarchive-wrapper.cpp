@@ -80,7 +80,7 @@ public:
         buff.resize(size);
         auto r = ::archive_read_data(archive_, buff.data(), buff.size());
         if (r < 0) {
-            throw ArchiveErr("archive_read_data", r);
+            throw ArchiveErr("archive_read_data", static_cast<int>(r));
         }
         return buff;
     }

@@ -3,8 +3,8 @@
 #include <QDockWidget>
 #include <QStatusBar>
 
-#include "page-viewer-widget.h"
-#include "book-viewer-status-bar-widget.h"
+#include "page-viewer.h"
+#include "book-status.h"
 #include "thumb-list.h"
 
 
@@ -29,8 +29,9 @@ BookViewer::BookViewer(Engine &engine, QWidget *parent)
     pageViewer_ = new PageViewerWidget(this);
     setCentralWidget(pageViewer_);
 
-    statusBar_ = new BookViewerStatusBarWidget(*book_, this);
-    statusBar()->addWidget(statusBar_);
+    QStatusBar *statusBar = this->statusBar();
+    bookStatus_ = new BookStatus(*book_, this);
+    statusBar->addWidget(bookStatus_);
 }
 
 }
