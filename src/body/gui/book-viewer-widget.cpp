@@ -1,4 +1,4 @@
-#include "book-viewer-widget.h"
+#include "book-viewer.h"
 
 #include <QDockWidget>
 #include <QStatusBar>

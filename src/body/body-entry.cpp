@@ -6,7 +6,7 @@
 #include "core/logger.h"
 #include "core/thread.h"
 #include "engine/engine.h"
-#include "gui/book-viewer-widget.h"
+#include "gui/book-viewer.h"
 
 
 using namespace logger::global_loggers;
