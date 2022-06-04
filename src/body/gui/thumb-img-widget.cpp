@@ -1,4 +1,4 @@
-#include "thumb-img-widget.h"
+#include "thumb-img.h"
 
 #include <QPainter>
 

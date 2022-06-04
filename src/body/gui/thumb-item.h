@@ -5,7 +5,7 @@
 #include <QPointer>
 #include <QPixmap>
 
-#include "thumb-img-widget.h"
+#include "thumb-img.h"
 
 
 namespace myapp {
