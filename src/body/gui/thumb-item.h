@@ -10,12 +10,12 @@
 
 namespace myapp {
 
-class PageThumbnailItemWidget : public QWidget {
+class ThumbItem : public QWidget {
     Q_OBJECT
 public:
-    explicit PageThumbnailItemWidget(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent = nullptr);
+    explicit ThumbItem(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent = nullptr);
 
-    virtual ~PageThumbnailItemWidget() {}
+    virtual ~ThumbItem() {}
 
 private:
     PageNum pageNum_{};

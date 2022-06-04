@@ -5,7 +5,7 @@
 
 namespace myapp {
 
-PageThumbnailItemWidget::PageThumbnailItemWidget(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent)
+ThumbItem::ThumbItem(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent)
     : QWidget(parent)
     , pageNum_(pageNum)
 {

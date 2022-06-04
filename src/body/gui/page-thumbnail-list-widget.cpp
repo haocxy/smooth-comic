@@ -37,7 +37,7 @@ PageThumbnailListWidget::PageThumbnailListWidget(Book &book, QWidget *parent)
 
 void PageThumbnailListWidget::addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img)
 {
-    PageThumbnailItemWidget *itemWidget = new PageThumbnailItemWidget(pageNum, img, QString::number(pageNum), this);
+    ThumbItem *itemWidget = new ThumbItem(pageNum, img, QString::number(pageNum), this);
     layout_->addWidget(itemWidget);
     root_->adjustSize();
 }
