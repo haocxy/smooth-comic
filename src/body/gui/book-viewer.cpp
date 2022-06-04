@@ -5,7 +5,7 @@
 
 #include "page-viewer-widget.h"
 #include "book-viewer-status-bar-widget.h"
-
+#include "thumb-list.h"
 
 
 namespace myapp {

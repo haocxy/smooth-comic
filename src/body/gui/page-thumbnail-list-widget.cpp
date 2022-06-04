@@ -1,4 +1,4 @@
-#include "page-thumbnail-list-widget.h"
+#include "thumb-list.h"
 
 #include "book/book.h"
 #include "thumb-item.h"

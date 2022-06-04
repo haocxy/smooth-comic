@@ -6,7 +6,6 @@
 #include <QStackedLayout>
 
 #include "book/book.h"
-#include "page-thumbnail-list-widget.h"
 
 
 namespace myapp {
@@ -25,7 +24,7 @@ private: // non-UI Components
     QPointer<Book> book_;
 
 private: // UI Components
-    QPointer<PageThumbnailListWidget> thumbnailList_;
+    QPointer<QWidget> thumbnailList_;
     QPointer<QWidget> pageViewer_;
     QPointer<QWidget> statusBar_;
 };
