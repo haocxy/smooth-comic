@@ -8,12 +8,12 @@
 
 namespace myapp {
 
-class ThumbImgWidget : public QWidget {
+class ThumbImg : public QWidget {
     Q_OBJECT
 public:
-    explicit ThumbImgWidget(PageNum pageNum, const QPixmap &img, QWidget *parent = nullptr);
+    explicit ThumbImg(PageNum pageNum, const QPixmap &img, QWidget *parent = nullptr);
 
-    virtual ~ThumbImgWidget() {}
+    virtual ~ThumbImg() {}
 
     virtual int heightForWidth(int width) const override {
         return int(width * (float(img_.height()) / float(img_.width())));

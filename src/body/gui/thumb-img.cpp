@@ -9,7 +9,7 @@ using namespace logger::global_loggers;
 
 namespace myapp {
 
-ThumbImgWidget::ThumbImgWidget(PageNum pageNum, const QPixmap &img, QWidget *parent)
+ThumbImg::ThumbImg(PageNum pageNum, const QPixmap &img, QWidget *parent)
     : QWidget(parent)
     , pageNum_(pageNum)
     , img_(img)
@@ -19,7 +19,7 @@ ThumbImgWidget::ThumbImgWidget(PageNum pageNum, const QPixmap &img, QWidget *par
     setSizePolicy(sp);
 }
 
-void ThumbImgWidget::paintEvent(QPaintEvent *)
+void ThumbImg::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
     p.drawPixmap(rect(), img_);

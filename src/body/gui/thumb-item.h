@@ -19,7 +19,7 @@ public:
 
 private:
     PageNum pageNum_{};
-    QPointer<ThumbImgWidget> img_;
+    QPointer<ThumbImg> img_;
     QPointer<QLabel> text_;
 };
 
