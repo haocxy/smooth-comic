@@ -1,4 +1,4 @@
-#include "page-thumbnail-item-widget.h"
+#include "thumb-item.h"
 
 #include <QPainter>
 #include <QBoxLayout>

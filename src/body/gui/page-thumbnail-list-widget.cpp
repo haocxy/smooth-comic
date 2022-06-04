@@ -1,7 +1,7 @@
 #include "page-thumbnail-list-widget.h"
 
 #include "book/book.h"
-#include "page-thumbnail-item-widget.h"
+#include "thumb-item.h"
 
 
 namespace myapp {
