@@ -1,4 +1,4 @@
-#include "book-viewer-status-bar-widget.h"
+#include "book-status.h"
 
 #include "book/book.h"
 #include "gen.book-viewer-status-bar.ui.h"
