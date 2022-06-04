@@ -10,10 +10,6 @@ ThumbItem::ThumbItem(PageNum pageNum, const QPixmap &img, const QString &text, Q
     , pageNum_(pageNum)
 {
     img_ = new ThumbImg(pageNum_, img, this);
-    QSizePolicy spImg = img_->sizePolicy();
-    spImg.setVerticalPolicy(QSizePolicy::Policy::Ignored);
-    spImg.setHorizontalPolicy(QSizePolicy::Policy::Expanding);
-    img_->setSizePolicy(spImg);
 
     text_ = new QLabel(this);
     text_->setText(text);
