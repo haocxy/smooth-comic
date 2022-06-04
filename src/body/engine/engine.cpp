@@ -20,8 +20,9 @@ void del(T *&ptr)
 namespace myapp {
 
 Engine::Engine() {
+    const fs::path cacheDir = "D:/smooth-comic-cache";
     asyncDeleter_ = new AsyncDeleter;
-    thumbCache_ = new ThumbCache;
+    thumbCache_ = new ThumbCache(cacheDir / "thumb-cache.db");
 }
 
 Engine::~Engine()

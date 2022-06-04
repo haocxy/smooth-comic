@@ -4,6 +4,7 @@
 #include <QPixmap>
 
 #include "util/actor.h"
+#include "util/sqlite.h"
 
 #include "img-loc.h"
 

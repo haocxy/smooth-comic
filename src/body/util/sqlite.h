@@ -114,6 +114,10 @@ public:
 
     void step();
 
+    void execute() {
+        step();
+    }
+
     bool nextRow();
 
     void getValue(int col, int &to);
