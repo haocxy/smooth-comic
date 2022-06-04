@@ -1,20 +1,30 @@
 #pragma once
 
-#include "async-deleter.h"
-
 
 namespace myapp {
+
+class AsyncDeleter;
+
+class ThumbCache;
+
 
 class Engine {
 public:
     Engine();
 
+    ~Engine();
+
     AsyncDeleter &asyncDeleter() {
-        return asyncDeleter_;
+        return *asyncDeleter_;
+    }
+
+    ThumbCache &thumbCache() {
+        return *thumbCache_;
     }
 
 private:
-    AsyncDeleter asyncDeleter_;
+    AsyncDeleter *asyncDeleter_{};
+    ThumbCache *thumbCache_{};
 };
 
 }

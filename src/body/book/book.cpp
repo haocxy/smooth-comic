@@ -5,6 +5,8 @@
 #include "core/fs.h"
 #include "core/logger.h"
 
+#include "engine/async-deleter.h"
+
 
 using namespace logger::global_loggers;
 
