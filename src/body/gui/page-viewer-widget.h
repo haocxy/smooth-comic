@@ -5,10 +5,10 @@
 
 namespace myapp {
 
-class ArtboardWidget : public QWidget {
+class PageViewerWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit ArtboardWidget(QWidget *parent = nullptr);
+    explicit PageViewerWidget(QWidget *parent = nullptr);
 
 protected:
     virtual void paintEvent(QPaintEvent *) override;

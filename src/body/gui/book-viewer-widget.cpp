@@ -34,10 +34,10 @@ BookViewerWidget::BookViewerWidget(Engine &engine, QWidget *parent)
     thumbDock->setWidget(thumbnailList_);
     addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thumbDock);
 
-    artboard_ = new ArtboardWidget(this);
+    pageViewer_ = new PageViewerWidget(this);
     //setHStreachFactor(artboard_, 9);
     //addWidget(artboard_);
-    setCentralWidget(artboard_);
+    setCentralWidget(pageViewer_);
 
     statusBar_ = new BookViewerStatusBarWidget(*book_, this);
     statusBar()->addWidget(statusBar_);

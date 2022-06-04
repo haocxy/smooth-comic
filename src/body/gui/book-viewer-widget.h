@@ -26,7 +26,7 @@ private: // non-UI Components
 
 private: // UI Components
     QPointer<PageThumbnailListWidget> thumbnailList_;
-    QPointer<QWidget> artboard_;
+    QPointer<QWidget> pageViewer_;
     QPointer<QWidget> statusBar_;
 };
 

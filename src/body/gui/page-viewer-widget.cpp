@@ -5,12 +5,12 @@
 
 namespace myapp {
 
-ArtboardWidget::ArtboardWidget(QWidget *parent)
+PageViewerWidget::PageViewerWidget(QWidget *parent)
     : QWidget(parent)
 {
 }
 
-void ArtboardWidget::paintEvent(QPaintEvent *)
+void PageViewerWidget::paintEvent(QPaintEvent *)
 {
     const QSize s = this->size();
 
