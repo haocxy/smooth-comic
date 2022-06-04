@@ -30,7 +30,7 @@ Book::~Book()
 
 void Book::onNotice(actor::Notice &notice)
 {
-    if (BookLoader::PageLoaded *n = notice.tryAs<BookLoader::PageLoaded>()) {
+    if (BookLoader::PageLoaded *n = notice) {
         handleOnPageLoaded(n->pageNum, n->img);
         return;
     }

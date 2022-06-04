@@ -38,12 +38,12 @@ public:
     virtual ~Event() {}
 
     template <typename T>
-    const T *tryAs() const {
+    operator const T *() const {
         return dynamic_cast<const T *>(this);
     }
 
     template <typename T>
-    T *tryAs() {
+    operator T *() {
         return dynamic_cast<T *>(this);
     }
 

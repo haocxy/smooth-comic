@@ -62,7 +62,7 @@ static PageNum getPageNumFromPagePath(const QString &filePath)
 
 void BookLoader::onMessage(actor::Message &msg)
 {
-    if (StartLoadMsg *m = msg.tryAs<StartLoadMsg>()) {
+    if (StartLoadMsg *m = msg) {
         doStartLoadFromLocalFile(m->archive);
     }
 }

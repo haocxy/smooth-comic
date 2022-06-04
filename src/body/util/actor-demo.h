@@ -41,7 +41,7 @@ protected:
     }
 
     virtual std::unique_ptr<actor::Response> onRequest(actor::Request &action) override {
-        if (const SumRequest *a = action.tryAs<SumRequest>()) {
+        if (const SumRequest *a = action) {
             logInfo << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
             return std::unique_ptr<actor::Response>(new SumRequest::Response(a->a + a->b));
         }
@@ -50,7 +50,7 @@ protected:
     }
 
     virtual void onMessage(actor::Message &msg) override {
-        if (const ActorStartedMessage *m = msg.tryAs<ActorStartedMessage>()) {
+        if (const ActorStartedMessage *m = msg) {
             logInfo << "CalcActor handle ActorStartedMessage(" << m->actorName << ")";
         }
     }

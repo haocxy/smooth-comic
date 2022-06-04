@@ -14,7 +14,7 @@ AsyncDeleter::~AsyncDeleter()
 
 void AsyncDeleter::onMessage(actor::Message &msg)
 {
-    if (AsyncDeleteMsg *m = msg.tryAs<AsyncDeleteMsg>()) {
+    if (AsyncDeleteMsg *m = msg) {
         m->doDelete();
     }
 }

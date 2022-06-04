@@ -22,7 +22,7 @@ std::unique_ptr<actor::Response> TestActor::onRequest(actor::Request &req)
 
     notify(std::make_unique<RequestTimesNotice>(handleRequestTimes_));
 
-    if (SumRequest *r = req.tryAs<SumRequest>()) {
+    if (SumRequest *r = req) {
         logInfo << "handle SumRequest(" << r->numA << ", " << r->numB << ")";
         return std::make_unique<SumRequest::Response>(r->numA + r->numB);
     }
