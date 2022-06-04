@@ -4,7 +4,7 @@
 
 namespace Ui {
 
-class BookViewerStatusBar;
+class BookStatus;
 
 }
 
@@ -20,7 +20,7 @@ public:
 
 private:
     Book &book_;
-    Ui::BookViewerStatusBar *ui_{};
+    Ui::BookStatus *ui_{};
 };
 
 }

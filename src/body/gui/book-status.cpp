@@ -10,7 +10,7 @@ namespace myapp {
 
 BookStatus::BookStatus(Book &book, QWidget *parent)
     : book_(book),
-     ui_(new Ui::BookViewerStatusBar)
+     ui_(new Ui::BookStatus)
 {
     ui_->setupUi(this);
 
