@@ -1,3 +1,9 @@
+# 为SQL文件等小型文件生成可直接使用的包装代码
+include(assets.cmake)
+remove_useless_files_generated_for_assets()
+generate_src_file_for_all_assets()
+
+
 include_directories(.)
 
 # 模块功能：和业务无关的很常用的逻辑，例如字符串处理等
