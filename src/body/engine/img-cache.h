@@ -3,9 +3,9 @@
 #include <string>
 #include <QPixmap>
 
-#include "core/fs.h"
-
 #include "util/actor.h"
+
+#include "img-loc.h"
 
 
 namespace myapp {
@@ -13,30 +13,16 @@ namespace myapp {
 class ImgCache : public actor::ThreadedActor {
 public:
 
-    class ImgKey {
-    public:
-        ImgKey() {}
-
-        ImgKey(const fs::path &archiveFilePath, const std::u8string &entryPath)
-            : archiveFilePath(archiveFilePath)
-            , entryPath(entryPath) {}
-
-        // 打包文件（压缩文件或PDF等含有多个图片的文件）在文件系统中的路径
-        fs::path archiveFilePath;
-        // 图片在打包文件中的路径
-        std::u8string entryPath;
-    };
-
     class AddImgMsg : public actor::Message {
     public:
 
         AddImgMsg() {}
 
-        AddImgMsg(const ImgKey &key, const QPixmap &img)
-            : key(key)
+        AddImgMsg(const ImgLoc &loc, const QPixmap &img)
+            : loc(loc)
             , img(img) {}
 
-        ImgKey key;
+        ImgLoc loc;
 
         QPixmap img;
     };
@@ -48,19 +34,18 @@ public:
         public:
             Response() {}
 
-            Response(const ImgKey &key, const QPixmap &img)
-                : key(key), img(img) {}
+            explicit Response(const QPixmap &img)
+                : img(img) {}
 
-            ImgKey key;
             QPixmap img;
         };
 
         LoadImgReq() {}
 
-        LoadImgReq(const ImgKey &key)
-            : key(key) {}
+        LoadImgReq(const ImgLoc &loc)
+            : loc(loc) {}
 
-        ImgKey key;
+        ImgLoc loc;
     };
 
 public:
