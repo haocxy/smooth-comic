@@ -15,7 +15,9 @@
 
 namespace myapp {
 
-
+// 代表抽象的书
+// GUI模块和非GUI模块的总界面
+// GUI模块不关心下层的诸如缓存、加载等逻辑的细节
 class Book : public QObjectActor {
     Q_OBJECT
 public:

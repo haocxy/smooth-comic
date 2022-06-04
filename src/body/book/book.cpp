@@ -51,18 +51,7 @@ void Book::handleOnPageLoaded(PageNum pageNum, const QPixmap &img)
 
     page = img;
 
-    emit sigPageLoaded(pageNum, page, pageKeyToImg_.size());
-
-    const bool writeToFile = false;
-
-    if (writeToFile) {
-
-        const fs::path outfile = QString("D:/tmp/save-by-class-Book/%1.bmp").arg(pageNum).toStdU32String();
-
-        fs::create_directories(outfile.parent_path());
-
-        img.save(QString::fromStdU32String(outfile.generic_u32string()), "BMP");
-    }
+    emit sigPageLoaded(pageNum, page, static_cast<PageNum>(pageKeyToImg_.size()));
 }
 
 }
