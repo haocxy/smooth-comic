@@ -8,7 +8,7 @@ namespace myapp {
 
 static constexpr int widthHint = 200;
 
-PageThumbnailListWidget::PageThumbnailListWidget(Book &book, QWidget *parent)
+ThumbList::ThumbList(Book &book, QWidget *parent)
     : QScrollArea(parent)
     , book_(book)
 {
@@ -35,14 +35,14 @@ PageThumbnailListWidget::PageThumbnailListWidget(Book &book, QWidget *parent)
     });
 }
 
-void PageThumbnailListWidget::addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img)
+void ThumbList::addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img)
 {
     ThumbItem *itemWidget = new ThumbItem(pageNum, img, QString::number(pageNum), this);
     layout_->addWidget(itemWidget);
     root_->adjustSize();
 }
 
-void PageThumbnailListWidget::resizeEvent(QResizeEvent *)
+void ThumbList::resizeEvent(QResizeEvent *)
 {
     root_->adjustSize();
 }

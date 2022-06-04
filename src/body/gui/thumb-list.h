@@ -15,12 +15,12 @@ namespace myapp {
 
 class Book;
 
-class PageThumbnailListWidget : public QScrollArea {
+class ThumbList : public QScrollArea {
     Q_OBJECT
 public:
-    explicit PageThumbnailListWidget(Book &book, QWidget *parent = nullptr);
+    explicit ThumbList(Book &book, QWidget *parent = nullptr);
 
-    virtual ~PageThumbnailListWidget() {}
+    virtual ~ThumbList() {}
 
 private:
     void addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img);
