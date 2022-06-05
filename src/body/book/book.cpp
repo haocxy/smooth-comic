@@ -13,11 +13,11 @@ namespace myapp {
 Book::Book(Engine &engine, QObject *parent)
     : QObjectActor(parent)
     , engine_(engine)
-    , loader_(std::make_unique<BookLoader>()) {
+    , loader_(std::make_unique<PageLoader>()) {
 
-    listen<BookLoader::PageLoaded>(*loader_);
+    listen<PageLoader::PageLoaded>(*loader_);
 
-    sendTo(*loader_, std::make_unique<BookLoader::StartLoadMsg>("D:/tmp/a.zip"));
+    sendTo(*loader_, std::make_unique<PageLoader::StartLoadMsg>("D:/tmp/a.zip"));
 }
 
 Book::~Book()
@@ -29,7 +29,7 @@ Book::~Book()
 
 void Book::onNotice(actor::Notice &notice)
 {
-    if (BookLoader::PageLoaded *n = notice) {
+    if (PageLoader::PageLoaded *n = notice) {
         handleOnPageLoaded(n->pageNum, n->img);
         return;
     }

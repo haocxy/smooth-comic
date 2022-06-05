@@ -9,7 +9,7 @@
 
 namespace myapp {
 
-class BookLoader : public actor::ThreadedActor {
+class PageLoader : public actor::ThreadedActor {
 public:
 
     class StartLoadMsg : public actor::Message {
@@ -37,9 +37,9 @@ public:
         QPixmap img;
     };
 
-    BookLoader();
+    PageLoader();
 
-    virtual ~BookLoader();
+    virtual ~PageLoader();
 
 protected:
     virtual void onMessage(actor::Message &msg) override;

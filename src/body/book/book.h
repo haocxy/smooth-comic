@@ -37,7 +37,7 @@ private:
 
 private:
     Engine &engine_;
-    std::unique_ptr<BookLoader> loader_;
+    std::unique_ptr<PageLoader> loader_;
     std::map<PageNum, QPixmap> pageKeyToImg_;
 };
 

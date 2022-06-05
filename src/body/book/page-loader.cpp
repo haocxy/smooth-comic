@@ -13,14 +13,14 @@ namespace myapp {
 
 using logger::gLogger;
 
-BookLoader::BookLoader()
+PageLoader::PageLoader()
 {
-    setActorName("BookLoader");
+    setActorName("PageLoader");
 }
 
-BookLoader::~BookLoader()
+PageLoader::~PageLoader()
 {
-    gLogger.i << "BookLoader destructing";
+    gLogger.i << "PageLoader destructing";
 }
 
 static std::u32string getNameFromPagePath(const QString &filePath)
@@ -57,14 +57,14 @@ static PageNum getPageNumFromPagePath(const QString &filePath)
     return n;
 }
 
-void BookLoader::onMessage(actor::Message &msg)
+void PageLoader::onMessage(actor::Message &msg)
 {
     if (StartLoadMsg *m = msg) {
         doStartLoadFromLocalFile(m->archive);
     }
 }
 
-void BookLoader::doStartLoadFromLocalFile(const fs::path &archiveFile)
+void PageLoader::doStartLoadFromLocalFile(const fs::path &archiveFile)
 {
     ImgArchive archive;
     archive.load(archiveFile, [this](const QString &pagePath, const QPixmap &img) {
