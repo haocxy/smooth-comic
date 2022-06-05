@@ -11,10 +11,10 @@
 
 #include "core/logger.h"
 
-using namespace logger::global_loggers;
-
 namespace
 {
+
+using logger::gLogger;
 
 class Sqlite3ErrorMsgDeleter {
 public:
@@ -58,10 +58,10 @@ Database::~Database()
         }
     }
     catch (const std::exception &e) {
-        logError << "exception in sqlite3ns::Database::~Database(): " << e.what();
+        gLogger.e << "exception in sqlite3ns::Database::~Database(): " << e.what();
     }
     catch (...) {
-        logError << "unknown exception in sqlite3ns::Database::~Database()";
+        gLogger.e << "unknown exception in sqlite3ns::Database::~Database()";
     }
 }
 
@@ -156,10 +156,10 @@ Statement::~Statement()
         }
     }
     catch (const std::exception &e) {
-        logError << "sqlite::Statement::~Statement() " << "error: [" << e.what() << "]";
+        gLogger.e << "sqlite::Statement::~Statement() " << "error: [" << e.what() << "]";
     }
     catch (...) {
-        logError << "sqlite::Statement::~Statement() " << "meet unknown exception";
+        gLogger.e << "sqlite::Statement::~Statement() " << "meet unknown exception";
     }
 }
 

@@ -37,8 +37,6 @@ inline const char *tostr(Level level) {
     }
 }
 
-bool shouldLog(logger::Level level);
-
 class Writer {
 public:
 
@@ -58,87 +56,152 @@ private:
 
 void writeLog(logger::Level level, const std::string &content);
 
-class LogLine
-{
+class LogStream {
 public:
-    LogLine(logger::Level level)
-        : shouldLog_(logger::shouldLog(level))
-        , level_(level) { }
-
-    ~LogLine() {
-        if (shouldLog_) {
-            writeLog(level_, buffer_.str());
-        }
-    }
+    LogStream() {}
 
     template <typename T>
-    LogLine(Level level, const T &obj)
-        : LogLine(level) {
-        *this << obj;
-    }
-
-    template <typename T>
-    LogLine &operator<<(const T &obj) {
-        if (shouldLog_) {
-            buffer_ << obj;
-        }
+    LogStream &operator<<(const T &obj) {
+        ss_ << obj;
         return *this;
     }
 
-    LogLine &operator<<(const std::u32string &s) {
-        if (shouldLog_) {
-            buffer_ << static_cast<std::string>(u8str(s));
-        }
-        return *this;
+    std::string str() const {
+        return ss_.str();
     }
 
-    LogLine &operator<<(const char *str) {
-        if (shouldLog_) {
-            if (str) {
-                buffer_ << str;
-            } else {
-                buffer_ << "(nullptr)";
+private:
+    std::ostringstream ss_;
+};
+
+class Logger {
+private:
+
+    class LogLine {
+    public:
+        LogLine(Logger &logger, Level level)
+            : logger_(logger)
+            , level_(level)
+            , shouldLog_(logger_.shouldLog(level)) {
+
+            if (shouldLog_) {
+                logger_.beforeWriteContent(*this);
             }
         }
-        return *this;
-    }
 
-    LogLine &operator<<(const fs::path &p) {
-        if (shouldLog_) {
-            printPath(p);
+        template <typename T>
+        LogLine(Logger &logger, Level level, const T &firstObj)
+            : LogLine(logger, level) {
+
+            *this << firstObj;
         }
-        return *this;
-    }
 
-private:
-    void printPath(const fs::path &p);
+        ~LogLine() {
+            if (shouldLog_) {
+                logger_.afterWriteContent(*this);
+                writeLog(level_, buffer_.str());
+            }
+        }
 
-private:
-    const bool shouldLog_;
-    const logger::Level level_;
-    std::ostringstream buffer_;
-};
+        template <typename T>
+        LogLine &operator<<(const T &obj) {
+            if (shouldLog_) {
+                buffer_ << obj;
+            }
+            return *this;
+        }
 
-template <Level level>
-class Logger {
+        LogLine &operator<<(const std::u32string &s) {
+            if (shouldLog_) {
+                buffer_ << static_cast<std::string>(u8str(s));
+            }
+            return *this;
+        }
+
+        LogLine &operator<<(const char *str) {
+            if (shouldLog_) {
+                if (str) {
+                    buffer_ << str;
+                } else {
+                    buffer_ << "(nullptr)";
+                }
+            }
+            return *this;
+        }
+
+        LogLine &operator<<(const fs::path &p) {
+            if (shouldLog_) {
+                printPath(p);
+            }
+            return *this;
+        }
+
+    private:
+        void printPath(const fs::path &p) {
+            buffer_ << p.generic_string();
+        }
+
+    private:
+        Logger &logger_;
+        const Level level_;
+        const bool shouldLog_;
+        LogStream buffer_;
+    };
+
 public:
-    Logger() {}
 
-    template <typename T>
-    LogLine operator<<(const T &obj) {
-        return LogLine(level, obj);
+    class LogLineMaker {
+    public:
+        LogLineMaker(Logger &logger, Level lineLevel)
+            : logger_(logger), lineLevel_(lineLevel) {}
+
+        template <typename T>
+        LogLine operator<<(const T &firstObj) const {
+            return LogLine(logger_, lineLevel_, firstObj);
+        }
+
+    private:
+        Logger &logger_;
+        const Level lineLevel_;
+    };
+
+public:
+    explicit Logger(Level level = Level::Info)
+        : level_(level)
+        , d(*this, Level::Debug)
+        , i(*this, Level::Info)
+        , e(*this, Level::Error) {}
+
+    virtual ~Logger() {}
+
+    void setLevel(Level level) {
+        level_ = level;
     }
+
+    virtual void write(Level level, const std::string &content) {
+        writeLog(level, content);
+    }
+
+protected:
+    virtual void beforeWriteContent(LogLine &logLine) {}
+
+    virtual void afterWriteContent(LogLine &logLine) {}
+
+private:
+    bool shouldLog(Level level) const {
+        return level >= level_;
+    }
+
+private:
+    Level level_{ Level::Info };
+
+public:
+    LogLineMaker d;
+    LogLineMaker i;
+    LogLineMaker e;
 };
 
-namespace global_loggers {
-
-extern Logger<Level::Debug> logDebug;
-
-extern Logger<Level::Error> logError;
-
-extern Logger<Level::Info> logInfo;
-
-} // namespace global_loggers
+extern Logger gLogger;
 
 } // namespace logger
 
@@ -148,16 +211,6 @@ namespace logger::control {
 class Option {
 public:
     Option() {}
-
-    Level level() const {
-        return level_;
-    }
-
-    void setLevel(Level level) {
-        level_ = level;
-    }
-
-    void setLevel(const std::string &str);
 
     const fs::path &dir() const {
         return dir_;
@@ -192,7 +245,6 @@ public:
     }
 
 private:
-    Level level_ = Level::Info;
     fs::path dir_;
     std::string basename_;
     bool alwaysFlush_ = false;

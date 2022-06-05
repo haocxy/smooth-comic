@@ -21,8 +21,6 @@ static const logger::Level DefaultLogLevel = logger::Level::All;
 static const logger::Level DefaultLogLevel = logger::Level::Error;
 #endif
 
-static logger::Level g_Level = logger::Level::Info;
-
 static logger::Writer *g_writer = nullptr;
 
 
@@ -37,10 +35,6 @@ static void safeLocalTime(std::tm &tm, std::time_t sec) {
 
 namespace logger
 {
-
-bool shouldLog(logger::Level level) {
-    return level >= g_Level;
-}
 
 Writer::Writer(const fs::path &dir, const std::string &basename)
     : base_(fs::absolute(dir / basename).lexically_normal()) {
@@ -108,15 +102,7 @@ void Writer::write(const void *data, size_t len) {
     out_.write(reinterpret_cast<const char *>(data), len);
 }
 
-namespace global_loggers {
-
-Logger<Level::Debug> logDebug;
-
-Logger<Level::Error> logError;
-
-Logger<Level::Info> logInfo;
-
-} // namespace global_loggers
+Logger gLogger{ Level::Info };
 
 
 
@@ -218,10 +204,6 @@ void writeLog(logger::Level level, const std::string &content) {
     }
 }
 
-void LogLine::printPath(const fs::path &p) {
-    buffer_ << p.generic_string();
-}
-
 } // namespace logger
 
 
@@ -242,18 +224,14 @@ static std::string normalizeBaseName(const std::string &basename) {
 
 void init(const Option &opt) {
 
-    using namespace global_loggers;
-
     const char *title = "logger::control::initLogger ";
-
-    g_Level = opt.level();
 
     if (!opt.dir().empty()) {
         const std::string basename = normalizeBaseName(opt.basename());
-        logInfo << title << "log will be write to dir: [" << opt.dir() << "] with base name [" << opt.basename() << "]";
+        gLogger.i << title << "log will be write to dir: [" << opt.dir() << "] with base name [" << opt.basename() << "]";
         g_writer = new Writer(opt.dir(), basename);
     } else {
-        logError << title << "error: [dir is empty string]. log will be write to stdout";
+        gLogger.e << title << "error: [dir is empty string]. log will be write to stdout";
     }
 
     gAlwaysFlush = opt.isAlwaysFlush();
@@ -282,10 +260,6 @@ static Level toLevel(const std::string &str) {
         return Level::Error;
     }
     return DefaultLogLevel;
-}
-
-void Option::setLevel(const std::string &str) {
-    level_ = toLevel(str);
 }
 
 } // namespace logger::control

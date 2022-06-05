@@ -5,11 +5,11 @@
 #include "core/logger.h"
 
 
-using namespace logger::global_loggers;
-
 namespace myapp::demo::actor {
 
 namespace actor = myapp::actor;
+
+using logger::gLogger;
 
 class SumRequest : public actor::Request {
 public:
@@ -37,12 +37,12 @@ public:
 protected:
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("CalcActor");
-        logInfo << "CalcActor started";
+        gLogger.i << "CalcActor started";
     }
 
     virtual std::unique_ptr<actor::Response> onRequest(actor::Request &action) override {
         if (const SumRequest *a = action) {
-            logInfo << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
+            gLogger.i << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
             return std::unique_ptr<actor::Response>(new SumRequest::Response(a->a + a->b));
         }
 
@@ -51,7 +51,7 @@ protected:
 
     virtual void onMessage(actor::Message &msg) override {
         if (const ActorStartedMessage *m = msg) {
-            logInfo << "CalcActor handle ActorStartedMessage(" << m->actorName << ")";
+            gLogger.i << "CalcActor handle ActorStartedMessage(" << m->actorName << ")";
         }
     }
 };
@@ -66,12 +66,12 @@ protected:
     virtual void onActorStarted() override {
         ThreadUtil::setNameForCurrentThread("AskActor");
 
-        logInfo << "AskActor started";
+        gLogger.i << "AskActor started";
 
         sendTo(calcActor_, std::make_unique<ActorStartedMessage>("AskActor"));
 
         sendTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
-            logInfo << "AskActor handle SumRequest::Response(" << r.n << ")";
+            gLogger.i << "AskActor handle SumRequest::Response(" << r.n << ")";
         });
     }
 

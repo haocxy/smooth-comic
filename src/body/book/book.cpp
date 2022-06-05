@@ -8,9 +8,6 @@
 #include "engine/async-deleter.h"
 
 
-using namespace logger::global_loggers;
-
-
 namespace myapp {
 
 Book::Book(Engine &engine, QObject *parent)

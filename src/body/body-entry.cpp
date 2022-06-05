@@ -9,10 +9,9 @@
 #include "gui/book-viewer.h"
 
 
-using namespace logger::global_loggers;
-
-
 namespace myapp {
+
+using logger::gLogger;
 
 int body_entry(int argc, char *argv[])
 {
@@ -20,12 +19,13 @@ int body_entry(int argc, char *argv[])
 
     logger::control::Option opt;
     opt.setAlwaysFlush(true);
-    opt.setLevel(logger::Level::All);
     opt.setWriteToStdout(true);
 
     logger::control::init(opt);
 
-    logInfo << "body_entry()";
+    gLogger.setLevel(logger::Level::Info);
+
+    gLogger.i << "body_entry()";
 
     QApplication app(argc, argv);
 

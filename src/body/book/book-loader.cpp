@@ -9,12 +9,9 @@
 #include "img-archive.h"
 
 
-using namespace logger::global_loggers;
-
-
 namespace myapp {
 
-
+using logger::gLogger;
 
 BookLoader::BookLoader()
 {
@@ -23,7 +20,7 @@ BookLoader::BookLoader()
 
 BookLoader::~BookLoader()
 {
-    logInfo << "BookLoader destructing";
+    gLogger.i << "BookLoader destructing";
 }
 
 static std::u32string getNameFromPagePath(const QString &filePath)

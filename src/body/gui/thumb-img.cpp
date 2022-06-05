@@ -5,9 +5,9 @@
 #include "core/logger.h"
 
 
-using namespace logger::global_loggers;
-
 namespace myapp {
+
+using logger::gLogger;
 
 ThumbImg::ThumbImg(PageNum pageNum, const QPixmap &img, QWidget *parent)
     : QWidget(parent)
