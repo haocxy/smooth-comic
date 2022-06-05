@@ -48,7 +48,7 @@ def make_boost_b2_install_cmd_line(install_dir: Path, modules: list) -> str:
     cmdline += ' variant=release'
     if sys.platform == 'win32':
         cmdline += ' link=static'
-        cmdline += ' runtime-link=static'
+        cmdline += ' runtime-link=shared'
     cmdline += ' install'
     return cmdline
 

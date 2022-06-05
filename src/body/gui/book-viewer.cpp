@@ -6,7 +6,9 @@
 #include <QToolBar>
 #include <QDockWidget>
 #include <QStatusBar>
+#include <QFileDialog>
 
+#include "core/system.h"
 #include "core/logger.h"
 
 #include "page-viewer.h"
@@ -102,7 +104,11 @@ void BookViewer::bind(QToolBar *toolBar, const QString &name, void(BookViewer:: 
 
 void BookViewer::fileOpenAction()
 {
-    gLogger.e << "BookViewer::fileOpenAction() unimplemented";
+    const fs::path home = SystemUtil::userHome();
+    const QString defaultDir = QString::fromStdU32String(home.generic_u32string());
+    const QString filePath = QFileDialog::getOpenFileName(this, tr("Open Comic"), defaultDir);
+
+    book_->open(filePath.toStdU32String());
 }
 
 }

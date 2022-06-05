@@ -26,6 +26,8 @@ public:
 
     virtual ~Book();
 
+    void open(const fs::path &archiveFile);
+
 signals:
     void sigPageLoaded(PageNum pageNum, const QPixmap &img, PageNum totalPages);
 

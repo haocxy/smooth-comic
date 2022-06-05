@@ -10,6 +10,8 @@
 
 namespace myapp {
 
+using logger::gLogger;
+
 Book::Book(Engine &engine, QObject *parent)
     : QObjectActor(parent)
     , engine_(engine)
@@ -25,6 +27,11 @@ Book::~Book()
     disconnect();
 
     engine_.asyncDeleter().post(std::make_unique<AsyncDeleter::AsyncDeleteMsg>(std::move(loader_)));
+}
+
+void Book::open(const fs::path &archiveFile)
+{
+    gLogger.e << "Book::open() unimplemented";
 }
 
 void Book::onNotice(actor::Notice &notice)
