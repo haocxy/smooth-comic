@@ -5,8 +5,9 @@
 
 namespace myapp {
 
-PageViewerWidget::PageViewerWidget(QWidget *parent)
+PageViewerWidget::PageViewerWidget(Book &book, QWidget *parent)
     : QWidget(parent)
+    , book_(book)
 {
 }
 

@@ -18,9 +18,10 @@ public:
     explicit BookViewer(Engine &engine, QWidget *parent = nullptr);
 
 private:
-    Engine &engine_;
+
 
 private: // non-UI Components
+    Engine &engine_;
     QPointer<Book> book_;
 
 private: // UI Components

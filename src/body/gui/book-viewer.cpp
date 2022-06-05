@@ -26,7 +26,7 @@ BookViewer::BookViewer(Engine &engine, QWidget *parent)
     thumbDock->setWidget(thumbList_);
     addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thumbDock);
 
-    pageViewer_ = new PageViewerWidget(this);
+    pageViewer_ = new PageViewerWidget(*book_, this);
     setCentralWidget(pageViewer_);
 
     QStatusBar *statusBar = this->statusBar();

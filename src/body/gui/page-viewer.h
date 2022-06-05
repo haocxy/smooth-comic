@@ -5,13 +5,18 @@
 
 namespace myapp {
 
+class Book;
+
 class PageViewerWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit PageViewerWidget(QWidget *parent = nullptr);
+    explicit PageViewerWidget(Book &book, QWidget *parent = nullptr);
 
 protected:
     virtual void paintEvent(QPaintEvent *) override;
+
+private:
+    Book &book_;
 };
 
 }
