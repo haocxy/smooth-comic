@@ -18,7 +18,13 @@ public:
     explicit BookViewer(Engine &engine, QWidget *parent = nullptr);
 
 private:
+    void initAreas();
 
+    void initThumbArea();
+
+    void initPageViewerArea();
+
+    void initStatusArea();
 
 private: // non-UI Components
     Engine &engine_;
