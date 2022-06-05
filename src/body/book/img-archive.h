@@ -5,8 +5,6 @@
 
 #include "core/fs.h"
 
-#include "image.h"
-
 
 namespace myapp {
 
