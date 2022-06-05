@@ -20,11 +20,24 @@ public:
 private:
     void initAreas();
 
+    void initMenuBarArea();
+
+    void initToolBarArea();
+
     void initThumbArea();
 
     void initPageViewerArea();
 
     void initStatusArea();
+
+    void bind(QMenu *menu, const QString &name, void(BookViewer:: *f)());
+
+    void bind(QMenu *menu, const QString &name, void(BookViewer:: *f)(), const QKeySequence &shortcut);
+
+    void bind(QToolBar *toolBar, const QString &name, void(BookViewer:: *f)());
+
+private:
+    void fileOpenAction();
 
 private: // non-UI Components
     Engine &engine_;
