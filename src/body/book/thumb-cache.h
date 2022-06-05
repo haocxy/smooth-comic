@@ -6,7 +6,7 @@
 
 namespace myapp {
 
-
+// 缩略图缓存
 class ThumbCache : public actor::ThreadedActor {
 public:
     ThumbCache(const fs::path &dbFile);
