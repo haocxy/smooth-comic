@@ -3,6 +3,16 @@ include(assets.cmake)
 remove_useless_files_generated_for_assets()
 generate_src_file_for_all_assets()
 
+# 查找 boost
+if(MSVC)
+    set(Boost_USE_STATIC_LIBS ON)
+    set(Boost_USE_STATIC_RUNTIME ON)
+endif()
+
+set(MY_BOOST_ROOT ${CMAKE_SOURCE_DIR}/prepare/boost/install)
+set(MY_BOOST_VER "1.78")
+
+
 
 include_directories(.)
 
