@@ -2,7 +2,7 @@
 
 
 #include "async-deleter.h"
-#include "thumb-cache.h"
+#include "book/thumb-cache.h"
 
 
 namespace {
