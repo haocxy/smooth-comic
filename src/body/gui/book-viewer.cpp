@@ -13,9 +13,9 @@ namespace myapp {
 
 BookViewer::BookViewer(Engine &engine, QWidget *parent)
     : QMainWindow(parent)
-    , mEngine(engine)
+    , engine_(engine)
 {
-    book_ = new Book(mEngine, this);
+    book_ = new Book(engine_, this);
 
     resize(1000, 800);
     setMinimumSize(800, 600);
