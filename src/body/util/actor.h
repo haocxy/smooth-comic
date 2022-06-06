@@ -25,6 +25,7 @@ class Notice;
 class Task;
 
 namespace detail {
+class RunInActorEvent;
 class RequestCallbackEvent;
 class AddListenerMessage;
 }
@@ -99,6 +100,8 @@ public:
 
     virtual void post(std::unique_ptr<detail::Event> &&e) = 0;
 
+    void post(std::function<void()> &&action);
+
     template <typename RequestType>
     void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
         doSendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
@@ -160,6 +163,8 @@ private:
         onTask(task);
     }
 
+    void handleRunInActor(detail::RunInActorEvent &runInActorEvent);
+
     void handleAddListenerMessage(detail::AddListenerMessage &msg);
 
     bool hasListener(std::vector<std::weak_ptr<Handle>> &vec, std::shared_ptr<Handle> handle) {
@@ -197,6 +202,7 @@ private:
     friend class Notice;
     friend class Task;
 
+    friend class detail::RunInActorEvent;
     friend class detail::RequestCallbackEvent;
     friend class detail::AddListenerMessage;
 };
@@ -279,6 +285,24 @@ private:
 
 
 namespace detail {
+
+class RunInActorEvent : public detail::Event {
+public:
+    RunInActorEvent(std::function<void()> &&runBody)
+        : runBody_(std::move(runBody)) {}
+
+    virtual ~RunInActorEvent() {}
+
+protected:
+    virtual void handle(Actor &receiver) override {
+        receiver.handleRunInActor(*this);
+    }
+
+private:
+    std::function<void()> runBody_;
+
+    friend class Actor;
+};
 
 class RequestCallbackEvent : public detail::Event {
 public:

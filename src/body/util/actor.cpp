@@ -3,6 +3,10 @@
 
 namespace myapp::actor {
 
+void Actor::post(std::function<void()> &&action) {
+    post(std::make_unique<detail::RunInActorEvent>(std::move(action)));
+}
+
 void Actor::doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
     req->sender_ = this->handle_;
     req->callback_ = std::move(cb);
@@ -30,6 +34,12 @@ void Actor::handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResul
 {
     if (actionResult.callback_ && actionResult.resp_) {
         actionResult.callback_(*actionResult.resp_);
+    }
+}
+
+void Actor::handleRunInActor(detail::RunInActorEvent &runInActorEvent) {
+    if (runInActorEvent.runBody_) {
+        runInActorEvent.runBody_();
     }
 }
 
