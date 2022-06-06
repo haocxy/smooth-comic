@@ -38,14 +38,14 @@ def get_boost_b2_cmd_name() -> str:
         return './b2'
 
 
-def make_boost_b2_install_cmd_line(install_dir: Path, modules: list) -> str:
+def make_boost_b2_install_cmd_line(install_dir: Path, variant: str, modules: list) -> str:
     b2_cmd_name: str = get_boost_b2_cmd_name()
     cmdline: str = ''
     cmdline += b2_cmd_name
     cmdline += f' --prefix=\"{install_dir}\"'
     for module in modules:
         cmdline += f' --with-{module}'
-    cmdline += ' variant=release'
+    cmdline += f' variant={variant}'
     if sys.platform == 'win32':
         cmdline += ' link=static'
         cmdline += ' runtime-link=shared'
@@ -53,10 +53,11 @@ def make_boost_b2_install_cmd_line(install_dir: Path, modules: list) -> str:
     return cmdline
 
 
-def install(source_dir: Path, install_dir: Path):
+def install(source_dir: Path, install_dir: Path, variant: str):
     bootstrap_cmd_name: str = get_boost_booststrap_cmd_name()
     install_cmdline: str = make_boost_b2_install_cmd_line(
         install_dir=install_dir,
+        variant=variant,
         modules=REQUIRED_BOOST_MODULES)
     print(f'Boost b2 cmd: {install_cmdline}')
     old_dir: str = os.getcwd()
@@ -77,7 +78,13 @@ def prepare(thirdlibs_repo_dir: Path, base_dir: Path):
     boost_install_dir = base_dir / 'install'
     install(
         source_dir=boost_source_dir,
-        install_dir=boost_install_dir
+        install_dir=boost_install_dir,
+        variant='debug'
+    )
+    install(
+        source_dir=boost_source_dir,
+        install_dir=boost_install_dir,
+        variant='release'
     )
 
 
