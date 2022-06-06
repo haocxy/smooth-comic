@@ -21,6 +21,9 @@ class Message;
 // 通知：actor A 发送到若干通知订阅者，发送时不关心有哪些订阅者
 class Notice;
 
+// 任务：actor A 发送到指定的 actor B，可以取消执行，可以回调多次
+class Task;
+
 namespace detail {
 class RequestCallbackEvent;
 class AddListenerMessage;
@@ -130,6 +133,8 @@ protected:
 
     virtual void onNotice(Notice &notice) {}
 
+    virtual void onTask(Task &task) {}
+
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
     void handleEvent(detail::Event &e) {
@@ -149,6 +154,10 @@ private:
 
     void handleNotice(Notice &notice) {
         onNotice(notice);
+    }
+
+    void handleTask(Task &task) {
+        onTask(task);
     }
 
     void handleAddListenerMessage(detail::AddListenerMessage &msg);
@@ -186,6 +195,7 @@ private:
     friend class Request;
     friend class Message;
     friend class Notice;
+    friend class Task;
 
     friend class detail::RequestCallbackEvent;
     friend class detail::AddListenerMessage;
@@ -349,6 +359,53 @@ protected:
     virtual void handle(Actor &receiver) override {
         receiver.handleNotice(*this);
     }
+};
+
+
+class Task : public detail::SenderAwaredEvent {
+public:
+
+    class Controller : public std::enable_shared_from_this<Controller> {
+    public:
+        Controller() {}
+
+        virtual ~Controller() {}
+
+        bool isCanceled() const {
+            return canceled_;
+        }
+
+        void cancel () {
+            canceled_ = true;
+        }
+
+    private:
+        std::atomic_bool canceled_{ false };
+    };
+
+public:
+    Task()
+        : controller_(std::make_shared<Controller>()) {}
+
+    Task(const Task &) = delete;
+
+    Task &operator=(const Task &) = delete;
+
+    std::weak_ptr<Controller> controller() {
+        return controller_;
+    }
+
+    bool isCanceled() const {
+        return controller_->isCanceled();
+    }
+
+protected:
+    virtual void handle(Actor &receiver) override {
+        receiver.handleTask(*this);
+    }
+
+private:
+    std::shared_ptr<Controller> controller_;
 };
 
 }
