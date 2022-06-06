@@ -385,42 +385,61 @@ protected:
     }
 };
 
-
+// 任务
+// 用于支持需要较长时间完成处理的逻辑，支持回调处理结果和中途取消任务
 class Task : public detail::SenderAwaredEvent {
-public:
+private:
 
-    class Controller : public std::enable_shared_from_this<Controller> {
+    // 由发送方和接收方共享的状态
+    // 
+    // 功能：
+    // 1：检查 Task 是否存活
+    // 2：在双方传递信息，例如实现取消任务、回调等
+    // 
+    // 注意：
+    // 不要直接暴露这个类到 Task 类之外，外部应使用 Task 和 TaskController
+    class ControllBlock : public std::enable_shared_from_this<ControllBlock> {
     public:
-        Controller() {}
-
-        virtual ~Controller() {}
+        ControllBlock(Task &task) : task_(task) {}
 
         bool isCanceled() const {
             return canceled_;
         }
 
-        void cancel () {
-            canceled_ = true;
-        }
-
     private:
+        Task &task_;
         std::atomic_bool canceled_{ false };
     };
 
 public:
+
+    // 由发送方持有，用于注册回调或取消任务等
+    class Controller {
+    public:
+        Controller(std::weak_ptr<ControllBlock> controllBlock)
+            : controllBlock_(controllBlock) {}
+
+    private:
+        std::weak_ptr<ControllBlock> controllBlock_;
+    };
+
+public:
     Task()
-        : controller_(std::make_shared<Controller>()) {}
+        : controllBlock_(std::make_shared<ControllBlock>(*this)) {}
 
     Task(const Task &) = delete;
 
     Task &operator=(const Task &) = delete;
 
-    std::weak_ptr<Controller> controller() {
-        return controller_;
+    // 构造一个 Controller 对象
+    Controller createController() const {
+        return Controller(controllBlock_);
     }
 
+    // 检查这个任务是否被取消
+    // 处理任务的逻辑应该按照合适的频率检查这个标记，以支持取消任务
     bool isCanceled() const {
-        return controller_->isCanceled();
+        return controllBlock_->isCanceled();
     }
 
 protected:
@@ -429,7 +448,7 @@ protected:
     }
 
 private:
-    std::shared_ptr<Controller> controller_;
+    std::shared_ptr<ControllBlock> controllBlock_;
 };
 
 }
