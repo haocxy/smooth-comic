@@ -57,7 +57,7 @@ class Statement {
 public:
     Statement();
 
-    Statement(Database &db, const std::string &sql) {
+    Statement(Database &db, const std::string_view &sql) {
         open(db, sql);
     }
 
@@ -71,7 +71,7 @@ public:
 
     ~Statement();
 
-    void open(Database &db, const std::string &sql);
+    void open(Database &db, const std::string_view &sql);
 
     void reset();
 

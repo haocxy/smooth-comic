@@ -163,7 +163,7 @@ Statement::~Statement()
     }
 }
 
-void Statement::open(Database &db, const std::string &sql)
+void Statement::open(Database &db, const std::string_view &sql)
 {
     if (sql.empty()) {
         throw std::logic_error("sqlite::Statement::open() failed because SQL in argument is empty");
@@ -177,7 +177,7 @@ void Statement::open(Database &db, const std::string &sql)
 
     sqlite3_stmt *stmt = nullptr;
 
-    const int n = sqlite3_prepare_v2(db.db_, sql.c_str(), static_cast<int>(sql.size()), &stmt, nullptr);
+    const int n = sqlite3_prepare_v2(db.db_, sql.data(), static_cast<int>(sql.size()), &stmt, nullptr);
     if (n != SQLITE_OK) {
         throwError("open", n);
     }
