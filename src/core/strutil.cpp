@@ -204,7 +204,7 @@ std::string_view firstWord(const std::string_view &str) {
     }
 }
 
-std::string interpolate(const std::map<std::string, std::string> &kv, const std::string &str, const char *defaultValue) {
+std::string interpolate(const std::string_view &str, const std::map<std::string, std::string> &kv, const char *defaultValue) {
     std::string result;
     std::string argName;
 

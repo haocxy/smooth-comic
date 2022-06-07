@@ -142,6 +142,12 @@ std::string_view ext(const std::string_view &str);
 
 std::string_view firstWord(const std::string_view &str);
 
-std::string interpolate(const std::map<std::string, std::string> &kv, const std::string &str, const char *defaultValue = "");
+std::string interpolate(const std::string_view &str, const std::map<std::string, std::string> &kv, const char *defaultValue = "");
+
+inline std::string interpolate(const std::string_view &str, const std::string_view &key, const std::string &val) {
+    std::map<std::string, std::string> kv;
+    kv[std::string(key)] = std::string(val);
+    return interpolate(str, kv);
+}
 
 } // namespace strutil
