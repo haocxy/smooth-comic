@@ -13,7 +13,8 @@ namespace myapp {
 
 using logger::gLogger;
 
-PageLoader::PageLoader()
+PageLoader::PageLoader(const fs::path &archiveFile)
+    : archiveFile_(archiveFile)
 {
     setActorName("PageLoader");
 }

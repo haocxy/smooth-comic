@@ -3,6 +3,7 @@
 #include <string>
 #include <QPixmap>
 
+#include "core/fs.h"
 #include "util/actor.h"
 #include "util/sqlite.h"
 
@@ -11,6 +12,8 @@
 
 namespace myapp {
 
+// 用于缓存图片
+// 一个该类的对象对应一本书
 class ImgCache : public actor::ThreadedActor {
 public:
 
@@ -50,9 +53,12 @@ public:
     };
 
 public:
-    ImgCache();
+    ImgCache(const fs::path &dbFile);
 
     virtual ~ImgCache() {}
+
+private:
+    const fs::path dbFile_;
 };
 
 }

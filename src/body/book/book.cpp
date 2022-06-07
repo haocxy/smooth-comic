@@ -7,6 +7,8 @@
 
 #include "engine/async-deleter.h"
 
+#include "book-cache.h"
+
 
 namespace myapp {
 
@@ -14,7 +16,9 @@ using logger::gLogger;
 
 Book::Book(Engine &engine, QObject *parent)
     : QObjectActor(parent)
-    , engine_(engine) {}
+    , engine_(engine) {
+
+}
 
 Book::~Book()
 {
@@ -22,7 +26,7 @@ Book::~Book()
 
 void Book::open(const fs::path &archiveFile)
 {
-    gLogger.e << "Book::open() unimplemented";
+    cache_ = new BookCache(engine_, archiveFile);
 }
 
 static std::u8string toU8String(const QString &qs)

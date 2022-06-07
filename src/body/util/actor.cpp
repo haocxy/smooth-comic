@@ -7,6 +7,15 @@ namespace myapp::actor {
 
 using logger::gLogger;
 
+Actor::Actor()
+    : handle_(std::make_shared<Handle>(*this)) {
+
+}
+
+Actor::~Actor()
+{
+}
+
 void Actor::post(std::function<void()> &&action) {
     post(std::make_unique<detail::RunInActorEvent>(std::move(action)));
 }
@@ -90,14 +99,14 @@ ThreadedActor::ThreadedActor()
 
 ThreadedActor::~ThreadedActor()
 {
-    gLogger.d << "destruct actor: " << actorName();
-
     stopped_ = true;
     eventQueue_.stop();
 }
 
 void ThreadedActor::loop()
 {
+    gLogger.d << "ThreadedActor[" << actorName() << "] started";
+
     updateThreadName();
 
     onActorStarted();
@@ -113,6 +122,8 @@ void ThreadedActor::loop()
     }
 
     onActorStopped();
+
+    gLogger.d << "ThreadedActor[" << actorName() << "] stopped";
 }
 
 void ThreadedActor::updateThreadName()

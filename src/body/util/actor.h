@@ -86,9 +86,9 @@ public:
         Actor &actor_;
     };
 
-    Actor() : handle_(std::make_shared<Handle>(*this)) {}
+    Actor();
 
-    virtual ~Actor() {}
+    virtual ~Actor();
 
     virtual void setActorName(const std::string_view &name) {
         actorName_ = name;

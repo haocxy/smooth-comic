@@ -48,8 +48,8 @@ public:
 
     BasicDeclarePtr() {}
 
-    explicit BasicDeclarePtr(T *&&ptr)
-        : holder_(ptr) {
+    BasicDeclarePtr(T *&&ptr)
+        : holder_(std::make_unique<DeclarePtrHolderImpl<T>>(ptr)) {
 
         ptr = nullptr;
     }

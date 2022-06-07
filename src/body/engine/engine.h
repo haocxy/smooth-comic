@@ -2,11 +2,12 @@
 
 #include "core/declare_ptr.h"
 
+
 namespace myapp {
 
 class AsyncDeleter;
-class FsManager;
-class ThumbCache;
+
+class PathManager;
 
 
 class Engine {
@@ -19,18 +20,13 @@ public:
         return *asyncDeleter_;
     }
 
-    FsManager &fsManager() {
-        return *fsManager_;
-    }
-
-    ThumbCache &thumbCache() {
-        return *thumbCache_;
+    PathManager &pathManager() {
+        return *pathManager_;
     }
 
 private:
     DeclarePtr<AsyncDeleter> asyncDeleter_;
-    DeclarePtr<FsManager> fsManager_;
-    DeclarePtr<ThumbCache> thumbCache_;
+    DeclarePtr<PathManager> pathManager_;
 };
 
 }

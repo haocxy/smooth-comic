@@ -9,6 +9,8 @@
 
 namespace myapp {
 
+// 用于从指定的数据源加载图片
+// 一个该类的对象对应一本书
 class PageLoader : public actor::ThreadedActor {
 public:
 
@@ -37,7 +39,7 @@ public:
         QPixmap img;
     };
 
-    PageLoader();
+    PageLoader(const fs::path &archiveFile);
 
     virtual ~PageLoader();
 
@@ -47,6 +49,9 @@ protected:
 private:
 
     void doStartLoadFromLocalFile(const fs::path &archiveFile);
+
+private:
+    const fs::path archiveFile_;
 };
 
 }

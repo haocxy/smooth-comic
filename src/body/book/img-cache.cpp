@@ -3,7 +3,8 @@
 
 namespace myapp {
 
-ImgCache::ImgCache()
+ImgCache::ImgCache(const fs::path &dbFile)
+    : dbFile_(dbFile)
 {
     setActorName("ImgCache");
 }

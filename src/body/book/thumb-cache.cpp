@@ -18,7 +18,7 @@ void ThumbCache::onActorStarted()
     db_.open(dbFile_);
 
     // 只在启动时执行一次，不需要保存statement对象
-    sqlite::Statement stmtCreateTable(db_, strutil::interpolate(Asset::StrView::thumb_cache_table_create__sql, "name", "abc"));
+    sqlite::Statement stmtCreateTable(db_, Asset::StrView::thumb_cache_table_create__sql);
     stmtCreateTable.execute();
 }
 

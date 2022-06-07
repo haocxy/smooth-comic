@@ -7,6 +7,7 @@
 namespace myapp {
 
 // 缩略图缓存
+// 一个该类的对象对应一本书
 class ThumbCache : public actor::ThreadedActor {
 public:
     ThumbCache(const fs::path &dbFile);

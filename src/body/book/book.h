@@ -7,6 +7,7 @@
 #include <QPixmap>
 
 #include "core/fs.h"
+#include "core/declare_ptr.h"
 #include "engine/engine.h"
 #include "util/qobject-actor.h"
 
@@ -14,6 +15,8 @@
 
 
 namespace myapp {
+
+class BookCache;
 
 // 代表抽象的书
 // GUI模块和非GUI模块的总界面
@@ -36,6 +39,8 @@ private:
 
 private:
     Engine &engine_;
+    const fs::path archiveFile_;
+    DeclarePtr<class BookCache> cache_;
     std::map<PageNum, QPixmap> pageKeyToImg_;
 };
 
