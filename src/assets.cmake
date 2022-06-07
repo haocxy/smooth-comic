@@ -39,7 +39,7 @@ function(check_should_generate_src_file_for_asset output_var asset_file src_file
         return()
     endif()
 
-    # 如果当前CMakeLists.txt文件是新的，可能逻辑有变化，也需要为资源文件重新生成C++文件
+    # 濡傛灉褰撳墠CMakeLists.txt鏂囦欢鏄柊鐨勶紝鍙兘閫昏緫鏈夊彉鍖栵紝涔熼渶瑕佷负璧勬簮鏂囦欢閲嶆柊鐢熸垚C++鏂囦欢
     if(${ts_list_file} GREATER_EQUAL ${ts_src_file})
         set(${output_var} TRUE PARENT_SCOPE)
         return()
