@@ -1,7 +1,11 @@
 #include "actor.h"
 
+#include "core/logger.h"
+
 
 namespace myapp::actor {
+
+using logger::gLogger;
 
 void Actor::post(std::function<void()> &&action) {
     post(std::make_unique<detail::RunInActorEvent>(std::move(action)));
@@ -86,6 +90,8 @@ ThreadedActor::ThreadedActor()
 
 ThreadedActor::~ThreadedActor()
 {
+    gLogger.d << "destruct actor: " << actorName();
+
     stopped_ = true;
     eventQueue_.stop();
 }

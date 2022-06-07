@@ -23,7 +23,7 @@ int body_entry(int argc, char *argv[])
 
     logger::control::init(opt);
 
-    gLogger.setLevel(logger::Level::Info);
+    gLogger.setLevel(logger::Level::All);
 
     gLogger.i << "body_entry()";
 
