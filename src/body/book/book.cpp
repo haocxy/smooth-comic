@@ -14,32 +14,15 @@ using logger::gLogger;
 
 Book::Book(Engine &engine, QObject *parent)
     : QObjectActor(parent)
-    , engine_(engine)
-    , loader_(std::make_unique<PageLoader>()) {
-
-    listen<PageLoader::PageLoaded>(*loader_);
-
-    sendTo(*loader_, std::make_unique<PageLoader::StartLoadMsg>("D:/tmp/a.zip"));
-}
+    , engine_(engine) {}
 
 Book::~Book()
 {
-    disconnect();
-
-    engine_.asyncDeleter().post(std::make_unique<AsyncDeleter::AsyncDeleteMsg>(std::move(loader_)));
 }
 
 void Book::open(const fs::path &archiveFile)
 {
     gLogger.e << "Book::open() unimplemented";
-}
-
-void Book::onNotice(actor::Notice &notice)
-{
-    if (PageLoader::PageLoaded *n = notice) {
-        handleOnPageLoaded(n->pageNum, n->img);
-        return;
-    }
 }
 
 static std::u8string toU8String(const QString &qs)

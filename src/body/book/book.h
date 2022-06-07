@@ -6,10 +6,10 @@
 #include <QHash>
 #include <QPixmap>
 
+#include "core/fs.h"
 #include "engine/engine.h"
 #include "util/qobject-actor.h"
 
-#include "page-loader.h"
 #include "page-num.h"
 
 
@@ -31,15 +31,11 @@ public:
 signals:
     void sigPageLoaded(PageNum pageNum, const QPixmap &img, PageNum totalPages);
 
-protected:
-    virtual void onNotice(actor::Notice &notice) override;
-
 private:
     void handleOnPageLoaded(PageNum pageNum, const QPixmap &img);
 
 private:
     Engine &engine_;
-    std::unique_ptr<PageLoader> loader_;
     std::map<PageNum, QPixmap> pageKeyToImg_;
 };
 
