@@ -1,6 +1,6 @@
 #include "thumb-cache.h"
 
-#include "./sql/asset.thumb-img-table-create.sql.h"
+#include "./sql/asset.thumb-cache-table-create.sql.h"
 
 
 namespace myapp {
@@ -19,7 +19,7 @@ void ThumbCache::onActorStarted()
     db_.open(dbFile_);
 
     // 只在启动时执行一次，不需要保存statement对象
-    sqlite::Statement stmtCreateTable(db_, reinterpret_cast<const char *>(Asset::Data::thumb_img_table_create__sql));
+    sqlite::Statement stmtCreateTable(db_, reinterpret_cast<const char *>(Asset::Data::thumb_cache_table_create__sql));
     stmtCreateTable.execute();
 }
 
