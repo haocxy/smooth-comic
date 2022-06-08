@@ -27,8 +27,16 @@ Book::~Book()
 void Book::open(const fs::path &archiveFile)
 {
     cache_ = new BookCache(engine_, archiveFile);
+    listen<BookCache::PageOpenedNotice>(*cache_);
 
     sendTo(*cache_, std::make_unique<BookCache::OpenBookMsg>());
+}
+
+void Book::onNotice(actor::Notice &notice)
+{
+    if (BookCache::PageOpenedNotice *n = notice) {
+        return handlePageOpenedNotice(*n);
+    }
 }
 
 static std::u8string toU8String(const QString &qs)
@@ -40,13 +48,9 @@ static std::u8string toU8String(const QString &qs)
     return u8s;
 }
 
-void Book::handleOnPageLoaded(PageNum pageNum, const QPixmap &img)
+void Book::handlePageOpenedNotice(const BookCache::PageOpenedNotice &n)
 {
-    QPixmap &page = pageKeyToImg_[pageNum];
-
-    page = img;
-
-    emit sigPageLoaded(pageNum, page, static_cast<PageNum>(pageKeyToImg_.size()));
+    emit sigPageLoaded(QString::fromUtf8(n.entryPath.c_str(), n.entryPath.length()), n.width, n.height);
 }
 
 }

@@ -30,14 +30,14 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
 
     setWidgetResizable(true);
 
-    connect(&book_, &Book::sigPageLoaded, this, [this](PageNum pageNum, const QPixmap &img, PageNum totalPages) {
-        addPageThumbnailItemWidget(pageNum, img);
+    connect(&book_, &Book::sigPageLoaded, this, [this](const QString &entryPath, i32 width, i32 height) {
+        addPageThumbnailItemWidget(entryPath, width, height);
     });
 }
 
-void ThumbList::addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img)
+void ThumbList::addPageThumbnailItemWidget(const QString &entryPath, i32 width, i32 height)
 {
-    ThumbItem *itemWidget = new ThumbItem(pageNum, img, QString::number(pageNum), this);
+    ThumbItem *itemWidget = new ThumbItem(entryPath.toStdU32String(), width, height, this);
     layout_->addWidget(itemWidget);
     root_->adjustSize();
 }

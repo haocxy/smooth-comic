@@ -12,13 +12,12 @@ void ImgArchive::load(const fs::path &archiveFile, OnImgLoad &&cb)
     wrapper::libarchive::Archive archive(archiveFile);
 
     while (archive.nextEntry()) {
-        std::u8string path = archive.path();
-        QString qPath = QString::fromUtf8(path.c_str());
+        u8str entryPath = archive.path();
         std::string data = archive.readData();
         QPixmap img;
         img.loadFromData(QByteArray(data.data(), data.size()));
 
-        const bool goon = cb(qPath, img);
+        const bool goon = cb(entryPath, img);
         if (!goon) {
             break;
         }

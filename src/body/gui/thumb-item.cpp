@@ -5,14 +5,14 @@
 
 namespace myapp {
 
-ThumbItem::ThumbItem(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent)
+ThumbItem::ThumbItem(const u32str &entryPath, i32 width, i32 height, QWidget *parent)
     : QWidget(parent)
-    , pageNum_(pageNum)
+    , entryPath_(entryPath)
 {
-    img_ = new ThumbImg(pageNum_, img, this);
+    img_ = new ThumbImg(entryPath_, width, height, this);
 
     text_ = new QLabel(this);
-    text_->setText(text);
+    text_->setText(QString::fromStdU32String(entryPath_));
     text_->setScaledContents(true);
 
     QVBoxLayout *layout = new QVBoxLayout(this);

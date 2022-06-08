@@ -5,6 +5,9 @@
 #include <QPointer>
 #include <QPixmap>
 
+#include "core/basetype.h"
+#include "core/ustr.h"
+
 #include "thumb-img.h"
 
 
@@ -13,12 +16,12 @@ namespace myapp {
 class ThumbItem : public QWidget {
     Q_OBJECT
 public:
-    explicit ThumbItem(PageNum pageNum, const QPixmap &img, const QString &text, QWidget *parent = nullptr);
+    explicit ThumbItem(const u32str &entryPath, i32 width, i32 height, QWidget *parent = nullptr);
 
     virtual ~ThumbItem() {}
 
 private:
-    PageNum pageNum_{};
+    const u32str entryPath_;
     QPointer<ThumbImg> img_;
     QPointer<QLabel> text_;
 };

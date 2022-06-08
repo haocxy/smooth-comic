@@ -11,6 +11,8 @@ class PathManager {
 public:
     PathManager();
 
+    fs::path mkBookCacheDbFilePath(const fs::path &archiveFile) const;
+
     fs::path mkThumbCacheDbFilePath(const fs::path &archiveFile) const;
 
     fs::path mkImgCacheDbFilePath(const fs::path &archiveFile) const;

@@ -6,6 +6,8 @@
 #include <QBoxLayout>
 #include <QPixmap>
 
+#include "core/basetype.h"
+
 #include "book/page-num.h"
 
 #include "jump-bar.h"
@@ -23,7 +25,7 @@ public:
     virtual ~ThumbList() {}
 
 private:
-    void addPageThumbnailItemWidget(PageNum pageNum, const QPixmap &img);
+    void addPageThumbnailItemWidget(const QString &entryPath, i32 width, i32 height);
 
 protected:
     virtual void resizeEvent(QResizeEvent *) override;

@@ -120,14 +120,14 @@ void Database::close()
     db_ = nullptr;
 }
 
-void Database::exec(const std::string &sql)
+void Database::exec(const std::string_view &sql)
 {
     assertOpened();
 
     char *errmsg = nullptr;
     Sqlite3ErrorMsgDeleter errmsgDeleter(errmsg);
 
-    sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &errmsg);
+    sqlite3_exec(db_, sql.data(), nullptr, nullptr, &errmsg);
 
     if (errmsg) {
         std::ostringstream ss;

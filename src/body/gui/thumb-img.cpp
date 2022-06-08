@@ -9,10 +9,11 @@ namespace myapp {
 
 using logger::gLogger;
 
-ThumbImg::ThumbImg(PageNum pageNum, const QPixmap &img, QWidget *parent)
+ThumbImg::ThumbImg(const u32str &entryPath, i32 width, i32 height, QWidget *parent)
     : QWidget(parent)
-    , pageNum_(pageNum)
-    , img_(img)
+    , entryPath_(entryPath)
+    , width_(width)
+    , height_(height)
 {
     QSizePolicy spImg(sizePolicy());
     spImg.setVerticalPolicy(QSizePolicy::Policy::Ignored);
@@ -24,7 +25,8 @@ ThumbImg::ThumbImg(PageNum pageNum, const QPixmap &img, QWidget *parent)
 void ThumbImg::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
-    p.drawPixmap(rect(), img_);
+    p.fillRect(rect(), Qt::lightGray);
+    //p.drawPixmap(rect(), img_);
 }
 
 }

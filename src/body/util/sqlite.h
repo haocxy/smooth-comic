@@ -40,7 +40,7 @@ public:
 
 	void close();
 
-    void exec(const std::string &sql);
+    void exec(const std::string_view &sql);
 
 private:
     void assertOpened() const;

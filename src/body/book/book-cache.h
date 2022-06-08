@@ -1,15 +1,18 @@
 #pragma once
 
 #include "core/fs.h"
+#include "core/ustr.h"
 #include "core/logger.h"
 #include "core/declare_ptr.h"
 #include "util/actor.h"
+#include "util/sqlite.h"
+
+#include "page-loader.h"
 
 
 namespace myapp {
 
 class Engine;
-class PageLoader;
 class ThumbCache;
 class ImgCache;
 
@@ -24,10 +27,35 @@ public:
         OpenBookMsg() {}
     };
 
+    class PageOpenedNotice : public actor::Notice {
+    public:
+        PageOpenedNotice() {}
+
+        PageOpenedNotice(const u8str &entryPath, int width, int height)
+            : entryPath(entryPath), width(width), height(height) {}
+
+        PageOpenedNotice(const PageOpenedNotice &other)
+            : actor::Notice(other)
+            , entryPath(other.entryPath)
+            , width(other.width)
+            , height(other.height) {}
+
+        actor::Notice *clone() const override {
+            return new PageOpenedNotice(*this);
+        }
+
+        u8str entryPath;
+        i32 width = 0;
+        i32 height = 0;
+    };
+
     BookCache(Engine &engine, const fs::path &archiveFile);
 
 protected:
+    void onActorStarted() override;
+
     void onMessage(actor::Message &msg) override;
+
 
 private:
     class Logger : public logger::Logger {
@@ -44,10 +72,53 @@ private:
         BookCache &self_;
     };
 
+    void onOpenBookMsg(OpenBookMsg &m);
+
+    void onPageLoadedMsg(PageLoader::PageLoadedMsg &m);
+
+    void removeTable();
+
+    void ensureTableExist();
+    
+    void createTable();
+
+    void clearDb();
+
+    bool shouldClearDb() const;
+
+    bool shouldLoadFromArchive();
+
+    class Page {
+    public:
+        u8str entryPath;
+        i32 width;
+        i32 height;
+    };
+
+    class StmtGetPages {
+    public:
+        StmtGetPages() {}
+
+        void open(sqlite::Database &db);
+
+        void reset() {
+            stmt_.reset();
+        }
+
+        bool next();
+
+        Page item();
+
+    private:
+        sqlite::Statement stmt_;
+    };
+
 private:
     Engine &engine_;
     const fs::path archiveFile_;
     Logger logger_;
+    sqlite::Database db_;
+    StmtGetPages stmtGetPages_;
     DeclarePtr<PageLoader> loader_;
     DeclarePtr<ThumbCache> thumbCache_;
     DeclarePtr<ImgCache> imgCache_;

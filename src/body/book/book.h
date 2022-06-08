@@ -7,11 +7,13 @@
 #include <QPixmap>
 
 #include "core/fs.h"
+#include "core/basetype.h"
 #include "core/declare_ptr.h"
 #include "engine/engine.h"
 #include "util/qobject-actor.h"
 
 #include "page-num.h"
+#include "book-cache.h"
 
 
 namespace myapp {
@@ -32,16 +34,18 @@ public:
     void open(const fs::path &archiveFile);
 
 signals:
-    void sigPageLoaded(PageNum pageNum, const QPixmap &img, PageNum totalPages);
+    void sigPageLoaded(const QString &entryPath, i32 width, i32 height);
+
+protected:
+    void onNotice(actor::Notice &notice) override;
 
 private:
-    void handleOnPageLoaded(PageNum pageNum, const QPixmap &img);
+    void handlePageOpenedNotice(const BookCache::PageOpenedNotice &n);
 
 private:
     Engine &engine_;
     const fs::path archiveFile_;
     DeclarePtr<class BookCache> cache_;
-    std::map<PageNum, QPixmap> pageKeyToImg_;
 };
 
 

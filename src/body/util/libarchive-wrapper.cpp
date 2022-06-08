@@ -70,8 +70,8 @@ public:
         return true;
     }
 
-    std::u8string path() const {
-        return std::u8string(reinterpret_cast<const char8_t *>(::archive_entry_pathname_utf8(curEntry_)));
+    u8str path() const {
+        return u8str(reinterpret_cast<const char8_t *>(::archive_entry_pathname_utf8(curEntry_)));
     }
 
     std::string readData() {
@@ -108,7 +108,7 @@ bool Archive::nextEntry()
     return impl_->nextEntry();
 }
 
-std::u8string Archive::path() const
+u8str Archive::path() const
 {
     return impl_->path();
 }

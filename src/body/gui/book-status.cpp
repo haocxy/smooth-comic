@@ -14,8 +14,9 @@ BookStatus::BookStatus(Book &book, QWidget *parent)
 {
     ui_->setupUi(this);
 
-    connect(&book_, &Book::sigPageLoaded, this, [this](PageNum pageNum, const QPixmap &img, PageNum totalPages) {
-        ui_->totalPageValue->setText(QString::number(totalPages));
+    connect(&book_, &Book::sigPageLoaded, this, [this](const QString &entryPath, i32 width, i32 height) {
+        ++pageCount_;
+        ui_->totalPageValue->setText(QString::number(pageCount_));
     });
 }
 

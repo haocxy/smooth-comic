@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/fs.h"
+#include "core/ustr.h"
 
 
 namespace myapp::wrapper::libarchive {
@@ -15,7 +16,7 @@ public:
 
     bool nextEntry();
 
-    std::u8string path() const;
+    u8str path() const;
 
     std::string readData();
 

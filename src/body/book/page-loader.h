@@ -3,6 +3,7 @@
 #include <QPixmap>
 
 #include "core/fs.h"
+#include "core/ustr.h"
 #include "util/actor.h"
 #include "page-num.h"
 
@@ -14,19 +15,14 @@ namespace myapp {
 class PageLoader : public actor::ThreadedActor {
 public:
 
-    class StartLoadMsg : public actor::Message {
-    public:
-        StartLoadMsg(const fs::path &archive) : archive(archive) {}
-
-        fs::path archive;
-    };
+    class LoadFromArchieMsg : public actor::Message {};
 
     class PageLoadedMsg : public actor::Message {
     public:
-        PageLoadedMsg(PageNum pageNum, const QPixmap &img)
-            : pageNum(pageNum), img(img) {}
+        PageLoadedMsg(const u8str &entryPath, const QPixmap &img)
+            : entryPath(entryPath), img(img) {}
 
-        PageNum pageNum = 0;
+        u8str entryPath;
         QPixmap img;
     };
 
@@ -39,7 +35,7 @@ protected:
 
 private:
 
-    void doStartLoadFromLocalFile(actor::WeakHandle peer, const fs::path &archiveFile);
+    void handleLoadFromArchieMsg(actor::WeakHandle peer);
 
 private:
     const fs::path archiveFile_;
