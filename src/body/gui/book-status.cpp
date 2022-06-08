@@ -18,6 +18,11 @@ BookStatus::BookStatus(Book &book, QWidget *parent)
         ++pageCount_;
         ui_->totalPageValue->setText(QString::number(pageCount_));
     });
+
+    connect(&book_, &Book::sigBookOpenStarted, this, [this](const QString &archivePath) {
+        pageCount_ = 0;
+        ui_->totalPageValue->setText(QString::number(pageCount_));
+    });
 }
 
 BookStatus::~BookStatus()

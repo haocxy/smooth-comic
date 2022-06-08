@@ -27,6 +27,8 @@ public:
 private:
     void addPageThumbnailItemWidget(const QString &entryPath, i32 width, i32 height);
 
+    void removeAllThumbs();
+
 protected:
     virtual void resizeEvent(QResizeEvent *) override;
 
@@ -37,6 +39,7 @@ private:
     QPointer<JumpBar> jumpBar_;
     QPointer<QWidget> root_;
     QPointer<QVBoxLayout> layout_;
+    QObjectList thumbWidgets_;
 };
 
 

@@ -55,17 +55,21 @@ public:
     void open(const fs::path &archiveFile);
 
 signals:
+    void sigBookOpenStarted(const QString &archivePath);
+
     void sigPageLoaded(const QString &entryPath, i32 width, i32 height);
 
 protected:
     void onNotice(actor::Notice &notice) override;
 
 private:
+    void asyncDeleteBookCache();
+
     void handlePageOpenedNotice(const BookCache::PageOpenedNotice &n);
 
 private:
     Engine &engine_;
-    const fs::path archiveFile_;
+    fs::path archiveFile_;
     DeclarePtr<class BookCache> cache_;
 };
 

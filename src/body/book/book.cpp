@@ -22,7 +22,7 @@ Book::Book(Engine &engine, QObject *parent)
 
 Book::~Book()
 {
-    sendTo(engine_.asyncDeleter(), new AsyncDeleter::AsyncDeleteMsg(cache_.take()));
+    asyncDeleteBookCache();
 }
 
 void Book::open(const fs::path &archiveFile)
@@ -31,10 +31,16 @@ void Book::open(const fs::path &archiveFile)
         return;
     }
 
-    cache_ = new BookCache(engine_, archiveFile);
+    archiveFile_ = archiveFile;
+
+    asyncDeleteBookCache();
+    
+    cache_ = new BookCache(engine_, archiveFile_);
     listen<BookCache::PageOpenedNotice>(*cache_);
 
     sendTo(*cache_, std::make_unique<BookCache::OpenBookMsg>());
+
+    emit sigBookOpenStarted(QString::fromStdU32String(archiveFile_.generic_u32string()));
 }
 
 void Book::onNotice(actor::Notice &notice)
@@ -51,6 +57,13 @@ static std::u8string toU8String(const QString &qs)
     u8s.resize(s.size());
     std::memcpy(u8s.data(), s.data(), s.size());
     return u8s;
+}
+
+void Book::asyncDeleteBookCache()
+{
+    if (cache_) {
+        sendTo(engine_.asyncDeleter(), new AsyncDeleter::AsyncDeleteMsg(cache_.take()));
+    }
 }
 
 void Book::handlePageOpenedNotice(const BookCache::PageOpenedNotice &n)
