@@ -14,7 +14,7 @@ namespace myapp {
 
 class Engine;
 class ThumbCache;
-class ImgCache;
+class PageCache;
 
 
 // 整个缓存系统的对外接口
@@ -121,7 +121,7 @@ private:
     StmtGetPages stmtGetPages_;
     DeclarePtr<PageLoader> loader_;
     DeclarePtr<ThumbCache> thumbCache_;
-    DeclarePtr<ImgCache> imgCache_;
+    DeclarePtr<PageCache> pageCache_;
 };
 
 }

@@ -15,7 +15,7 @@ public:
 
     fs::path mkThumbCacheDbFilePath(const fs::path &archiveFile) const;
 
-    fs::path mkImgCacheDbFilePath(const fs::path &archiveFile) const;
+    fs::path mkPageCacheDbFilePath(const fs::path &archiveFile) const;
 
 private:
     fs::path cacheDir_;

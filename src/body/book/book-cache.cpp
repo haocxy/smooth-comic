@@ -32,7 +32,7 @@ BookCache::BookCache(Engine &engine, const fs::path &archiveFile)
 
     loader_ = new PageLoader(archiveFile_);
     thumbCache_ = new ThumbCache(engine_.pathManager().mkThumbCacheDbFilePath(archiveFile_));
-    imgCache_ = new ImgCache(engine_.pathManager().mkImgCacheDbFilePath(archiveFile_));
+    pageCache_ = new PageCache(engine_.pathManager().mkPageCacheDbFilePath(archiveFile_));
 
     logger_.d << "constructed";
 }

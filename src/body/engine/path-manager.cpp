@@ -22,9 +22,9 @@ fs::path PathManager::mkThumbCacheDbFilePath(const fs::path &archiveFile) const
     return cacheDir_ / (FsUtil::encodePathToName(archiveFile) + U".thumb-cache" + kDbFileExt);
 }
 
-fs::path PathManager::mkImgCacheDbFilePath(const fs::path &archiveFile) const
+fs::path PathManager::mkPageCacheDbFilePath(const fs::path &archiveFile) const
 {
-    return cacheDir_ / (FsUtil::encodePathToName(archiveFile) + U".img-cache" + kDbFileExt);
+    return cacheDir_ / (FsUtil::encodePathToName(archiveFile) + U".page-cache" + kDbFileExt);
 }
 
 }

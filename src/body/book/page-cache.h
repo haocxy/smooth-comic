@@ -12,9 +12,10 @@
 
 namespace myapp {
 
-// 用于缓存图片
+// 用于缓存原始尺寸的图片
+// 缓存的图片可能有和原始包中不同的格式，但一定有相同的图片信息
 // 一个该类的对象对应一本书
-class ImgCache : public actor::ThreadedActor {
+class PageCache : public actor::ThreadedActor {
 public:
 
     class AddImgMsg : public actor::Message {
@@ -53,9 +54,9 @@ public:
     };
 
 public:
-    ImgCache(const fs::path &dbFile);
+    PageCache(const fs::path &dbFile);
 
-    virtual ~ImgCache() {}
+    virtual ~PageCache() {}
 
 private:
     const fs::path dbFile_;
