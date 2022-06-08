@@ -22,6 +22,7 @@ Book::Book(Engine &engine, QObject *parent)
 
 Book::~Book()
 {
+    sendTo(engine_.asyncDeleter(), new AsyncDeleter::AsyncDeleteMsg(cache_.take()));
 }
 
 void Book::open(const fs::path &archiveFile)

@@ -17,6 +17,8 @@ public:
     virtual ~DeclarePtrHolder() {}
 
     virtual void *ptr() const = 0;
+
+    virtual void *take() = 0;
 };
 
 template <typename T>
@@ -33,6 +35,12 @@ public:
 
     virtual void *ptr() const override {
         return ptr_;
+    }
+
+    virtual void *take() override {
+        void *ptr = ptr_;
+        ptr_ = nullptr;
+        return ptr;
     }
 
 private:
@@ -86,6 +94,16 @@ public:
 
     RefT operator*() const {
         return *reinterpret_cast<pointer>(holder_->ptr());
+    }
+
+    std::unique_ptr<T> take() {
+        if (holder_) {
+            std::unique_ptr<T> r(reinterpret_cast<pointer>(holder_->take()));
+            holder_ = nullptr;
+            return r;
+        } else {
+            return nullptr;
+        }
     }
 
 private:
