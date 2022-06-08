@@ -26,6 +26,10 @@ Book::~Book()
 
 void Book::open(const fs::path &archiveFile)
 {
+    if (!fs::is_regular_file(archiveFile)) {
+        return;
+    }
+
     cache_ = new BookCache(engine_, archiveFile);
     listen<BookCache::PageOpenedNotice>(*cache_);
 
