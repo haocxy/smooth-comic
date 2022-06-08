@@ -11,7 +11,7 @@ PageCache::PageCache(const fs::path &dbFile)
 
 PageCache::~PageCache()
 {
-    stopEventHandle();
+    stopAndJoin();
 }
 
 }

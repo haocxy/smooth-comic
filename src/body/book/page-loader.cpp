@@ -23,7 +23,7 @@ PageLoader::~PageLoader()
 {
     gLogger.i << "PageLoader destructing";
 
-    stopEventHandle();
+    stopAndJoin();
 }
 
 static std::u32string getNameFromPagePath(const QString &filePath)

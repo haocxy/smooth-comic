@@ -239,9 +239,9 @@ public:
         eventQueue_.push(std::move(e));
     }
 
-    // 停止消息处理，
+    // 停止消息处理，释放消息处理线程，并等待线程释放完成
     // 子类必须在析构函数中显式调用，以确保在子类的组件释放前停止消息处理
-    void stopEventHandle();
+    void stopAndJoin();
 
 protected:
     std::atomic_bool stopped_{ false };
@@ -250,6 +250,8 @@ private:
     void loop();
 
     void updateThreadName();
+
+    void stop();
 
 private:
     BlockQueue<std::unique_ptr<detail::Event>> eventQueue_;

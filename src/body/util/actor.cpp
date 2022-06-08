@@ -100,13 +100,13 @@ ThreadedActor::ThreadedActor()
 
 ThreadedActor::~ThreadedActor()
 {
-    stopEventHandle();
+    stop();
 }
 
-void ThreadedActor::stopEventHandle()
+void ThreadedActor::stopAndJoin()
 {
-    stopped_ = true;
-    eventQueue_.stop();
+    stop();
+    recvThread_.join();
 }
 
 void ThreadedActor::loop()
@@ -140,6 +140,12 @@ void ThreadedActor::updateThreadName()
 
     ThreadUtil::setNameForCurrentThread(actorName());
     nameModified_ = false;
+}
+
+void ThreadedActor::stop()
+{
+    stopped_ = true;
+    eventQueue_.stop();
 }
 
 }

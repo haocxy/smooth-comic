@@ -38,7 +38,7 @@ public:
     }
 
     virtual ~CalcActor() {
-        stopEventHandle();
+        stopAndJoin();
     }
 
 protected:
@@ -71,7 +71,7 @@ public:
     }
 
     virtual ~AskActor() {
-        stopEventHandle();
+        stopAndJoin();
     }
 
 

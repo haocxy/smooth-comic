@@ -39,7 +39,7 @@ BookCache::BookCache(Engine &engine, const fs::path &archiveFile)
 
 BookCache::~BookCache()
 {
-    stopEventHandle();
+    stopAndJoin();
 }
 
 void BookCache::onActorStarted()

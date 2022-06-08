@@ -106,9 +106,9 @@ public:
 
     void bind(int pos, const fs::path &path);
 
-    template <typename T>
-    Statement &arg(T &&obj) {
-        bind(argBindIndex_++, std::forward<T>(obj));
+    template <typename... Args>
+    Statement &arg(Args&&... args) {
+        bind(argBindIndex_++, std::forward<Args>(args)...);
         return *this;
     }
 

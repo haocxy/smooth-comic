@@ -50,11 +50,24 @@ private:
 
     void handleAddPageThumbMsg(AddPageThumbMsg &m);
 
+    class StmtSaveItem {
+    public:
+        StmtSaveItem() {}
+
+        void open(sqlite::Database &db);
+
+        void operator()(const u8str &entryPath, const void *data, size_t len);
+
+    private:
+        sqlite::Statement stmt_;
+    };
+
 private:
     Engine &engine_;
     const fs::path archiveFile_;
     CacheActorLogger logger_;
     sqlite::Database db_;
+    StmtSaveItem stmtSaveItem_;
 };
 
 

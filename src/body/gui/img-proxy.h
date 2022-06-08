@@ -3,6 +3,8 @@
 
 namespace myapp {
 
+class ImgProxy {
 
+};
 
 }

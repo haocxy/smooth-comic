@@ -33,7 +33,9 @@ ThumbCache::ThumbCache(Engine &engine, const fs::path &archiveFile)
 
 ThumbCache::~ThumbCache()
 {
-    stopEventHandle();
+    stopAndJoin();
+
+    logger_.d << "destructed";
 }
 
 void ThumbCache::onActorStarted()
@@ -46,6 +48,8 @@ void ThumbCache::onActorStarted()
     if (shouldClearDb()) {
         clearDb();
     }
+
+    stmtSaveItem_.open(db_);
 }
 
 void ThumbCache::onMessage(actor::Message &msg)
@@ -94,11 +98,20 @@ void ThumbCache::handleAddPageThumbMsg(AddPageThumbMsg &m)
     buffer.open(QIODevice::WriteOnly);
     thumbImg.save(&buffer, kThumbImgFormat);
 
-    fs::path saveDir = "D:/tmp/save-thumb";
-    fs::create_directories(saveDir);
-    fs::path saveFile = saveDir / std::u32string(m.entryPath + u8str(".") + u8str(kThumbImgFormat));
+    stmtSaveItem_(m.entryPath, bytes.constData(), bytes.length());
+}
 
-    thumbImg.save(QString::fromStdU32String(saveFile.generic_u32string()));
+void ThumbCache::StmtSaveItem::open(sqlite::Database &db)
+{
+    stmt_.open(db, std::format("insert or replace into {} values(?,?);", kTableName));
+}
+
+void ThumbCache::StmtSaveItem::operator()(const u8str &entryPath, const void *data, size_t len)
+{
+    stmt_.reset();
+    stmt_.arg(entryPath);
+    stmt_.arg(data, len);
+    stmt_.execute();
 }
 
 }

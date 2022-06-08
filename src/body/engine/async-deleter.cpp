@@ -10,7 +10,7 @@ AsyncDeleter::AsyncDeleter()
 
 AsyncDeleter::~AsyncDeleter()
 {
-    stopEventHandle();
+    stopAndJoin();
 }
 
 void AsyncDeleter::onMessage(actor::Message &msg)
