@@ -115,6 +115,13 @@ public:
         receiver.post(std::move(msg));
     }
 
+    template <typename MessageType>
+    void sendTo(std::weak_ptr<Handle> receiver, std::unique_ptr<MessageType> &&msg) {
+        if (std::shared_ptr<Handle> handle = receiver.lock()) {
+            sendTo(handle->actor(), std::move(msg));
+        }
+    }
+
     template <typename NoticeType>
     void listen(Actor &receiver) {
         doAddListenerTo(receiver, typeid(NoticeType));
@@ -207,6 +214,8 @@ private:
     friend class detail::AddListenerMessage;
 };
 
+using WeakHandle = std::weak_ptr<Actor::Handle>;
+
 
 class ThreadedActor : public Actor {
 public:
@@ -248,7 +257,7 @@ public:
 
     virtual ~SenderAwaredEvent() {}
 
-    std::shared_ptr<Actor::Handle> sender() {
+    std::weak_ptr<Actor::Handle> sender() {
         return sender_.lock();
     }
 

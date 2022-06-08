@@ -85,7 +85,7 @@ private:
             , shouldLog_(logger_.shouldLog(level)) {
 
             if (shouldLog_) {
-                logger_.beforeWriteContent(*this);
+                logger_.beforeWriteContent(buffer_);
             }
         }
 
@@ -98,7 +98,7 @@ private:
 
         ~LogLine() {
             if (shouldLog_) {
-                logger_.afterWriteContent(*this);
+                logger_.afterWriteContent(buffer_);
                 writeLog(level_, buffer_.str());
             }
         }
@@ -183,9 +183,9 @@ public:
     }
 
 protected:
-    virtual void beforeWriteContent(LogLine &logLine) {}
+    virtual void beforeWriteContent(LogStream &stream) {}
 
-    virtual void afterWriteContent(LogLine &logLine) {}
+    virtual void afterWriteContent(LogStream &stream) {}
 
 private:
     bool shouldLog(Level level) const {

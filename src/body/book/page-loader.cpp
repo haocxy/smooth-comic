@@ -61,16 +61,16 @@ static PageNum getPageNumFromPagePath(const QString &filePath)
 void PageLoader::onMessage(actor::Message &msg)
 {
     if (StartLoadMsg *m = msg) {
-        doStartLoadFromLocalFile(m->archive);
+        doStartLoadFromLocalFile(msg.sender(), m->archive);
     }
 }
 
-void PageLoader::doStartLoadFromLocalFile(const fs::path &archiveFile)
+void PageLoader::doStartLoadFromLocalFile(actor::WeakHandle peer, const fs::path &archiveFile)
 {
     ImgArchive archive;
-    archive.load(archiveFile, [this](const QString &pagePath, const QPixmap &img) {
+    archive.load(archiveFile, [this, peer](const QString &pagePath, const QPixmap &img) {
         const PageNum pageNum = getPageNumFromPagePath(pagePath);
-        notify(std::make_unique<PageLoaded>(pageNum, img));
+        sendTo(peer, std::make_unique<PageLoadedMsg>(pageNum, img));
         return !stopped_;
     });
 }

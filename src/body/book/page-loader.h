@@ -21,19 +21,10 @@ public:
         fs::path archive;
     };
 
-    class PageLoaded : public actor::Notice {
+    class PageLoadedMsg : public actor::Message {
     public:
-        PageLoaded() {}
-
-        PageLoaded(PageNum pageNum, const QPixmap &img)
+        PageLoadedMsg(PageNum pageNum, const QPixmap &img)
             : pageNum(pageNum), img(img) {}
-
-        PageLoaded(const PageLoaded &other)
-            : actor::Notice(other), pageNum(other.pageNum), img(other.img) {}
-
-        virtual actor::Notice *clone() const override {
-            return new PageLoaded(pageNum, img);
-        }
 
         PageNum pageNum = 0;
         QPixmap img;
@@ -48,7 +39,7 @@ protected:
 
 private:
 
-    void doStartLoadFromLocalFile(const fs::path &archiveFile);
+    void doStartLoadFromLocalFile(actor::WeakHandle peer, const fs::path &archiveFile);
 
 private:
     const fs::path archiveFile_;

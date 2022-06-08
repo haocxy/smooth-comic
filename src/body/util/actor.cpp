@@ -58,9 +58,10 @@ void Actor::handleRunInActor(detail::RunInActorEvent &runInActorEvent) {
 
 void Actor::handleAddListenerMessage(detail::AddListenerMessage &msg) {
     HandleSet &handles = listeners_[msg.noticeType()];
-    std::shared_ptr<Handle> sender = msg.sender();
-    if (!handles.contains(sender)) {
-        handles.insert(sender);
+    if (std::shared_ptr<Handle> sender = msg.sender().lock()) {
+        if (!handles.contains(sender)) {
+            handles.insert(sender);
+        }
     }
 }
 

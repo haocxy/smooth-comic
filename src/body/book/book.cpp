@@ -27,6 +27,8 @@ Book::~Book()
 void Book::open(const fs::path &archiveFile)
 {
     cache_ = new BookCache(engine_, archiveFile);
+
+    sendTo(*cache_, std::make_unique<BookCache::OpenBookMsg>());
 }
 
 static std::u8string toU8String(const QString &qs)
