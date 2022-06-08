@@ -26,7 +26,7 @@ static const std::string kTableName{ "book_cache" };
 BookCache::BookCache(Engine &engine, const fs::path &archiveFile)
     : engine_(engine)
     , archiveFile_(archiveFile)
-    , logger_(*this)
+    , logger_("BookCache", archiveFile_)
 {
     setActorName("BookCache");
 

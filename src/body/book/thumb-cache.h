@@ -5,6 +5,8 @@
 #include "util/actor.h"
 #include "util/sqlite.h"
 
+#include "cache-actor-logger.h"
+
 
 namespace myapp {
 
@@ -34,9 +36,16 @@ protected:
 private:
     void ensureTableExist();
 
+    bool shouldClearDb() const;
+
+    void removeTable();
+
+    void createTable();
+
 private:
     Engine &engine_;
     const fs::path archiveFile_;
+    CacheActorLogger logger_;
     sqlite::Database db_;
 };
 

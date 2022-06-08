@@ -8,6 +8,7 @@
 #include "util/sqlite.h"
 
 #include "page-loader.h"
+#include "cache-actor-logger.h"
 
 
 namespace myapp {
@@ -58,19 +59,6 @@ protected:
 
 
 private:
-    class Logger : public logger::Logger {
-    public:
-        Logger(BookCache &self) : self_(self) {
-            setLevel(logger::Level::All);
-        }
-
-        void beforeWriteContent(logger::LogStream &stream) {
-            stream << "BookCache(" << self_.archiveFile_ << ") ";
-        }
-
-    private:
-        BookCache &self_;
-    };
 
     void onOpenBookMsg(OpenBookMsg &m);
 
@@ -116,7 +104,7 @@ private:
 private:
     Engine &engine_;
     const fs::path archiveFile_;
-    Logger logger_;
+    CacheActorLogger logger_;
     sqlite::Database db_;
     StmtGetPages stmtGetPages_;
     DeclarePtr<PageLoader> loader_;
