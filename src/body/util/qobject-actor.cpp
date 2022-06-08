@@ -7,13 +7,12 @@ namespace myapp {
 QObjectActor::QObjectActor(QObject *parent)
     : QObject(parent)
 {
-    qRegisterMetaType<MyApp_ActorEventWrapperForQtMetaObjSys>();
-
     connect(this, &QObjectActor::qtSigRecvActorEvent, this, &QObjectActor::qtSlotRecvActorEvent, Qt::ConnectionType::QueuedConnection);
 }
 
 QObjectActor::~QObjectActor()
 {
+    
 }
 
 void QObjectActor::post(std::unique_ptr<actor::detail::Event> &&e)
@@ -34,8 +33,6 @@ void QObjectActor::qtSlotRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys e
 QWidgetActor::QWidgetActor(QWidget *parent)
     : QWidget(parent)
 {
-    qRegisterMetaType<MyApp_ActorEventWrapperForQtMetaObjSys>();
-
     connect(this, &QWidgetActor::qtSigRecvActorEvent, this, &QWidgetActor::qtSlotRecvActorEvent, Qt::ConnectionType::QueuedConnection);
 }
 

@@ -8,6 +8,8 @@
 #include "engine/engine.h"
 #include "gui/book-viewer.h"
 
+#include "register-qt-meta-types.h"
+
 
 namespace myapp {
 
@@ -28,6 +30,8 @@ int body_entry(int argc, char *argv[])
     gLogger.i << "body_entry()";
 
     QApplication app(argc, argv);
+
+    registerQtMetaTypes();
 
     Engine engine;
 
