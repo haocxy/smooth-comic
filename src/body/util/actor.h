@@ -105,7 +105,7 @@ public:
     template <typename RequestType>
     void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
         doSendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
-            cb(static_cast<typename RequestType::Response &>(resp));
+            cb(dynamic_cast<typename RequestType::Response &>(resp));
         });
     }
 
