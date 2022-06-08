@@ -36,22 +36,22 @@ public:
         PageOpenedNotice() {}
 
         PageOpenedNotice(const u32str &entryPath, int width, int height) {
-            pages_.push_back(PageInfo(entryPath, width, height));
+            pages.push_back(PageInfo(entryPath, width, height));
         }
 
         PageOpenedNotice(const PageInfo &page) {
-            pages_.push_back(page);
+            pages.push_back(page);
         }
 
         PageOpenedNotice(const PageOpenedNotice &other)
             : actor::Notice(other)
-            , pages_(other.pages_) {}
+            , pages(other.pages) {}
 
         actor::Notice *clone() const override {
             return new PageOpenedNotice(*this);
         }
 
-        std::vector<PageInfo> pages_;
+        std::vector<PageInfo> pages;
     };
 
     BookCache(Engine &engine, const fs::path &archiveFile);

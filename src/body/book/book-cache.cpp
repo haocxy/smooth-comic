@@ -74,7 +74,19 @@ void BookCache::onOpenBookMsg(OpenBookMsg &m)
 
     if (shouldLoadFromArchive()) {
         sendTo(*loader_, new PageLoader::LoadFromArchieMsg);
+        return;
     }
+
+    std::unique_ptr<PageOpenedNotice> notice = std::make_unique<PageOpenedNotice>();
+
+    stmtGetPages_.reset();
+
+    while (stmtGetPages_.next()) {
+        PageInfo page = stmtGetPages_.item();
+        notice->pages.push_back(std::move(page));
+    }
+
+    notify(std::move(notice));
 }
 
 void BookCache::onPageLoadedMsg(PageLoader::PageLoadedMsg &m)
