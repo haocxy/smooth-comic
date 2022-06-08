@@ -6,7 +6,7 @@
 
 #include "page-loader.h"
 #include "thumb-cache.h"
-#include "img-cache.h"
+#include "page-cache.h"
 
 #include "./sql/asset.book-cache-table-create.sql.h"
 
