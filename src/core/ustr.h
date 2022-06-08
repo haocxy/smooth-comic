@@ -34,40 +34,40 @@ constexpr char32_t decohi6 = 0b1111'1100;
 
 }
 
-inline std::string convertToU8(const std::u32string &u32s)
+inline std::u8string convertToU8(const std::u32string_view &u32s)
 {
     using namespace utf8detail;
 
-    std::basic_string<char> result;
+    std::u8string result;
 
     for (char32_t u : u32s) {
         if (u < 0x80) {
-            result.push_back(static_cast<char>(u));
+            result.push_back(static_cast<char8_t>(u));
         } else if (u < 0x800) {
-            result.push_back(static_cast<char>(decohi2 | (keephi2 & (u >> 6))));
-            result.push_back(static_cast<char>(decolow | (keeplow & u)));
+            result.push_back(static_cast<char8_t>(decohi2 | (keephi2 & (u >> 6))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & u)));
         } else if (u < 0x10000) {
-            result.push_back(static_cast<char>(decohi3 | (keephi3 & (u >> 12))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 6))));
-            result.push_back(static_cast<char>(decolow | (keeplow & u)));
+            result.push_back(static_cast<char8_t>(decohi3 | (keephi3 & (u >> 12))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 6))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & u)));
         } else if (u < 0x200000) {
-            result.push_back(static_cast<char>(decohi4 | (keephi4 & (u >> 18))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 12))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 6))));
-            result.push_back(static_cast<char>(decolow | (keeplow & u)));
+            result.push_back(static_cast<char8_t>(decohi4 | (keephi4 & (u >> 18))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 12))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 6))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & u)));
         } else if (u < 0x4000000) {
-            result.push_back(static_cast<char>(decohi5 | (keephi5 & (u >> 24))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 18))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 12))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 6))));
-            result.push_back(static_cast<char>(decolow | (keeplow & u)));
+            result.push_back(static_cast<char8_t>(decohi5 | (keephi5 & (u >> 24))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 18))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 12))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 6))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & u)));
         } else {
-            result.push_back(static_cast<char>(decohi6 | (keephi6 & (u >> 30))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 24))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 18))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 12))));
-            result.push_back(static_cast<char>(decolow | (keeplow & (u >> 6))));
-            result.push_back(static_cast<char>(decolow | (keeplow & u)));
+            result.push_back(static_cast<char8_t>(decohi6 | (keephi6 & (u >> 30))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 24))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 18))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 12))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & (u >> 6))));
+            result.push_back(static_cast<char8_t>(decolow | (keeplow & u)));
         }
     }
 
@@ -163,6 +163,12 @@ public:
     u8str(u8str &&b) noexcept
         : std::u8string(std::move(b)) {}
 
+    u8str(const std::u32string &u32str)
+        : std::u8string(ustrdetail::convertToU8(u32str)) {}
+
+    u8str(const std::u32string_view &u32str)
+        : std::u8string(ustrdetail::convertToU8(u32str)) {}
+
     u8str(allocator_type allocator)
         : std::u8string(allocator) {}
 
@@ -180,9 +186,6 @@ public:
 
     u8str(long long n)
         : u8str(std::to_string(n)) {}
-
-    u8str(const std::u32string &s)
-        : u8str(ustrdetail::convertToU8(s)) {}
 
     operator std::string() const {
         return std::string(begin(), end());

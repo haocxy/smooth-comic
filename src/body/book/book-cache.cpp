@@ -50,6 +50,7 @@ void BookCache::onActorStarted()
     ensureTableExist();
 
     stmtGetPages_.open(db_);
+    stmtSavePage_.open(db_);
 }
 
 void BookCache::onMessage(actor::Message &msg)
@@ -80,9 +81,13 @@ void BookCache::onPageLoadedMsg(PageLoader::PageLoadedMsg &m)
 {
     logger_.d << m;
 
+    PageInfo page(m.entryPath, m.img.width(), m.img.height());
+
+    stmtSavePage_(page);
+
     sendTo(*thumbCache_, new ThumbCache::AddPageThumbMsg(m.entryPath, m.img));
 
-    notify(std::make_unique<PageOpenedNotice>(m.entryPath, m.img.width(), m.img.height()));
+    notify(new PageOpenedNotice(page));
 }
 
 void BookCache::removeTable()
@@ -129,14 +134,26 @@ bool BookCache::StmtGetPages::next()
     return stmt_.nextRow();
 }
 
-BookCache::Page BookCache::StmtGetPages::item()
+PageInfo BookCache::StmtGetPages::item()
 {
-    Page p;
+    PageInfo p;
     stmt_.getValue(0, p.entryPath);
     stmt_.getValue(1, p.width);
     stmt_.getValue(2, p.height);
 
     return p;
+}
+
+void BookCache::StmtSavePage::open(sqlite::Database &db)
+{
+    stmt_.open(db, std::format("insert or replace into {} values(?,?,?);", kTableName));
+}
+
+void BookCache::StmtSavePage::operator()(const PageInfo &page)
+{
+    stmt_.reset();
+    stmt_.arg(page.entryPath).arg(page.width).arg(page.height);
+    stmt_.execute();
 }
 
 }

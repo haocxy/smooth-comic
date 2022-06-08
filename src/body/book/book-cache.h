@@ -39,6 +39,10 @@ public:
             pages_.push_back(PageInfo(entryPath, width, height));
         }
 
+        PageOpenedNotice(const PageInfo &page) {
+            pages_.push_back(page);
+        }
+
         PageOpenedNotice(const PageOpenedNotice &other)
             : actor::Notice(other)
             , pages_(other.pages_) {}
@@ -78,13 +82,6 @@ private:
 
     bool shouldLoadFromArchive();
 
-    class Page {
-    public:
-        u8str entryPath;
-        i32 width;
-        i32 height;
-    };
-
     class StmtGetPages {
     public:
         StmtGetPages() {}
@@ -97,7 +94,23 @@ private:
 
         bool next();
 
-        Page item();
+        PageInfo item();
+
+    private:
+        sqlite::Statement stmt_;
+    };
+
+    class StmtSavePage {
+    public:
+        StmtSavePage() {}
+
+        void open(sqlite::Database &db);
+
+        void reset() {
+            stmt_.reset();
+        }
+
+        void operator()(const PageInfo &page);
 
     private:
         sqlite::Statement stmt_;
@@ -109,6 +122,7 @@ private:
     CacheActorLogger logger_;
     sqlite::Database db_;
     StmtGetPages stmtGetPages_;
+    StmtSavePage stmtSavePage_;
     DeclarePtr<PageLoader> loader_;
     DeclarePtr<ThumbCache> thumbCache_;
     DeclarePtr<PageCache> pageCache_;

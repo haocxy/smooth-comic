@@ -6,6 +6,7 @@
 #include "core/strutil.h"
 #include "engine/engine.h"
 #include "engine/path-manager.h"
+#include "util/img-util.h"
 
 #include "./sql/asset.thumb-cache-table-create.sql.h"
 
@@ -93,10 +94,7 @@ void ThumbCache::handleAddPageThumbMsg(AddPageThumbMsg &m)
 
     QPixmap thumbImg = m.rawImg.scaledToWidth(kThumbImgWidth);
 
-    QByteArray bytes;
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    thumbImg.save(&buffer, kThumbImgFormat);
+    QByteArray bytes = ImgUtil::toByteArray(thumbImg, kThumbImgFormat);
 
     stmtSaveItem_(m.entryPath, bytes.constData(), bytes.length());
 }

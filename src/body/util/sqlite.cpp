@@ -240,9 +240,14 @@ void Statement::bind(int pos, const u8str &s)
     bind(pos, u8view(s));
 }
 
+void Statement::bind(int pos, const u32str &s)
+{
+    bind(pos, std::u32string_view(s));
+}
+
 void Statement::bind(int pos, const std::u32string_view &utf32str)
 {
-    bind(pos, utf32str.data(), utf32str.size() * sizeof(std::u32string_view::value_type));
+    bind(pos, u8str(utf32str));
 }
 
 void Statement::bind(int pos, const void *data, size_t len)
@@ -349,9 +354,9 @@ void Statement::getValue(int col, u8str &to)
 
 void Statement::getValue(int col, std::u32string &to)
 {
-    size_t nbytes = sqlite3_column_bytes(stmt_, col);
-    to.resize(nbytes / sizeof(std::u32string::value_type));
-    std::memcpy(to.data(), sqlite3_column_blob(stmt_, col), nbytes);
+    u8str u8str;
+    getValue(col, u8str);
+    to = u8str;
 }
 
 void Statement::getValue(int col, fs::path &to)

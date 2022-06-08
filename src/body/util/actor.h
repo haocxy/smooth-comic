@@ -139,6 +139,13 @@ public:
         doNotify(typeid(NoticeType), std::move(notice));
     }
 
+    template <typename NoticeType>
+    void notify(NoticeType *&&notice) {
+        std::unique_ptr<NoticeType> ptr(notice);
+        notice = nullptr;
+        notify(std::move(ptr));
+    }
+
 protected:
     virtual void onActorStarted() {}
 

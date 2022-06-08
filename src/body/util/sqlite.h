@@ -90,6 +90,8 @@ public:
 
     void bind(int pos, const u8str &s);
 
+    void bind(int pos, const u32str &s);
+
     void bind(int pos, const std::u32string_view &utf32str);
 
     void bind(int pos, const void *data, size_t len);
