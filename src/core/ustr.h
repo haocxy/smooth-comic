@@ -74,7 +74,7 @@ inline std::string convertToU8(const std::u32string &u32s)
     return result;
 }
 
-inline std::u32string convertToU32(const std::string &u8s)
+inline std::u32string convertToU32(const std::u8string &u8s)
 {
     using namespace utf8detail;
 
@@ -198,6 +198,17 @@ public:
     u8str &operator=(u8str &&b) noexcept {
         std::u8string::operator=(std::move(b));
         return *this;
+    }
+
+    u8str operator+(const u8str &b) const {
+        return u8str(
+            static_cast<const std::u8string &>(*this)
+            + static_cast<const std::u8string &>(b)
+        );
+    }
+
+    operator std::u32string() const {
+        return ustrdetail::convertToU32(*this);
     }
 
     operator int() const {

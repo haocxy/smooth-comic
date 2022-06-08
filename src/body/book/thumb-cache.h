@@ -17,11 +17,11 @@ class Engine;
 class ThumbCache : public actor::ThreadedActor {
 public:
 
-    class AddPageThumbMessage : public actor::Message {
+    class AddPageThumbMsg : public actor::Message {
     public:
-        AddPageThumbMessage() {}
+        AddPageThumbMsg() {}
 
-        AddPageThumbMessage(const u8str &entryPath, const QPixmap &rawImg)
+        AddPageThumbMsg(const u8str &entryPath, const QPixmap &rawImg)
             : entryPath(entryPath), rawImg(rawImg) {}
 
         u8str entryPath;
@@ -35,14 +35,20 @@ public:
 protected:
     void onActorStarted() override;
 
+    void onMessage(actor::Message &msg) override;
+
 private:
     void ensureTableExist();
 
     bool shouldClearDb() const;
 
+    void clearDb();
+
     void removeTable();
 
     void createTable();
+
+    void handleAddPageThumbMsg(AddPageThumbMsg &m);
 
 private:
     Engine &engine_;

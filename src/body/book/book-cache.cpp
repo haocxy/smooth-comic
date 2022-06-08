@@ -80,7 +80,7 @@ void BookCache::onPageLoadedMsg(PageLoader::PageLoadedMsg &m)
 {
     logger_.d << m;
 
-    sendTo(*thumbCache_, new ThumbCache::AddPageThumbMessage(m.entryPath, m.img));
+    sendTo(*thumbCache_, new ThumbCache::AddPageThumbMsg(m.entryPath, m.img));
 
     notify(std::make_unique<PageOpenedNotice>(m.entryPath, m.img.width(), m.img.height()));
 }
