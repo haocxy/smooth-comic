@@ -106,9 +106,9 @@ ThreadedActor::~ThreadedActor()
 
 void ThreadedActor::loop()
 {
-    gLogger.d << "ThreadedActor[" << actorName() << "] started";
-
     updateThreadName();
+
+    gLogger.d << "ThreadedActor[" << actorName() << "] started";
 
     onActorStarted();
 
