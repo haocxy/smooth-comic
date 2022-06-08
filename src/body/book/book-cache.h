@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "core/fs.h"
 #include "core/ustr.h"
 #include "core/logger.h"
@@ -9,6 +11,7 @@
 
 #include "page-loader.h"
 #include "cache-actor-logger.h"
+#include "page-info.h"
 
 
 namespace myapp {
@@ -32,22 +35,19 @@ public:
     public:
         PageOpenedNotice() {}
 
-        PageOpenedNotice(const u8str &entryPath, int width, int height)
-            : entryPath(entryPath), width(width), height(height) {}
+        PageOpenedNotice(const u32str &entryPath, int width, int height) {
+            pages_.push_back(PageInfo(entryPath, width, height));
+        }
 
         PageOpenedNotice(const PageOpenedNotice &other)
             : actor::Notice(other)
-            , entryPath(other.entryPath)
-            , width(other.width)
-            , height(other.height) {}
+            , pages_(other.pages_) {}
 
         actor::Notice *clone() const override {
             return new PageOpenedNotice(*this);
         }
 
-        u8str entryPath;
-        i32 width = 0;
-        i32 height = 0;
+        std::vector<PageInfo> pages_;
     };
 
     BookCache(Engine &engine, const fs::path &archiveFile);

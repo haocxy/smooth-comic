@@ -11,7 +11,7 @@ namespace myapp {
 
 class ImgArchive {
 public:
-    using OnImgLoad = std::function<bool(const u8str &path, const QPixmap &img)>;
+    using OnImgLoad = std::function<bool(const u32str &path, const QPixmap &img)>;
 
     void load(const fs::path &archiveFile, OnImgLoad &&cb);
 };

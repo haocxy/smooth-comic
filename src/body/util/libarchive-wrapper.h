@@ -16,7 +16,7 @@ public:
 
     bool nextEntry();
 
-    u8str path() const;
+    u32str path() const;
 
     std::string readData();
 

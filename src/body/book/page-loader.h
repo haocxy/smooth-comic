@@ -19,10 +19,10 @@ public:
 
     class PageLoadedMsg : public actor::Message {
     public:
-        PageLoadedMsg(const u8str &entryPath, const QPixmap &img)
+        PageLoadedMsg(const u32str &entryPath, const QPixmap &img)
             : entryPath(entryPath), img(img) {}
 
-        u8str entryPath;
+        u32str entryPath;
         QPixmap img;
     };
 

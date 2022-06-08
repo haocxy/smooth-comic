@@ -70,7 +70,7 @@ public:
         return true;
     }
 
-    u8str path() const {
+    u32str path() const {
         return u8str(reinterpret_cast<const char8_t *>(::archive_entry_pathname_utf8(curEntry_)));
     }
 
@@ -108,7 +108,7 @@ bool Archive::nextEntry()
     return impl_->nextEntry();
 }
 
-u8str Archive::path() const
+u32str Archive::path() const
 {
     return impl_->path();
 }

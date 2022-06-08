@@ -68,7 +68,9 @@ void Book::asyncDeleteBookCache()
 
 void Book::handlePageOpenedNotice(const BookCache::PageOpenedNotice &n)
 {
-    emit sigPageLoaded(QString::fromUtf8(n.entryPath.c_str(), n.entryPath.length()), n.width, n.height);
+    for (const PageInfo &page : n.pages_) {
+        emit sigPageLoaded(QString::fromStdU32String(page.entryPath), page.width, page.height);
+    }
 }
 
 }

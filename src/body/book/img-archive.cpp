@@ -12,7 +12,7 @@ void ImgArchive::load(const fs::path &archiveFile, OnImgLoad &&cb)
     wrapper::libarchive::Archive archive(archiveFile);
 
     while (archive.nextEntry()) {
-        u8str entryPath = archive.path();
+        u32str entryPath = archive.path();
         std::string data = archive.readData();
         QPixmap img;
         img.loadFromData(QByteArray(data.data(), data.size()));
