@@ -33,6 +33,13 @@ public:
 
 class CalcActor : public actor::ThreadedActor {
 public:
+    CalcActor() {
+        setActorName("CalcActor");
+    }
+
+    virtual ~CalcActor() {
+        stopEventHandle();
+    }
 
 protected:
     virtual void onActorStarted() override {
@@ -59,7 +66,15 @@ protected:
 
 class AskActor : public actor::ThreadedActor {
 public:
-    AskActor(actor::Actor &calcActor) : calcActor_(calcActor) {}
+    AskActor(actor::Actor &calcActor) : calcActor_(calcActor) {
+        setActorName("AskActor");
+    }
+
+    virtual ~AskActor() {
+        stopEventHandle();
+    }
+
+
 
 protected:
 

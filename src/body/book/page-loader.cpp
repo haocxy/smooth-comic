@@ -22,6 +22,8 @@ PageLoader::PageLoader(const fs::path &archiveFile)
 PageLoader::~PageLoader()
 {
     gLogger.i << "PageLoader destructing";
+
+    stopEventHandle();
 }
 
 static std::u32string getNameFromPagePath(const QString &filePath)

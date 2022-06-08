@@ -30,6 +30,8 @@ public:
 
     ThumbCache(Engine &engine, const fs::path &archiveFile);
 
+    virtual ~ThumbCache();
+
 protected:
     void onActorStarted() override;
 

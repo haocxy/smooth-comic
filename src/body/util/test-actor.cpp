@@ -14,6 +14,7 @@ TestActor::TestActor()
 
 TestActor::~TestActor()
 {
+    stopEventHandle();
 }
 
 std::unique_ptr<actor::Response> TestActor::onRequest(actor::Request &req)

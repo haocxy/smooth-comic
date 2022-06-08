@@ -9,5 +9,10 @@ PageCache::PageCache(const fs::path &dbFile)
     setActorName("PageCache");
 }
 
+PageCache::~PageCache()
+{
+    stopEventHandle();
+}
+
 }
 

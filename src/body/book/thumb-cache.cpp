@@ -20,6 +20,11 @@ ThumbCache::ThumbCache(Engine &engine, const fs::path &archiveFile)
     setActorName("ThumbCache");
 }
 
+ThumbCache::~ThumbCache()
+{
+    stopEventHandle();
+}
+
 void ThumbCache::onActorStarted()
 {
     db_.open(engine_.pathManager().mkThumbCacheDbFilePath(archiveFile_));

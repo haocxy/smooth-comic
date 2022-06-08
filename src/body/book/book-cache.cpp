@@ -37,6 +37,11 @@ BookCache::BookCache(Engine &engine, const fs::path &archiveFile)
     logger_.d << "constructed";
 }
 
+BookCache::~BookCache()
+{
+    stopEventHandle();
+}
+
 void BookCache::onActorStarted()
 {
     db_.open(engine_.pathManager().mkBookCacheDbFilePath(archiveFile_));

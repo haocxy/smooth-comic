@@ -52,6 +52,8 @@ public:
 
     BookCache(Engine &engine, const fs::path &archiveFile);
 
+    virtual ~BookCache();
+
 protected:
     void onActorStarted() override;
 

@@ -56,7 +56,7 @@ public:
 public:
     PageCache(const fs::path &dbFile);
 
-    virtual ~PageCache() {}
+    virtual ~PageCache();
 
 private:
     const fs::path dbFile_;

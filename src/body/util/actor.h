@@ -239,6 +239,10 @@ public:
         eventQueue_.push(std::move(e));
     }
 
+    // 停止消息处理，
+    // 子类必须在析构函数中显式调用，以确保在子类的组件释放前停止消息处理
+    void stopEventHandle();
+
 protected:
     std::atomic_bool stopped_{ false };
 

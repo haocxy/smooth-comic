@@ -100,6 +100,11 @@ ThreadedActor::ThreadedActor()
 
 ThreadedActor::~ThreadedActor()
 {
+    stopEventHandle();
+}
+
+void ThreadedActor::stopEventHandle()
+{
     stopped_ = true;
     eventQueue_.stop();
 }
