@@ -116,6 +116,13 @@ public:
     }
 
     template <typename MessageType>
+    void sendTo(Actor &receiver, MessageType *&&msg) {
+        std::unique_ptr<MessageType> uptr(msg);
+        msg = nullptr;
+        sendTo(receiver, std::move(uptr));
+    }
+
+    template <typename MessageType>
     void sendTo(std::weak_ptr<Handle> receiver, std::unique_ptr<MessageType> &&msg) {
         if (std::shared_ptr<Handle> handle = receiver.lock()) {
             sendTo(handle->actor(), std::move(msg));

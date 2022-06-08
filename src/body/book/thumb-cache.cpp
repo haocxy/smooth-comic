@@ -1,25 +1,31 @@
 #include "thumb-cache.h"
 
-#include "./sql/asset.thumb-cache-table-create.sql.h"
-
 #include "core/strutil.h"
+#include "engine/engine.h"
+#include "engine/path-manager.h"
+
+#include "./sql/asset.thumb-cache-table-create.sql.h"
 
 
 namespace myapp {
 
-ThumbCache::ThumbCache(const fs::path &dbFile)
-    : dbFile_(dbFile)
+ThumbCache::ThumbCache(Engine &engine, const fs::path &archiveFile)
+    : engine_(engine)
+    , archiveFile_(archiveFile)
 {
     setActorName("ThumbCache");
 }
 
 void ThumbCache::onActorStarted()
 {
-    db_.open(dbFile_);
+    db_.open(engine_.pathManager().mkThumbCacheDbFilePath(archiveFile_));
 
-    // 只在启动时执行一次，不需要保存statement对象
-    sqlite::Statement stmtCreateTable(db_, Asset::StrView::thumb_cache_table_create__sql);
-    stmtCreateTable.execute();
+    ensureTableExist();
+}
+
+void ThumbCache::ensureTableExist()
+{
+    db_.exec(Asset::StrView::thumb_cache_table_create__sql);
 }
 
 }

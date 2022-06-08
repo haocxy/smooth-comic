@@ -31,7 +31,7 @@ BookCache::BookCache(Engine &engine, const fs::path &archiveFile)
     setActorName("BookCache");
 
     loader_ = new PageLoader(archiveFile_);
-    thumbCache_ = new ThumbCache(engine_.pathManager().mkThumbCacheDbFilePath(archiveFile_));
+    thumbCache_ = new ThumbCache(engine_, archiveFile_);
     pageCache_ = new PageCache(engine_.pathManager().mkPageCacheDbFilePath(archiveFile_));
 
     logger_.d << "constructed";
@@ -67,13 +67,15 @@ void BookCache::onOpenBookMsg(OpenBookMsg &m)
     }
 
     if (shouldLoadFromArchive()) {
-        sendTo(*loader_, std::make_unique<PageLoader::LoadFromArchieMsg>());
+        sendTo(*loader_, new PageLoader::LoadFromArchieMsg);
     }
 }
 
 void BookCache::onPageLoadedMsg(PageLoader::PageLoadedMsg &m)
 {
     logger_.d << m;
+
+    sendTo(*thumbCache_, new ThumbCache::AddPageThumbMessage(m.entryPath, m.img));
 
     notify(std::make_unique<PageOpenedNotice>(m.entryPath, m.img.width(), m.img.height()));
 }

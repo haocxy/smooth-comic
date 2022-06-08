@@ -25,9 +25,9 @@ static std::string &getCurrentThreadNameObjRef()
     return threadName;
 }
 
-uint32_t currentThreadShortId() {
-    static std::atomic<uint32_t> s_nextShortId = 1;
-    thread_local uint32_t tl_curThreadShortId = s_nextShortId++;
+uint64_t currentThreadShortId() {
+    static std::atomic<uint64_t> s_nextShortId = 1;
+    thread_local uint64_t tl_curThreadShortId = s_nextShortId++;
     return tl_curThreadShortId;
 }
 
