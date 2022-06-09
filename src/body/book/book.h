@@ -40,7 +40,7 @@ signals:
     void sigPageLoaded(const QString &entryPath, i32 width, i32 height);
 
 protected:
-    void onNotice(actor::Notice &notice) override;
+    void onNotice(actor::EventHolder<actor::Notice> &&notice) override;
 
     void onRequest(actor::EventHolder<actor::Request> &&req) override;
 

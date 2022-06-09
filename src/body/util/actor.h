@@ -249,7 +249,7 @@ protected:
 
     virtual void onMessage(EventHolder<Message> &&msg) {}
 
-    virtual void onNotice(Notice &notice) {}
+    virtual void onNotice(EventHolder<Notice> &&notice) {}
 
     virtual void onTask(Task &task) {}
 
@@ -272,8 +272,8 @@ private:
         onMessage(std::move(message));
     }
 
-    void handleNotice(Notice &notice) {
-        onNotice(notice);
+    void handleNotice(EventHolder<Notice> &&notice) {
+        onNotice(std::move(notice));
     }
 
     void handleTask(Task &task) {
@@ -524,7 +524,7 @@ public:
 
 protected:
     virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
-        receiver.handleNotice(*this);
+        receiver.handleNotice(std::move(holder));
     }
 };
 

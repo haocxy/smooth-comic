@@ -44,9 +44,9 @@ void Book::open(const fs::path &archiveFile)
     emit sigBookOpenStarted(QString::fromStdU32String(archiveFile_.generic_u32string()));
 }
 
-void Book::onNotice(actor::Notice &notice)
+void Book::onNotice(actor::EventHolder<actor::Notice> &&notice)
 {
-    if (BookCache::PageOpenedNotice *n = notice) {
+    if (actor::EventHolder<BookCache::PageOpenedNotice> n = std::move(notice)) {
         return handlePageOpenedNotice(*n);
     }
 }
