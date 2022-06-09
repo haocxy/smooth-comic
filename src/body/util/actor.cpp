@@ -35,7 +35,7 @@ void Actor::respondTo(Request &&req, std::unique_ptr<Response> resp)
     }
 }
 
-void Actor::doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
+void Actor::doSendReqTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
     req->sender_ = this->handle_;
     req->callback_ = std::move(cb);
     receiver.post(std::move(req));

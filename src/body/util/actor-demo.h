@@ -84,7 +84,7 @@ protected:
 
         sendTo(calcActor_, std::make_unique<ActorStartedMessage>("AskActor"));
 
-        sendTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
+        requestTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
             gLogger.i << "AskActor handle SumRequest::Response(" << r.n << ")";
         });
     }

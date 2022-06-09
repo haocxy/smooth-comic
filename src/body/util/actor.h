@@ -41,6 +41,14 @@ public:
 
     virtual ~Event() {}
 
+    Event(const Event &other) {
+        *this = other;
+    }
+
+    Event &operator=(const Event &other) {
+        return *this;
+    }
+
     template <typename T>
     operator const T *() const {
         return dynamic_cast<const T *>(this);
@@ -66,6 +74,16 @@ private:
 
 class Response {
 public:
+    Response() {}
+
+    Response(const Response &other) {
+        *this = other;
+    }
+
+    Response &operator=(const Response &other) {
+        return *this;
+    }
+
     virtual ~Response() {}
 };
 
@@ -103,10 +121,17 @@ public:
     void post(std::function<void()> &&action);
 
     template <typename RequestType>
-    void sendTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
-        doSendTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
+    void requestTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
+        doSendReqTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
             cb(dynamic_cast<typename RequestType::Response &>(resp));
         });
+    }
+
+    template <typename RequestType>
+    void requestTo(Actor &receiver, RequestType *&&req, std::function<void(typename RequestType::Response &)> &&cb) {
+        std::unique_ptr<RequestType> p{ req };
+        req = nullptr;
+        requestTo(receiver, std::move(p), std::move(cb));
     }
 
     void respondTo(Request &&req, std::unique_ptr<Response> resp);
@@ -174,7 +199,7 @@ protected:
     }
 
 private:
-    void doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
+    void doSendReqTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
 
     void handleRequest(Request &req) {
         onRequest(req);
@@ -282,10 +307,17 @@ class SenderAwaredEvent : public Event {
 public:
     SenderAwaredEvent() {}
 
-    SenderAwaredEvent(const SenderAwaredEvent &other)
-        : sender_(other.sender_) {}
+    SenderAwaredEvent(const SenderAwaredEvent &other) {
+        *this = other;
+    }
 
     virtual ~SenderAwaredEvent() {}
+
+    SenderAwaredEvent &operator=(const SenderAwaredEvent &other) {
+        Event::operator=(other);
+        sender_ = other.sender_;
+        return *this;
+    }
 
     std::weak_ptr<Actor::Handle> sender() {
         return sender_.lock();
@@ -308,6 +340,15 @@ public:
     using Callback = ActionCallback;
 
     Request() {}
+
+    Request(const Request &other) {
+        *this = other;
+    }
+
+    Request &operator=(const Request &other) {
+        detail::SenderAwaredEvent::operator=(other);
+        callback_ = other.callback_;
+    }
 
     virtual ~Request() {}
 

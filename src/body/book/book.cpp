@@ -8,6 +8,7 @@
 #include "engine/async-deleter.h"
 
 #include "book-cache.h"
+#include "thumb-cache.h"
 
 
 namespace myapp {
@@ -52,6 +53,9 @@ void Book::onNotice(actor::Notice &notice)
 
 void Book::onRequest(actor::Request &req)
 {
+    if (GetThumbImgReq *r = req) {
+        return handleGetThumbImgReq(*r);
+    }
 }
 
 static std::u8string toU8String(const QString &qs)
@@ -75,6 +79,13 @@ void Book::handlePageOpenedNotice(const BookCache::PageOpenedNotice &n)
     for (const PageInfo &page : n.pages) {
         emit sigPageLoaded(QString::fromStdU32String(page.entryPath), page.width, page.height);
     }
+}
+
+void Book::handleGetThumbImgReq(GetThumbImgReq &req)
+{
+    requestTo(cache_->thumbCache(), new GetThumbImgReq(req), [req, this](GetThumbImgReq::Response &resp) mutable {
+        respondTo(std::move(req), new GetThumbImgReq::Response(resp));
+    });
 }
 
 }

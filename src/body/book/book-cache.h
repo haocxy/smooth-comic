@@ -57,6 +57,10 @@ public:
 
     virtual ~BookCache();
 
+    ThumbCache &thumbCache() {
+        return *thumbCache_;
+    }
+
 protected:
     void onActorStarted() override;
 

@@ -14,6 +14,7 @@
 
 #include "page-num.h"
 #include "book-cache.h"
+#include "get-thumb-img-req.h"
 
 
 namespace myapp {
@@ -26,8 +27,6 @@ class BookCache;
 class Book : public QObjectActor {
     Q_OBJECT
 public:
-
-
 
     explicit Book(Engine &engine, QObject *parent = nullptr);
 
@@ -49,6 +48,8 @@ private:
     void asyncDeleteBookCache();
 
     void handlePageOpenedNotice(const BookCache::PageOpenedNotice &n);
+
+    void handleGetThumbImgReq(GetThumbImgReq &req);
 
 private:
     Engine &engine_;
