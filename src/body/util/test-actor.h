@@ -45,7 +45,7 @@ public:
     virtual ~TestActor();
 
 protected:
-    void onRequest(actor::Request &req) override;
+    void onRequest(actor::EventHolder<actor::Request> &&req) override;
 
 private:
     int handleRequestTimes_{};

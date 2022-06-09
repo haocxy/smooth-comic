@@ -17,17 +17,17 @@ Actor::~Actor()
 }
 
 void Actor::post(std::function<void()> &&action) {
-    post(std::make_unique<detail::RunInActorEvent>(std::move(action)));
+    post(new detail::RunInActorEvent(std::move(action)));
 }
 
-void Actor::respondTo(Request &&req, std::unique_ptr<Response> resp)
+void Actor::respondTo(EventHolder<Request> &&req, EventHolder<Response> &&resp)
 {
-    if (resp) {
+    if (req && resp) {
 
-        if (std::shared_ptr<Handle> peerPtr = req.sender().lock()) {
+        if (std::shared_ptr<Handle> peerPtr = req->sender().lock()) {
 
-            std::unique_ptr<detail::RequestCallbackEvent> resultEvent = std::make_unique<detail::RequestCallbackEvent>(
-                std::move(req.callback_), std::move(resp));
+            EventHolder<detail::RequestCallbackEvent> resultEvent = new detail::RequestCallbackEvent(
+                std::move(req->callback_), std::move(resp));
 
             peerPtr->actor().post(std::move(resultEvent));
         }
@@ -35,7 +35,7 @@ void Actor::respondTo(Request &&req, std::unique_ptr<Response> resp)
     }
 }
 
-void Actor::doSendReqTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
+void Actor::doSendReqTo(Actor &receiver, EventHolder<Request> &&req, ActionCallback &&cb) {
     req->sender_ = this->handle_;
     req->callback_ = std::move(cb);
     receiver.post(std::move(req));
@@ -65,11 +65,10 @@ void Actor::handleAddListenerMessage(detail::AddListenerMessage &msg) {
 
 void Actor::doAddListenerTo(Actor &receiver, const std::type_index &noticeType)
 {
-    std::unique_ptr<detail::AddListenerMessage> msg = std::make_unique<detail::AddListenerMessage>(noticeType);
-    sendTo(receiver, std::move(msg));
+    sendTo(receiver, new detail::AddListenerMessage(noticeType));
 }
 
-void Actor::doNotify(std::type_index type, std::unique_ptr<Notice> &&notice)
+void Actor::doNotify(std::type_index type, EventHolder<Notice> &&notice)
 {
     notice->setSender(handle_);
 
@@ -79,7 +78,7 @@ void Actor::doNotify(std::type_index type, std::unique_ptr<Notice> &&notice)
     for (std::weak_ptr<Handle> weakHandle : handles) {
         std::shared_ptr<Handle> handle = weakHandle.lock();
         if (handle) {
-            handle->actor().post(std::unique_ptr<Notice>(notice->clone()));
+            handle->actor().post(notice->clone());
         } else {
             badHandles.push_back(weakHandle);
         }
@@ -116,11 +115,11 @@ void ThreadedActor::loop()
     onActorStarted();
 
     while (!stopped_) {
-        std::optional<std::unique_ptr<detail::Event>> evOpt = eventQueue_.pop();
+        std::optional<EventHolder<detail::Event>> evOpt = eventQueue_.pop();
         if (evOpt) {
-            std::unique_ptr<detail::Event> &ev = *evOpt;
+            EventHolder<detail::Event> &ev = *evOpt;
             if (ev) {
-                handleEvent(*ev);
+                handleEvent(std::move(ev));
             }
         }
     }

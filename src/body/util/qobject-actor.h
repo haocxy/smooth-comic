@@ -10,7 +10,7 @@ class MyApp_ActorEventWrapperForQtMetaObjSys {
 public:
     MyApp_ActorEventWrapperForQtMetaObjSys() {}
 
-    MyApp_ActorEventWrapperForQtMetaObjSys(std::unique_ptr<myapp::actor::detail::Event> &&ptr)
+    MyApp_ActorEventWrapperForQtMetaObjSys(myapp::actor::EventHolder<myapp::actor::detail::Event> &&ptr)
         : ptr_(std::move(ptr)) {}
 
     MyApp_ActorEventWrapperForQtMetaObjSys(const MyApp_ActorEventWrapperForQtMetaObjSys &other)
@@ -23,12 +23,12 @@ public:
         return *this;
     }
 
-    std::unique_ptr<myapp::actor::detail::Event> &ptr() {
+    myapp::actor::EventHolder<myapp::actor::detail::Event> &ptr() {
         return ptr_;
     }
 
 private:
-    std::unique_ptr<myapp::actor::detail::Event> ptr_;
+    myapp::actor::EventHolder<myapp::actor::detail::Event> ptr_;
 };
 
 Q_DECLARE_METATYPE(MyApp_ActorEventWrapperForQtMetaObjSys);
@@ -51,7 +51,7 @@ private slots:
     void qtSlotRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys e);
 
 protected:
-    virtual void post(std::unique_ptr<actor::detail::Event> &&e) override;
+    virtual void post(actor::EventHolder<actor::detail::Event> &&e) override;
 };
 
 class QWidgetActor : public QWidget, public actor::Actor {
@@ -69,7 +69,7 @@ private slots:
     void qtSlotRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys e);
 
 protected:
-    virtual void post(std::unique_ptr<actor::detail::Event> &&e) override;
+    virtual void post(actor::EventHolder<actor::detail::Event> &&e) override;
 
 };
 

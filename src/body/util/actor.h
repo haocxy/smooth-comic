@@ -1,5 +1,6 @@
 #pragma once
 
+#include <type_traits>
 #include <functional>
 #include <typeindex>
 #include <memory>
@@ -29,6 +30,9 @@ class RunInActorEvent;
 class RequestCallbackEvent;
 class AddListenerMessage;
 }
+
+template <typename T>
+class EventHolder;
 
 namespace detail {
 
@@ -60,7 +64,7 @@ public:
     }
 
 protected:
-    virtual void handle(Actor &receiver) {}
+    virtual void handle(Actor &receiver, EventHolder<Event> &&holder) {}
 
 private:
     friend class Actor;
@@ -71,6 +75,60 @@ private:
 
 } // namespace detail
 
+template <typename T>
+class EventHolder {
+public:
+    EventHolder() {}
+
+    template <typename U>
+    EventHolder(U *&&ptr)
+        : ptr_(ptr) {
+        ptr = nullptr;
+    }
+
+    template <typename U>
+    EventHolder(const EventHolder<U> &) = delete;
+
+    template <typename U>
+    EventHolder(EventHolder<U> &&other) {
+        *this = std::move(other);
+    }
+
+    template <typename U>
+    EventHolder &operator=(const EventHolder<U> &) = delete;
+
+    template <typename U>
+    EventHolder &operator=(EventHolder<U> &&other) {
+        if constexpr (std::is_base_of_v<T, U> || std::is_same_v<T, U>) {
+            ptr_ = std::move(other.ptr_);
+        } else {
+            T *p = dynamic_cast<T *>(other.ptr_.get());
+            if (p) {
+                ptr_ = std::unique_ptr<T>(p);
+                other.ptr_.release();
+            }
+        }
+        return *this;
+    }
+
+    operator bool() const {
+        return ptr_.operator bool();
+    }
+
+    T &operator*() const {
+        return ptr_.operator*();
+    }
+
+    T *operator->() const {
+        return ptr_.operator->();
+    }
+
+private:
+    std::unique_ptr<T> ptr_;
+
+    template <typename U>
+    friend class EventHolder;
+};
 
 class Response {
 public:
@@ -116,12 +174,22 @@ public:
         return actorName_;
     }
 
-    virtual void post(std::unique_ptr<detail::Event> &&e) = 0;
+    virtual void post(EventHolder<detail::Event> &&e) = 0;
+
+    template <typename EventType>
+    void post(EventHolder<EventType> &&e) {
+        post(EventHolder<detail::Event>(std::move(e)));
+    }
+
+    template <typename EventType>
+    void post(EventType *&&e) {
+        post(EventHolder<EventType>(std::move(e)));
+    }
 
     void post(std::function<void()> &&action);
 
     template <typename RequestType>
-    void requestTo(Actor &receiver, std::unique_ptr<RequestType> req, std::function<void(typename RequestType::Response &)> &&cb) {
+    void requestTo(Actor &receiver, EventHolder<RequestType> &&req, std::function<void(typename RequestType::Response &)> &&cb) {
         doSendReqTo(receiver, std::move(req), [cb = std::move(cb)](Response &resp) mutable {
             cb(dynamic_cast<typename RequestType::Response &>(resp));
         });
@@ -129,37 +197,32 @@ public:
 
     template <typename RequestType>
     void requestTo(Actor &receiver, RequestType *&&req, std::function<void(typename RequestType::Response &)> &&cb) {
-        std::unique_ptr<RequestType> p{ req };
-        req = nullptr;
-        requestTo(receiver, std::move(p), std::move(cb));
+        requestTo<RequestType>(receiver, EventHolder<RequestType>(std::move(req)), std::move(cb));
     }
 
-    void respondTo(Request &&req, std::unique_ptr<Response> resp);
-
-    void respondTo(Request &&req, Response *&&resp) {
-        std::unique_ptr<Response> p{ resp };
-        resp = nullptr;
-        respondTo(std::move(req), std::move(p));
-    }
+    void respondTo(EventHolder<Request> &&req, actor::EventHolder<Response> &&resp);
 
     template <typename MessageType>
-    void sendTo(Actor &receiver, std::unique_ptr<MessageType> &&msg) {
+    void sendTo(Actor &receiver, EventHolder<MessageType> &&msg) {
         msg->sender_ = this->handle_;
         receiver.post(std::move(msg));
     }
 
     template <typename MessageType>
     void sendTo(Actor &receiver, MessageType *&&msg) {
-        std::unique_ptr<MessageType> uptr(msg);
-        msg = nullptr;
-        sendTo(receiver, std::move(uptr));
+        sendTo(receiver, EventHolder<MessageType>(std::move(msg)));
     }
 
     template <typename MessageType>
-    void sendTo(std::weak_ptr<Handle> receiver, std::unique_ptr<MessageType> &&msg) {
+    void sendTo(std::weak_ptr<Handle> receiver, EventHolder<MessageType> &&msg) {
         if (std::shared_ptr<Handle> handle = receiver.lock()) {
             sendTo(handle->actor(), std::move(msg));
         }
+    }
+
+    template <typename MessageType>
+    void sendTo(std::weak_ptr<Handle> receiver, MessageType *&&msg) {
+        sendTo(receiver, EventHolder<MessageType>(std::move(msg)));
     }
 
     template <typename NoticeType>
@@ -168,15 +231,13 @@ public:
     }
 
     template <typename NoticeType>
-    void notify(std::unique_ptr<NoticeType> &&notice) {
+    void notify(EventHolder<NoticeType> &&notice) {
         doNotify(typeid(NoticeType), std::move(notice));
     }
 
     template <typename NoticeType>
     void notify(NoticeType *&&notice) {
-        std::unique_ptr<NoticeType> ptr(notice);
-        notice = nullptr;
-        notify(std::move(ptr));
+        notify(EventHolder<NoticeType>(std::move(notice)));
     }
 
 protected:
@@ -184,7 +245,7 @@ protected:
 
     virtual void onActorStopped() {}
 
-    virtual void onRequest(Request &req) {}
+    virtual void onRequest(EventHolder<Request> &&req) {}
 
     virtual void onMessage(Message &msg) {}
 
@@ -194,15 +255,15 @@ protected:
 
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
-    void handleEvent(detail::Event &e) {
-        e.handle(*this);
+    void handleEvent(EventHolder<detail::Event> &&e) {
+        e->handle(*this, std::move(e));
     }
 
 private:
-    void doSendReqTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
+    void doSendReqTo(Actor &receiver, EventHolder<Request> &&req, ActionCallback &&cb);
 
-    void handleRequest(Request &req) {
-        onRequest(req);
+    void handleRequest(EventHolder<Request> &&req) {
+        onRequest(std::move(req));
     }
 
     void handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult);
@@ -234,7 +295,7 @@ private:
 
     void doAddListenerTo(Actor &receiver, const std::type_index &noticeType);
 
-    void doNotify(std::type_index type, std::unique_ptr<Notice> &&notice);
+    void doNotify(std::type_index type, EventHolder<Notice> &&notice);
 
 private:
 
@@ -277,7 +338,7 @@ public:
         nameModified_ = true;
     }
 
-    virtual void post(std::unique_ptr<detail::Event> &&e) override {
+    virtual void post(EventHolder<detail::Event> &&e) override {
         eventQueue_.push(std::move(e));
     }
 
@@ -296,7 +357,7 @@ private:
     void stop();
 
 private:
-    BlockQueue<std::unique_ptr<detail::Event>> eventQueue_;
+    BlockQueue<EventHolder<detail::Event>> eventQueue_;
     std::jthread recvThread_;
     std::atomic_bool nameModified_{ false };
 };
@@ -353,8 +414,8 @@ public:
     virtual ~Request() {}
 
 protected:
-    virtual void handle(Actor &receiver) override {
-        receiver.handleRequest(*this);
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
+        receiver.handleRequest(std::move(holder));
     }
 
 private:
@@ -362,6 +423,8 @@ private:
 
     friend class Actor;
 };
+
+using RequestHolder = EventHolder<Request>;
 
 
 namespace detail {
@@ -374,7 +437,7 @@ public:
     virtual ~RunInActorEvent() {}
 
 protected:
-    virtual void handle(Actor &receiver) override {
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
         receiver.handleRunInActor(*this);
     }
 
@@ -388,19 +451,19 @@ class RequestCallbackEvent : public detail::Event {
 public:
     using Callback = Request::Callback;
 
-    RequestCallbackEvent(Callback &&callback, std::unique_ptr<Response> &&resp)
+    RequestCallbackEvent(Callback &&callback, EventHolder<Response> &&resp)
         : callback_(std::move(callback)), resp_(std::move(resp)) {}
 
     virtual ~RequestCallbackEvent() {}
 
 protected:
-    virtual void handle(Actor &receiver) override {
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
         receiver.handleRequestCallbackEvent(*this);
     }
 
 private:
     Callback callback_;
-    std::unique_ptr<Response> resp_;
+    EventHolder<Response> resp_;
 
     friend class Actor;
 };
@@ -415,7 +478,7 @@ public:
     virtual ~Message() {}
 
 protected:
-    virtual void handle(Actor &receiver) override {
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
         receiver.handleMessage(*this);
     }
 };
@@ -435,7 +498,7 @@ public:
     }
 
 protected:
-    virtual void handle(Actor &receiver) override {
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
         receiver.handleAddListenerMessage(*this);
     }
 
@@ -460,7 +523,7 @@ public:
     virtual Notice *clone() const = 0;
 
 protected:
-    virtual void handle(Actor &receiver) override {
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
         receiver.handleNotice(*this);
     }
 };
@@ -523,7 +586,7 @@ public:
     }
 
 protected:
-    virtual void handle(Actor &receiver) override {
+    virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
         receiver.handleTask(*this);
     }
 

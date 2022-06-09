@@ -17,15 +17,16 @@ TestActor::~TestActor()
     stopAndJoin();
 }
 
-void TestActor::onRequest(actor::Request &req)
+void TestActor::onRequest(actor::EventHolder<actor::Request> &&req)
 {
     ++handleRequestTimes_;
 
-    notify(std::make_unique<RequestTimesNotice>(handleRequestTimes_));
+    notify(new RequestTimesNotice(handleRequestTimes_));
 
-    if (SumRequest *r = req) {
+    if (actor::EventHolder<SumRequest> r = std::move(req)) {
         gLogger.i << "handle SumRequest(" << r->numA << ", " << r->numB << ")";
-        respondTo(std::move(req), new SumRequest::Response(r->numA + r->numB));
+        int result = r->numA + r->numB;
+        respondTo(std::move(r), new SumRequest::Response(result));
         return;
     }
 }

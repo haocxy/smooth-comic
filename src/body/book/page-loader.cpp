@@ -71,7 +71,7 @@ void PageLoader::handleLoadFromArchieMsg(actor::WeakHandle peer)
 {
     ImgArchive archive;
     archive.load(archiveFile_, [this, peer](const u8str &entryPath, const QPixmap &img) {
-        sendTo(peer, std::make_unique<PageLoadedMsg>(entryPath, img));
+        sendTo(peer, new PageLoadedMsg(entryPath, img));
         return !stopped_;
     });
 }

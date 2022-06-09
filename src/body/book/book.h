@@ -42,7 +42,7 @@ signals:
 protected:
     void onNotice(actor::Notice &notice) override;
 
-    void onRequest(actor::Request &req) override;
+    void onRequest(actor::EventHolder<actor::Request> &&req) override;
 
 private:
     void asyncDeleteBookCache();

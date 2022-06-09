@@ -47,10 +47,11 @@ protected:
         gLogger.i << "CalcActor started";
     }
 
-    virtual void onRequest(actor::Request &req) override {
-        if (const SumRequest *a = req) {
+    virtual void onRequest(actor::EventHolder<actor::Request> &&req) override {
+        if (actor::EventHolder<SumRequest> a = std::move(req)) {
             gLogger.i << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
-            respondTo(std::move(req), new SumRequest::Response(a->a + a->b));
+            int n = a->a + a->b;
+            respondTo(std::move(req), new SumRequest::Response(n));
             return;
         }
     }
@@ -82,9 +83,9 @@ protected:
 
         gLogger.i << "AskActor started";
 
-        sendTo(calcActor_, std::make_unique<ActorStartedMessage>("AskActor"));
+        sendTo(calcActor_, new ActorStartedMessage("AskActor"));
 
-        requestTo(calcActor_, std::make_unique<SumRequest>(1, 2), [](SumRequest::Response &r) {
+        requestTo(calcActor_, new SumRequest(1, 2), [](SumRequest::Response &r) {
             gLogger.i << "AskActor handle SumRequest::Response(" << r.n << ")";
         });
     }

@@ -39,7 +39,7 @@ void Book::open(const fs::path &archiveFile)
     cache_ = new BookCache(engine_, archiveFile_);
     listen<BookCache::PageOpenedNotice>(*cache_);
 
-    sendTo(*cache_, std::make_unique<BookCache::OpenBookMsg>());
+    sendTo(*cache_, new BookCache::OpenBookMsg());
 
     emit sigBookOpenStarted(QString::fromStdU32String(archiveFile_.generic_u32string()));
 }
@@ -51,9 +51,9 @@ void Book::onNotice(actor::Notice &notice)
     }
 }
 
-void Book::onRequest(actor::Request &req)
+void Book::onRequest(actor::EventHolder<actor::Request> &&req)
 {
-    if (GetThumbImgReq *r = req) {
+    if (actor::EventHolder<GetThumbImgReq> r = std::move(req)) {
         return handleGetThumbImgReq(*r);
     }
 }
@@ -84,7 +84,7 @@ void Book::handlePageOpenedNotice(const BookCache::PageOpenedNotice &n)
 void Book::handleGetThumbImgReq(GetThumbImgReq &req)
 {
     requestTo(cache_->thumbCache(), new GetThumbImgReq(req), [req, this](GetThumbImgReq::Response &resp) mutable {
-        respondTo(std::move(req), new GetThumbImgReq::Response(resp));
+        //respondTo(std::move(req), new GetThumbImgReq::Response(resp));
     });
 }
 

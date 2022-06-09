@@ -77,7 +77,7 @@ void BookCache::onOpenBookMsg(OpenBookMsg &m)
         return;
     }
 
-    std::unique_ptr<PageOpenedNotice> notice = std::make_unique<PageOpenedNotice>();
+    actor::EventHolder<PageOpenedNotice> notice = new PageOpenedNotice();
 
     stmtGetPages_.reset();
 

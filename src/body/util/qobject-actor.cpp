@@ -15,16 +15,16 @@ QObjectActor::~QObjectActor()
     
 }
 
-void QObjectActor::post(std::unique_ptr<actor::detail::Event> &&e)
+void QObjectActor::post(actor::EventHolder<actor::detail::Event> &&e)
 {
     emit qtSigRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys(std::move(e)));
 }
 
 void QObjectActor::qtSlotRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys e)
 {
-    std::unique_ptr<actor::detail::Event> &eventPtr = e.ptr();
+    actor::EventHolder<actor::detail::Event> &eventPtr = e.ptr();
     if (eventPtr) {
-        handleEvent(*eventPtr);
+        handleEvent(std::move(eventPtr));
     }
 }
 
@@ -40,16 +40,16 @@ QWidgetActor::~QWidgetActor()
 {
 }
 
-void QWidgetActor::post(std::unique_ptr<actor::detail::Event> &&e)
+void QWidgetActor::post(actor::EventHolder<actor::detail::Event> &&e)
 {
     emit qtSigRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys(std::move(e)));
 }
 
 void QWidgetActor::qtSlotRecvActorEvent(MyApp_ActorEventWrapperForQtMetaObjSys e)
 {
-    std::unique_ptr<actor::detail::Event> &eventPtr = e.ptr();
+    actor::EventHolder<actor::detail::Event> &eventPtr = e.ptr();
     if (eventPtr) {
-        handleEvent(*eventPtr);
+        handleEvent(std::move(eventPtr));
     }
 }
 
