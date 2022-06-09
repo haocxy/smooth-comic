@@ -31,7 +31,7 @@ public:
     virtual ~PageLoader();
 
 protected:
-    virtual void onMessage(actor::Message &msg) override;
+    virtual void onMessage(actor::EventHolder<actor::Message> &&msg) override;
 
 private:
 

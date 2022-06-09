@@ -35,7 +35,7 @@ public:
 protected:
     void onActorStarted() override;
 
-    void onMessage(actor::Message &msg) override;
+    void onMessage(actor::EventHolder<actor::Message> &&msg) override;
 
 private:
     void ensureTableExist();

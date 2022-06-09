@@ -60,10 +60,10 @@ static PageNum getPageNumFromPagePath(const QString &filePath)
     return n;
 }
 
-void PageLoader::onMessage(actor::Message &msg)
+void PageLoader::onMessage(actor::EventHolder<actor::Message> &&msg)
 {
-    if (LoadFromArchieMsg *m = msg) {
-        handleLoadFromArchieMsg(msg.sender());
+    if (actor::EventHolder<LoadFromArchieMsg> m = std::move(msg)) {
+        handleLoadFromArchieMsg(m->sender());
     }
 }
 

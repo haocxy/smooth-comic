@@ -247,7 +247,7 @@ protected:
 
     virtual void onRequest(EventHolder<Request> &&req) {}
 
-    virtual void onMessage(Message &msg) {}
+    virtual void onMessage(EventHolder<Message> &&msg) {}
 
     virtual void onNotice(Notice &notice) {}
 
@@ -268,8 +268,8 @@ private:
 
     void handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult);
 
-    void handleMessage(Message &message) {
-        onMessage(message);
+    void handleMessage(EventHolder<Message> &&message) {
+        onMessage(std::move(message));
     }
 
     void handleNotice(Notice &notice) {
@@ -479,7 +479,7 @@ public:
 
 protected:
     virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
-        receiver.handleMessage(*this);
+        receiver.handleMessage(std::move(holder));
     }
 };
 

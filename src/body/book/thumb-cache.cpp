@@ -53,9 +53,9 @@ void ThumbCache::onActorStarted()
     stmtSaveItem_.open(db_);
 }
 
-void ThumbCache::onMessage(actor::Message &msg)
+void ThumbCache::onMessage(actor::EventHolder<actor::Message> &&msg)
 {
-    if (AddPageThumbMsg *m = msg) {
+    if (actor::EventHolder<AddPageThumbMsg> m = std::move(msg)) {
         return handleAddPageThumbMsg(*m);
     }
 }

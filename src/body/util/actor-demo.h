@@ -56,8 +56,8 @@ protected:
         }
     }
 
-    virtual void onMessage(actor::Message &msg) override {
-        if (const ActorStartedMessage *m = msg) {
+    virtual void onMessage(actor::EventHolder<actor::Message> &&msg) override {
+        if (actor::EventHolder<ActorStartedMessage> m = std::move(msg)) {
             gLogger.i << "CalcActor handle ActorStartedMessage(" << m->actorName << ")";
         }
     }

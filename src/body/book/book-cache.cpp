@@ -53,13 +53,13 @@ void BookCache::onActorStarted()
     stmtSavePage_.open(db_);
 }
 
-void BookCache::onMessage(actor::Message &msg)
+void BookCache::onMessage(actor::EventHolder<actor::Message> &&msg)
 {
-    if (OpenBookMsg *m = msg) {
+    if (actor::EventHolder<OpenBookMsg> m = std::move(msg)) {
         return onOpenBookMsg(*m);
     }
 
-    if (PageLoader::PageLoadedMsg *m = msg) {
+    if (actor::EventHolder<PageLoader::PageLoadedMsg> m = std::move(msg)) {
         return onPageLoadedMsg(*m);
     }
 }
