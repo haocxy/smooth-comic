@@ -251,7 +251,7 @@ protected:
 
     virtual void onNotice(EventHolder<Notice> &&notice) {}
 
-    virtual void onTask(Task &task) {}
+    virtual void onTask(EventHolder<Task> &&task) {}
 
     // 这个函数是子类处理消息的总入口，固定了 Actor 处理消息的框架
     // 子类负责则在适当的时候调用这个函数
@@ -276,8 +276,8 @@ private:
         onNotice(std::move(notice));
     }
 
-    void handleTask(Task &task) {
-        onTask(task);
+    void handleTask(EventHolder<Task> &&task) {
+        onTask(std::move(task));
     }
 
     void handleRunInActor(detail::RunInActorEvent &runInActorEvent);
@@ -587,7 +587,7 @@ public:
 
 protected:
     virtual void handle(Actor &receiver, EventHolder<detail::Event> &&holder) override {
-        receiver.handleTask(*this);
+        receiver.handleTask(std::move(holder));
     }
 
 private:
