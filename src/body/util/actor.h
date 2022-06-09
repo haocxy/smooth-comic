@@ -109,6 +109,14 @@ public:
         });
     }
 
+    void respondTo(Request &&req, std::unique_ptr<Response> resp);
+
+    void respondTo(Request &&req, Response *&&resp) {
+        std::unique_ptr<Response> p{ resp };
+        resp = nullptr;
+        respondTo(std::move(req), std::move(p));
+    }
+
     template <typename MessageType>
     void sendTo(Actor &receiver, std::unique_ptr<MessageType> &&msg) {
         msg->sender_ = this->handle_;
@@ -151,7 +159,7 @@ protected:
 
     virtual void onActorStopped() {}
 
-    virtual std::unique_ptr<Response> onRequest(Request &a) { return nullptr; }
+    virtual void onRequest(Request &req) {}
 
     virtual void onMessage(Message &msg) {}
 
@@ -168,7 +176,9 @@ protected:
 private:
     void doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb);
 
-    void handleRequest(Request &action);
+    void handleRequest(Request &req) {
+        onRequest(req);
+    }
 
     void handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult);
 

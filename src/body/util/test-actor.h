@@ -45,7 +45,7 @@ public:
     virtual ~TestActor();
 
 protected:
-    virtual std::unique_ptr<actor::Response> onRequest(actor::Request &req) override;
+    void onRequest(actor::Request &req) override;
 
 private:
     int handleRequestTimes_{};

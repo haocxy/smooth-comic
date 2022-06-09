@@ -17,7 +17,7 @@ TestActor::~TestActor()
     stopAndJoin();
 }
 
-std::unique_ptr<actor::Response> TestActor::onRequest(actor::Request &req)
+void TestActor::onRequest(actor::Request &req)
 {
     ++handleRequestTimes_;
 
@@ -25,12 +25,9 @@ std::unique_ptr<actor::Response> TestActor::onRequest(actor::Request &req)
 
     if (SumRequest *r = req) {
         gLogger.i << "handle SumRequest(" << r->numA << ", " << r->numB << ")";
-        return std::make_unique<SumRequest::Response>(r->numA + r->numB);
+        respondTo(std::move(req), new SumRequest::Response(r->numA + r->numB));
+        return;
     }
-
-
-
-    return nullptr;
 }
 
 }

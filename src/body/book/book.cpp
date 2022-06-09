@@ -50,6 +50,10 @@ void Book::onNotice(actor::Notice &notice)
     }
 }
 
+void Book::onRequest(actor::Request &req)
+{
+}
+
 static std::u8string toU8String(const QString &qs)
 {
     const std::string s = qs.toUtf8().toStdString();

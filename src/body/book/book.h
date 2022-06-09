@@ -27,26 +27,7 @@ class Book : public QObjectActor {
     Q_OBJECT
 public:
 
-    class GetThumbImgReq : public actor::Request {
-    public:
 
-        GetThumbImgReq() {}
-
-        GetThumbImgReq(const u8str &entryPath)
-            : entryPath(entryPath) {}
-
-        class Response : public actor::Response {
-        public:
-            Response() {}
-
-            Response(const QPixmap &img)
-                : img(img) {}
-
-            QPixmap img;
-        };
-
-        u8str entryPath;
-    };
 
     explicit Book(Engine &engine, QObject *parent = nullptr);
 
@@ -62,6 +43,8 @@ signals:
 protected:
     void onNotice(actor::Notice &notice) override;
 
+    void onRequest(actor::Request &req) override;
+
 private:
     void asyncDeleteBookCache();
 
@@ -70,7 +53,7 @@ private:
 private:
     Engine &engine_;
     fs::path archiveFile_;
-    DeclarePtr<class BookCache> cache_;
+    DeclarePtr<BookCache> cache_;
 };
 
 

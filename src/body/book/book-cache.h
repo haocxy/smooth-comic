@@ -22,7 +22,6 @@ class PageCache;
 
 
 // 整个缓存系统的对外接口
-// 其它缓存模块（例如缩略图缓存和图片缓存）都隐藏在这个模块的后面，上层UI逻辑只直接使用这个模块
 class BookCache : public actor::ThreadedActor {
 public:
 

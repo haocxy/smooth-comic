@@ -47,13 +47,12 @@ protected:
         gLogger.i << "CalcActor started";
     }
 
-    virtual std::unique_ptr<actor::Response> onRequest(actor::Request &action) override {
-        if (const SumRequest *a = action) {
+    virtual void onRequest(actor::Request &req) override {
+        if (const SumRequest *a = req) {
             gLogger.i << "CalcActor handle SumRequest(" << a->a << ", " << a->b << ")";
-            return std::unique_ptr<actor::Response>(new SumRequest::Response(a->a + a->b));
+            respondTo(std::move(req), new SumRequest::Response(a->a + a->b));
+            return;
         }
-
-        return nullptr;
     }
 
     virtual void onMessage(actor::Message &msg) override {

@@ -20,27 +20,25 @@ void Actor::post(std::function<void()> &&action) {
     post(std::make_unique<detail::RunInActorEvent>(std::move(action)));
 }
 
+void Actor::respondTo(Request &&req, std::unique_ptr<Response> resp)
+{
+    if (resp) {
+
+        if (std::shared_ptr<Handle> peerPtr = req.sender().lock()) {
+
+            std::unique_ptr<detail::RequestCallbackEvent> resultEvent = std::make_unique<detail::RequestCallbackEvent>(
+                std::move(req.callback_), std::move(resp));
+
+            peerPtr->actor().post(std::move(resultEvent));
+        }
+
+    }
+}
+
 void Actor::doSendTo(Actor &receiver, std::unique_ptr<Request> req, ActionCallback &&cb) {
     req->sender_ = this->handle_;
     req->callback_ = std::move(cb);
     receiver.post(std::move(req));
-}
-
-void Actor::handleRequest(Request &req)
-{   
-    std::unique_ptr<Response> result = onRequest(req);
-
-    if (result) {
-
-        if (std::shared_ptr<Actor::Handle> senderHandle = req.sender_.lock()) {
-
-            std::unique_ptr<detail::RequestCallbackEvent> resultEvent = std::make_unique<detail::RequestCallbackEvent>(
-                std::move(req.callback_), std::move(result));
-
-            senderHandle->actor().post(std::move(resultEvent));
-        }
-
-    }
 }
 
 void Actor::handleRequestCallbackEvent(detail::RequestCallbackEvent &actionResult)
