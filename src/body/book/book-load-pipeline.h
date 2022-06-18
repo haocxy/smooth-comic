@@ -9,6 +9,7 @@
 #include "util/sigconns.h"
 
 #include "page-data-loader.h"
+#include "loaded-page.h"
 
 
 namespace myapp {
@@ -22,20 +23,17 @@ public:
 
     BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator);
 
-    class LoadedPage {
-    public:
-        LoadedPage() {}
-
-        u32str name;
-        i32 rawWidth{};
-        i32 rawHeight{};
-        scc::buff encodedRawImg;
-        scc::buff encodedScaledImg;
-    };
+    void start() {
+        pageDataLoader_->start();
+    }
 
     using CbPageLoaded = void(sptr<LoadedPage> loadedPage);
 
     Signal<CbPageLoaded> sigPageLoaded;
+
+    using CbPageCountDetected = void(i32 totalPageCount);
+
+    Signal<CbPageCountDetected> sigPageCountDetected;
 
 private:
 

@@ -174,6 +174,8 @@ public:
         return actorName_;
     }
 
+    void post(std::function<void()> &&action);
+
     virtual void post(EventHolder<detail::Event> &&e) = 0;
 
     template <typename EventType>
@@ -186,7 +188,7 @@ public:
         post(EventHolder<EventType>(std::move(e)));
     }
 
-    void post(std::function<void()> &&action);
+    
 
     template <typename RequestType>
     void requestTo(Actor &receiver, EventHolder<RequestType> &&req, std::function<void(typename RequestType::Response &)> &&cb) {

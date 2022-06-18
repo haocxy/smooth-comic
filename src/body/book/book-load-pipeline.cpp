@@ -8,15 +8,15 @@ namespace myapp {
 static const char *const kEncodeFormat = "WEBP";
 
 static i32 decideDecoderCount() {
-    return 1;
+    return 8;
 }
 
 static i32 decideScalerCount() {
-    return 1;
+    return 8;
 }
 
 static i32 decideEncoderCount() {
-    return 1;
+    return 8;
 }
 
 BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator)
@@ -25,6 +25,10 @@ BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Alloca
 {
     sigConnsPageDataLoader_ += pageDataLoader_->sigPageDataLoaded.connect([this](sptr<PageData> data) {
         dataQueue_.push(std::move(*data));
+    });
+
+    sigConnsPageDataLoader_ += pageDataLoader_->sigPageCountDetected.connect([this](i32 totalPageCount) {
+        sigPageCountDetected(totalPageCount);
     });
 
     const i32 decoderCount = decideDecoderCount();

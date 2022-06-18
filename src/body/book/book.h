@@ -15,6 +15,7 @@
 #include "page-num.h"
 #include "get-thumb-img-req.h"
 
+#include "book-cache.h"
 
 namespace myapp {
 
@@ -49,6 +50,7 @@ private:
 private:
     Engine &engine_;
     fs::path archiveFile_;
+    uptr<BookCache> cache_;
 };
 
 

@@ -149,23 +149,11 @@ class Executor {
 public:
     using Task = std::function<void()>;
 
-    Executor()
-        : handle_(std::make_shared<Handle>(*this)) {}
+    Executor() {}
 
     virtual ~Executor() {}
 
     virtual void post(Task &&task) = 0;
-
-    using Handle = myapp::ObjHandle<Executor>;
-
-    using WeakHandle = std::weak_ptr<Handle>;
-
-    WeakHandle handle() {
-        return handle_;
-    }
-
-private:
-    std::shared_ptr<Handle> handle_;
 };
 
 // 确保被投递的操作可以按照其投递顺序执行（只保证时许，和在哪个线程执行无关）

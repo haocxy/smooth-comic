@@ -25,8 +25,6 @@ public:
 
     virtual void start() = 0;
 
-    virtual void stopAndJoin() = 0;
-
     using CbPageDataLoaded = void(sptr<PageData> data);
 
     Signal<CbPageDataLoaded> sigPageDataLoaded;

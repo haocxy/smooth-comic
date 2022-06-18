@@ -33,6 +33,9 @@ void Book::open(const fs::path &archiveFile)
 
     asyncDeleteBookCache();
 
+    cache_ = std::make_unique<BookCache>(archiveFile_);
+    cache_->load();
+
     emit sigBookOpenStarted(QString::fromStdU32String(archiveFile_.generic_u32string()));
 }
 
