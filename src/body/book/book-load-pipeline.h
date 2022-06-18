@@ -128,6 +128,9 @@ private:
     Allocator allocator_;
     SigConns sigConnsPageDataLoader_;
 
+    const i32 decoderCount_;
+    const i32 scalerCount_;
+    const i32 encoderCount_;
 
     BlockQueue<PageData> dataQueue_;
     BlockQueue<PageRawImg> rawImgQueue_;
