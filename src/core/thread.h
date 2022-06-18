@@ -142,9 +142,48 @@ template <typename F>
 using TaskQueue = BlockQueue<std::function<F>>;
 
 
-class StrandEntry {
+// 抽象的可以执行某个操作的实体（只执行，不保证被执行操作的时序）
+class Executor {
 public:
     using Task = std::function<void()>;
+
+    Executor()
+        : handle_(std::make_shared<Handle>(*this)) {}
+
+    virtual ~Executor() {}
+
+    virtual void post(Task &&task) = 0;
+
+    class Handle : public std::enable_shared_from_this<Handle> {
+    public:
+        Handle(Executor &executor)
+            : executor_(executor) {}
+
+        virtual ~Handle() {}
+
+        Executor &executor() {
+            return executor_;
+        }
+
+    private:
+        Executor &executor_;
+    };
+
+    using WeakHandle = std::weak_ptr<Handle>;
+
+    WeakHandle handle() {
+        return handle_;
+    }
+
+private:
+    std::shared_ptr<Handle> handle_;
+};
+
+// 确保被投递的操作可以按照其投递顺序执行（只保证时许，和在哪个线程执行无关）
+// 目的是为了复用线程
+class StrandEntry : public Executor {
+public:
+    using Task = Executor::Task;
 
     virtual ~StrandEntry() {}
 
@@ -171,9 +210,9 @@ public:
 };
 
 
-class Strand {
+class Strand : public Executor {
 public:
-    using Task = StrandEntry::Task;
+    using Task = Executor::Task;
 
     Strand(StrandAllocator &strandAllocator)
         : entry_(strandAllocator.allocate()) {}
