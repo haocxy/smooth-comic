@@ -8,6 +8,7 @@
 
 #include "util/sigconns.h"
 #include "util/signal.h"
+#include "util/memory.h"
 
 #include "book-load-pipeline.h"
 
@@ -32,7 +33,7 @@ public:
 
 private:
     const fs::path archiveFile_;
-    std::pmr::synchronized_pool_resource mempool_;
+    LimitedMemPool mempool_;
     uptr<BookLoadPipeline> bookLoadPipeline_;
     SigConns sigConns_;
 

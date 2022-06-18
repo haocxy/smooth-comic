@@ -8,15 +8,15 @@ namespace myapp {
 static const char *const kEncodeFormat = "WEBP";
 
 static i32 decideDecoderCount() {
-    return 8;
+    return 4;
 }
 
 static i32 decideScalerCount() {
-    return 8;
+    return 4;
 }
 
 static i32 decideEncoderCount() {
-    return 8;
+    return 4;
 }
 
 BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator)

@@ -8,7 +8,7 @@ namespace myapp {
 BookLoader::BookLoader(const fs::path &archiveFile)
     : SingleThreadStrand("BookLoader")
     , archiveFile_(archiveFile)
-    , mempool_(std::pmr::get_default_resource())
+    , mempool_()
 {
     uptr<LocalArchivePageDataLoader> pageDataLoader
         = std::make_unique<LocalArchivePageDataLoader>(archiveFile_, &mempool_);

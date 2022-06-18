@@ -15,7 +15,7 @@ public:
     using Allocator = std::pmr::polymorphic_allocator<std::byte>;
     using allocator_type = Allocator;
 
-    Archive(const fs::path &file, Allocator allocator = Allocator());
+    Archive(const fs::path &file, Allocator allocator);
 
     ~Archive();
 
