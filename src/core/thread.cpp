@@ -83,6 +83,7 @@ SingleThreadStrand::SingleThreadStrand(const std::string &name)
 SingleThreadStrand::~SingleThreadStrand()
 {
     stopping_ = true;
+    queue_.stop();
     thread_.join();
 }
 

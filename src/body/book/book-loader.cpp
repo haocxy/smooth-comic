@@ -38,6 +38,10 @@ BookLoader::BookLoader(const fs::path &archiveFile)
     });
 }
 
+BookLoader::~BookLoader()
+{
+}
+
 void BookLoader::start()
 {
     bookLoadPipeline_->start();

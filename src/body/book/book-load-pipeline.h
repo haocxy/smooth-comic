@@ -23,6 +23,8 @@ public:
 
     BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator);
 
+    ~BookLoadPipeline();
+
     void start() {
         pageDataLoader_->start();
     }

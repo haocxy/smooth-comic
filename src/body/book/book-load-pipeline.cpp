@@ -47,6 +47,15 @@ BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Alloca
     }
 }
 
+BookLoadPipeline::~BookLoadPipeline()
+{
+    stopped_ = true;
+
+    dataQueue_.stop();
+    rawImgQueue_.stop();
+    scaledImgQueue_.stop();
+}
+
 void BookLoadPipeline::PageDecoder::loop()
 {
     ThreadUtil::setNameForCurrentThread("BookLoadPipeline.PageDecoder");

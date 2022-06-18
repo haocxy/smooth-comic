@@ -18,6 +18,8 @@ class BookLoader : public SingleThreadStrand {
 public:
     BookLoader(const fs::path &archiveFile);
 
+    ~BookLoader();
+
     void start();
 
     using CbPageLoaded = void(sptr<LoadedPage> page);
