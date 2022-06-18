@@ -12,6 +12,8 @@
 #include <functional>
 #include <condition_variable>
 
+#include "obj-handle.h"
+
 
 namespace ThreadUtil
 {
@@ -154,20 +156,7 @@ public:
 
     virtual void post(Task &&task) = 0;
 
-    class Handle : public std::enable_shared_from_this<Handle> {
-    public:
-        Handle(Executor &executor)
-            : executor_(executor) {}
-
-        virtual ~Handle() {}
-
-        Executor &executor() {
-            return executor_;
-        }
-
-    private:
-        Executor &executor_;
-    };
+    using Handle = myapp::ObjHandle<Executor>;
 
     using WeakHandle = std::weak_ptr<Handle>;
 
