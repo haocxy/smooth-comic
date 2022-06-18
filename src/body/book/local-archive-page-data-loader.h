@@ -14,6 +14,8 @@ public:
 
     LocalArchivePageDataLoader(const fs::path &archiveFile, Allocator allocator);
 
+    ~LocalArchivePageDataLoader();
+
     void start() override;
 
 private:
@@ -22,6 +24,7 @@ private:
 private:
     const fs::path archiveFile_;
     Allocator allocator_;
+    std::atomic_bool stopped_{ false };
     std::jthread thread_;
 };
 

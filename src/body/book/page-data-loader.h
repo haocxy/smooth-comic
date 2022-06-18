@@ -2,11 +2,12 @@
 
 #include <functional>
 
-#include "core/ustr.h"
 #include "core/basetype.h"
-#include "core/scoped_container.h"
+#include "core/thread.h"
 
 #include "util/signal.h"
+
+#include "page-data.h"
 
 
 namespace myapp {
@@ -24,13 +25,17 @@ public:
 
     virtual void start() = 0;
 
-    using CbPageDataLoaded = void(const u32str &entryName, sptr<scc::buff> data);
+    virtual void stopAndJoin() = 0;
+
+    using CbPageDataLoaded = void(sptr<PageData> data);
 
     Signal<CbPageDataLoaded> sigPageDataLoaded;
 
-    using CbAllPageLoaded = void();
+    using CbPageCountDetected = void(i32 pageCount);
 
-    Signal<CbAllPageLoaded> sigAllPageLoaded;
+    // 当这本书中的总页数明确可知时回调
+    // 外部逻辑会利用这一信息检查加载流程是否完全结束
+    Signal<CbPageCountDetected> sigPageCountDetected;
 };
 
 }

@@ -11,6 +11,12 @@ LocalArchivePageDataLoader::LocalArchivePageDataLoader(const fs::path &archiveFi
 {
 }
 
+LocalArchivePageDataLoader::~LocalArchivePageDataLoader()
+{
+    stopped_ = true;
+    thread_.join();
+}
+
 void LocalArchivePageDataLoader::start()
 {
     thread_ = std::jthread([this] { threadBody(); });
@@ -22,13 +28,17 @@ void LocalArchivePageDataLoader::threadBody()
 
     wrapper::libarchive::Archive archive(archiveFile_, allocator_);
 
-    while (archive.nextEntry()) {
-        u32str entryName = archive.path();
-        sptr<scc::buff> data = std::make_shared<scc::buff>(archive.readContent());
-        sigPageDataLoaded(entryName, data);
+    i32 pageCount = 0;
+
+    while (!stopped_ && archive.nextEntry()) {
+        ++pageCount;
+        sptr<PageData> pageData = std::make_shared<PageData>();
+        pageData->name = archive.path();
+        pageData->data = archive.readContent();
+        sigPageDataLoaded(pageData);
     }
 
-    sigAllPageLoaded();
+    sigPageCountDetected(pageCount);
 }
 
 }
