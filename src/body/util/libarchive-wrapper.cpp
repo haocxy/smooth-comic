@@ -33,7 +33,9 @@ namespace myapp::wrapper::libarchive {
 
 class ArchiveImpl {
 public:
-    ArchiveImpl(const fs::path &file) {
+    ArchiveImpl(const fs::path &file, Archive::Allocator allocator)
+        : allocator_(allocator) {
+
         archive_ = ::archive_read_new();
         if (!archive_) {
             throw ArchiveErr("archive_read_new");
@@ -85,15 +87,27 @@ public:
         return buff;
     }
 
+    scc::buff readContent() {
+        size_t size = ::archive_entry_size(curEntry_);
+        scc::buff buff(allocator_);
+        buff.resize(size);
+        auto r = ::archive_read_data(archive_, buff.data(), buff.size());
+        if (r < 0) {
+            throw ArchiveErr("archive_read_data", static_cast<int>(r));
+        }
+        return buff;
+    }
+
 
 private:
+    Archive::Allocator allocator_;
     ::archive *archive_{};
     ::archive_entry *curEntry_{};
     bool finished_{ false };
 };
 
-Archive::Archive(const fs::path &file)
-    : impl_(new ArchiveImpl(file))
+Archive::Archive(const fs::path &file, Allocator allocator)
+    : impl_(new ArchiveImpl(file, allocator))
 {
 }
 
@@ -116,6 +130,11 @@ u32str Archive::path() const
 std::string Archive::readData()
 {
     return impl_->readData();
+}
+
+scc::buff Archive::readContent()
+{
+    return impl_->readContent();
 }
 
 

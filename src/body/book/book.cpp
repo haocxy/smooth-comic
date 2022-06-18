@@ -7,9 +7,6 @@
 
 #include "engine/async-deleter.h"
 
-#include "book-cache.h"
-#include "thumb-cache.h"
-
 
 namespace myapp {
 
@@ -35,20 +32,12 @@ void Book::open(const fs::path &archiveFile)
     archiveFile_ = archiveFile;
 
     asyncDeleteBookCache();
-    
-    cache_ = new BookCache(engine_, archiveFile_);
-    listen<BookCache::PageOpenedNotice>(*cache_);
-
-    sendTo(*cache_, new BookCache::OpenBookMsg());
 
     emit sigBookOpenStarted(QString::fromStdU32String(archiveFile_.generic_u32string()));
 }
 
 void Book::onNotice(actor::EventHolder<actor::Notice> &&notice)
 {
-    if (actor::EventHolder<BookCache::PageOpenedNotice> n = std::move(notice)) {
-        return handlePageOpenedNotice(*n);
-    }
 }
 
 void Book::onRequest(actor::EventHolder<actor::Request> &&req)
@@ -69,23 +58,12 @@ static std::u8string toU8String(const QString &qs)
 
 void Book::asyncDeleteBookCache()
 {
-    if (cache_) {
-        sendTo(engine_.asyncDeleter(), new AsyncDeleter::AsyncDeleteMsg(cache_.take()));
-    }
-}
 
-void Book::handlePageOpenedNotice(const BookCache::PageOpenedNotice &n)
-{
-    for (const PageInfo &page : n.pages) {
-        emit sigPageLoaded(QString::fromStdU32String(page.entryPath), page.width, page.height);
-    }
 }
 
 void Book::handleGetThumbImgReq(GetThumbImgReq &req)
 {
-    requestTo(cache_->thumbCache(), new GetThumbImgReq(req), [req, this](GetThumbImgReq::Response &resp) mutable {
-        //respondTo(std::move(req), new GetThumbImgReq::Response(resp));
-    });
+
 }
 
 }

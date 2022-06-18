@@ -13,13 +13,10 @@
 #include "util/qobject-actor.h"
 
 #include "page-num.h"
-#include "book-cache.h"
 #include "get-thumb-img-req.h"
 
 
 namespace myapp {
-
-class BookCache;
 
 // 代表抽象的书
 // GUI模块和非GUI模块的总界面
@@ -47,14 +44,11 @@ protected:
 private:
     void asyncDeleteBookCache();
 
-    void handlePageOpenedNotice(const BookCache::PageOpenedNotice &n);
-
     void handleGetThumbImgReq(GetThumbImgReq &req);
 
 private:
     Engine &engine_;
     fs::path archiveFile_;
-    DeclarePtr<BookCache> cache_;
 };
 
 

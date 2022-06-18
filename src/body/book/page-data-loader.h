@@ -3,7 +3,8 @@
 #include <functional>
 
 #include "core/ustr.h"
-#include "core/membuff.h"
+#include "core/basetype.h"
+#include "core/scoped_container.h"
 
 #include "util/signal.h"
 
@@ -23,9 +24,13 @@ public:
 
     virtual void start() = 0;
 
-    using CbPageDataLoaded = void(u8str &&entryName, MemBuff &&data);
+    using CbPageDataLoaded = void(const u32str &entryName, sptr<scc::buff> data);
 
     Signal<CbPageDataLoaded> sigPageDataLoaded;
+
+    using CbAllPageLoaded = void();
+
+    Signal<CbAllPageLoaded> sigAllPageLoaded;
 };
 
 }
