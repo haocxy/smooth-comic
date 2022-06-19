@@ -30,7 +30,7 @@ void LocalArchivePageDataLoader::threadBody()
 
     i32 pageCount = 0;
 
-    PageNum seqNum = 1;
+    PageNum seqNum = 0;
 
     while (!stopped_ && archive.nextEntry()) {
         ++pageCount;

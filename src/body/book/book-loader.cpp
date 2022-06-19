@@ -18,22 +18,19 @@ BookLoader::BookLoader(const fs::path &archiveFile)
 
     sigConns_ += bookLoadPipeline_->sigPageLoaded.connect([this](sptr<LoadedPage> page) {
         exec([this, page] {
-            ++loadedPageCount_;
-            sigPageLoaded(page);
-            if (!bookLoadedNotified_ && pageCount_.has_value() && loadedPageCount_ >= *pageCount_) {
-                sigBookLoaded();
-                bookLoadedNotified_ = true;
-            }
+            sequencer_.feed(page);
+        });
+    });
+
+    sigConns_ += sequencer_.sigPageOrdered.connect([this](sptr<LoadedPage> page) {
+        exec([this, page] {
+            handlePageLoaded(page);
         });
     });
 
     sigConns_ += bookLoadPipeline_->sigPageCountDetected.connect([this](i32 pageCount) {
         exec([this, pageCount] {
-            pageCount_ = pageCount;
-            if (!bookLoadedNotified_ && loadedPageCount_ >= *pageCount_) {
-                sigBookLoaded();
-                bookLoadedNotified_ = true;
-            }
+            handlePageCountDetected(pageCount);
         });
     });
 }
@@ -45,6 +42,25 @@ BookLoader::~BookLoader()
 void BookLoader::start()
 {
     bookLoadPipeline_->start();
+}
+
+void BookLoader::handlePageLoaded(sptr<LoadedPage> page)
+{
+    ++loadedPageCount_;
+    sigPageLoaded(page);
+    if (!bookLoadedNotified_ && pageCount_.has_value() && loadedPageCount_ >= *pageCount_) {
+        sigBookLoaded();
+        bookLoadedNotified_ = true;
+    }
+}
+
+void BookLoader::handlePageCountDetected(i32 pageCount)
+{
+    pageCount_ = pageCount;
+    if (!bookLoadedNotified_ && loadedPageCount_ >= *pageCount_) {
+        sigBookLoaded();
+        bookLoadedNotified_ = true;
+    }
 }
 
 }
