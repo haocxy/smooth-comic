@@ -46,6 +46,40 @@ public:
         set(key, time.time_since_epoch().count());
     }
 
+    bool has(const u8view &key) const;
+
+    class BadPropKey : public std::exception {
+    public:
+        BadPropKey(const u8view &key)
+            : std::exception(std::format("prop key [{}] not exist",
+                static_cast<std::string>(u8str(key))).c_str()) {}
+
+        virtual ~BadPropKey() {}
+    };
+
+    class GetHelper {
+    public:
+        GetHelper(const u8view &key, const PropRepo &repo) : key_(key), repo_(repo) {}
+
+        template <typename T>
+        operator opt<T>() const {
+            T to{};
+            if (repo_.get(key_, to)) {
+                return to;
+            } else {
+                return std::nullopt;
+            }
+        }
+
+    private:
+        const u8view &key_;
+        const PropRepo &repo_;
+    };
+
+    GetHelper get(const u8view &key) const {
+        return GetHelper(key, *this);
+    }
+
     bool get(const u8view &key, bool &to) const;
 
     bool get(const u8view &key, int &to) const;
@@ -59,7 +93,7 @@ public:
     bool get(const u8view &key, u32str &to) const;
 
     template <typename ClockT>
-    bool get(const u8view &key, std::chrono::time_point<ClockT> &time)
+    bool get(const u8view &key, std::chrono::time_point<ClockT> &time) const
     {
         using Timepoint = std::chrono::time_point<ClockT>;
         using Duration = Timepoint::duration;

@@ -18,6 +18,36 @@ public:
     ~BookCache();
 
 private:
+
+    using LoadClock = std::chrono::system_clock;
+    using LoadTime = std::chrono::time_point<LoadClock>;
+
+    class Props {
+    public:
+        void open(sqlite::Database &db);
+
+        void setLoadStartTime(const LoadTime &time) {
+            propRepo_.set(keyLoadStartTime, time);
+        }
+
+        opt<LoadTime> loadStartTime() const {
+            return propRepo_.get(keyLoadStartTime);
+        }
+
+        void setLoadSucceedTime(const LoadTime &time) {
+            propRepo_.set(keyLoadSucceedTime, time);
+        }
+
+        opt<LoadTime> loadSucceedTime() const {
+            return propRepo_.get(keyLoadSucceedTime);
+        }
+
+    private:
+        PropRepo propRepo_;
+        const u8view keyLoadStartTime{ u8"load-start-time" };
+        const u8view keyLoadSucceedTime{ u8"load-succeed-time" };
+    };
+
     class Actor {
     public:
         Actor(BookCache &self);
@@ -25,12 +55,16 @@ private:
     private:
         void prepareDb();
 
+        void onPageLoaded(sptr<LoadedPage> page);
+
+        void onBookLoaded();
+
     private:
         BookCache &self_;
         uptr<BookLoader> loader_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
-        PropRepo propRepo_;
+        Props props_;
     };
 
 private:

@@ -89,6 +89,13 @@ void PropRepo::set(const u8view &key, long long val)
     setValue(key, val);
 }
 
+bool PropRepo::has(const u8view &key) const
+{
+    stmtSelect_.reset();
+    stmtSelect_.arg(key);
+    return stmtSelect_.nextRow();
+}
+
 bool PropRepo::get(const u8view &key, bool &to) const
 {
     int n = 0;

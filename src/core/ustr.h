@@ -157,6 +157,9 @@ public:
     explicit u8str(const std::string &s)
         : std::u8string(s.begin(), s.end()) {}
 
+    u8str(const std::u8string_view &view)
+        : std::u8string(view) {}
+
     u8str(const u8str &b)
         : std::u8string(b) {}
 
@@ -234,6 +237,10 @@ public:
 
     u8view(const u8str &s)
         : std::u8string_view(s) {}
+
+    template <typename... Args>
+    u8view(Args &&...args)
+        : std::u8string_view(std::forward<Args>(args)...) {}
 
     virtual ~u8view() {}
 };

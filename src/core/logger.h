@@ -66,6 +66,16 @@ public:
         return *this;
     }
 
+    LogStream &operator<<(const u8str &s) {
+        ss_ << static_cast<std::string>(s);
+        return *this;
+    }
+
+    LogStream &operator<<(const u32str &s) {
+        ss_ << static_cast<std::string>(u8str(s));
+        return *this;
+    }
+
     std::string str() const {
         return ss_.str();
     }

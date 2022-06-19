@@ -42,14 +42,16 @@ BookCache::Actor::Actor(BookCache &self)
     loaderSigConns_.clear();
 
     loaderSigConns_ += loader_->sigPageLoaded.connect([this](sptr<LoadedPage> page) {
-        gLogger.d << "loader say: sigPageLoaded, " << page->seqNum << ", " << static_cast<std::string>(u8str(page->name));
-        });
+        self_.exec([this, page] { onPageLoaded(page); });
+    });
 
     loaderSigConns_ += loader_->sigBookLoaded.connect([this]() {
-        gLogger.d << "loader say: sigBookLoaded";
+        self_.exec([this] { onBookLoaded(); });
     });
 
     loader_->start();
+
+    props_.setLoadStartTime(LoadClock::now());
 }
 
 void BookCache::Actor::prepareDb()
@@ -60,7 +62,24 @@ void BookCache::Actor::prepareDb()
 
     db_.exec(kSqlCreateTables);
 
-    propRepo_.open(db_, "bookProps");
+    props_.open(db_);
+}
+
+void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
+{
+    gLogger.d << "onPageLoaded: " << page->name;
+}
+
+void BookCache::Actor::onBookLoaded()
+{
+    gLogger.d << "onBookLoaded";
+
+    props_.setLoadSucceedTime(LoadClock::now());
+}
+
+void BookCache::Props::open(sqlite::Database &db)
+{
+    propRepo_.open(db, "book_props");
 }
 
 }
