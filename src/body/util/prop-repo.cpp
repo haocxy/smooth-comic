@@ -45,7 +45,7 @@ void PropRepo::open(sqlite::Database &db, const std::string &repo)
     stmtInsertOrReplace_.open(db, mkInsertOrReplaceSql(repo));
 }
 
-bool PropRepo::getValue(const u8str &key, u8str &val) const
+bool PropRepo::getValue(const u8view &key, u8str &val) const
 {
     stmtSelect_.reset();
     stmtSelect_.arg(key);
@@ -57,39 +57,39 @@ bool PropRepo::getValue(const u8str &key, u8str &val) const
     }
 }
 
-void PropRepo::setValue(const u8str &key, const u8str &val)
+void PropRepo::setValue(const u8view &key, const u8str &val)
 {
     stmtInsertOrReplace_.reset();
     stmtInsertOrReplace_.arg(key).arg(val);
     stmtInsertOrReplace_.execute();
 }
 
-void PropRepo::set(const u8str &key, const u8str &val)
+void PropRepo::set(const u8view &key, const u8str &val)
 {
     setValue(key, val);
 }
 
-void PropRepo::set(const u8str &key, bool val)
+void PropRepo::set(const u8view &key, bool val)
 {
     setValue(key, val ? 1 : 0);
 }
 
-void PropRepo::set(const u8str &key, int val)
+void PropRepo::set(const u8view &key, int val)
 {
     setValue(key, val);
 }
 
-void PropRepo::set(const u8str &key, long val)
+void PropRepo::set(const u8view &key, long val)
 {
     setValue(key, val);
 }
 
-void PropRepo::set(const u8str &key, long long val)
+void PropRepo::set(const u8view &key, long long val)
 {
     setValue(key, val);
 }
 
-bool PropRepo::get(const u8str &key, bool &to) const
+bool PropRepo::get(const u8view &key, bool &to) const
 {
     int n = 0;
     if (getValue(key, n)) {
@@ -100,27 +100,27 @@ bool PropRepo::get(const u8str &key, bool &to) const
     }
 }
 
-bool PropRepo::get(const u8str &key, int &to) const
+bool PropRepo::get(const u8view &key, int &to) const
 {
     return getValue(key, to);
 }
 
-bool PropRepo::get(const u8str &key, long &to) const
+bool PropRepo::get(const u8view &key, long &to) const
 {
     return getValue(key, to);
 }
 
-bool PropRepo::get(const u8str &key, long long &to) const
+bool PropRepo::get(const u8view &key, long long &to) const
 {
     return getValue(key, to);
 }
 
-bool PropRepo::get(const u8str &key, u8str &to) const
+bool PropRepo::get(const u8view &key, u8str &to) const
 {
     return getValue(key, to);
 }
 
-bool PropRepo::get(const u8str &key, u32str &to) const
+bool PropRepo::get(const u8view &key, u32str &to) const
 {
     return getValue(key, to);
 }

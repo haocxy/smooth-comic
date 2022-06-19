@@ -30,36 +30,36 @@ public:
 
     void open(sqlite::Database &db, const std::string &repo);
 
-    void set(const u8str &key, const u8str &val);
+    void set(const u8view &key, const u8str &val);
 
-    void set(const u8str &key, bool val);
+    void set(const u8view &key, bool val);
 
-    void set(const u8str &key, int val);
+    void set(const u8view &key, int val);
 
-    void set(const u8str &key, long val);
+    void set(const u8view &key, long val);
 
-    void set(const u8str &key, long long val);
+    void set(const u8view &key, long long val);
 
     template <typename ClockT>
-    void set(const u8str &key, const std::chrono::time_point<ClockT> &time)
+    void set(const u8view &key, const std::chrono::time_point<ClockT> &time)
     {
         set(key, time.time_since_epoch().count());
     }
 
-    bool get(const u8str &key, bool &to) const;
+    bool get(const u8view &key, bool &to) const;
 
-    bool get(const u8str &key, int &to) const;
+    bool get(const u8view &key, int &to) const;
 
-    bool get(const u8str &key, long &to) const;
+    bool get(const u8view &key, long &to) const;
 
-    bool get(const u8str &key, long long &to) const;
+    bool get(const u8view &key, long long &to) const;
 
-    bool get(const u8str &key, u8str &to) const;
+    bool get(const u8view &key, u8str &to) const;
 
-    bool get(const u8str &key, u32str &to) const;
+    bool get(const u8view &key, u32str &to) const;
 
     template <typename ClockT>
-    bool get(const u8str &key, std::chrono::time_point<ClockT> &time)
+    bool get(const u8view &key, std::chrono::time_point<ClockT> &time)
     {
         using Timepoint = std::chrono::time_point<ClockT>;
         using Duration = Timepoint::duration;
@@ -73,12 +73,12 @@ public:
     }
 
 private:
-    void setValue(const u8str &key, const u8str &val);
+    void setValue(const u8view &key, const u8str &val);
 
-    bool getValue(const u8str &key, u8str &val) const;
+    bool getValue(const u8view &key, u8str &val) const;
 
     template <typename T>
-    bool getValue(const u8str &key, T &val) const {
+    bool getValue(const u8view &key, T &val) const {
         u8str u8val;
         if (getValue(key, u8val)) {
             val = static_cast<T>(u8val);
