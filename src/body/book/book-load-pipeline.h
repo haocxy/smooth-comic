@@ -42,19 +42,14 @@ private:
 
     class PageRawImg {
     public:
-        PageRawImg() {}
-
-        PageRawImg(PageRawImg &&other) noexcept
-            : name(std::move(other.name)), img(std::move(other.img)) {}
-
+        PageNum seqNum{};
         u32str name;
         QImage img;
     };
 
     class PageScaledImg {
     public:
-        PageScaledImg() {}
-
+        PageNum seqNum{};
         u32str name;
         QImage rawImg;
         QImage scaledImg;

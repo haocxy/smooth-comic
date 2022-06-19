@@ -21,7 +21,7 @@ void BookCache::load()
     loaderSigConns_.clear();
 
     loaderSigConns_ += loader_->sigPageLoaded.connect([this](sptr<LoadedPage> page) {
-        gLogger.d << "loader say: sigPageLoaded, " << static_cast<std::string>(u8str(page->name));
+        gLogger.d << "loader say: sigPageLoaded, " << page->seqNum << ", " << static_cast<std::string>(u8str(page->name));
     });
 
     loaderSigConns_ += loader_->sigBookLoaded.connect([this]() {

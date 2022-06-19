@@ -2,13 +2,14 @@
 
 #include "core/basetype.h"
 
+#include "page-num.h"
+
 
 namespace myapp {
 
 class LoadedPage {
 public:
-    LoadedPage() {}
-
+    PageNum seqNum{};
     u32str name;
     i32 rawWidth{};
     i32 rawHeight{};

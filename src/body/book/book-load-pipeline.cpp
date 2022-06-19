@@ -77,6 +77,7 @@ void BookLoadPipeline::PageDecoder::handle(PageData &&pageData)
     img.loadFromData(reinterpret_cast<const uchar *>(pageData.data.data()), static_cast<int>(pageData.data.size()));
 
     PageRawImg pageImg;
+    pageImg.seqNum = pageData.seqNum;
     pageImg.name = std::move(pageData.name);
     pageImg.img = std::move(img);
 
@@ -98,6 +99,7 @@ void BookLoadPipeline::PageScaler::loop()
 void BookLoadPipeline::PageScaler::handle(PageRawImg &&rawImg)
 {
     PageScaledImg page;
+    page.seqNum = rawImg.seqNum;
     page.name = std::move(rawImg.name);
     page.rawImg = std::move(rawImg.img);
     page.scaledImg = page.rawImg.scaledToWidth(400);
@@ -120,6 +122,7 @@ void BookLoadPipeline::PageEncoder::loop()
 void BookLoadPipeline::PageEncoder::handle(PageScaledImg &&scaledImg)
 {
     sptr<LoadedPage> page = std::make_shared<LoadedPage>();
+    page->seqNum = scaledImg.seqNum;
     page->name = std::move(scaledImg.name);
     page->rawWidth = scaledImg.rawImg.width();
     page->rawHeight = scaledImg.rawImg.height();

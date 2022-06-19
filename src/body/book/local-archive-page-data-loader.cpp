@@ -30,9 +30,12 @@ void LocalArchivePageDataLoader::threadBody()
 
     i32 pageCount = 0;
 
+    PageNum seqNum = 1;
+
     while (!stopped_ && archive.nextEntry()) {
         ++pageCount;
         sptr<PageData> pageData = std::make_shared<PageData>();
+        pageData->seqNum = seqNum++;
         pageData->name = archive.path();
         pageData->data = archive.readContent();
         sigPageDataLoaded(pageData);
