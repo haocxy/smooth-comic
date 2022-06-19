@@ -45,8 +45,8 @@ BookCache::Actor::Actor(BookCache &self)
         self_.exec([this, page] { onPageLoaded(page); });
     });
 
-    loaderSigConns_ += loader_->sigBookLoaded.connect([this]() {
-        self_.exec([this] { onBookLoaded(); });
+    loaderSigConns_ += loader_->sigBookLoaded.connect([this](i32 totalPageCount) {
+        self_.exec([this, totalPageCount] { onBookLoaded(totalPageCount); });
     });
 
     loader_->start();
@@ -70,11 +70,12 @@ void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
     gLogger.d << "onPageLoaded: " << page->name;
 }
 
-void BookCache::Actor::onBookLoaded()
+void BookCache::Actor::onBookLoaded(i32 totalPageCount)
 {
     gLogger.d << "onBookLoaded";
 
     props_.setLoadSucceedTime(LoadClock::now());
+    props_.setTotalPageCount(totalPageCount);
 }
 
 void BookCache::Props::open(sqlite::Database &db)

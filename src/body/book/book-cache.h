@@ -42,10 +42,19 @@ private:
             return propRepo_.get(keyLoadSucceedTime);
         }
 
+        void setTotalPageCount(i32 count) {
+            propRepo_.set(keyTotalPageCount, count);
+        }
+
+        opt<i32> totalPageCount() const {
+            return propRepo_.get(keyTotalPageCount);
+        }
+
     private:
         PropRepo propRepo_;
         const u8view keyLoadStartTime{ u8"load-start-time" };
         const u8view keyLoadSucceedTime{ u8"load-succeed-time" };
+        const u8view keyTotalPageCount{ u8"total-page-count" };
     };
 
     class Actor {
@@ -57,7 +66,7 @@ private:
 
         void onPageLoaded(sptr<LoadedPage> page);
 
-        void onBookLoaded();
+        void onBookLoaded(i32 totalPageCount);
 
     private:
         BookCache &self_;

@@ -28,7 +28,7 @@ public:
 
     Signal<CbPageLoaded> sigPageLoaded;
 
-    using CbBookLoaded = void();
+    using CbBookLoaded = void(i32 totalPageCount);
 
     Signal<CbBookLoaded> sigBookLoaded;
 

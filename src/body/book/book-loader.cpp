@@ -49,7 +49,7 @@ void BookLoader::handlePageLoaded(sptr<LoadedPage> page)
     ++loadedPageCount_;
     sigPageLoaded(page);
     if (!bookLoadedNotified_ && pageCount_.has_value() && loadedPageCount_ >= *pageCount_) {
-        sigBookLoaded();
+        sigBookLoaded(*pageCount_);
         bookLoadedNotified_ = true;
     }
 }
@@ -58,7 +58,7 @@ void BookLoader::handlePageCountDetected(i32 pageCount)
 {
     pageCount_ = pageCount;
     if (!bookLoadedNotified_ && loadedPageCount_ >= *pageCount_) {
-        sigBookLoaded();
+        sigBookLoaded(*pageCount_);
         bookLoadedNotified_ = true;
     }
 }
