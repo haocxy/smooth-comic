@@ -128,6 +128,8 @@ void BookLoadPipeline::PageEncoder::handle(PageScaledImg &&scaledImg)
     page->rawHeight = scaledImg.rawImg.height();
     page->encodedRawImg = ImgUtil::toSccBuff(scaledImg.rawImg, kEncodeFormat, allocator_);
     page->encodedScaledImg = ImgUtil::toSccBuff(scaledImg.scaledImg, kEncodeFormat, allocator_);
+    page->rawImg = std::move(scaledImg.rawImg);
+    page->scaledImg = std::move(scaledImg.scaledImg);
 
     sigPageLoaded_(page);
 }
