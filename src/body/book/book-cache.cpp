@@ -16,10 +16,6 @@ create table if not exists pages (
     rawImg blob not null,
     scaledImg blob not null
 );
-create table if not exists props (
-    key text primary key,
-    val text not null
-);
 )";
 
 BookCache::BookCache(const fs::path &archiveFile, const fs::path &dbFile)
@@ -63,6 +59,8 @@ void BookCache::Actor::prepareDb()
     db_.open(self_.dbFile_);
 
     db_.exec(kSqlCreateTables);
+
+    propRepo_.open(db_, "bookProps");
 }
 
 }

@@ -8,7 +8,7 @@ namespace myapp
 
 static std::string mkCreateTableSql(const std::string &repo)
 {
-    return std::format("create table if not exists {} (key text primary key, val not null);", repo);
+    return std::format("create table if not exists {} (key text primary key, val text not null);", repo);
 }
 
 static std::string mkSelectSql(const std::string &repo)
@@ -21,19 +21,28 @@ static std::string mkInsertOrReplaceSql(const std::string &repo)
     return std::format("insert or replace into {} values (?,?);", repo);
 }
 
-PropRepo::PropRepo(sqlite::Database &db, const std::string &repo)
-    : db_(db)
-    , repo_(repo)
+PropRepo::PropRepo()
 {
-    db_.exec(mkCreateTableSql(repo));
+}
 
-    stmtSelect_.open(db_, mkSelectSql(repo));
-
-    stmtInsertOrReplace_.open(db_, mkInsertOrReplaceSql(repo));
+PropRepo::PropRepo(sqlite::Database &db, const std::string &repo)
+{
+    open(db, repo);
 }
 
 PropRepo::~PropRepo()
 {
+}
+
+void PropRepo::open(sqlite::Database &db, const std::string &repo)
+{
+    repo_ = repo;
+
+    db.exec(mkCreateTableSql(repo));
+
+    stmtSelect_.open(db, mkSelectSql(repo));
+
+    stmtInsertOrReplace_.open(db, mkInsertOrReplaceSql(repo));
 }
 
 bool PropRepo::getValue(const u8str &key, u8str &val) const

@@ -15,6 +15,8 @@ namespace myapp
 class PropRepo {
 public:
 
+    PropRepo();
+
     // db: 在哪个属性数据库中
     // name: 属性仓库的名称，在底层对应数据表的名称
     //
@@ -23,6 +25,8 @@ public:
 
     // 析构时会调用 saveToDb 存储数据
     ~PropRepo();
+
+    void open(sqlite::Database &db, const std::string &repo);
 
     void set(const u8str &key, const u8str &val);
 
@@ -63,8 +67,7 @@ private:
     }
 
 private:
-    sqlite::Database &db_;
-    const std::string repo_;
+    std::string repo_;
     mutable sqlite::Statement stmtSelect_;
     mutable sqlite::Statement stmtInsertOrReplace_;
 };

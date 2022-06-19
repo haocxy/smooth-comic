@@ -4,6 +4,7 @@
 #include "core/thread.h"
 
 #include "util/sqlite.h"
+#include "util/prop-repo.h"
 
 #include "book-loader.h"
 
@@ -29,6 +30,7 @@ private:
         uptr<BookLoader> loader_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
+        PropRepo propRepo_;
     };
 
 private:
