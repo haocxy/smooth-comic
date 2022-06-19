@@ -3,6 +3,8 @@
 #include "core/fs.h"
 #include "core/thread.h"
 
+#include "util/sqlite.h"
+
 #include "book-loader.h"
 
 
@@ -26,6 +28,7 @@ private:
         BookCache &self_;
         uptr<BookLoader> loader_;
         SigConns loaderSigConns_;
+        sqlite::Database db_;
     };
 
 private:

@@ -7,15 +7,19 @@ namespace myapp {
 
 using logger::gLogger;
 
-static const char *const kSqlCreateTable = R"(
-create table if not exists page (
+static const char *const kSqlCreateTables = R"(
+create table if not exists pages (
     seqNum int primary key,
     name text not null,
     rawWidth int not null,
     rawHeight int not null,
     rawImg blob not null,
     scaledImg blob not null
-)
+);
+create table if not exists props (
+    key text primary key,
+    val text not null
+);
 )";
 
 BookCache::BookCache(const fs::path &archiveFile, const fs::path &dbFile)
@@ -56,7 +60,9 @@ void BookCache::Actor::prepareDb()
 {
     fs::create_directories(self_.dbFile_.parent_path());
 
+    db_.open(self_.dbFile_);
 
+    db_.exec(kSqlCreateTables);
 }
 
 }
