@@ -63,11 +63,23 @@ void BookCache::Actor::prepareDb()
     db_.exec(kSqlCreateTables);
 
     props_.open(db_);
+
+    stmtSavePage_.open(db_);
 }
 
 void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
 {
     gLogger.d << "onPageLoaded: " << page->name;
+
+    PageDbData data;
+    data.seqNum = page->seqNum;
+    data.name = std::move(page->name);
+    data.rawWidth = page->rawWidth;
+    data.rawHeight = page->rawHeight;
+    data.rawImg = std::move(page->encodedRawImg);
+    data.scaledImg = std::move(page->encodedScaledImg);
+
+    stmtSavePage_(data);
 }
 
 void BookCache::Actor::onBookLoaded(i32 totalPageCount)
@@ -81,6 +93,25 @@ void BookCache::Actor::onBookLoaded(i32 totalPageCount)
 void BookCache::Props::open(sqlite::Database &db)
 {
     propRepo_.open(db, "book_props");
+}
+
+void BookCache::Actor::StmtSavePage::open(sqlite::Database &db)
+{
+    stmt_.open(db, "insert or replace into pages values (?,?,?,?,?,?);");
+}
+
+void BookCache::Actor::StmtSavePage::operator()(const PageDbData &page)
+{
+    stmt_.reset();
+
+    stmt_.arg(page.seqNum);
+    stmt_.arg(page.name);
+    stmt_.arg(page.rawWidth);
+    stmt_.arg(page.rawHeight);
+    stmt_.arg(page.rawImg.data(), page.rawImg.size());
+    stmt_.arg(page.scaledImg.data(), page.scaledImg.size());
+
+    stmt_.execute();
 }
 
 }

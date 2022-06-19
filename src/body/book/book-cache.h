@@ -7,6 +7,7 @@
 #include "util/prop-repo.h"
 
 #include "book-loader.h"
+#include "page-db-data.h"
 
 
 namespace myapp {
@@ -68,12 +69,23 @@ private:
 
         void onBookLoaded(i32 totalPageCount);
 
+        class StmtSavePage {
+        public:
+            void open(sqlite::Database &db);
+
+            void operator()(const PageDbData &page);
+
+        private:
+            sqlite::Statement stmt_;
+        };
+
     private:
         BookCache &self_;
         uptr<BookLoader> loader_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
         Props props_;
+        StmtSavePage stmtSavePage_;
     };
 
 private:
