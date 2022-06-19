@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include "core/fs.h"
 #include "core/basetype.h"
 
@@ -38,6 +40,12 @@ public:
 
     void set(const u8str &key, long long val);
 
+    template <typename ClockT>
+    void set(const u8str &key, const std::chrono::time_point<ClockT> &time)
+    {
+        set(key, time.time_since_epoch().count());
+    }
+
     bool get(const u8str &key, bool &to) const;
 
     bool get(const u8str &key, int &to) const;
@@ -49,6 +57,20 @@ public:
     bool get(const u8str &key, u8str &to) const;
 
     bool get(const u8str &key, u32str &to) const;
+
+    template <typename ClockT>
+    bool get(const u8str &key, std::chrono::time_point<ClockT> &time)
+    {
+        using Timepoint = std::chrono::time_point<ClockT>;
+        using Duration = Timepoint::duration;
+        typename Duration::rep count = 0;
+        if (get(key, count)) {
+            time = Timepoint(Duration(count));
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 private:
     void setValue(const u8str &key, const u8str &val);
