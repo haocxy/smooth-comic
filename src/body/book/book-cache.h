@@ -10,14 +10,28 @@ namespace myapp {
 
 class BookCache : public SingleThreadStrand {
 public:
-    BookCache(const fs::path &archiveFile);
+    BookCache(const fs::path &archiveFile, const fs::path &dbFile);
 
-    void load();
+    ~BookCache();
+
+private:
+    class Actor {
+    public:
+        Actor(BookCache &self);
+
+    private:
+        void prepareDb();
+
+    private:
+        BookCache &self_;
+        uptr<BookLoader> loader_;
+        SigConns loaderSigConns_;
+    };
 
 private:
     const fs::path archiveFile_;
-    uptr<BookLoader> loader_;
-    SigConns loaderSigConns_;
+    const fs::path dbFile_;
+    uptr<Actor> actor_;
 };
 
 }

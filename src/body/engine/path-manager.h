@@ -13,10 +13,6 @@ public:
 
     fs::path mkBookCacheDbFilePath(const fs::path &archiveFile) const;
 
-    fs::path mkThumbCacheDbFilePath(const fs::path &archiveFile) const;
-
-    fs::path mkPageCacheDbFilePath(const fs::path &archiveFile) const;
-
 private:
     fs::path cacheDir_;
 };

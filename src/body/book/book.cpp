@@ -5,6 +5,7 @@
 #include "core/fs.h"
 #include "core/logger.h"
 
+#include "engine/path-manager.h"
 #include "engine/async-deleter.h"
 
 
@@ -33,10 +34,9 @@ void Book::open(const fs::path &archiveFile)
 
     asyncDeleteBookCache();
 
-    cache_ = std::make_unique<BookCache>(archiveFile_);
-    cache_->load();
+    cache_ = std::make_unique<BookCache>(archiveFile, engine_.pathManager().mkBookCacheDbFilePath(archiveFile));
 
-    emit sigBookOpenStarted(QString::fromStdU32String(archiveFile_.generic_u32string()));
+    emit sigBookOpenStarted(QString::fromStdU32String(archiveFile.generic_u32string()));
 }
 
 void Book::onNotice(actor::EventHolder<actor::Notice> &&notice)

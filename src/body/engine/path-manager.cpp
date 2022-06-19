@@ -14,17 +14,7 @@ PathManager::PathManager()
 
 fs::path PathManager::mkBookCacheDbFilePath(const fs::path &archiveFile) const
 {
-    return cacheDir_ / (FsUtil::encodePathToName(archiveFile) + U".book-cache" + kDbFileExt);
-}
-
-fs::path PathManager::mkThumbCacheDbFilePath(const fs::path &archiveFile) const
-{
-    return cacheDir_ / (FsUtil::encodePathToName(archiveFile) + U".thumb-cache" + kDbFileExt);
-}
-
-fs::path PathManager::mkPageCacheDbFilePath(const fs::path &archiveFile) const
-{
-    return cacheDir_ / (FsUtil::encodePathToName(archiveFile) + U".page-cache" + kDbFileExt);
+    return cacheDir_ / "book" / (FsUtil::encodePathToName(archiveFile) + U".db" + kDbFileExt);
 }
 
 }
