@@ -46,7 +46,7 @@ BookCache::Actor::Actor(BookCache &outer)
     loaderSigConns_.clear();
 
     loaderSigConns_ += loader_->sigPageLoaded.connect([this, h = handle_.weak()](sptr<LoadedPage> page) {
-        h.apply([this, page](Actor &self) {
+        h.apply([this, page] {
             outer_.exec([this, page] {
                 onPageLoaded(page);
             });
@@ -54,7 +54,7 @@ BookCache::Actor::Actor(BookCache &outer)
     });
 
     loaderSigConns_ += loader_->sigBookLoaded.connect([this, h = handle_.weak()](i32 totalPageCount) {
-        h.apply([this, totalPageCount](Actor &self) {
+        h.apply([this, totalPageCount] {
             outer_.exec([this, totalPageCount] {
                 onBookLoaded(totalPageCount);
             });
