@@ -30,13 +30,15 @@ BookCache::~BookCache()
 {
     stopEventQueue();
 
-    gLogger.d << "BookCache::~BookCache()";
+    gLogger.d << "BookCache::~BookCache() end";
 }
 
 BookCache::Actor::Actor(BookCache &outer)
     : outer_(outer)
     , handle_(*this)
 {
+    gLogger.d << "BookCache::Actor::Actor() begin";
+
     prepareDb();
 
     loader_ = std::make_unique<BookLoader>(outer_.archiveFile_);
@@ -66,7 +68,10 @@ BookCache::Actor::Actor(BookCache &outer)
 
 BookCache::Actor::~Actor()
 {
-    gLogger.d << "BookCache::Actor::~Actor()";
+
+
+
+    gLogger.d << "BookCache::Actor::~Actor() end";
 }
 
 void BookCache::Actor::prepareDb()
