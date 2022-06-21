@@ -42,6 +42,8 @@ RandomAccessArchive::Entry RandomAccessArchive::entryAt(i32 index)
 
     seekCurEntryTo(index);
 
+
+
     if (archive_->nextEntry()) {
         Entry entry;
         entry.name = archive_->path();
@@ -70,6 +72,10 @@ void RandomAccessArchive::seekCurEntryTo(i32 index)
         } else {
             throw std::runtime_error(std::format("RandomAccessArchive::seekCurEntryTo({}) failed, curEntry_ = {}", index, curEntry_));
         }
+    }
+
+    if (index != curEntry_) {
+        throw std::logic_error(std::format("RandomAccessArchive::seekCurEntryTo({}) failed, curEntry_ = {}", index, curEntry_));
     }
 }
 
