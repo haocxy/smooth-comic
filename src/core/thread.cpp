@@ -88,7 +88,7 @@ SingleThreadStrand::~SingleThreadStrand()
 
 void SingleThreadStrand::stopEventQueue()
 {
-    RunStateLock lockRun(mtxRunState_);
+    CallTaskLock lock(mtxCallTask_);
     stopping_ = true;
     queue_.stop();
 }
@@ -111,7 +111,7 @@ void SingleThreadStrand::threadBody()
         std::optional<Task> &&task = queue_.pop();
 
         {
-            RunStateLock lock(mtxRunState_);
+            CallTaskLock lock(mtxCallTask_);
             if (!stopping_ && task && *task) {
                 (*task)();
             }
