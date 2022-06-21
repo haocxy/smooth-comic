@@ -46,11 +46,17 @@ public:
         return weakPtr_.lock();
     }
 
-    template <typename CallbackT>
-    void apply(CallbackT &&callback) const {
+    void apply(std::function<void(T &)> &&callback) const {
         std::shared_ptr<ObjHandle<T>> objHandle = weakPtr_.lock();
         if (objHandle) {
             callback(objHandle->ref());
+        }
+    }
+
+    void apply(std::function<void()> &&callback) const {
+        std::shared_ptr<ObjHandle<T>> objHandle = weakPtr_.lock();
+        if (objHandle) {
+            callback();
         }
     }
 

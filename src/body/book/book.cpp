@@ -15,7 +15,8 @@ using logger::gLogger;
 
 Book::Book(Engine &engine, QObject *parent)
     : QObjectActor(parent)
-    , engine_(engine) {
+    , engine_(engine)
+    , handle_(*this) {
 
 }
 
@@ -35,6 +36,12 @@ void Book::open(const fs::path &archiveFile)
     asyncDeleteBookCache();
 
     cache_ = std::make_unique<BookCache>(archiveFile, engine_.pathManager().mkBookCacheDbFilePath(archiveFile));
+
+    cache_->sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page){
+        h.apply([this, &page] {
+            emit sigPageLoaded(QString::fromStdU32String(page.name), page.rawWidth, page.rawHeight);
+        });
+    });
 
     emit sigBookOpenStarted(QString::fromStdU32String(archiveFile.generic_u32string()));
 }

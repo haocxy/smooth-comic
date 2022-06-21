@@ -8,6 +8,7 @@
 
 #include "book-loader.h"
 #include "page-db-data.h"
+#include "page-info.h"
 
 
 namespace myapp {
@@ -17,6 +18,10 @@ public:
     BookCache(const fs::path &archiveFile, const fs::path &dbFile);
 
     ~BookCache();
+
+    using CbPageLoaded = void(const PageInfo &page);
+
+    Signal<CbPageLoaded> sigPageLoaded;
 
 private:
 

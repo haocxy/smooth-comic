@@ -51,6 +51,8 @@ private:
     Engine &engine_;
     fs::path archiveFile_;
     uptr<BookCache> cache_;
+
+    StrongHandle<Book> handle_;
 };
 
 

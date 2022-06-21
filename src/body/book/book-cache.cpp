@@ -91,15 +91,26 @@ void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
 {
     gLogger.d << "onPageLoaded: " << page->name;
 
+    // save data to db
     PageDbData data;
     data.seqNum = page->seqNum;
-    data.name = std::move(page->name);
+    data.name = page->name;
     data.rawWidth = page->rawWidth;
     data.rawHeight = page->rawHeight;
     data.rawImg = std::move(page->encodedRawImg);
     data.scaledImg = std::move(page->encodedScaledImg);
 
     stmtSavePage_(data);
+
+
+    // emit signal
+    PageInfo pageInfo;
+    pageInfo.seqNum = page->seqNum;
+    pageInfo.name = page->name;
+    pageInfo.rawWidth = page->rawWidth;
+    pageInfo.rawHeight = page->rawHeight;
+
+    outer_.sigPageLoaded(pageInfo);
 }
 
 void BookCache::Actor::onBookLoaded(i32 totalPageCount)
