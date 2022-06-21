@@ -79,7 +79,10 @@ void BookLoadPipeline::PageDecoder::loop()
 void BookLoadPipeline::PageDecoder::handle(PageData &&pageData)
 {
     QImage img;
-    img.loadFromData(reinterpret_cast<const uchar *>(pageData.data.data()), static_cast<int>(pageData.data.size()));
+    img.loadFromData(
+        reinterpret_cast<const uchar *>(pageData.data.data()),
+        static_cast<int>(pageData.data.size())
+    );
 
     PageRawImg pageImg;
     pageImg.seqNum = pageData.seqNum;
