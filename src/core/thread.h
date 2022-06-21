@@ -336,4 +336,7 @@ private:
     std::atomic_bool stopping_{ false };
     std::thread thread_;
     BlockQueue<Task> queue_;
+    using RunStateMtx = std::mutex;
+    using RunStateLock = std::lock_guard<RunStateMtx>;
+    RunStateMtx mtxRunState_;
 };

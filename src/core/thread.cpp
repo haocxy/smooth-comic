@@ -82,13 +82,13 @@ SingleThreadStrand::SingleThreadStrand(const std::string &name)
 
 SingleThreadStrand::~SingleThreadStrand()
 {
-    stopping_ = true;
-    queue_.stop();
+    stopEventQueue();
     thread_.join();
 }
 
 void SingleThreadStrand::stopEventQueue()
 {
+    RunStateLock lockRun(mtxRunState_);
     stopping_ = true;
     queue_.stop();
 }
@@ -109,8 +109,12 @@ void SingleThreadStrand::threadBody()
 {
     while (!stopping_) {
         std::optional<Task> &&task = queue_.pop();
-        if (!stopping_ && task && *task) {
-            (*task)();
+
+        {
+            RunStateLock lock(mtxRunState_);
+            if (!stopping_ && task && *task) {
+                (*task)();
+            }
         }
     }
 }
