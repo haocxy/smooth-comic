@@ -41,7 +41,7 @@ private:
 
 private: // non-UI Components
     Engine &engine_;
-    QPointer<Book> book_;
+    uptr<Book> book_;
 
 private: // UI Components
     QPointer<QWidget> thumbList_;

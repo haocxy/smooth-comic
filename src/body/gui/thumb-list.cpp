@@ -11,6 +11,7 @@ static constexpr int widthHint = 200;
 ThumbList::ThumbList(Book &book, QWidget *parent)
     : QScrollArea(parent)
     , book_(book)
+    , handle_(*this)
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
@@ -30,12 +31,20 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
 
     setWidgetResizable(true);
 
-    connect(&book_, &Book::sigPageLoaded, this, [this](const QString &entryPath, i32 width, i32 height) {
-        addPageThumbnailItemWidget(entryPath, width, height);
+    sigConns_ += book_.sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
+        h.apply([this, &page] {
+            strandEntry_.exec([this, page] {
+                addPageThumbnailItemWidget(QString::fromStdU32String(page.name), page.rawWidth, page.rawHeight);
+            });
+        });
     });
 
-    connect(&book_, &Book::sigBookOpenStarted, this, [this](const QString &archivePath) {
-        removeAllThumbs();
+    sigConns_ += book_.sigBookOpenStarted.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+        h.apply([this] {
+            strandEntry_.exec([this] {
+                removeAllThumbs();
+            });
+        });
     });
 }
 

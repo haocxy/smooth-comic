@@ -24,7 +24,7 @@ BookViewer::BookViewer(Engine &engine, QWidget *parent)
     : QMainWindow(parent)
     , engine_(engine)
 {
-    book_ = new Book(engine_, this);
+    book_ = std::make_unique<Book>(engine_);
 
     resize(1000, 800);
     setMinimumSize(800, 600);

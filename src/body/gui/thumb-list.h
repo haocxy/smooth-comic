@@ -8,6 +8,9 @@
 
 #include "core/basetype.h"
 
+#include "util/sigconns.h"
+#include "util/qtobj-strand-entry.h"
+
 #include "book/page-num.h"
 
 #include "jump-bar.h"
@@ -40,6 +43,9 @@ private:
     QPointer<QWidget> root_;
     QPointer<QVBoxLayout> layout_;
     QObjectList thumbWidgets_;
+    QtObjStrandEntry strandEntry_;
+    SigConns sigConns_;
+    StrongHandle<ThumbList> handle_;
 };
 
 

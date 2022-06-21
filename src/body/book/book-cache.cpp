@@ -22,13 +22,24 @@ BookCache::BookCache(const fs::path &archiveFile, const fs::path &dbFile)
     : SingleThreadStrand("BookCache")
     , archiveFile_(archiveFile)
     , dbFile_(dbFile)
-    , actor_(*this)
+    , actor_(std::make_unique<Actor>(*this))
 {
 }
 
 BookCache::~BookCache()
 {
-    stopEventQueue();
+    std::mutex mtxStopped;
+    std::condition_variable cvStopped;
+
+    std::unique_lock<std::mutex> lockStopped(mtxStopped);
+
+    exec([this, &cvStopped] {
+        actor_ = nullptr;
+        stopEventQueue();
+        cvStopped.notify_all();
+    });
+
+    cvStopped.wait(lockStopped);
 
     gLogger.d << "BookCache::~BookCache() end";
 }
@@ -68,8 +79,10 @@ BookCache::Actor::Actor(BookCache &outer)
 
 BookCache::Actor::~Actor()
 {
+    stmtSavePage_.close();
+    props_.close();
 
-
+    db_.close();
 
     gLogger.d << "BookCache::Actor::~Actor() end";
 }
@@ -126,9 +139,19 @@ void BookCache::Props::open(sqlite::Database &db)
     propRepo_.open(db, "book_props");
 }
 
+void BookCache::Props::close()
+{
+    propRepo_.close();
+}
+
 void BookCache::Actor::StmtSavePage::open(sqlite::Database &db)
 {
     stmt_.open(db, "insert or replace into pages values (?,?,?,?,?,?);");
+}
+
+void BookCache::Actor::StmtSavePage::close()
+{
+    stmt_.close();
 }
 
 void BookCache::Actor::StmtSavePage::operator()(const PageDbData &page)

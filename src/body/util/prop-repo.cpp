@@ -45,6 +45,12 @@ void PropRepo::open(sqlite::Database &db, const std::string &repo)
     stmtInsertOrReplace_.open(db, mkInsertOrReplaceSql(repo));
 }
 
+void PropRepo::close()
+{
+    stmtInsertOrReplace_.close();
+    stmtSelect_.close();
+}
+
 bool PropRepo::getValue(const u8view &key, u8str &val) const
 {
     stmtSelect_.reset();

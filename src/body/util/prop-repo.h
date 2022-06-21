@@ -30,6 +30,8 @@ public:
 
     void open(sqlite::Database &db, const std::string &repo);
 
+    void close();
+
     void set(const u8view &key, const u8str &val);
 
     void set(const u8view &key, bool val);

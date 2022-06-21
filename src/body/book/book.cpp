@@ -1,6 +1,7 @@
 #include "book.h"
 
 #include <cstring>
+#include <condition_variable>
 
 #include "core/fs.h"
 #include "core/logger.h"
@@ -13,19 +14,50 @@ namespace myapp {
 
 using logger::gLogger;
 
-Book::Book(Engine &engine, QObject *parent)
-    : QObjectActor(parent)
+Book::Book(Engine &engine)
+    : SingleThreadStrand("Book")
     , engine_(engine)
-    , handle_(*this) {
-
+{
+    exec([this] {
+        actor_ = std::make_unique<Actor>(*this);
+    });
 }
 
 Book::~Book()
 {
-    asyncDeleteBookCache();
+    std::mutex mtxStopped;
+    std::condition_variable cvStopped;
+
+    std::unique_lock<std::mutex> lockStopped(mtxStopped);
+
+    exec([this, &cvStopped] {
+        actor_ = nullptr;
+        stopEventQueue();
+        cvStopped.notify_all();
+    });
+
+    cvStopped.wait(lockStopped);
 }
 
 void Book::open(const fs::path &archiveFile)
+{
+    exec([this, archiveFile] {
+        actor_->open(archiveFile);
+    });
+}
+
+void Book::Actor::asyncDeleteBookCache()
+{
+    cache_ = nullptr;
+}
+
+Book::Actor::Actor(Book &outer)
+    : outer_(outer)
+    , handle_(*this)
+{
+}
+
+void Book::Actor::open(const fs::path &archiveFile)
 {
     if (!fs::is_regular_file(archiveFile)) {
         return;
@@ -35,45 +67,19 @@ void Book::open(const fs::path &archiveFile)
 
     asyncDeleteBookCache();
 
-    cache_ = std::make_unique<BookCache>(archiveFile, engine_.pathManager().mkBookCacheDbFilePath(archiveFile));
+    cache_ = std::make_unique<BookCache>(archiveFile, outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile));
 
-    cache_->sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page){
+    sigConns_.clear();
+
+    sigConns_ += cache_->sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page){
         h.apply([this, &page] {
-            emit sigPageLoaded(QString::fromStdU32String(page.name), page.rawWidth, page.rawHeight);
+            outer_.exec([this, page] {
+                outer_.sigPageLoaded(page);
+            });
         });
     });
 
-    emit sigBookOpenStarted(QString::fromStdU32String(archiveFile.generic_u32string()));
-}
-
-void Book::onNotice(actor::EventHolder<actor::Notice> &&notice)
-{
-}
-
-void Book::onRequest(actor::EventHolder<actor::Request> &&req)
-{
-    if (actor::EventHolder<GetThumbImgReq> r = std::move(req)) {
-        return handleGetThumbImgReq(*r);
-    }
-}
-
-static std::u8string toU8String(const QString &qs)
-{
-    const std::string s = qs.toUtf8().toStdString();
-    std::u8string u8s;
-    u8s.resize(s.size());
-    std::memcpy(u8s.data(), s.data(), s.size());
-    return u8s;
-}
-
-void Book::asyncDeleteBookCache()
-{
-
-}
-
-void Book::handleGetThumbImgReq(GetThumbImgReq &req)
-{
-
+    outer_.sigBookOpenStarted(archiveFile);
 }
 
 }

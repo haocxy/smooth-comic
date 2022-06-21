@@ -336,7 +336,7 @@ private:
     std::atomic_bool stopping_{ false };
     std::thread thread_;
     BlockQueue<Task> queue_;
-    using CallTaskMtx = std::mutex;
+    using CallTaskMtx = std::recursive_mutex;
     using CallTaskLock = std::lock_guard<CallTaskMtx>;
     CallTaskMtx mtxCallTask_;
 };

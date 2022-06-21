@@ -4,6 +4,9 @@
 
 #include "core/basetype.h"
 
+#include "util/sigconns.h"
+#include "util/qtobj-strand-entry.h"
+
 
 namespace Ui {
 
@@ -25,6 +28,9 @@ private:
     Book &book_;
     Ui::BookStatus *ui_{};
     i32 pageCount_{};
+    QtObjStrandEntry strandEntry_;
+    SigConns sigConns_;
+    StrongHandle<BookStatus> handle_;
 };
 
 }

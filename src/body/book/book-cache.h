@@ -32,6 +32,8 @@ private:
     public:
         void open(sqlite::Database &db);
 
+        void close();
+
         void setLoadStartTime(const LoadTime &time) {
             propRepo_.set(keyLoadStartTime, time);
         }
@@ -80,6 +82,8 @@ private:
         public:
             void open(sqlite::Database &db);
 
+            void close();
+
             void operator()(const PageDbData &page);
 
         private:
@@ -99,7 +103,7 @@ private:
 private:
     const fs::path archiveFile_;
     const fs::path dbFile_;
-    Actor actor_;
+    uptr<Actor> actor_;
 };
 
 }
