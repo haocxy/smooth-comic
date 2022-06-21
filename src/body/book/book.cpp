@@ -67,14 +67,20 @@ void Book::Actor::open(const fs::path &archiveFile)
 
     asyncDeleteBookCache();
 
-    cache_ = std::make_unique<BookCache>(archiveFile, outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile));
+    cache_ = std::make_unique<BookCache>(
+        sessionIdGen_.next(),
+        archiveFile,
+        outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile)
+    );
 
     sigConns_.clear();
 
-    sigConns_ += cache_->sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page){
-        h.apply([this, &page] {
-            outer_.exec([this, page] {
-                outer_.sigPageLoaded(page);
+    sigConns_ += cache_->sigPageLoaded.connect([this, h = handle_.weak()](const OpenSessionId &sessionId, const PageInfo &page){
+        h.apply([this, sessionId, &page] {
+            outer_.exec([this, sessionId, page] {
+                if (cache_ && cache_->openSessionId() == sessionId) {
+                    outer_.sigPageLoaded(page);
+                }
             });
         });
     });

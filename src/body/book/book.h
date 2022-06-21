@@ -10,6 +10,7 @@
 #include "page-num.h"
 
 #include "book-cache.h"
+#include "open-session-id.h"
 
 
 namespace myapp {
@@ -47,8 +48,10 @@ private:
 
     private:
         Book &outer_;
+        OpenSessionIdGenerator sessionIdGen_{ 1 };
         
         fs::path archiveFile_;
+        OpenSessionId currentSessionId_{ -1 };
         uptr<BookCache> cache_;
 
         SigConns sigConns_;

@@ -18,8 +18,9 @@ create table if not exists pages (
 );
 )";
 
-BookCache::BookCache(const fs::path &archiveFile, const fs::path &dbFile)
+BookCache::BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile)
     : SingleThreadStrand("BookCache")
+    , sessionId_(sessionId)
     , archiveFile_(archiveFile)
     , dbFile_(dbFile)
 {
@@ -125,7 +126,7 @@ void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
     pageInfo.rawWidth = page->rawWidth;
     pageInfo.rawHeight = page->rawHeight;
 
-    outer_.sigPageLoaded(pageInfo);
+    outer_.sigPageLoaded(outer_.sessionId_, pageInfo);
 }
 
 void BookCache::Actor::onBookLoaded(i32 totalPageCount)

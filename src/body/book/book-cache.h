@@ -10,16 +10,22 @@
 #include "page-db-data.h"
 #include "page-info.h"
 
+#include "open-session-id.h"
+
 
 namespace myapp {
 
 class BookCache : public SingleThreadStrand {
 public:
-    BookCache(const fs::path &archiveFile, const fs::path &dbFile);
+    BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile);
 
     ~BookCache();
 
-    using CbPageLoaded = void(const PageInfo &page);
+    const OpenSessionId &openSessionId() {
+        return sessionId_;
+    }
+
+    using CbPageLoaded = void(const OpenSessionId &sessionId, const PageInfo &page);
 
     Signal<CbPageLoaded> sigPageLoaded;
 
@@ -101,6 +107,7 @@ private:
     };
 
 private:
+    const OpenSessionId sessionId_;
     const fs::path archiveFile_;
     const fs::path dbFile_;
     uptr<Actor> actor_;
