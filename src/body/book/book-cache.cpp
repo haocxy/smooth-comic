@@ -22,8 +22,10 @@ BookCache::BookCache(const fs::path &archiveFile, const fs::path &dbFile)
     : SingleThreadStrand("BookCache")
     , archiveFile_(archiveFile)
     , dbFile_(dbFile)
-    , actor_(std::make_unique<Actor>(*this))
 {
+    exec([this] {
+        actor_ = std::make_unique<Actor>(*this);
+    });
 }
 
 BookCache::~BookCache()
