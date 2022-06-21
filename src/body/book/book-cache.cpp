@@ -1,5 +1,7 @@
 #include "book-cache.h"
 
+#include <QPixmap>
+
 #include "core/logger.h"
 
 
@@ -47,6 +49,23 @@ BookCache::~BookCache()
     gLogger.d << "BookCache::~BookCache() end";
 }
 
+void BookCache::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
+{
+    exec([this, seqNum, cb = std::move(cb)]() mutable {
+        actor_->loadThumbImg(seqNum, std::move(cb));
+    });
+}
+
+void BookCache::Actor::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
+{
+    Buff data = stmtQueryThumbImg_(seqNum);
+
+    QPixmap img;
+    img.loadFromData(reinterpret_cast<const uchar *>(data.data()), data.size());
+
+    cb(outer_.sessionId_, img);
+}
+
 BookCache::Actor::Actor(BookCache &outer)
     : outer_(outer)
     , handle_(*this)
@@ -68,6 +87,7 @@ BookCache::Actor::Actor(BookCache &outer)
 
 BookCache::Actor::~Actor()
 {
+    stmtQueryThumbImg_.close();
     stmtWalkPageInfos_.close();
     stmtSavePage_.close();
     props_.close();
@@ -124,6 +144,8 @@ void BookCache::Actor::prepareDb()
     stmtSavePage_.open(db_);
 
     stmtWalkPageInfos_.open(db_);
+
+    stmtQueryThumbImg_.open(db_);
 }
 
 void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
@@ -228,6 +250,33 @@ void BookCache::Actor::StmtWalkPageInfos::walk(std::function<void(sptr<PageInfo>
         stmt_.getValue(3, info->rawHeight);
         cb(info);
     }
+}
+
+void BookCache::Actor::StmtQueryThumbImg::open(sqlite::Database &db)
+{
+    stmt_.open(db, "select scaledImg from pages where seqNum = ?;");
+}
+
+void myapp::BookCache::Actor::StmtQueryThumbImg::close()
+{
+    stmt_.close();
+}
+
+Buff myapp::BookCache::Actor::StmtQueryThumbImg::operator()(PageNum seqNum)
+{
+    stmt_.reset();
+
+    stmt_.arg(seqNum);
+
+    Buff data;
+
+    if (stmt_.nextRow()) {
+        stmt_.getValue(0, data);
+    } else {
+        gLogger.e << "StmtQueryThumbImg execute failed";
+    }
+
+    return data;
 }
 
 }

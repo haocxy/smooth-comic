@@ -36,7 +36,7 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
     sigConns_ += book_.sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
         h.apply([this, &page] {
             strandEntry_.exec([this, page] {
-                addPageThumbnailItemWidget(QString::fromStdU32String(page.name), page.rawWidth, page.rawHeight);
+                addPageThumbnailItemWidget(page.seqNum, QString::fromStdU32String(page.name), page.rawWidth, page.rawHeight);
             });
         });
     });
@@ -50,9 +50,9 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
     });
 }
 
-void ThumbList::addPageThumbnailItemWidget(const QString &entryPath, i32 width, i32 height)
+void ThumbList::addPageThumbnailItemWidget(PageNum seqNum, const QString &entryPath, i32 width, i32 height)
 {
-    ThumbItem *itemWidget = new ThumbItem(entryPath.toStdU32String(), width, height, this);
+    ThumbItem *itemWidget = new ThumbItem(book_, seqNum, entryPath.toStdU32String(), width, height, this);
     layout_->insertWidget(thumbWidgets_.size(), itemWidget);
     thumbWidgets_.append(itemWidget);
     root_->adjustSize();

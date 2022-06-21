@@ -35,6 +35,8 @@ public:
 
     Signal<CbPageLoaded> sigPageLoaded;
 
+    void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
+
 private:
 
     class Actor {
@@ -42,6 +44,8 @@ private:
         Actor(Book &outer);
 
         void open(const fs::path &archiveFile);
+
+        void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
 
     private:
         void asyncDeleteBookCache();

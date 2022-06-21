@@ -13,10 +13,12 @@
 
 namespace myapp {
 
+class Book;
+
 class ThumbItem : public QWidget {
     Q_OBJECT
 public:
-    explicit ThumbItem(const u32str &entryPath, i32 width, i32 height, QWidget *parent = nullptr);
+    explicit ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 width, i32 height, QWidget *parent = nullptr);
 
     virtual ~ThumbItem() {}
 

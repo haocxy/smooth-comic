@@ -5,11 +5,11 @@
 
 namespace myapp {
 
-ThumbItem::ThumbItem(const u32str &entryPath, i32 width, i32 height, QWidget *parent)
+ThumbItem::ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 width, i32 height, QWidget *parent)
     : QWidget(parent)
     , entryPath_(entryPath)
 {
-    img_ = new ThumbImg(entryPath_, width, height, this);
+    img_ = new ThumbImg(book, seqNum, width, height, this);
 
     text_ = new QLabel(this);
     text_->setText(QString::fromStdU32String(entryPath_));

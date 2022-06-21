@@ -3,6 +3,8 @@
 #include <cstring>
 #include <condition_variable>
 
+#include <QPixmap>
+
 #include "core/fs.h"
 #include "core/logger.h"
 
@@ -46,9 +48,29 @@ void Book::open(const fs::path &archiveFile)
     });
 }
 
+void Book::loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb)
+{
+    exec([this, seqNum, cb = std::move(cb)] () mutable {
+        actor_->loadThumbImg(seqNum, std::move(cb));
+    });
+}
+
 void Book::Actor::asyncDeleteBookCache()
 {
     cache_ = nullptr;
+}
+
+void Book::Actor::loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb)
+{
+    cache_->loadThumbImg(seqNum, [this, h = handle_.weak(), cb = std::move(cb)](const OpenSessionId &sessionId, const QPixmap &img) mutable {
+        h.apply([this, &sessionId, &img, &cb]{
+            outer_.exec([this, sessionId, img = std::move(img), cb = std::move(cb)] {
+                if (sessionId == currentSessionId_) {
+                    cb(img);
+                }
+            });
+        });
+    });
 }
 
 Book::Actor::Actor(Book &outer)
@@ -67,8 +89,10 @@ void Book::Actor::open(const fs::path &archiveFile)
 
     asyncDeleteBookCache();
 
+    currentSessionId_ = sessionIdGen_.next();
+
     cache_ = std::make_unique<BookCache>(
-        sessionIdGen_.next(),
+        currentSessionId_,
         archiveFile,
         outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile)
     );
@@ -78,7 +102,7 @@ void Book::Actor::open(const fs::path &archiveFile)
     sigConns_ += cache_->sigPageLoaded.connect([this, h = handle_.weak()](const OpenSessionId &sessionId, const PageInfo &page){
         h.apply([this, sessionId, &page] {
             outer_.exec([this, sessionId, page] {
-                if (cache_ && cache_->openSessionId() == sessionId) {
+                if (sessionId == currentSessionId_) {
                     outer_.sigPageLoaded(page);
                 }
             });

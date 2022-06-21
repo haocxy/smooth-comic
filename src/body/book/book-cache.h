@@ -30,6 +30,8 @@ public:
 
     Signal<CbPageLoaded> sigPageLoaded;
 
+    void loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
+
 private:
 
     using LoadClock = std::chrono::system_clock;
@@ -78,6 +80,8 @@ private:
 
         ~Actor();
 
+        void loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
+
     private:
         void bindSequencerSignals();
 
@@ -115,6 +119,18 @@ private:
             sqlite::Statement stmt_;
         };
 
+        class StmtQueryThumbImg {
+        public:
+            void open(sqlite::Database &db);
+
+            void close();
+
+            Buff operator()(PageNum seqNum);
+
+        private:
+            sqlite::Statement stmt_;
+        };
+
     private:
         BookCache &outer_;
         PageSequencer sequencer_;
@@ -125,6 +141,7 @@ private:
         Props props_;
         StmtSavePage stmtSavePage_;
         StmtWalkPageInfos stmtWalkPageInfos_;
+        StmtQueryThumbImg stmtQueryThumbImg_;
         StrongHandle<Actor> handle_;
     };
 

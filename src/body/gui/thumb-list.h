@@ -28,7 +28,7 @@ public:
     virtual ~ThumbList() {}
 
 private:
-    void addPageThumbnailItemWidget(const QString &entryPath, i32 width, i32 height);
+    void addPageThumbnailItemWidget(PageNum seqNum, const QString &entryPath, i32 width, i32 height);
 
     void removeAllThumbs();
 

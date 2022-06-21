@@ -100,6 +100,10 @@ public:
         bind(pos, data.data(), data.size());
     }
 
+    void bind(int pos, const Buff &data) {
+        bind(pos, data.data(), data.size());
+    }
+
     void bind(int pos, int value);
 
     void bind(int pos, long value);
@@ -129,6 +133,8 @@ public:
     void getValue(int col, long long &to);
 
     void getValue(int col, MemBuff &to);
+
+    void getValue(int col, Buff &to);
 
     void getValue(int col, std::string &utf8);
 

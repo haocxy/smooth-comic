@@ -338,6 +338,12 @@ void Statement::getValue(int col, MemBuff &to)
     to.write(0, sqlite3_column_blob(stmt_, col), to.size());
 }
 
+void Statement::getValue(int col, Buff &to)
+{
+    to.resize(sqlite3_column_bytes(stmt_, col));
+    std::memcpy(to.data(), sqlite3_column_blob(stmt_, col), to.size());
+}
+
 void Statement::getValue(int col, std::string &utf8)
 {
     size_t nbytes = sqlite3_column_bytes(stmt_, col);
