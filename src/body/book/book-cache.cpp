@@ -32,21 +32,26 @@ BookCache::~BookCache()
 {
 }
 
-BookCache::Actor::Actor(BookCache &self)
-    : self_(self)
+BookCache::Actor::Actor(BookCache &outer)
+    : handle_(*this)
+    , outer_(outer)
 {
     prepareDb();
 
-    loader_ = std::make_unique<BookLoader>(self_.archiveFile_);
+    loader_ = std::make_unique<BookLoader>(outer_.archiveFile_);
 
     loaderSigConns_.clear();
 
-    loaderSigConns_ += loader_->sigPageLoaded.connect([this](sptr<LoadedPage> page) {
-        self_.exec([this, page] { onPageLoaded(page); });
+    loaderSigConns_ += loader_->sigPageLoaded.connect([this, h = handle_.weak()](sptr<LoadedPage> page) {
+        h.apply([this, page](Actor &self) {
+            outer_.exec([this, page] { onPageLoaded(page); });
+        });
     });
 
-    loaderSigConns_ += loader_->sigBookLoaded.connect([this](i32 totalPageCount) {
-        self_.exec([this, totalPageCount] { onBookLoaded(totalPageCount); });
+    loaderSigConns_ += loader_->sigBookLoaded.connect([this, h = handle_.weak()](i32 totalPageCount) {
+        h.apply([this, totalPageCount](Actor &self) {
+            outer_.exec([this, totalPageCount] { onBookLoaded(totalPageCount); });
+        });
     });
 
     loader_->start();
@@ -56,9 +61,9 @@ BookCache::Actor::Actor(BookCache &self)
 
 void BookCache::Actor::prepareDb()
 {
-    fs::create_directories(self_.dbFile_.parent_path());
+    fs::create_directories(outer_.dbFile_.parent_path());
 
-    db_.open(self_.dbFile_);
+    db_.open(outer_.dbFile_);
 
     db_.exec(kSqlCreateTables);
 

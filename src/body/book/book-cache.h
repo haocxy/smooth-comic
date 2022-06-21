@@ -60,7 +60,7 @@ private:
 
     class Actor {
     public:
-        Actor(BookCache &self);
+        Actor(BookCache &outer);
 
     private:
         void prepareDb();
@@ -80,7 +80,8 @@ private:
         };
 
     private:
-        BookCache &self_;
+        StrongHandle<Actor> handle_;
+        BookCache &outer_;
         uptr<BookLoader> loader_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
