@@ -4,21 +4,13 @@
 namespace myapp {
 
 AsyncDeleter::AsyncDeleter()
+    : worker_("AsyncDeleter")
 {
-    setActorName("AsyncDeleter");
 }
 
 AsyncDeleter::~AsyncDeleter()
 {
-    stopAndJoin();
+    worker_.stopEventQueue();
 }
-
-void AsyncDeleter::onMessage(actor::Message &msg)
-{
-    if (AsyncDeleteMsg *m = msg) {
-        m->doDelete();
-    }
-}
-
 
 }
