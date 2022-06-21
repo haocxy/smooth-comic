@@ -27,6 +27,8 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
     layout_ = new QVBoxLayout(root_);
     root_->setLayout(layout_);
 
+    layout_->addStretch();
+
     setWidget(root_);
 
     setWidgetResizable(true);
@@ -51,7 +53,7 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
 void ThumbList::addPageThumbnailItemWidget(const QString &entryPath, i32 width, i32 height)
 {
     ThumbItem *itemWidget = new ThumbItem(entryPath.toStdU32String(), width, height, this);
-    layout_->addWidget(itemWidget);
+    layout_->insertWidget(thumbWidgets_.size(), itemWidget);
     thumbWidgets_.append(itemWidget);
     root_->adjustSize();
 }
