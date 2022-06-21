@@ -5,24 +5,17 @@
 
 namespace myapp {
 
-BookLoader::BookLoader(const fs::path &archiveFile)
+BookLoader::BookLoader(const fs::path &archiveFile, const std::set<u32str> &loadedEntries)
     : SingleThreadStrand("BookLoader")
     , archiveFile_(archiveFile)
-    , mempool_(1024 * 1024 * 100)
 {
     uptr<LocalArchivePageDataLoader> pageDataLoader
-        = std::make_unique<LocalArchivePageDataLoader>(archiveFile_, &mempool_);
+        = std::make_unique<LocalArchivePageDataLoader>(archiveFile_, loadedEntries);
 
     bookLoadPipeline_ = std::make_unique<BookLoadPipeline>(
-        std::move(pageDataLoader), &mempool_);
+        std::move(pageDataLoader));
 
     sigConns_ += bookLoadPipeline_->sigPageLoaded.connect([this](sptr<LoadedPage> page) {
-        exec([this, page] {
-            sequencer_.feed(page);
-        });
-    });
-
-    sigConns_ += sequencer_.sigPageOrdered.connect([this](sptr<LoadedPage> page) {
         exec([this, page] {
             handlePageLoaded(page);
         });

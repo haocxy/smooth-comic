@@ -12,7 +12,7 @@ class LocalArchivePageDataLoader : public PageDataLoader {
 public:
     using Allocator = std::pmr::polymorphic_allocator<std::byte>;
 
-    LocalArchivePageDataLoader(const fs::path &archiveFile, Allocator allocator);
+    LocalArchivePageDataLoader(const fs::path &archiveFile, const std::set<u32str> &loadedEntries);
 
     ~LocalArchivePageDataLoader();
 
@@ -23,7 +23,7 @@ private:
 
 private:
     const fs::path archiveFile_;
-    Allocator allocator_;
+    const std::set<u32str> loadedEntries_;
     std::atomic_bool stopped_{ false };
     std::jthread thread_;
 };

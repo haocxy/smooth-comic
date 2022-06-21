@@ -53,10 +53,45 @@ BookCache::Actor::Actor(BookCache &outer)
 {
     gLogger.d << "BookCache::Actor::Actor() begin";
 
+    bindSequencerSignals();
+
     prepareDb();
 
-    loader_ = std::make_unique<BookLoader>(outer_.archiveFile_);
+    const std::set<u32str> cachedEntries = handleCachedEntries();
 
+    loader_ = std::make_unique<BookLoader>(outer_.archiveFile_, cachedEntries);
+    bindLoaderSignals();
+    loader_->start();
+
+    props_.setLoadStartTime(LoadClock::now());
+}
+
+BookCache::Actor::~Actor()
+{
+    stmtWalkPageInfos_.close();
+    stmtSavePage_.close();
+    props_.close();
+
+    db_.close();
+
+    gLogger.d << "BookCache::Actor::~Actor() end";
+}
+
+void BookCache::Actor::bindSequencerSignals()
+{
+    sequencerSigConns_.clear();
+
+    sequencerSigConns_ += sequencer_.sigPageOrdered.connect([this, h = handle_.weak()](sptr<PageInfo> page) {
+        h.apply([this, page] {
+            outer_.exec([this, page] {
+                outer_.sigPageLoaded(outer_.openSessionId(), *page);
+            });
+        });
+    });
+}
+
+void BookCache::Actor::bindLoaderSignals()
+{
     loaderSigConns_.clear();
 
     loaderSigConns_ += loader_->sigPageLoaded.connect([this, h = handle_.weak()](sptr<LoadedPage> page) {
@@ -74,20 +109,6 @@ BookCache::Actor::Actor(BookCache &outer)
             });
         });
     });
-
-    loader_->start();
-
-    props_.setLoadStartTime(LoadClock::now());
-}
-
-BookCache::Actor::~Actor()
-{
-    stmtSavePage_.close();
-    props_.close();
-
-    db_.close();
-
-    gLogger.d << "BookCache::Actor::~Actor() end";
 }
 
 void BookCache::Actor::prepareDb()
@@ -101,6 +122,8 @@ void BookCache::Actor::prepareDb()
     props_.open(db_);
 
     stmtSavePage_.open(db_);
+
+    stmtWalkPageInfos_.open(db_);
 }
 
 void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
@@ -119,14 +142,14 @@ void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
     stmtSavePage_(data);
 
 
-    // emit signal
-    PageInfo pageInfo;
-    pageInfo.seqNum = page->seqNum;
-    pageInfo.name = page->name;
-    pageInfo.rawWidth = page->rawWidth;
-    pageInfo.rawHeight = page->rawHeight;
+    // feed unordered page to sequencer
+    sptr<PageInfo> pageInfo = std::make_shared<PageInfo>();
+    pageInfo->seqNum = page->seqNum;
+    pageInfo->name = page->name;
+    pageInfo->rawWidth = page->rawWidth;
+    pageInfo->rawHeight = page->rawHeight;
 
-    outer_.sigPageLoaded(outer_.sessionId_, pageInfo);
+    sequencer_.feed(pageInfo);
 }
 
 void BookCache::Actor::onBookLoaded(i32 totalPageCount)
@@ -135,6 +158,18 @@ void BookCache::Actor::onBookLoaded(i32 totalPageCount)
 
     props_.setLoadSucceedTime(LoadClock::now());
     props_.setTotalPageCount(totalPageCount);
+}
+
+std::set<u32str> BookCache::Actor::handleCachedEntries()
+{
+    std::set<u32str> cachedEntries;
+
+    stmtWalkPageInfos_.walk([this, &cachedEntries](sptr<PageInfo> page) {
+        cachedEntries.insert(page->name);
+        sequencer_.feed(page);
+    });
+
+    return cachedEntries;
 }
 
 void BookCache::Props::open(sqlite::Database &db)
@@ -169,6 +204,30 @@ void BookCache::Actor::StmtSavePage::operator()(const PageDbData &page)
     stmt_.arg(page.scaledImg.data(), page.scaledImg.size());
 
     stmt_.execute();
+}
+
+void BookCache::Actor::StmtWalkPageInfos::open(sqlite::Database &db)
+{
+    stmt_.open(db, "select seqNum,name,rawWidth,rawHeight from pages order by seqNum asc;");
+}
+
+void BookCache::Actor::StmtWalkPageInfos::close()
+{
+    stmt_.close();
+}
+
+void BookCache::Actor::StmtWalkPageInfos::walk(std::function<void(sptr<PageInfo> page)> &&cb)
+{
+    stmt_.reset();
+
+    while (stmt_.nextRow()) {
+        sptr<PageInfo> info = std::make_shared<PageInfo>();
+        stmt_.getValue(0, info->seqNum);
+        stmt_.getValue(1, info->name);
+        stmt_.getValue(2, info->rawWidth);
+        stmt_.getValue(3, info->rawHeight);
+        cb(info);
+    }
 }
 
 }

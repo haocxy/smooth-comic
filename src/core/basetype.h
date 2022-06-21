@@ -37,3 +37,5 @@ using sptr = std::shared_ptr<T>;
 
 template <typename T>
 using opt = std::optional<T>;
+
+using Buff = std::basic_string<std::byte>;

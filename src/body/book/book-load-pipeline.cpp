@@ -19,10 +19,9 @@ static i32 decideEncoderCount() {
     return 4;
 }
 
-BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator)
+BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader)
     : handle_(*this)
     , pageDataLoader_(std::move(pageDataLoader))
-    , allocator_(allocator)
     , decoderCount_(decideDecoderCount())
     , scalerCount_(decideScalerCount())
     , encoderCount_(decideEncoderCount())
@@ -51,7 +50,7 @@ BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Alloca
     }
 
     for (i32 i = 0; i < encoderCount_; ++i) {
-        encoders_.push_back(std::make_unique<PageEncoder>(stopped_, scaledImgQueue_, sigPageLoaded, allocator_));
+        encoders_.push_back(std::make_unique<PageEncoder>(stopped_, scaledImgQueue_, sigPageLoaded));
     }
 }
 
@@ -134,8 +133,8 @@ void BookLoadPipeline::PageEncoder::handle(PageScaledImg &&scaledImg)
     page->name = std::move(scaledImg.name);
     page->rawWidth = scaledImg.rawImg.width();
     page->rawHeight = scaledImg.rawImg.height();
-    page->encodedRawImg = ImgUtil::toSccBuff(scaledImg.rawImg, kEncodeFormat, allocator_);
-    page->encodedScaledImg = ImgUtil::toSccBuff(scaledImg.scaledImg, kEncodeFormat, allocator_);
+    page->encodedRawImg = ImgUtil::toBuff(scaledImg.rawImg, kEncodeFormat);
+    page->encodedScaledImg = ImgUtil::toBuff(scaledImg.scaledImg, kEncodeFormat);
     page->rawImg = std::move(scaledImg.rawImg);
     page->scaledImg = std::move(scaledImg.scaledImg);
 

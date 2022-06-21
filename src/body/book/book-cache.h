@@ -6,6 +6,7 @@
 #include "util/sqlite.h"
 #include "util/prop-repo.h"
 
+#include "page-sequencer.h"
 #include "book-loader.h"
 #include "page-db-data.h"
 #include "page-info.h"
@@ -78,11 +79,17 @@ private:
         ~Actor();
 
     private:
+        void bindSequencerSignals();
+
+        void bindLoaderSignals();
+
         void prepareDb();
 
         void onPageLoaded(sptr<LoadedPage> page);
 
         void onBookLoaded(i32 totalPageCount);
+
+        std::set<u32str> handleCachedEntries();
 
         class StmtSavePage {
         public:
@@ -96,13 +103,28 @@ private:
             sqlite::Statement stmt_;
         };
 
+        class StmtWalkPageInfos {
+        public:
+            void open(sqlite::Database &db);
+
+            void close();
+
+            void walk(std::function<void(sptr<PageInfo> page)> &&cb);
+
+        private:
+            sqlite::Statement stmt_;
+        };
+
     private:
         BookCache &outer_;
+        PageSequencer sequencer_;
         uptr<BookLoader> loader_;
+        SigConns sequencerSigConns_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
         Props props_;
         StmtSavePage stmtSavePage_;
+        StmtWalkPageInfos stmtWalkPageInfos_;
         StrongHandle<Actor> handle_;
     };
 

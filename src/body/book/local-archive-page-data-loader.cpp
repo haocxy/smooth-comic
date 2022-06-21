@@ -5,9 +5,9 @@
 
 namespace myapp {
 
-LocalArchivePageDataLoader::LocalArchivePageDataLoader(const fs::path &archiveFile, Allocator allocator)
+LocalArchivePageDataLoader::LocalArchivePageDataLoader(const fs::path &archiveFile, const std::set<u32str> &loadedEntries)
     : archiveFile_(archiveFile)
-    , allocator_(allocator)
+    , loadedEntries_(loadedEntries)
 {
 }
 
@@ -26,7 +26,7 @@ void LocalArchivePageDataLoader::threadBody()
 {
     ThreadUtil::setNameForCurrentThread("LocalArchivePageDataLoader.LoadThread");
 
-    wrapper::libarchive::Archive archive(archiveFile_, allocator_);
+    wrapper::libarchive::Archive archive(archiveFile_);
 
     i32 pageCount = 0;
 
@@ -37,8 +37,12 @@ void LocalArchivePageDataLoader::threadBody()
         sptr<PageData> pageData = std::make_shared<PageData>();
         pageData->seqNum = seqNum++;
         pageData->name = archive.path();
-        pageData->data = archive.readContent();
-        sigPageDataLoaded(pageData);
+        if (loadedEntries_.contains(pageData->name)) {
+            archive.skipContent();
+        } else {
+            pageData->data = archive.readContent();
+            sigPageDataLoaded(pageData);
+        }
     }
 
     sigPageCountDetected(pageCount);

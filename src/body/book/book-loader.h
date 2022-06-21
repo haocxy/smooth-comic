@@ -11,14 +11,13 @@
 #include "util/memory.h"
 
 #include "book-load-pipeline.h"
-#include "page-sequencer.h"
 
 
 namespace myapp {
 
 class BookLoader : public SingleThreadStrand {
 public:
-    BookLoader(const fs::path &archiveFile);
+    BookLoader(const fs::path &archiveFile, const std::set<u32str> &loadedEntries);
 
     ~BookLoader();
 
@@ -39,9 +38,8 @@ private:
 
 private:
     const fs::path archiveFile_;
-    LimitedMemPool mempool_;
+
     uptr<BookLoadPipeline> bookLoadPipeline_;
-    PageSequencer sequencer_;
     SigConns sigConns_;
 
     i32 loadedPageCount_ = 0;

@@ -33,8 +33,7 @@ namespace myapp::wrapper::libarchive {
 
 class ArchiveImpl {
 public:
-    ArchiveImpl(const fs::path &file, Archive::Allocator allocator)
-        : allocator_(allocator) {
+    ArchiveImpl(const fs::path &file) {
 
         archive_ = ::archive_read_new();
         if (!archive_) {
@@ -76,20 +75,13 @@ public:
         return u8str(reinterpret_cast<const char8_t *>(::archive_entry_pathname_utf8(curEntry_)));
     }
 
-    std::string readData() {
-        size_t size = ::archive_entry_size(curEntry_);
-        std::string buff;
-        buff.resize(size);
-        auto r = ::archive_read_data(archive_, buff.data(), buff.size());
-        if (r < 0) {
-            throw ArchiveErr("archive_read_data", static_cast<int>(r));
-        }
-        return buff;
+    void skipContent() {
+        ::archive_read_data_skip(archive_);
     }
 
-    scc::buff readContent() {
+    Buff readContent() {
         size_t size = ::archive_entry_size(curEntry_);
-        scc::buff buff(allocator_);
+        Buff buff;
         buff.resize(size);
         auto r = ::archive_read_data(archive_, buff.data(), buff.size());
         if (r < 0) {
@@ -100,14 +92,13 @@ public:
 
 
 private:
-    Archive::Allocator allocator_;
     ::archive *archive_{};
     ::archive_entry *curEntry_{};
     bool finished_{ false };
 };
 
-Archive::Archive(const fs::path &file, Allocator allocator)
-    : impl_(new ArchiveImpl(file, allocator))
+Archive::Archive(const fs::path &file)
+    : impl_(new ArchiveImpl(file))
 {
 }
 
@@ -127,14 +118,14 @@ u32str Archive::path() const
     return impl_->path();
 }
 
-std::string Archive::readData()
-{
-    return impl_->readData();
-}
-
-scc::buff Archive::readContent()
+Buff Archive::readContent()
 {
     return impl_->readContent();
+}
+
+void Archive::skipContent()
+{
+    impl_->skipContent();
 }
 
 

@@ -19,9 +19,7 @@ namespace myapp {
 // 控制书籍加载的过程，一次性使用，加载完成后即可删除流水线对象
 class BookLoadPipeline {
 public:
-    using Allocator = std::pmr::polymorphic_allocator<std::byte>;
-
-    BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator);
+    BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader);
 
     ~BookLoadPipeline();
 
@@ -102,8 +100,8 @@ private:
     // 用于把从 页面缩放器 得到的原始图片和缩放图片编码为将要存储到本地数据库中的形式
     class PageEncoder {
     public:
-        PageEncoder(std::atomic_bool &stopped, BlockQueue<PageScaledImg> &scaledImgQueue, Signal<CbPageLoaded> &sigPageLoaded, Allocator &allocator)
-            : stopped_(stopped), scaledImgQueue_(scaledImgQueue), sigPageLoaded_(sigPageLoaded), allocator_(allocator), thread_([this] { loop(); }) {}
+        PageEncoder(std::atomic_bool &stopped, BlockQueue<PageScaledImg> &scaledImgQueue, Signal<CbPageLoaded> &sigPageLoaded)
+            : stopped_(stopped), scaledImgQueue_(scaledImgQueue), sigPageLoaded_(sigPageLoaded), thread_([this] { loop(); }) {}
 
     private:
         void loop();
@@ -114,14 +112,12 @@ private:
         std::atomic_bool &stopped_;
         BlockQueue<PageScaledImg> &scaledImgQueue_;
         Signal<CbPageLoaded> &sigPageLoaded_;
-        Allocator &allocator_;
         std::jthread thread_;
     };
 
 private:
     StrongHandle<BookLoadPipeline> handle_;
     uptr<PageDataLoader> pageDataLoader_;
-    Allocator allocator_;
     SigConns sigConnsPageDataLoader_;
 
     const i32 decoderCount_;

@@ -16,9 +16,9 @@ public:
     i32 rawWidth{};
     i32 rawHeight{};
     QImage rawImg;
-    scc::buff encodedRawImg;
+    Buff encodedRawImg;
     QImage scaledImg;
-    scc::buff encodedScaledImg;
+    Buff encodedScaledImg;
 };
 
 }
