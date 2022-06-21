@@ -13,7 +13,7 @@ create table if not exists pages (
     name text not null,
     rawWidth int not null,
     rawHeight int not null,
-    rawImg blob not null,
+    rawImg blob,
     scaledImg blob not null
 );
 )";
