@@ -87,6 +87,12 @@ SingleThreadStrand::~SingleThreadStrand()
     thread_.join();
 }
 
+void SingleThreadStrand::stopEventQueue()
+{
+    stopping_ = true;
+    queue_.stop();
+}
+
 bool SingleThreadStrand::inThread() const
 {
     return std::this_thread::get_id() == thread_.get_id();
@@ -103,7 +109,7 @@ void SingleThreadStrand::threadBody()
 {
     while (!stopping_) {
         std::optional<Task> &&task = queue_.pop();
-        if (task && *task) {
+        if (!stopping_ && task && *task) {
             (*task)();
         }
     }

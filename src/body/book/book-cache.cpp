@@ -22,19 +22,20 @@ BookCache::BookCache(const fs::path &archiveFile, const fs::path &dbFile)
     : SingleThreadStrand("BookCache")
     , archiveFile_(archiveFile)
     , dbFile_(dbFile)
+    , actor_(*this)
 {
-    exec([this] {
-        actor_ = std::make_unique<Actor>(*this);
-    });
 }
 
 BookCache::~BookCache()
 {
+    stopEventQueue();
+
+    gLogger.d << "BookCache::~BookCache()";
 }
 
 BookCache::Actor::Actor(BookCache &outer)
-    : handle_(*this)
-    , outer_(outer)
+    : outer_(outer)
+    , handle_(*this)
 {
     prepareDb();
 
@@ -44,19 +45,28 @@ BookCache::Actor::Actor(BookCache &outer)
 
     loaderSigConns_ += loader_->sigPageLoaded.connect([this, h = handle_.weak()](sptr<LoadedPage> page) {
         h.apply([this, page](Actor &self) {
-            outer_.exec([this, page] { onPageLoaded(page); });
+            outer_.exec([this, page] {
+                onPageLoaded(page);
+            });
         });
     });
 
     loaderSigConns_ += loader_->sigBookLoaded.connect([this, h = handle_.weak()](i32 totalPageCount) {
         h.apply([this, totalPageCount](Actor &self) {
-            outer_.exec([this, totalPageCount] { onBookLoaded(totalPageCount); });
+            outer_.exec([this, totalPageCount] {
+                onBookLoaded(totalPageCount);
+            });
         });
     });
 
     loader_->start();
 
     props_.setLoadStartTime(LoadClock::now());
+}
+
+BookCache::Actor::~Actor()
+{
+    gLogger.d << "BookCache::Actor::~Actor()";
 }
 
 void BookCache::Actor::prepareDb()

@@ -62,6 +62,8 @@ private:
     public:
         Actor(BookCache &outer);
 
+        ~Actor();
+
     private:
         void prepareDb();
 
@@ -80,19 +82,19 @@ private:
         };
 
     private:
-        StrongHandle<Actor> handle_;
         BookCache &outer_;
         uptr<BookLoader> loader_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
         Props props_;
         StmtSavePage stmtSavePage_;
+        StrongHandle<Actor> handle_;
     };
 
 private:
     const fs::path archiveFile_;
     const fs::path dbFile_;
-    uptr<Actor> actor_;
+    Actor actor_;
 };
 
 }

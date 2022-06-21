@@ -322,6 +322,8 @@ public:
 
     virtual ~SingleThreadStrand();
 
+    void stopEventQueue();
+
 protected:
     virtual bool inThread() const override;
 
