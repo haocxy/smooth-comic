@@ -20,7 +20,8 @@ static i32 decideEncoderCount() {
 }
 
 BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Allocator allocator)
-    : pageDataLoader_(std::move(pageDataLoader))
+    : handle_(*this)
+    , pageDataLoader_(std::move(pageDataLoader))
     , allocator_(allocator)
     , decoderCount_(decideDecoderCount())
     , scalerCount_(decideScalerCount())
@@ -29,12 +30,16 @@ BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader, Alloca
     , rawImgQueue_(scalerCount_ * 2)
     , scaledImgQueue_(encoderCount_ * 2)
 {
-    sigConnsPageDataLoader_ += pageDataLoader_->sigPageDataLoaded.connect([this](sptr<PageData> data) {
-        dataQueue_.push(std::move(*data));
+    sigConnsPageDataLoader_ += pageDataLoader_->sigPageDataLoaded.connect([h = handle_.weak()](sptr<PageData> data) {
+        h.apply([data](auto &self) {
+            self.dataQueue_.push(std::move(*data));
+        });
     });
 
-    sigConnsPageDataLoader_ += pageDataLoader_->sigPageCountDetected.connect([this](i32 totalPageCount) {
-        sigPageCountDetected(totalPageCount);
+    sigConnsPageDataLoader_ += pageDataLoader_->sigPageCountDetected.connect([h = handle_.weak()](i32 totalPageCount) {
+        h.apply([totalPageCount](auto &self) {
+            self.sigPageCountDetected(totalPageCount);
+        });
     });
 
     for (i32 i = 0; i < decoderCount_; ++i) {

@@ -119,6 +119,7 @@ private:
     };
 
 private:
+    StrongHandle<BookLoadPipeline> handle_;
     uptr<PageDataLoader> pageDataLoader_;
     Allocator allocator_;
     SigConns sigConnsPageDataLoader_;

@@ -19,31 +19,12 @@ private:
 };
 
 template <typename T>
-class WeakHandle;
-
-template <typename T>
-class StrongHandle {
-public:
-    StrongHandle(T &ref)
-        : handle_(std::make_shared<ObjHandle>(ref)) {}
-
-    T &ref() const {
-        return handle_.ref();
-    }
-
-private:
-    std::shared_ptr<ObjHandle<T>> &handle_;
-
-    friend class WeakHandle<T>;
-};
+class StrongHandle;
 
 template <typename T>
 class WeakHandle {
 public:
     WeakHandle() {}
-
-    WeakHandle(StrongHandle<T> &strongHandle)
-        : weakPtr_(strongHandle.handle_) {}
 
     WeakHandle(const WeakHandle &other)
         : weakPtr_(other.weakPtr_) {}
@@ -66,7 +47,7 @@ public:
     }
 
     template <typename CallbackT>
-    void with(CallbackT &&callback) const {
+    void apply(CallbackT &&callback) const {
         std::shared_ptr<ObjHandle<T>> objHandle = weakPtr_.lock();
         if (objHandle) {
             callback(objHandle->ref());
@@ -74,7 +55,33 @@ public:
     }
 
 private:
+    WeakHandle(std::weak_ptr<ObjHandle<T>> weakPtr)
+        : weakPtr_(weakPtr) {}
+
+private:
     std::weak_ptr<ObjHandle<T>> weakPtr_;
+
+    friend class StrongHandle<T>;
 };
+
+template <typename T>
+class StrongHandle {
+public:
+    StrongHandle(T &ref)
+        : handle_(std::make_shared<ObjHandle<T>>(ref)) {}
+
+    T &ref() const {
+        return handle_.ref();
+    }
+
+    WeakHandle<T> weak() const {
+        return WeakHandle<T>(handle_);
+    }
+
+private:
+    std::shared_ptr<ObjHandle<T>> handle_;
+};
+
+
 
 }
