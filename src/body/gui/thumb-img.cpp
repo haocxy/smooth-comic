@@ -39,8 +39,6 @@ void ThumbImg::paintEvent(QPaintEvent *)
 
 void ThumbImg::showEvent(QShowEvent *)
 {
-    gLogger.d << "ThumbImg(" << seqNum_ << ") showEvent()";
-
     book_.loadThumbImg(seqNum_, [this, h = handle_.weak()](const QPixmap &img) {
         h.apply([this, &img] {
             strandEntry_.exec([this, img] {
@@ -53,7 +51,6 @@ void ThumbImg::showEvent(QShowEvent *)
 
 void ThumbImg::moveEvent(QMoveEvent *e)
 {
-    gLogger.d << "ThumbImg(" << seqNum_ << ") moveEvent() " << e->pos().x() << "," << e->pos().y();
 }
 
 }
