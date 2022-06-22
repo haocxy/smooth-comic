@@ -4,14 +4,6 @@
 #include <QScrollArea>
 #include <QPointer>
 #include <QBoxLayout>
-#include <QPixmap>
-
-#include "core/basetype.h"
-
-#include "util/sigconns.h"
-#include "util/qtobj-strand-entry.h"
-
-#include "book/page-num.h"
 
 #include "jump-bar.h"
 
@@ -27,11 +19,6 @@ public:
 
     virtual ~ThumbListScrollArea() {}
 
-private:
-    void addPageThumbnailItemWidget(PageNum seqNum, const QString &entryPath, i32 width, i32 height);
-
-    void removeAllThumbs();
-
 protected:
     virtual void resizeEvent(QResizeEvent *) override;
 
@@ -41,11 +28,6 @@ private:
 private:
     QPointer<JumpBar> jumpBar_;
     QPointer<QWidget> root_;
-    QPointer<QVBoxLayout> layout_;
-    QObjectList thumbWidgets_;
-    QtObjStrandEntry strandEntry_;
-    SigConns sigConns_;
-    StrongHandle<ThumbListScrollArea> handle_;
 };
 
 
