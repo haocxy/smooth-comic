@@ -20,12 +20,12 @@ namespace myapp {
 
 class Book;
 
-class ThumbList : public QScrollArea {
+class ThumbListScrollArea : public QScrollArea {
     Q_OBJECT
 public:
-    explicit ThumbList(Book &book, QWidget *parent = nullptr);
+    explicit ThumbListScrollArea(Book &book, QWidget *parent = nullptr);
 
-    virtual ~ThumbList() {}
+    virtual ~ThumbListScrollArea() {}
 
 private:
     void addPageThumbnailItemWidget(PageNum seqNum, const QString &entryPath, i32 width, i32 height);
@@ -45,7 +45,7 @@ private:
     QObjectList thumbWidgets_;
     QtObjStrandEntry strandEntry_;
     SigConns sigConns_;
-    StrongHandle<ThumbList> handle_;
+    StrongHandle<ThumbListScrollArea> handle_;
 };
 
 

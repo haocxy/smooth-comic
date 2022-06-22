@@ -63,7 +63,7 @@ void BookViewer::initToolBarArea()
 
 void BookViewer::initThumbArea()
 {
-    thumbList_ = new ThumbList(*book_, this);
+    thumbList_ = new ThumbListScrollArea(*book_, this);
     QDockWidget *thumbDock = new QDockWidget(tr("Thumbnail Area"), this);
     thumbDock->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea | Qt::DockWidgetArea::RightDockWidgetArea);
     thumbDock->setWidget(thumbList_);

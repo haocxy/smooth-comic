@@ -8,7 +8,7 @@ namespace myapp {
 
 static constexpr int widthHint = 200;
 
-ThumbList::ThumbList(Book &book, QWidget *parent)
+ThumbListScrollArea::ThumbListScrollArea(Book &book, QWidget *parent)
     : QScrollArea(parent)
     , book_(book)
     , handle_(*this)
@@ -50,7 +50,7 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
     });
 }
 
-void ThumbList::addPageThumbnailItemWidget(PageNum seqNum, const QString &entryPath, i32 width, i32 height)
+void ThumbListScrollArea::addPageThumbnailItemWidget(PageNum seqNum, const QString &entryPath, i32 width, i32 height)
 {
     ThumbItem *itemWidget = new ThumbItem(book_, seqNum, entryPath.toStdU32String(), width, height, this);
     layout_->insertWidget(thumbWidgets_.size(), itemWidget);
@@ -58,7 +58,7 @@ void ThumbList::addPageThumbnailItemWidget(PageNum seqNum, const QString &entryP
     root_->adjustSize();
 }
 
-void ThumbList::removeAllThumbs()
+void ThumbListScrollArea::removeAllThumbs()
 {
     for (QObject *thumbWidget : thumbWidgets_) {
         delete thumbWidget;
@@ -67,7 +67,7 @@ void ThumbList::removeAllThumbs()
     thumbWidgets_.clear();
 }
 
-void ThumbList::resizeEvent(QResizeEvent *)
+void ThumbListScrollArea::resizeEvent(QResizeEvent *)
 {
     root_->adjustSize();
 }
