@@ -28,8 +28,6 @@ protected:
 
     virtual void showEvent(QShowEvent *) override;
 
-    virtual void moveEvent(QMoveEvent *e) override;
-
 private:
     Book &book_;
     const PageNum seqNum_;

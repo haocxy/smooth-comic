@@ -49,8 +49,4 @@ void ThumbImg::showEvent(QShowEvent *)
     });
 }
 
-void ThumbImg::moveEvent(QMoveEvent *e)
-{
-}
-
 }
