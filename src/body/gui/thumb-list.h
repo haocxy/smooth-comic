@@ -22,6 +22,9 @@ public:
 
     virtual ~ThumbList();
 
+protected:
+    virtual void moveEvent(QMoveEvent *e) override;
+
 private:
     void addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRawWidth, i32 imgRawHeight);
 

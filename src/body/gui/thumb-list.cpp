@@ -1,11 +1,15 @@
 #include "thumb-list.h"
 
+#include "core/logger.h"
+
 #include "book/book.h"
 
 #include "thumb-item.h"
 
 
 namespace myapp {
+
+using logger::gLogger;
 
 ThumbList::ThumbList(Book &book, QWidget *parent)
     : QWidget(parent)
@@ -36,6 +40,13 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
 
 ThumbList::~ThumbList()
 {
+}
+
+void ThumbList::moveEvent(QMoveEvent *e)
+{
+    QWidget::moveEvent(e);
+
+    gLogger.d << "ThumbList::moveEvent, pos: (" << pos().x() << "," << pos().y() << ")";
 }
 
 void ThumbList::addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRawWidth, i32 imgRawHeight)
