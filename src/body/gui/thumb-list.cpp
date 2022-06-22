@@ -46,7 +46,7 @@ void ThumbList::moveEvent(QMoveEvent *e)
 {
     QWidget::moveEvent(e);
 
-    gLogger.d << "ThumbList::moveEvent, pos: (" << pos().x() << "," << pos().y() << ")";
+    updateThumbsVisiableState();
 }
 
 void ThumbList::addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRawWidth, i32 imgRawHeight)
@@ -67,6 +67,13 @@ void ThumbList::removeAllThumbs()
     }
 
     thumbWidgets_.clear();
+}
+
+void ThumbList::updateThumbsVisiableState()
+{
+    for (ThumbItem *thumb : thumbWidgets_) {
+        thumb->updateThumbVisiableState();
+    }
 }
 
 }

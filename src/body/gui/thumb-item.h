@@ -22,6 +22,11 @@ public:
 
     virtual ~ThumbItem() {}
 
+    void updateThumbVisiableState();
+
+protected:
+    virtual void moveEvent(QMoveEvent *e) override;
+
 private:
     const u32str entryPath_;
     QPointer<ThumbImg> img_;

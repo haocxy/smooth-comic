@@ -15,6 +15,8 @@ namespace myapp {
 
 class Book;
 
+class ThumbItem;
+
 class ThumbList : public QWidget {
     Q_OBJECT
 public:
@@ -30,12 +32,16 @@ private:
 
     void removeAllThumbs();
 
+    // 更新各个缩略项是否可见的状态
+    // 当缩略项不可见时（或利可见区域足够远，取决于策略）时释放其中的缩略图，以节省内存
+    void updateThumbsVisiableState();
+
 private:
     Book &book_;
 
 private:
     QPointer<QVBoxLayout> layout_;
-    QObjectList thumbWidgets_;
+    QList<QPointer<ThumbItem>> thumbWidgets_;
     SigConns sigConns_;
     QtObjStrandEntry strandEntry_;
     StrongHandle<ThumbList> handle_;

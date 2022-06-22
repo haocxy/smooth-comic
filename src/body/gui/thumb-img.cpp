@@ -27,6 +27,16 @@ ThumbImg::ThumbImg(Book &book, PageNum seqNum, i32 width, i32 height, QWidget *p
     setSizePolicy(spImg);
 }
 
+void ThumbImg::updateThumbVisiableState(bool isVisiable)
+{
+    opt<bool> oldIsVisiable = isVisiable_;
+    isVisiable_ = isVisiable;
+    
+    if (!oldIsVisiable.has_value() || *oldIsVisiable != isVisiable) {
+        onThumbVisiableStateSwithed(oldIsVisiable, isVisiable);
+    }
+}
+
 void ThumbImg::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
@@ -37,16 +47,47 @@ void ThumbImg::paintEvent(QPaintEvent *)
     }
 }
 
-void ThumbImg::showEvent(QShowEvent *)
+void ThumbImg::onThumbVisiableStateSwithed(opt<bool> oldIsVisiable, bool newIsVisiable)
 {
+    if (newIsVisiable) {
+        loadImg();
+    } else {
+        releaseImg();
+    }
+}
+
+void ThumbImg::loadImg()
+{
+    if (isImgLoading_) {
+        return;
+    }
+
+    if (!img_.isNull()) {
+        return;
+    }
+
     book_.loadThumbImg(seqNum_, [this, h = handle_.weak()](const QPixmap &img) {
         h.apply([this, &img] {
             strandEntry_.exec([this, img] {
                 img_ = img;
+                isImgLoading_ = false;
                 update();
             });
         });
     });
+
+    isImgLoading_ = true;
+}
+
+void ThumbImg::releaseImg()
+{
+    if (img_.isNull()) {
+        return;
+    }
+
+    img_ = QPixmap();
+
+    gLogger.d << "ThumbImg(" << seqNum_ << ") releaseImg()";
 }
 
 }

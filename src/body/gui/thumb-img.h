@@ -23,10 +23,17 @@ public:
         return int(width * (float(height_) / float(width_)));
     }
 
+    void updateThumbVisiableState(bool isVisiable);
+
 protected:
     virtual void paintEvent(QPaintEvent *) override;
 
-    virtual void showEvent(QShowEvent *) override;
+private:
+    void onThumbVisiableStateSwithed(opt<bool> oldIsVisiable, bool newIsVisiable);
+
+    void loadImg();
+
+    void releaseImg();
 
 private:
     Book &book_;
@@ -36,6 +43,9 @@ private:
     QtObjStrandEntry strandEntry_;
     
     QPixmap img_;
+    bool isImgLoading_{ false };
+
+    opt<bool> isVisiable_;
 
     StrongHandle<ThumbImg> handle_;
 };

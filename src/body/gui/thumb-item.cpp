@@ -12,7 +12,7 @@ ThumbItem::ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 wi
     img_ = new ThumbImg(book, seqNum, width, height, this);
 
     text_ = new QLabel(this);
-    text_->setText(QString::fromStdU32String(entryPath_));
+    text_->setText(QString::fromStdU32String(entryPath_) + "(index:" + QString::number(seqNum) + ")");
     text_->setScaledContents(true);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -23,6 +23,18 @@ ThumbItem::ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 wi
 
     //setMaximumWidth(100);
     setMinimumHeight(100);
+}
+
+void ThumbItem::updateThumbVisiableState()
+{
+    img_->updateThumbVisiableState(!visibleRegion().isEmpty());
+}
+
+void ThumbItem::moveEvent(QMoveEvent *e)
+{
+    QWidget::moveEvent(e);
+
+    updateThumbVisiableState();
 }
 
 }
