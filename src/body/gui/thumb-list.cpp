@@ -1,4 +1,4 @@
-#include "thumb-list.h"
+#include "thumb-list-scroll-area.h"
 
 #include "book/book.h"
 #include "thumb-item.h"

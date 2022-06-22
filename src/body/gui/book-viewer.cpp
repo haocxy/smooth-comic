@@ -13,7 +13,7 @@
 
 #include "page-viewer.h"
 #include "book-status.h"
-#include "thumb-list.h"
+#include "thumb-list-scroll-area.h"
 
 
 namespace myapp {
