@@ -72,11 +72,15 @@ void ThumbImg::loadImg()
                 img_ = img;
                 isImgLoading_ = false;
                 update();
+
+                gLogger.d << "ThumbImg(" << seqNum_ << ") loadImg() callback";
             });
         });
     });
 
     isImgLoading_ = true;
+
+    gLogger.d << "ThumbImg(" << seqNum_ << ") loadImg()";
 }
 
 void ThumbImg::releaseImg()

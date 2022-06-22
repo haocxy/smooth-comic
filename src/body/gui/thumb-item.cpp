@@ -3,10 +3,17 @@
 #include <QPainter>
 #include <QBoxLayout>
 
+#include "core/logger.h"
+
+
 namespace myapp {
+
+using logger::gLogger;
+
 
 ThumbItem::ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 width, i32 height, QWidget *parent)
     : QWidget(parent)
+    , seqNum_(seqNum)
     , entryPath_(entryPath)
 {
     img_ = new ThumbImg(book, seqNum, width, height, this);
@@ -28,6 +35,13 @@ ThumbItem::ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 wi
 void ThumbItem::updateThumbVisiableState()
 {
     img_->updateThumbVisiableState(!visibleRegion().isEmpty());
+}
+
+void ThumbItem::showEvent(QShowEvent *e)
+{
+    QWidget::showEvent(e);
+
+    updateThumbVisiableState();
 }
 
 void ThumbItem::moveEvent(QMoveEvent *e)

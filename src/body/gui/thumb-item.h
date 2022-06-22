@@ -25,9 +25,12 @@ public:
     void updateThumbVisiableState();
 
 protected:
+    virtual void showEvent(QShowEvent *e) override;
+
     virtual void moveEvent(QMoveEvent *e) override;
 
 private:
+    const PageNum seqNum_;
     const u32str entryPath_;
     QPointer<ThumbImg> img_;
     QPointer<QLabel> text_;
