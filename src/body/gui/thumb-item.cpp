@@ -37,18 +37,4 @@ void ThumbItem::updateThumbVisiableState()
     img_->updateThumbVisiableState(!visibleRegion().isEmpty());
 }
 
-void ThumbItem::showEvent(QShowEvent *e)
-{
-    QWidget::showEvent(e);
-
-    updateThumbVisiableState();
-}
-
-void ThumbItem::moveEvent(QMoveEvent *e)
-{
-    QWidget::moveEvent(e);
-
-    updateThumbVisiableState();
-}
-
 }

@@ -49,6 +49,13 @@ void ThumbList::moveEvent(QMoveEvent *e)
     updateThumbsVisiableState();
 }
 
+void ThumbList::resizeEvent(QResizeEvent *e)
+{
+    QWidget::resizeEvent(e);
+
+    updateThumbsVisiableState();
+}
+
 void ThumbList::addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRawWidth, i32 imgRawHeight)
 {
     ThumbItem *thumb = new ThumbItem(book_, seqNum, entryName.toStdU32String(), imgRawWidth, imgRawHeight, this);

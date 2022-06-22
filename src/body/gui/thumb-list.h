@@ -27,6 +27,8 @@ public:
 protected:
     virtual void moveEvent(QMoveEvent *e) override;
 
+    virtual void resizeEvent(QResizeEvent *e) override;
+
 private:
     void addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRawWidth, i32 imgRawHeight);
 
