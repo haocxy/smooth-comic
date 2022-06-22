@@ -61,7 +61,7 @@ void BookCache::Actor::loadThumbImg(PageNum seqNum, std::function<void(const Ope
     Buff data = stmtQueryThumbImg_(seqNum);
 
     QPixmap img;
-    img.loadFromData(reinterpret_cast<const uchar *>(data.data()), data.size());
+    img.loadFromData(reinterpret_cast<const uchar *>(data.data()), static_cast<uint>(data.size()));
 
     cb(outer_.sessionId_, img);
 }
