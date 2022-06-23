@@ -27,6 +27,43 @@ const std::string &currentThreadName();
 }
 
 template <typename T>
+class FifoQueue {
+public:
+    FifoQueue(size_t limit = std::numeric_limits<size_t>::max())
+        : limit_(limit) {}
+
+    size_t size() const {
+        return queue_.size();
+    }
+
+    bool canPush() const {
+        return queue_.size() < limit_;
+    }
+
+    void push(const T &obj) {
+        queue_.push(obj);
+    }
+
+    void push(T &&obj) {
+        queue_.push(std::move(obj));
+    }
+
+    bool canPop() const {
+        return !queue_.empty();
+    }
+
+    T pop() {
+        T first(std::move(queue_.front()));
+        queue_.pop();
+        return first;
+    }
+
+private:
+    std::queue<T> queue_;
+    size_t limit_ = std::numeric_limits<size_t>::max();
+};
+
+template <typename T, typename QueueType = FifoQueue<T>>
 class BlockQueue {
 private:
     static const size_t kDefaultLimit = std::numeric_limits<size_t>::max();
@@ -37,42 +74,11 @@ public:
     BlockQueue() {}
 
     BlockQueue(size_t limit)
-        : limit_(limit) {}
-
-    BlockQueue(const BlockQueue &b)
-        : q_(b.q_), limit_(b.limit_) {}
-
-    BlockQueue(BlockQueue &&b) noexcept {
-        Lock lock(b.mtx_);
-        q_ = std::move(b.q_);
-        limit_ = b.limit_;
-        b.limit_ = kDefaultLimit;
-    }
-
-    BlockQueue &operator=(const BlockQueue &b) {
-        if (this != &b) {
-            Lock lockThis(mtx_);
-            Lock lockThat(b.mtx_);
-            q_ = b.q_;
-            limit_ = b.limit_;
-        }
-        return *this;
-    }
-
-    BlockQueue &operator=(BlockQueue &&b) {
-        if (this != &b) {
-            Lock lockThis(mtx_);
-            Lock lockThat(b.mtx_);
-            q_ = std::move(b.q_);
-            limit_ = b.limit_;
-            b.limit_ = kDefaultLimit;
-        }
-        return *this;
-    }
+        : queue_(limit) {}
 
     int32_t size() const {
         Lock lock(mtx_);
-        return static_cast<int32_t>(q_.size());
+        return static_cast<int32_t>(queue_.size());
     }
 
     void stop() {
@@ -87,13 +93,13 @@ public:
         if (stopping_) {
             return false;
         }
-        while (q_.size() >= limit_) {
+        while (!queue_.canPush()) {
             cvhasCapa_.wait(lock);
             if (stopping_) {
                 return false;
             }
         }
-        q_.push(e);
+        queue_.push(e);
         cvhasElem_.notify_one();
         return true;
     }
@@ -103,13 +109,13 @@ public:
         if (stopping_) {
             return false;
         }
-        while (q_.size() >= limit_) {
+        while (!queue_.canPush()) {
             cvhasCapa_.wait(lock);
             if (stopping_) {
                 return false;
             }
         }
-        q_.push(std::move(e));
+        queue_.push(std::move(e));
         cvhasElem_.notify_one();
         return true;
     }
@@ -119,14 +125,13 @@ public:
         if (stopping_) {
             return std::nullopt;
         }
-        while (q_.empty()) {
+        while (!queue_.canPop()) {
             cvhasElem_.wait(lock);
             if (stopping_) {
                 return std::nullopt;
             }
         }
-        T e(std::move(q_.front()));
-        q_.pop();
+        T e(queue_.pop());
         cvhasCapa_.notify_one();
         return e;
     }
@@ -136,8 +141,7 @@ private:
     mutable std::condition_variable cvhasElem_;
     mutable std::condition_variable cvhasCapa_;
     bool stopping_ = false;
-    std::queue<T> q_;
-    size_t limit_ = kDefaultLimit;
+    QueueType queue_;
 };
 
 template <typename F>
