@@ -1,7 +1,7 @@
 #include "strutil.h"
 
 
-namespace myapp::strutil
+namespace strutil
 {
 
 static inline bool isAsciiChar(char c) {

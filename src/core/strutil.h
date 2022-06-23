@@ -7,7 +7,7 @@
 #include <vector>
 
 
-namespace myapp::strutil
+namespace strutil
 {
 
 template <typename T>
