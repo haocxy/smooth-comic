@@ -11,6 +11,7 @@
 #include "core/system.h"
 #include "core/logger.h"
 
+#include "scroll-area-dock-widget.h"
 #include "page-viewer.h"
 #include "book-status.h"
 #include "thumb-list-scroll-area.h"
@@ -64,9 +65,8 @@ void BookViewer::initToolBarArea()
 void BookViewer::initThumbArea()
 {
     thumbList_ = new ThumbListScrollArea(*book_, this);
-    QDockWidget *thumbDock = new QDockWidget(tr("Thumbnail Area"), this);
+    QDockWidget *thumbDock = new ScrollAreaDockWidget(thumbList_, tr("Thumbnail Area"), this);
     thumbDock->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea | Qt::DockWidgetArea::RightDockWidgetArea);
-    thumbDock->setWidget(thumbList_);
     addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thumbDock);
 }
 

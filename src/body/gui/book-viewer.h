@@ -4,6 +4,7 @@
 #include <QSplitter>
 #include <QPointer>
 #include <QStackedLayout>
+#include <QScrollArea>
 
 #include "book/book.h"
 
@@ -44,7 +45,7 @@ private: // non-UI Components
     uptr<Book> book_;
 
 private: // UI Components
-    QPointer<QWidget> thumbList_;
+    QPointer<QScrollArea> thumbList_;
     QPointer<QWidget> pageViewer_;
     QPointer<QWidget> bookStatus_;
 };
