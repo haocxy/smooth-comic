@@ -9,7 +9,8 @@ namespace myapp {
 
 using logger::gLogger;
 
-static DebugOption<bool> dopNeedPageLoadedLog("need-page-loaded-log", true);
+static DebugOption<bool> dopNeedPageLoadedLog("need-page-loaded-log", true,
+    "Print log for page loaded if set to true.");
 
 static const char *const kSqlCreateTables = R"(
 create table if not exists pages (

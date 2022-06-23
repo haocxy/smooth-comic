@@ -32,6 +32,23 @@ static void initDebugOptions(const std::map<std::string, std::string> &rawDebugO
     center.publishAllOptions();
 }
 
+static void listDebugOptions(std::ostream &out)
+{
+    debug_option::OptionCenter &center = debug_option::OptionCenter::instance();
+
+    const std::string deco = "    ";
+
+    out << "Debug options:" << std::endl;
+
+    center.eachOption([&deco, &out](const std::string &name, const debug_option::OptionInfo &optionInfo) {
+        out << deco << name << " [" << optionInfo.type << "]";
+        if (!optionInfo.desc.empty()) {
+            out << " " << optionInfo.desc;
+        }
+        out << std::endl;
+    });
+}
+
 int body_entry(int argc, char *argv[])
 {
     ThreadUtil::setNameForCurrentThread("GUI");
@@ -60,6 +77,10 @@ int body_entry(int argc, char *argv[])
         return 0;
     }
 
+    if (cmdOption.needListDebugOptions()) {
+        listDebugOptions(std::cout);
+        return 0;
+    }
 
     // init debug options
     initDebugOptions(cmdOption.debugOptions());

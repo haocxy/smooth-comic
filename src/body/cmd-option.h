@@ -64,6 +64,10 @@ public:
         out << desc_ << std::endl;
     }
 
+    bool needListDebugOptions() const {
+        return varmap_.count("list-debug-options") != 0;
+    }
+
     const std::map<std::string, std::string> &debugOptions() const {
         return debugOptions_;
     }

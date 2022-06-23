@@ -12,9 +12,12 @@ namespace debug_option {
 
 namespace DebugOptionHelper {
 
-void addOptionCenterAfterLoadCallback(
-    const std::string &name,
-    std::function<void(const OptionRawData &data)> &&callback);
+void addOption(
+    std::string &&name,
+    std::string &&type,
+    std::function<void(const OptionRawData &data)> &&callback,
+    std::string &&desc
+);
 
 } // namespace ProgramOptionHelper
 
@@ -33,17 +36,26 @@ template <typename T>
 class DebugOption
 {
 public:
-    DebugOption(const std::string_view &name, const T &defaultValue = T())
+    DebugOption(const std::string_view &name)
+        : DebugOption(name, T(), std::string_view()) {}
+
+    DebugOption(const std::string_view &name, const std::string_view &desc)
+        : DebugOption(name, T(), desc) {}
+
+    DebugOption(const std::string_view &name, const T &defaultValue)
+        : DebugOption(name, defaultValue, std::string_view()) {}
+
+    DebugOption(const std::string_view &name, const T &defaultValue, const std::string_view &desc)
         : name_(name)
         , value_(defaultValue) {
 
-        DebugOptionHelper::addOptionCenterAfterLoadCallback(name_, [this](const OptionRawData &data) {
+        DebugOptionHelper::addOption(std::string(name_), std::string(typeid(T).name()), [this](const OptionRawData &data) {
             if (initialized_) {
                 return;
             }
             data >> value_;
             initialized_ = true;
-        });
+        }, std::string(desc));
     }
 
     const T &operator*() const {

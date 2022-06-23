@@ -104,20 +104,18 @@ void OptionCenter::loadProcArgs(int argc, char *argv[]) {
 void OptionCenter::publishAllOptions() {
     gLogger.d << title() << "afterLoad";
 
-    for (auto &[name, callbacks] : afterLoadCallbacks_) {
-        for (auto &callback : callbacks) {
-            const auto it = map_.find(name);
-            if (it != map_.end()) {
-                OptionRawData data;
-                data.setSource(it->second.source());
-                data.setName(name);
-                data.setValue(it->second.content());
-                data.setConfigFileDir(configFileDir_);
-                data.setProcStartupDir(proc_startup_info::dir());
-                callback(data);
-            } else {
-                gLogger.d << title() << "afterLoad, no value found for [" << name << "]";
-            }
+    for (auto &[name, optionInfo] : options_) {
+        const auto it = map_.find(name);
+        if (it != map_.end()) {
+            OptionRawData data;
+            data.setSource(it->second.source());
+            data.setName(name);
+            data.setValue(it->second.content());
+            data.setConfigFileDir(configFileDir_);
+            data.setProcStartupDir(proc_startup_info::dir());
+            optionInfo.cb(data);
+        } else {
+            gLogger.d << title() << "afterLoad, no value found for [" << name << "]";
         }
     }
 }

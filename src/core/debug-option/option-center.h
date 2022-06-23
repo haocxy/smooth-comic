@@ -14,9 +14,25 @@ namespace debug_option {
 
 class OptionRawData;
 
+class OptionInfo {
+public:
+    using AfterLoadCallback = std::function<void(const OptionRawData &)>;
+
+    OptionInfo() {}
+
+    OptionInfo(std::string &&type, AfterLoadCallback &&cb, std::string &&desc)
+        : type(std::move(type)), cb(std::move(cb)), desc(std::move(desc)) {}
+
+    std::string type;
+    AfterLoadCallback cb;
+    std::string desc;
+};
+
 class OptionCenter
 {
 public:
+
+    using AfterLoadCallback = OptionInfo::AfterLoadCallback;
 
     class ConfigFileError : public std::runtime_error
     {
@@ -49,20 +65,30 @@ public:
         std::string content_;
     };
 
-    using AfterLoadCallback = std::function<void(const OptionRawData &)>;
-    using AfterLoadCallbacks = std::vector<AfterLoadCallback>;
+    
 
     static OptionCenter &instance();
 
     void set(const std::string &key, const std::string &val, OptionSource source);
 
-    void addAfterLoadCallback(const std::string &key, AfterLoadCallback &&callback) {
-        afterLoadCallbacks_[key].push_back(std::move(callback));
+    void addOption(const std::string &name, std::string &&type, AfterLoadCallback &&callback, std::string &&desc) {
+        if (options_.contains(name)) {
+            throw std::logic_error(std::format("OptionCenter::addOption(...) option name [{}] already used", name));
+        }
+        options_[name] = OptionInfo(std::move(type), std::move(callback), std::move(desc));
     }
 
     void publishAllOptions();
 
+    void eachOption(std::function<void(const std::string &name, const OptionInfo &optionInfo)> &&action) {
+        for (const auto &pair : options_) {
+            action(pair.first, pair.second);
+        }
+    }
+
 private:
+    
+
     OptionCenter() {}
 
 
@@ -74,11 +100,13 @@ private:
 
     void loadProcArgs(int argc, char *argv[]);
 
+
+
 private:
     fs::path configFileDir_;
     std::map<std::string, std::string> nameToValue_;
     std::map<std::string, Data> map_;
-    std::map<std::string, AfterLoadCallbacks> afterLoadCallbacks_;
+    std::map<std::string, OptionInfo> options_;
 };
 
 }
