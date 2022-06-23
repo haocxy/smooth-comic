@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <map>
 #include <mutex>
 #include <shared_mutex>
 #include <queue>
@@ -29,6 +30,8 @@ const std::string &currentThreadName();
 template <typename T>
 class FifoQueue {
 public:
+    using value_type = T;
+
     FifoQueue(size_t limit = std::numeric_limits<size_t>::max())
         : limit_(limit) {}
 
@@ -40,12 +43,8 @@ public:
         return queue_.size() < limit_;
     }
 
-    void push(const T &obj) {
-        queue_.push(obj);
-    }
-
     void push(T &&obj) {
-        queue_.push(std::move(obj));
+        queue_.push(std::forward<T>(obj));
     }
 
     bool canPop() const {
@@ -63,17 +62,65 @@ private:
     size_t limit_ = std::numeric_limits<size_t>::max();
 };
 
-template <typename T, typename QueueType = FifoQueue<T>>
-class BlockQueue {
+template <typename T, typename PriorityT, typename CmpT = std::greater<PriorityT>>
+class PriorityQueue {
+public:
+    using value_type = T;
+
+    PriorityQueue(size_t limit = std::numeric_limits<size_t>::max())
+        : limit_(limit) {}
+
+    size_t size() const {
+        return size_;
+    }
+
+    bool canPush() const {
+        return size_ < limit_;
+    }
+
+    void push(T &&obj, PriorityT priority) {
+        queues_[priority].push(std::forward<T>(obj));
+        ++size_;
+    }
+
+    bool canPop() const {
+        return size_ > 0;
+    }
+
+    T pop() {
+        auto end = queues_.end();
+        for (auto it = queues_.begin(); it != queues_.end(); ++it) {
+            auto &queue = it->second;
+            if (!(queue.empty())) {
+                T result(std::move(queue.front()));
+                queue.pop();
+                --size_;
+                if (queue.empty()) {
+                    queues_.erase(it);
+                }
+                return result;
+            }
+        }
+        throw std::logic_error("PriorityQueue::pop() bad logic: must use canPop() before pop()");
+    }
+
 private:
-    static const size_t kDefaultLimit = std::numeric_limits<size_t>::max();
+    std::map<PriorityT, std::queue<T>, CmpT> queues_;
+    size_t limit_ = std::numeric_limits<size_t>::max();
+    size_t size_{ 0 };
+};
+
+template <typename QueueType>
+class BasicBlockQueue {
+private:
+    using value_type = typename QueueType::value_type;
     using Lock = std::unique_lock<std::mutex>;
 
 public:
 
-    BlockQueue() {}
+    BasicBlockQueue() {}
 
-    BlockQueue(size_t limit)
+    BasicBlockQueue(size_t limit)
         : queue_(limit) {}
 
     int32_t size() const {
@@ -89,7 +136,7 @@ public:
     }
 
     template <typename ...ExtArgs>
-    bool push(T &&e, ExtArgs &&...extArgs) {
+    bool push(value_type &&e, ExtArgs &&...extArgs) {
         Lock lock(mtx_);
         if (stopping_) {
             return false;
@@ -100,12 +147,12 @@ public:
                 return false;
             }
         }
-        queue_.push(std::forward<T>(e), std::forward<ExtArgs>(extArgs)...);
+        queue_.push(std::forward<value_type>(e), std::forward<ExtArgs>(extArgs)...);
         cvhasElem_.notify_one();
         return true;
     }
 
-    std::optional<T> pop() {
+    std::optional<value_type> pop() {
         Lock lock(mtx_);
         if (stopping_) {
             return std::nullopt;
@@ -116,7 +163,7 @@ public:
                 return std::nullopt;
             }
         }
-        T e(queue_.pop());
+        value_type e(queue_.pop());
         cvhasCapa_.notify_one();
         return e;
     }
@@ -128,6 +175,12 @@ private:
     bool stopping_ = false;
     QueueType queue_;
 };
+
+template <typename T>
+using BlockQueue = BasicBlockQueue<FifoQueue<T>>;
+
+template <typename T, typename PriorityType>
+using PriorityBlockQueue = BasicBlockQueue<PriorityQueue<T, PriorityType>>;
 
 template <typename F>
 using TaskQueue = BlockQueue<std::function<F>>;
@@ -304,28 +357,76 @@ private:
     std::vector<std::unique_ptr<Worker>> workers_;
 };
 
-
-class SingleThreadStrand : public StrandEntry {
+template <typename QueueType>
+class BasicSingleThreadStrand {
 public:
-    SingleThreadStrand(const std::string &name);
+    using Task = std::function<void()>;
 
-    virtual ~SingleThreadStrand();
+    BasicSingleThreadStrand(const std::string &name) {
+        thread_ = std::thread([this, name] {
+            ThreadUtil::setNameForCurrentThread(name);
+            threadBody();
+        });
+    }
 
-    void stopEventQueue();
+    virtual ~BasicSingleThreadStrand() {
+        stopEventQueue();
+        thread_.join();
+    }
 
-protected:
-    virtual bool inThread() const override;
+    void stopEventQueue() {
+        CallTaskLock lock(mtxCallTask_);
+        stopping_ = true;
+        queue_.stop();
+    }
 
-    virtual void post(Task &&task) override;
+    template <typename ...ExtArgs>
+    void exec(Task &&task, ExtArgs &&...extArgs) {
+        if (inThread()) {
+            task();
+        } else {
+            if (!stopping_) {
+                queue_.push(std::move(task), std::forward<ExtArgs>(extArgs)...);
+            }
+        }
+    }
 
 private:
-    void threadBody();
+    bool inThread() const {
+        return std::this_thread::get_id() == thread_.get_id();
+    }
+
+    void threadBody() {
+        while (!stopping_) {
+            std::optional<Task> &&task = queue_.pop();
+
+            {
+                CallTaskLock lock(mtxCallTask_);
+                if (!stopping_ && task && *task) {
+                    (*task)();
+                }
+            }
+        }
+    }
 
 private:
     std::atomic_bool stopping_{ false };
     std::thread thread_;
-    BlockQueue<Task> queue_;
+    QueueType queue_;
     using CallTaskMtx = std::recursive_mutex;
     using CallTaskLock = std::lock_guard<CallTaskMtx>;
     CallTaskMtx mtxCallTask_;
 };
+
+using SingleThreadStrand = BasicSingleThreadStrand<
+    BasicBlockQueue<
+        FifoQueue<std::function<void()>>
+    >
+>;
+
+template <typename PriorityType>
+using PrioritySingleThreadStrand = BasicSingleThreadStrand<
+    BasicBlockQueue<
+        PriorityQueue<std::function<void()>, PriorityType>
+    >
+>;

@@ -72,53 +72,6 @@ const std::string &currentThreadName()
 
 }
 
-SingleThreadStrand::SingleThreadStrand(const std::string &name)
-{
-    thread_ = std::thread([this, name] {
-        ThreadUtil::setNameForCurrentThread(name);
-        threadBody();
-    });
-}
-
-SingleThreadStrand::~SingleThreadStrand()
-{
-    stopEventQueue();
-    thread_.join();
-}
-
-void SingleThreadStrand::stopEventQueue()
-{
-    CallTaskLock lock(mtxCallTask_);
-    stopping_ = true;
-    queue_.stop();
-}
-
-bool SingleThreadStrand::inThread() const
-{
-    return std::this_thread::get_id() == thread_.get_id();
-}
-
-void SingleThreadStrand::post(Task &&task)
-{
-    if (!stopping_) {
-        queue_.push(std::move(task));
-    }
-}
-
-void SingleThreadStrand::threadBody()
-{
-    while (!stopping_) {
-        std::optional<Task> &&task = queue_.pop();
-
-        {
-            CallTaskLock lock(mtxCallTask_);
-            if (!stopping_ && task && *task) {
-                (*task)();
-            }
-        }
-    }
-}
-
 StrandPool::DelegateStrand::DelegateStrand(StrandPool &strandPool, Worker &worker)
     : strandPool_(strandPool), worker_(worker)
 {

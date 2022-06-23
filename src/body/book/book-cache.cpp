@@ -21,14 +21,14 @@ create table if not exists pages (
 )";
 
 BookCache::BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile)
-    : SingleThreadStrand("BookCache")
+    : PrioritySingleThreadStrand<BookOperationPriority>("BookCache")
     , sessionId_(sessionId)
     , archiveFile_(archiveFile)
     , dbFile_(dbFile)
 {
     exec([this] {
         actor_ = std::make_unique<Actor>(*this);
-    });
+    }, Prio::Init);
 }
 
 BookCache::~BookCache()
@@ -42,7 +42,7 @@ BookCache::~BookCache()
         actor_ = nullptr;
         stopEventQueue();
         cvStopped.notify_all();
-    });
+    }, Prio::DeInit);
 
     cvStopped.wait(lockStopped);
 
@@ -53,7 +53,7 @@ void BookCache::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessio
 {
     exec([this, seqNum, cb = std::move(cb)]() mutable {
         actor_->loadThumbImg(seqNum, std::move(cb));
-    });
+    }, Prio::Gui);
 }
 
 void BookCache::Actor::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
@@ -105,7 +105,7 @@ void BookCache::Actor::bindSequencerSignals()
         h.apply([this, page] {
             outer_.exec([this, page] {
                 outer_.sigPageLoaded(outer_.openSessionId(), *page);
-            });
+            }, Prio::Logic);
         });
     });
 }
@@ -118,7 +118,7 @@ void BookCache::Actor::bindLoaderSignals()
         h.apply([this, page] {
             outer_.exec([this, page] {
                 onPageLoaded(page);
-            });
+            }, Prio::Logic);
         });
     });
 
@@ -126,7 +126,7 @@ void BookCache::Actor::bindLoaderSignals()
         h.apply([this, totalPageCount] {
             outer_.exec([this, totalPageCount] {
                 onBookLoaded(totalPageCount);
-            });
+            }, Prio::Logic);
         });
     });
 }

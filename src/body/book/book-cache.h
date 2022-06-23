@@ -12,11 +12,12 @@
 #include "page-info.h"
 
 #include "open-session-id.h"
+#include "book-operation-priority.h"
 
 
 namespace myapp {
 
-class BookCache : public SingleThreadStrand {
+class BookCache : public PrioritySingleThreadStrand<BookOperationPriority> {
 public:
     BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile);
 
@@ -33,6 +34,8 @@ public:
     void loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
 
 private:
+
+    using Prio = BookOperationPriority;
 
     using LoadClock = std::chrono::system_clock;
     using LoadTime = std::chrono::time_point<LoadClock>;
