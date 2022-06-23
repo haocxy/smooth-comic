@@ -88,7 +88,8 @@ public:
         cvhasElem_.notify_all();
     }
 
-    bool push(const T &e) {
+    template <typename ...ExtArgs>
+    bool push(T &&e, ExtArgs &&...extArgs) {
         Lock lock(mtx_);
         if (stopping_) {
             return false;
@@ -99,23 +100,7 @@ public:
                 return false;
             }
         }
-        queue_.push(e);
-        cvhasElem_.notify_one();
-        return true;
-    }
-
-    bool push(T &&e) {
-        Lock lock(mtx_);
-        if (stopping_) {
-            return false;
-        }
-        while (!queue_.canPush()) {
-            cvhasCapa_.wait(lock);
-            if (stopping_) {
-                return false;
-            }
-        }
-        queue_.push(std::move(e));
+        queue_.push(std::forward<T>(e), std::forward<ExtArgs>(extArgs)...);
         cvhasElem_.notify_one();
         return true;
     }
