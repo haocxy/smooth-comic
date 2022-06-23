@@ -74,8 +74,6 @@ private:
 
     void loadProcArgs(int argc, char *argv[]);
 
-    void afterLoad();
-
 private:
     fs::path configFileDir_;
     std::map<std::string, std::string> nameToValue_;
