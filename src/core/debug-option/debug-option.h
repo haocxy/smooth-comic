@@ -43,10 +43,7 @@ public:
             }
             data >> value_;
             initialized_ = true;
-            logger::gLogger.d << "DebugOption initialized, name: [" << name_ << "], value: [" << value_ << "]";
         });
-
-        logger::gLogger.d << "DebugOption constructed, name: [" << name_ << "], default: [" << value_ << "]";
     }
 
     const T &operator*() const {

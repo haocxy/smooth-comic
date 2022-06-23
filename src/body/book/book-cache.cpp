@@ -3,11 +3,13 @@
 #include <QPixmap>
 
 #include "core/logger.h"
-
+#include "core/debug-option.h"
 
 namespace myapp {
 
 using logger::gLogger;
+
+static DebugOption<bool> dopNeedPageLoadedLog("need-page-loaded-log", true);
 
 static const char *const kSqlCreateTables = R"(
 create table if not exists pages (
@@ -150,7 +152,9 @@ void BookCache::Actor::prepareDb()
 
 void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
 {
-    gLogger.d << "onPageLoaded: " << page->name;
+    if (*dopNeedPageLoadedLog) {
+        gLogger.d << "onPageLoaded: " << page->name;
+    }
 
     // save data to db
     PageDbData data;

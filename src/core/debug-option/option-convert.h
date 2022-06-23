@@ -91,4 +91,10 @@ inline void operator>>(const OptionRawData &data, uint64_t &obj) {
     std::istringstream(data.value()) >> obj;
 }
 
+inline void operator>>(const OptionRawData &data, bool &obj) {
+    int n = 0;
+    std::istringstream(data.value()) >> n;
+    obj = (n != 0);
+}
+
 }
