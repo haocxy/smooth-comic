@@ -11,6 +11,8 @@
 #include "engine/path-manager.h"
 #include "engine/async-deleter.h"
 
+#include "book-cache.h"
+
 
 namespace myapp {
 
@@ -91,7 +93,7 @@ void Book::Actor::open(const fs::path &archiveFile)
 
     currentSessionId_ = sessionIdGen_.next();
 
-    cache_ = std::make_unique<BookCache>(
+    cache_ = new BookCache(
         currentSessionId_,
         archiveFile,
         outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile)

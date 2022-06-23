@@ -1,19 +1,26 @@
 #pragma once
 
 #include "core/fs.h"
+#include "core/thread.h"
 #include "core/basetype.h"
+#include "core/declare_ptr.h"
 
+#include "util/signal.h"
 #include "util/sigconns.h"
 
 #include "engine/engine.h"
 
+#include "page-info.h"
 #include "page-num.h"
 
-#include "book-cache.h"
 #include "open-session-id.h"
 
 
+class QPixmap;
+
 namespace myapp {
+
+class BookCache;
 
 // 代表抽象的书
 // GUI模块和非GUI模块的总界面
@@ -56,7 +63,7 @@ private:
         
         fs::path archiveFile_;
         OpenSessionId currentSessionId_{ -1 };
-        uptr<BookCache> cache_;
+        DeclarePtr<BookCache> cache_;
 
         SigConns sigConns_;
 
