@@ -1,5 +1,9 @@
 findSourceFiles(src_files)
 
+if(MSVC)
+    list(APPEND src_files ${CMAKE_SOURCE_DIR}/windows.rc)
+endif()
+
 list(APPEND deps ${appName}-loader)
 
 
