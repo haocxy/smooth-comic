@@ -3,6 +3,8 @@
 #include <iostream>
 #include <QApplication>
 
+#include <boost/program_options.hpp>
+
 #include "core/logger.h"
 #include "core/thread.h"
 #include "core/debug-option/option-center.h"
@@ -12,15 +14,30 @@
 
 #include "register-qt-meta-types.h"
 
+#include "cmd-option.h"
+
 
 namespace myapp {
 
 using logger::gLogger;
 
+static void initDebugOptions(const std::map<std::string, std::string> &rawDebugOptions)
+{
+    debug_option::OptionCenter &center = debug_option::OptionCenter::instance();
+
+    for (const auto &pair : rawDebugOptions) {
+        center.set(pair.first, pair.second, debug_option::OptionSource::CmdLine);
+    }
+
+    center.publishAllOptions();
+}
+
 int body_entry(int argc, char *argv[])
 {
     ThreadUtil::setNameForCurrentThread("GUI");
 
+
+    // init default global logger
     logger::control::Option opt;
     opt.setAlwaysFlush(true);
     opt.setWriteToStdout(true);
@@ -29,13 +46,26 @@ int body_entry(int argc, char *argv[])
 
     gLogger.setLevel(logger::Level::All);
 
+
+    // parse command line
+    CmdOption cmdOption(argc, argv);
+    if (cmdOption.hasError()) {
+        std::cerr << "Cannot parse command line because:" << cmdOption.errMsg() << std::endl;
+        cmdOption.showHelp(std::cerr);
+        return 1;
+    }
+
+    if (cmdOption.needHelp()) {
+        cmdOption.showHelp(std::cout);
+        return 0;
+    }
+
+
+    // init debug options
+    initDebugOptions(cmdOption.debugOptions());
+
+
     gLogger.i << "body_entry()";
-
-    debug_option::OptionCenter &debugOptionCenter = debug_option::OptionCenter::instance();
-
-    //debugOptionCenter.set("need-page-loaded-log", "0", debug_option::OptionSource::CmdLine);
-
-    debugOptionCenter.publishAllOptions();
 
     QApplication app(argc, argv);
 
