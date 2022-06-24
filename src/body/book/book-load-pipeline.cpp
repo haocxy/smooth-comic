@@ -1,9 +1,13 @@
 #include "book-load-pipeline.h"
 
 #include "util/img-util.h"
+#include "core/debug-option.h"
 
 
 namespace myapp {
+
+static const DebugOption<i64> dopDelayLoadMs("delay.load.ms", 0,
+    "Make loader sleep some ms on each entry.");
 
 static const char *const kEncodeFormat = "WEBP";
 
@@ -31,6 +35,9 @@ BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader)
 {
     sigConnsPageDataLoader_ += pageDataLoader_->sigPageDataLoaded.connect([this, h = handle_.weak()](sptr<PageData> data) {
         h.apply([this, &data] {
+            if (*dopDelayLoadMs > 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(*dopDelayLoadMs));
+            }
             dataQueue_.push(std::move(*data));
         });
     });
