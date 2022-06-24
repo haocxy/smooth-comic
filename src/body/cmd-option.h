@@ -26,7 +26,7 @@ public:
         std::vector<std::string> debugOptions;
 
         po::options_description_easy_init add = desc_.add_options();
-        add("list-debug-options", "Show all usable debug options");
+        add("list-debug-options,l", "Show all usable debug options");
         add("debug-option,d", po::value<std::vector<std::string>>(&debugOptions), "Set debug option");
         add("help,h", "Show this message");
 
