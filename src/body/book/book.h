@@ -32,6 +32,8 @@ public:
 
     virtual ~Book();
 
+    void close();
+
     void open(const fs::path &archiveFile);
 
     void reload();
@@ -44,6 +46,10 @@ public:
 
     Signal<CbPageLoaded> sigPageLoaded;
 
+    using CbBookClosed = void(const fs::path &archiveFile);
+
+    Signal<CbBookClosed> sigBookClosed;
+
     void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
 
 private:
@@ -51,6 +57,8 @@ private:
     class Actor {
     public:
         Actor(Book &outer);
+
+        void close();
 
         void open(const fs::path &archiveFile);
 
@@ -71,7 +79,8 @@ private:
 
         // 会随着书本的打开关闭而变化的成员
         fs::path archiveFile_;
-        OpenSessionId currentSessionId_{ -1 };
+        const OpenSessionId invalidSessionId_{ -1 };
+        OpenSessionId currentSessionId_{ invalidSessionId_ };
         DeclarePtr<BookCache> cache_;
         SigConns sigConns_;
 

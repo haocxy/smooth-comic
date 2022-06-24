@@ -40,6 +40,8 @@ private:
 private:
     void fileOpenAction();
 
+    void bookCloseAction();
+
     void bookReloadAction();
 
 private: // non-UI Components

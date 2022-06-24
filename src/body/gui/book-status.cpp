@@ -32,6 +32,15 @@ BookStatus::BookStatus(Book &book, QWidget *parent)
             });
         });
     });
+
+    sigConns_ += book_.sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+        h.apply([this, &archiveFile] {
+            strandEntry_.exec([this, archiveFile] {
+                pageCount_ = 0;
+                ui_->totalPageValue->setText(QString::number(pageCount_));
+            });
+        });
+    });
 }
 
 BookStatus::~BookStatus()

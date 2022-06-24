@@ -50,6 +50,7 @@ void BookViewer::initMenuBarArea()
 
     QMenu *fileMenu = bar->addMenu(tr("File"));
     bind(fileMenu, tr("Open"), &Class::fileOpenAction, QKeySequence::StandardKey::Open);
+    bind(fileMenu, tr("Close"), &Class::bookCloseAction, QKeySequence::StandardKey::Close);
     bind(fileMenu, tr("Reload"), &Class::bookReloadAction, QKeySequence::StandardKey::Refresh);
 
     QMenu *viewMenu = bar->addMenu(tr("View"));
@@ -61,6 +62,7 @@ void BookViewer::initToolBarArea()
 
     QToolBar *fileBar = addToolBar(tr("File"));
     bind(fileBar, tr("Open"), &Class::fileOpenAction);
+    bind(fileBar, tr("Close"), &Class::bookCloseAction);
     bind(fileBar, tr("Reload"), &Class::bookReloadAction);
 }
 
@@ -111,6 +113,11 @@ void BookViewer::fileOpenAction()
     const QString filePath = QFileDialog::getOpenFileName(this, tr("Open Comic"), defaultDir);
 
     book_->open(filePath.toStdU32String());
+}
+
+void BookViewer::bookCloseAction()
+{
+    book_->close();
 }
 
 void BookViewer::bookReloadAction()

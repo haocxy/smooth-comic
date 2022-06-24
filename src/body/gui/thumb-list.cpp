@@ -36,6 +36,14 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
             });
         });
     });
+
+    sigConns_ += book_.sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+        h.apply([this] {
+            strandEntry_.exec([this] {
+                removeAllThumbs();
+            });
+        });
+    });
 }
 
 ThumbList::~ThumbList()

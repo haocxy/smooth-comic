@@ -43,6 +43,13 @@ Book::~Book()
     cvStopped.wait(lockStopped);
 }
 
+void Book::close()
+{
+    exec([this] {
+        actor_->close();
+    });
+}
+
 void Book::open(const fs::path &archiveFile)
 {
     exec([this, archiveFile] {
@@ -88,14 +95,29 @@ Book::Actor::Actor(Book &outer)
 {
 }
 
+void myapp::Book::Actor::close()
+{
+    const fs::path oldPath = std::move(archiveFile_);
+
+    currentSessionId_ = invalidSessionId_;
+    sigConns_.clear();
+    cache_ = nullptr;
+    archiveFile_.clear();
+
+    outer_.sigBookClosed(oldPath);
+}
+
 void myapp::Book::Actor::open(const fs::path &archiveFile)
 {
+    close();
     open(archiveFile, ShouldForceReload::No);
 }
 
 void myapp::Book::Actor::reload()
 {
-    open(archiveFile_, ShouldForceReload::Yes);
+    const fs::path archiveFile = std::move(archiveFile_);
+    close();
+    open(archiveFile, ShouldForceReload::Yes);
 }
 
 void Book::Actor::open(const fs::path &archiveFile, ShouldForceReload shouldForceReload)
