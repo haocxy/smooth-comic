@@ -13,13 +13,14 @@
 
 #include "open-session-id.h"
 #include "book-operation-priority.h"
+#include "inner_options.h"
 
 
 namespace myapp {
 
 class BookCache : public PrioritySingleThreadStrand<BookOperationPriority> {
 public:
-    BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile);
+    BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile, ShouldForceReload shouldForceReload);
 
     ~BookCache();
 
@@ -152,6 +153,7 @@ private:
     const OpenSessionId sessionId_;
     const fs::path archiveFile_;
     const fs::path dbFile_;
+    const ShouldForceReload shouldForceReload_;
     uptr<Actor> actor_;
 };
 

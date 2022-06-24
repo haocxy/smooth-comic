@@ -40,6 +40,8 @@ private:
 private:
     void fileOpenAction();
 
+    void bookReloadAction();
+
 private: // non-UI Components
     Engine &engine_;
     uptr<Book> book_;

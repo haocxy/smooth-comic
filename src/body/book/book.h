@@ -14,6 +14,7 @@
 #include "page-num.h"
 
 #include "open-session-id.h"
+#include "inner_options.h"
 
 
 class QPixmap;
@@ -27,12 +28,13 @@ class BookCache;
 // GUI模块不关心下层的诸如缓存、加载等逻辑的细节
 class Book : public SingleThreadStrand {
 public:
-
     explicit Book(Engine &engine);
 
     virtual ~Book();
 
     void open(const fs::path &archiveFile);
+
+    void reload();
 
     using CbBookOpenStarted = void(const fs::path &archiveFile);
 
@@ -52,9 +54,13 @@ private:
 
         void open(const fs::path &archiveFile);
 
+        void reload();
+
         void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
 
     private:
+        void open(const fs::path &archiveFile, ShouldForceReload shouldForceReload);
+
         void asyncDeleteBookCache();
 
     private:

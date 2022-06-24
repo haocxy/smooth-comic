@@ -50,6 +50,13 @@ void Book::open(const fs::path &archiveFile)
     });
 }
 
+void Book::reload()
+{
+    exec([this] {
+        actor_->reload();
+    });
+}
+
 void Book::loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb)
 {
     exec([this, seqNum, cb = std::move(cb)] () mutable {
@@ -81,7 +88,17 @@ Book::Actor::Actor(Book &outer)
 {
 }
 
-void Book::Actor::open(const fs::path &archiveFile)
+void myapp::Book::Actor::open(const fs::path &archiveFile)
+{
+    open(archiveFile, ShouldForceReload::No);
+}
+
+void myapp::Book::Actor::reload()
+{
+    open(archiveFile_, ShouldForceReload::Yes);
+}
+
+void Book::Actor::open(const fs::path &archiveFile, ShouldForceReload shouldForceReload)
 {
     if (!fs::is_regular_file(archiveFile)) {
         return;
@@ -96,7 +113,8 @@ void Book::Actor::open(const fs::path &archiveFile)
     cache_ = new BookCache(
         currentSessionId_,
         archiveFile,
-        outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile)
+        outer_.engine_.pathManager().mkBookCacheDbFilePath(archiveFile),
+        shouldForceReload
     );
 
     sigConns_.clear();

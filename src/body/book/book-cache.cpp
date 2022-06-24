@@ -23,11 +23,12 @@ create table if not exists pages (
 );
 )";
 
-BookCache::BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile)
+BookCache::BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile, ShouldForceReload shouldForceReload)
     : PrioritySingleThreadStrand<BookOperationPriority>("BookCache")
     , sessionId_(sessionId)
     , archiveFile_(archiveFile)
     , dbFile_(dbFile)
+    , shouldForceReload_(shouldForceReload)
 {
     exec([this] {
         actor_ = std::make_unique<Actor>(*this);
@@ -90,13 +91,6 @@ BookCache::Actor::Actor(BookCache &outer)
 
 BookCache::Actor::~Actor()
 {
-    stmtQueryThumbImg_.close();
-    stmtWalkPageInfos_.close();
-    stmtSavePage_.close();
-    props_.close();
-
-    db_.close();
-
     gLogger.d << "BookCache::Actor::~Actor() end";
 }
 
@@ -137,6 +131,10 @@ void BookCache::Actor::bindLoaderSignals()
 void BookCache::Actor::prepareDb()
 {
     fs::create_directories(outer_.dbFile_.parent_path());
+
+    if (outer_.shouldForceReload_ == ShouldForceReload::Yes) {
+        fs::remove(outer_.dbFile_);
+    }
 
     db_.open(outer_.dbFile_);
 
