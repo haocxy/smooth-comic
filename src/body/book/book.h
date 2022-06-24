@@ -67,12 +67,13 @@ private:
         // 不会随着书本的打开关闭而变化的成员
         Book &outer_;
         OpenSessionIdGenerator sessionIdGen_{ 1 };
-        SigConns sigConns_;
+        
 
         // 会随着书本的打开关闭而变化的成员
         fs::path archiveFile_;
         OpenSessionId currentSessionId_{ -1 };
         DeclarePtr<BookCache> cache_;
+        SigConns sigConns_;
 
 
         // 始终保持为最后一个成员
