@@ -6,6 +6,8 @@
 
 #include "thumb-item.h"
 
+#include "auto-height-layout.h"
+
 
 namespace myapp {
 
@@ -16,10 +18,8 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
     , book_(book)
     , handle_(*this)
 {
-    layout_ = new QVBoxLayout(this);
+    layout_ = new AutoHeightLayout(this);
     setLayout(layout_);
-
-    layout_->addStretch();
 
     sigConns_ += book_.sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
         h.apply([this, &page] {
@@ -68,7 +68,7 @@ void ThumbList::addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRa
 {
     ThumbItem *thumb = new ThumbItem(book_, seqNum, entryName.toStdU32String(), imgRawWidth, imgRawHeight, this);
 
-    layout_->insertWidget(thumbWidgets_.size(), thumb);
+    layout_->addWidget(thumb);
 
     thumbWidgets_.append(thumb);
 

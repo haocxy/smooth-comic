@@ -42,7 +42,7 @@ private:
     Book &book_;
 
 private:
-    QPointer<QVBoxLayout> layout_;
+    QPointer<QLayout> layout_;
     QList<QPointer<ThumbItem>> thumbWidgets_;
     SigConns sigConns_;
     QtObjStrandEntry strandEntry_;
