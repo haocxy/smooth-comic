@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QPixmap>
 
 #include "book/page-num.h"
 
@@ -13,7 +14,7 @@ class Book;
 class PageWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit PageWidget(Book &book, PageNum seqNum, QWidget *parent = nullptr);
+    explicit PageWidget(Book &book, PageNum seqNum, const QPixmap &img, QWidget *parent = nullptr);
 
     virtual ~PageWidget();
 
@@ -21,9 +22,13 @@ public:
         return seqNum_;
     }
 
+protected:
+    virtual void paintEvent(QPaintEvent *e) override;
+
 private:
     Book &book_;
     const PageNum seqNum_;
+    const QPixmap img_;
 };
 
 }

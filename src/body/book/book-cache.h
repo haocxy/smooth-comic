@@ -5,6 +5,7 @@
 
 #include "util/sqlite.h"
 #include "util/prop-repo.h"
+#include "util/random-access-archive.h"
 
 #include "page-sequencer.h"
 #include "book-loader.h"
@@ -22,7 +23,7 @@ class BookCache : public PrioritySingleThreadStrand<BookOperationPriority> {
 public:
     BookCache(const OpenSessionId &sessionId, const fs::path &archiveFile, const fs::path &dbFile, ShouldForceReload shouldForceReload);
 
-    ~BookCache();
+    virtual ~BookCache();
 
     const OpenSessionId &openSessionId() {
         return sessionId_;
@@ -33,6 +34,8 @@ public:
     Signal<CbPageLoaded> sigPageLoaded;
 
     void loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
+
+    void loadPageImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
 
 private:
 
@@ -85,6 +88,8 @@ private:
         ~Actor();
 
         void loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
+
+        void loadPageImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
 
     private:
         void bindSequencerSignals();
@@ -139,6 +144,7 @@ private:
         BookCache &outer_;
         PageSequencer sequencer_;
         uptr<BookLoader> loader_;
+        RandomAccessArchive archive_;
         SigConns sequencerSigConns_;
         SigConns loaderSigConns_;
         sqlite::Database db_;

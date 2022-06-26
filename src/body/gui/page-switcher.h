@@ -3,6 +3,8 @@
 #include <unordered_map>
 
 #include <QWidget>
+#include <QPointer>
+#include <QBoxLayout>
 
 #include "core/basetype.h"
 #include "core/obj-handle.h"
@@ -33,6 +35,8 @@ private:
 
     void pageLoaded(const PageInfo &page);
 
+    void onLoadPageImgDone(PageNum seqNum, const QPixmap &img);
+
 private:
     QtObjStrandEntry strandEntry_;
 
@@ -41,7 +45,11 @@ private:
     SigConns sigConns_;
 
     std::unordered_map<PageNum, PageInfo> loadedPages_{ 987 };
+
     opt<PageNum> waitingPage_;
+
+    QPointer<QLayout> pageLayout_;
+    QPointer<QWidget> pageWidget_;
 
     StrongHandle<PageSwitcher> handle_;
 };

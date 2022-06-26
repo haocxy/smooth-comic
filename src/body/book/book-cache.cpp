@@ -64,6 +64,13 @@ void BookCache::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessio
     }, Prio::Gui);
 }
 
+void BookCache::loadPageImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
+{
+    exec([this, seqNum, cb = std::move(cb)]() mutable {
+        actor_->loadPageImg(seqNum, std::move(cb));
+    }, Prio::Gui);
+}
+
 void BookCache::Actor::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
 {
     Buff data = stmtQueryThumbImg_(seqNum);
@@ -92,6 +99,8 @@ BookCache::Actor::Actor(BookCache &outer)
     bindLoaderSignals();
     loader_->start();
 
+    archive_.open(outer_.archiveFile_);
+
     props_.setLoadStartTime(LoadClock::now());
 }
 
@@ -100,6 +109,16 @@ BookCache::Actor::~Actor()
     if (*dopLog) {
         gLogger.d << "BookCache::Actor::~Actor() end";
     }
+}
+
+void myapp::BookCache::Actor::loadPageImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
+{
+    Buff data = archive_.entryAt(seqNum).data;
+
+    QPixmap img;
+    img.loadFromData(reinterpret_cast<const uchar *>(data.data()), static_cast<uint>(data.size()));
+
+    cb(outer_.sessionId_, img);
 }
 
 void BookCache::Actor::bindSequencerSignals()

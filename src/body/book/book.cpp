@@ -66,8 +66,15 @@ void Book::reload()
 
 void Book::loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb)
 {
-    exec([this, seqNum, cb = std::move(cb)] () mutable {
+    exec([this, seqNum, cb = std::move(cb)]() mutable {
         actor_->loadThumbImg(seqNum, std::move(cb));
+    });
+}
+
+void Book::loadPageImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb)
+{
+    exec([this, seqNum, cb = std::move(cb)]() mutable {
+        actor_->loadPageImg(seqNum, std::move(cb));
     });
 }
 
@@ -89,6 +96,19 @@ void Book::Actor::loadThumbImg(PageNum seqNum, std::function<void(const QPixmap 
     });
 }
 
+void Book::Actor::loadPageImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb)
+{
+    cache_->loadPageImg(seqNum, [this, h = handle_.weak(), cb = std::move(cb)](const OpenSessionId &sessionId, const QPixmap &img) mutable {
+        h.apply([this, &sessionId, &img, &cb] {
+            outer_.exec([this, sessionId, img = std::move(img), cb = std::move(cb)]{
+                if (sessionId == currentSessionId_) {
+                    cb(img);
+                }
+            });
+        });
+    });
+}
+
 Book::Actor::Actor(Book &outer)
     : outer_(outer)
     , handle_(*this)
@@ -97,6 +117,10 @@ Book::Actor::Actor(Book &outer)
 
 void myapp::Book::Actor::close()
 {
+    if (!cache_) {
+        return;
+    }
+
     const fs::path oldPath = std::move(archiveFile_);
 
     currentSessionId_ = invalidSessionId_;

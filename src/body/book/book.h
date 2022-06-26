@@ -52,6 +52,8 @@ public:
 
     void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
 
+    void loadPageImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
+
 private:
 
     class Actor {
@@ -65,6 +67,8 @@ private:
         void reload();
 
         void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
+
+        void loadPageImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
 
     private:
         void open(const fs::path &archiveFile, ShouldForceReload shouldForceReload);
