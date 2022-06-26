@@ -2,6 +2,9 @@
 
 #include <QPainter>
 
+#include "page-switcher.h"
+#include "page-controll-layer.h"
+
 
 namespace myapp {
 
@@ -9,14 +12,14 @@ PageViewerWidget::PageViewerWidget(Book &book, QWidget *parent)
     : QWidget(parent)
     , book_(book)
 {
-}
+    layout_ = new QStackedLayout(this);
+    setLayout(layout_);
 
-void PageViewerWidget::paintEvent(QPaintEvent *)
-{
-    const QSize s = this->size();
+    pageSwitcher_ = new PageSwitcher(book_, this);
+    layout_->addWidget(pageSwitcher_);
 
-    QPainter p(this);
-    p.drawLine(100, 100, s.width() - 100, s.height() - 100);
+    pageControllLayer_ = new PageControllLayer(this);
+    layout_->addWidget(pageControllLayer_);
 }
 
 }
