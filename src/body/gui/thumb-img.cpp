@@ -3,12 +3,18 @@
 #include <QPainter>
 #include <QMoveEvent>
 
+#include "core/debug-option.h"
 #include "core/logger.h"
 
 #include "book/book.h"
 
 
+
 namespace myapp {
+
+static DebugOption<bool> dopLog("log.need.thumb-img", false,
+    "Is log for thumb img needed?");
+
 
 using logger::gLogger;
 
@@ -73,14 +79,18 @@ void ThumbImg::loadImg()
                 isImgLoading_ = false;
                 update();
 
-                gLogger.d << "ThumbImg(" << seqNum_ << ") loadImg() callback";
+                if (*dopLog) {
+                    gLogger.d << "ThumbImg(" << seqNum_ << ") loadImg() callback";
+                }
             });
         });
     });
 
     isImgLoading_ = true;
 
-    gLogger.d << "ThumbImg(" << seqNum_ << ") loadImg()";
+    if (*dopLog) {
+        gLogger.d << "ThumbImg(" << seqNum_ << ") loadImg()";
+    }
 }
 
 void ThumbImg::releaseImg()
@@ -91,7 +101,9 @@ void ThumbImg::releaseImg()
 
     img_ = QPixmap();
 
-    gLogger.d << "ThumbImg(" << seqNum_ << ") releaseImg()";
+    if (*dopLog) {
+        gLogger.d << "ThumbImg(" << seqNum_ << ") releaseImg()";
+    }
 }
 
 }
