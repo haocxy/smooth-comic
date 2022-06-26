@@ -48,6 +48,29 @@ PageSwitcher::~PageSwitcher()
 
 }
 
+void PageSwitcher::jumpTo(PageNum pageNum)
+{
+    if (!loadedPages_.contains(pageNum)) {
+        return;
+    }
+
+    asyncLoadImg(pageNum);
+}
+
+void PageSwitcher::jumpNext()
+{
+    if (pageWidget_) {
+        jumpTo(pageWidget_->seqNum() + 1);
+    }
+}
+
+void PageSwitcher::jumpPrev()
+{
+    if (pageWidget_) {
+        jumpTo(pageWidget_->seqNum() - 1);
+    }
+}
+
 void PageSwitcher::bookClosed()
 {
     loadedPages_.clear();
@@ -58,15 +81,20 @@ void PageSwitcher::pageLoaded(const PageInfo &page)
 {
     loadedPages_[page.seqNum] = page;
 
-    if (waitingPage_.has_value() && *waitingPage_ == page.seqNum) {
-        book_.loadPageImg(*waitingPage_, [this, seqNum = *waitingPage_, h = handle_.weak()](const QPixmap &img) {
-            h.apply([this, &seqNum, &img] {
-                strandEntry_.exec([this, seqNum, img] {
-                    onLoadPageImgDone(seqNum, img);
-                });
+    if (waitingPage_ && *waitingPage_ == page.seqNum) {
+        asyncLoadImg(*waitingPage_);
+    }
+}
+
+void PageSwitcher::asyncLoadImg(PageNum seqNum)
+{
+    book_.loadPageImg(seqNum, [this, seqNum, h = handle_.weak()](const QPixmap &img) {
+        h.apply([this, &seqNum, &img] {
+            strandEntry_.exec([this, seqNum, img] {
+                onLoadPageImgDone(seqNum, img);
             });
         });
-    }
+    });
 }
 
 void PageSwitcher::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)

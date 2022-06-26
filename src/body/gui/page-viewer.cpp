@@ -14,7 +14,7 @@ namespace myapp {
 using logger::gLogger;
 
 
-PageViewerWidget::PageViewerWidget(Book &book, QWidget *parent)
+PageViewer::PageViewer(Book &book, QWidget *parent)
     : QSplitter(parent)
     , book_(book)
 {
@@ -37,6 +37,21 @@ PageViewerWidget::PageViewerWidget(Book &book, QWidget *parent)
     addWidget(centerArea_);
 
     setSizes({ 1, 1000 });
+}
+
+void PageViewer::jumpTo(PageNum seqNum)
+{
+    pageSwitcher_->jumpTo(seqNum);
+}
+
+void PageViewer::jumpNext()
+{
+    pageSwitcher_->jumpNext();
+}
+
+void PageViewer::jumpPrev()
+{
+    pageSwitcher_->jumpPrev();
 }
 
 }

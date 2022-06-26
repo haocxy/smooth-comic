@@ -13,6 +13,9 @@ namespace myapp {
 
 class Engine;
 
+class PageViewer;
+
+
 class BookViewer : public QMainWindow {
     Q_OBJECT
 public:
@@ -42,12 +45,16 @@ private:
 
     void bookReloadAction();
 
+    void pageNextAction();
+
+    void pagePrevAction();
+
 private: // non-UI Components
     Engine &engine_;
     uptr<Book> book_;
 
 private: // UI Components
-    QPointer<QWidget> pageViewer_;
+    QPointer<PageViewer> pageViewer_;
     QPointer<QWidget> bookStatus_;
 };
 

@@ -20,6 +20,8 @@ namespace myapp {
 
 class Book;
 
+class PageWidget;
+
 // 页面切换器
 // 是页面的管理器，管理页面的显示逻辑和页面的生命周期
 // 一个页面切换器对象对应多个页面
@@ -30,10 +32,20 @@ public:
 
     virtual ~PageSwitcher();
 
+    // 跳转到指定页，只能是已经加载的页
+    void jumpTo(PageNum pageNum);
+
+    //
+    void jumpNext();
+
+    void jumpPrev();
+
 private:
     void bookClosed();
 
     void pageLoaded(const PageInfo &page);
+
+    void asyncLoadImg(PageNum seqNum);
 
     void onLoadPageImgDone(PageNum seqNum, const QPixmap &img);
 
@@ -49,7 +61,7 @@ private:
     opt<PageNum> waitingPage_;
 
     QPointer<QLayout> pageLayout_;
-    QPointer<QWidget> pageWidget_;
+    QPointer<PageWidget> pageWidget_;
 
     StrongHandle<PageSwitcher> handle_;
 };

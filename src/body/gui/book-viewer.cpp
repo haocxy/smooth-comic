@@ -51,6 +51,8 @@ void BookViewer::initMenuBarArea()
     bind(fileMenu, tr("Reload"), &Class::bookReloadAction, QKeySequence::StandardKey::Refresh);
 
     QMenu *viewMenu = bar->addMenu(tr("View"));
+    bind(viewMenu, tr("Next Page"), &Class::pageNextAction);
+    bind(viewMenu, tr("Prev Page"), &Class::pagePrevAction);
 }
 
 void BookViewer::initToolBarArea()
@@ -61,11 +63,15 @@ void BookViewer::initToolBarArea()
     bind(fileBar, tr("Open"), &Class::fileOpenAction);
     bind(fileBar, tr("Close"), &Class::bookCloseAction);
     bind(fileBar, tr("Reload"), &Class::bookReloadAction);
+
+    QToolBar *viewBar = addToolBar(tr("View"));
+    bind(viewBar, tr("Next Page"), &Class::pageNextAction);
+    bind(viewBar, tr("Prev Page"), &Class::pagePrevAction);
 }
 
 void BookViewer::initPageViewerArea()
 {
-    pageViewer_ = new PageViewerWidget(*book_, this);
+    pageViewer_ = new PageViewer(*book_, this);
     setCentralWidget(pageViewer_);
 }
 
@@ -112,6 +118,16 @@ void BookViewer::bookCloseAction()
 void BookViewer::bookReloadAction()
 {
     book_->reload();
+}
+
+void BookViewer::pageNextAction()
+{
+    pageViewer_->jumpNext();
+}
+
+void BookViewer::pagePrevAction()
+{
+    pageViewer_->jumpPrev();
 }
 
 }
