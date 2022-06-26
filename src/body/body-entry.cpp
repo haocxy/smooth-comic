@@ -53,15 +53,14 @@ int body_entry(int argc, char *argv[])
 {
     ThreadUtil::setNameForCurrentThread("GUI");
 
-
     // init default global logger
     logger::control::Option opt;
     opt.setAlwaysFlush(true);
     opt.setWriteToStdout(true);
 
     logger::control::init(opt);
-
     gLogger.setLevel(logger::Level::All);
+    gLogger.d << "body_entry() after init logger";
 
 
     // parse command line
@@ -82,11 +81,14 @@ int body_entry(int argc, char *argv[])
         return 0;
     }
 
+    gLogger.d << "body_entry() after parse command line";
+
+
     // init debug options
     initDebugOptions(cmdOption.debugOptions());
 
 
-    gLogger.i << "body_entry()";
+    gLogger.d << "body_entry() after init debug options";
 
     QApplication app(argc, argv);
 

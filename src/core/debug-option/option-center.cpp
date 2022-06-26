@@ -102,7 +102,7 @@ void OptionCenter::loadProcArgs(int argc, char *argv[]) {
 }
 
 void OptionCenter::publishAllOptions() {
-    gLogger.d << title() << "afterLoad";
+    gLogger.d << title() << "publishAllOptions()";
 
     for (auto &[name, optionInfo] : options_) {
         const auto it = map_.find(name);
@@ -115,7 +115,7 @@ void OptionCenter::publishAllOptions() {
             data.setProcStartupDir(proc_startup_info::dir());
             optionInfo.cb(data);
         } else {
-            gLogger.d << title() << "afterLoad, no value found for [" << name << "]";
+            //gLogger.d << title() << "afterLoad, no value found for [" << name << "]";
         }
     }
 }
