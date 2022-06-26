@@ -11,10 +11,8 @@
 #include "core/system.h"
 #include "core/logger.h"
 
-#include "scroll-area-dock-widget.h"
 #include "page-viewer.h"
 #include "book-status.h"
-#include "thumb-list-scroll-area.h"
 
 
 namespace myapp {
@@ -37,7 +35,6 @@ void BookViewer::initAreas()
 {
     initMenuBarArea();
     initToolBarArea();
-    initThumbArea();
     initPageViewerArea();
     initStatusArea();
 }
@@ -64,14 +61,6 @@ void BookViewer::initToolBarArea()
     bind(fileBar, tr("Open"), &Class::fileOpenAction);
     bind(fileBar, tr("Close"), &Class::bookCloseAction);
     bind(fileBar, tr("Reload"), &Class::bookReloadAction);
-}
-
-void BookViewer::initThumbArea()
-{
-    thumbList_ = new ThumbListScrollArea(*book_, this);
-    QDockWidget *thumbDock = new ScrollAreaDockWidget(thumbList_, tr("Thumbnail Area"), this);
-    thumbDock->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea | Qt::DockWidgetArea::RightDockWidgetArea);
-    addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thumbDock);
 }
 
 void BookViewer::initPageViewerArea()

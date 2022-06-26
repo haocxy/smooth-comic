@@ -2,24 +2,41 @@
 
 #include <QPainter>
 
+#include "thumb-list-scroll-area.h"
 #include "page-switcher.h"
 #include "page-controll-layer.h"
+
+#include "core/logger.h"
 
 
 namespace myapp {
 
+using logger::gLogger;
+
+
 PageViewerWidget::PageViewerWidget(Book &book, QWidget *parent)
-    : QWidget(parent)
+    : QSplitter(parent)
     , book_(book)
 {
-    layout_ = new QStackedLayout(this);
-    setLayout(layout_);
+    setChildrenCollapsible(false);
+
+    thumbArea_ = new ThumbListScrollArea(book_, this);
+
+    centerArea_ = new QWidget(this);
+
+    centerLayout_ = new QStackedLayout(this);
+    centerArea_->setLayout(centerLayout_);
 
     pageSwitcher_ = new PageSwitcher(book_, this);
-    layout_->addWidget(pageSwitcher_);
+    centerLayout_->addWidget(pageSwitcher_);
 
     pageControllLayer_ = new PageControllLayer(this);
-    layout_->addWidget(pageControllLayer_);
+    centerLayout_->addWidget(pageControllLayer_);
+
+    addWidget(thumbArea_);
+    addWidget(centerArea_);
+
+    setSizes({ 1, 1000 });
 }
 
 }

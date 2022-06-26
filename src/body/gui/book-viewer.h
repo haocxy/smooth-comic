@@ -25,8 +25,6 @@ private:
 
     void initToolBarArea();
 
-    void initThumbArea();
-
     void initPageViewerArea();
 
     void initStatusArea();
@@ -49,7 +47,6 @@ private: // non-UI Components
     uptr<Book> book_;
 
 private: // UI Components
-    QPointer<QScrollArea> thumbList_;
     QPointer<QWidget> pageViewer_;
     QPointer<QWidget> bookStatus_;
 };

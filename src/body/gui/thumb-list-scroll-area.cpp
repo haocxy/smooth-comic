@@ -17,7 +17,7 @@ ThumbListScrollArea::ThumbListScrollArea(Book &book, QWidget *parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
 
     setMinimumWidth(widthHint);
-    //setMaximumWidth(widthHint * 2);
+    setMaximumWidth(widthHint * 2);
 
     jumpBar_ = new JumpBar(this);
     setVerticalScrollBar(jumpBar_);
