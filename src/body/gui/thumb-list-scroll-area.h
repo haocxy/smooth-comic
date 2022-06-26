@@ -5,6 +5,8 @@
 #include <QPointer>
 #include <QBoxLayout>
 
+#include "core/basetype.h"
+
 #include "jump-bar.h"
 
 
@@ -28,6 +30,8 @@ private:
 private:
     QPointer<JumpBar> jumpBar_;
     QPointer<QWidget> root_;
+
+    opt<double> scrollPercent_;
 };
 
 
