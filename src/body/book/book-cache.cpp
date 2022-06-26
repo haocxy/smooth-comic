@@ -9,8 +9,10 @@ namespace myapp {
 
 using logger::gLogger;
 
-static DebugOption<bool> dopNeedPageLoadedLog("need-page-loaded-log", true,
-    "Print log for page loaded if set to true.");
+
+static DebugOption<bool> dopLog("log.need.book-cache", false,
+    "Is log for book cache needed?");
+
 
 static const char *const kSqlCreateTables = R"(
 create table if not exists pages (
@@ -50,7 +52,9 @@ BookCache::~BookCache()
 
     cvStopped.wait(lockStopped);
 
-    gLogger.d << "BookCache::~BookCache() end";
+    if (*dopLog) {
+        gLogger.d << "BookCache::~BookCache() end";
+    }
 }
 
 void BookCache::loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
@@ -74,7 +78,9 @@ BookCache::Actor::Actor(BookCache &outer)
     : outer_(outer)
     , handle_(*this)
 {
-    gLogger.d << "BookCache::Actor::Actor() begin";
+    if (*dopLog) {
+        gLogger.d << "BookCache::Actor::Actor() begin";
+    }
 
     bindSequencerSignals();
 
@@ -91,7 +97,9 @@ BookCache::Actor::Actor(BookCache &outer)
 
 BookCache::Actor::~Actor()
 {
-    gLogger.d << "BookCache::Actor::~Actor() end";
+    if (*dopLog) {
+        gLogger.d << "BookCache::Actor::~Actor() end";
+    }
 }
 
 void BookCache::Actor::bindSequencerSignals()
@@ -151,7 +159,7 @@ void BookCache::Actor::prepareDb()
 
 void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
 {
-    if (*dopNeedPageLoadedLog) {
+    if (*dopLog) {
         gLogger.d << "onPageLoaded: " << page->name;
     }
 
@@ -179,7 +187,9 @@ void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
 
 void BookCache::Actor::onBookLoaded(i32 totalPageCount)
 {
-    gLogger.d << "onBookLoaded";
+    if (*dopLog) {
+        gLogger.d << "onBookLoaded";
+    }
 
     props_.setLoadSucceedTime(LoadClock::now());
     props_.setTotalPageCount(totalPageCount);
@@ -276,7 +286,9 @@ Buff myapp::BookCache::Actor::StmtQueryThumbImg::operator()(PageNum seqNum)
     if (stmt_.nextRow()) {
         stmt_.getValue(0, data);
     } else {
-        gLogger.e << "StmtQueryThumbImg execute failed";
+        if (*dopLog) {
+            gLogger.e << "StmtQueryThumbImg execute failed";
+        }
     }
 
     return data;
