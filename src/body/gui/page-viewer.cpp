@@ -37,6 +37,8 @@ PageViewer::PageViewer(Book &book, QWidget *parent)
     addWidget(centerArea_);
 
     setSizes({ 1, 1000 });
+
+    connect(thumbArea_->thumbList(), &ThumbList::sigJumpTo, this, &PageViewer::jumpTo);
 }
 
 void PageViewer::jumpTo(PageNum seqNum)

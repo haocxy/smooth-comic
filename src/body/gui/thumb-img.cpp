@@ -53,6 +53,13 @@ void ThumbImg::paintEvent(QPaintEvent *)
     }
 }
 
+void ThumbImg::mouseReleaseEvent(QMouseEvent *e)
+{
+    QWidget::mouseReleaseEvent(e);
+
+    sigJumpTo(seqNum_);
+}
+
 void ThumbImg::onThumbVisiableStateSwithed(opt<bool> oldIsVisiable, bool newIsVisiable)
 {
     if (newIsVisiable) {

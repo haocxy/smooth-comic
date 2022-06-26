@@ -24,6 +24,10 @@ public:
 
     void updateThumbVisiableState();
 
+    ThumbImg *img() {
+        return img_;
+    }
+
 private:
     const PageNum seqNum_;
     const u32str entryPath_;

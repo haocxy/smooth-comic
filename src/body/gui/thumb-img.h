@@ -25,8 +25,13 @@ public:
 
     void updateThumbVisiableState(bool isVisiable);
 
+signals:
+    void sigJumpTo(PageNum seqNum);
+
 protected:
     virtual void paintEvent(QPaintEvent *) override;
+
+    virtual void mouseReleaseEvent(QMouseEvent *e) override;
 
 private:
     void onThumbVisiableStateSwithed(opt<bool> oldIsVisiable, bool newIsVisiable);

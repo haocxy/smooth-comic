@@ -24,6 +24,9 @@ public:
 
     virtual ~ThumbList();
 
+signals:
+    void sigJumpTo(PageNum seqNum);
+
 protected:
     virtual void moveEvent(QMoveEvent *e) override;
 
