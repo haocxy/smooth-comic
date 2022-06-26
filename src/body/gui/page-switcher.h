@@ -1,6 +1,17 @@
 #pragma once
 
+#include <unordered_map>
+
 #include <QWidget>
+
+#include "core/basetype.h"
+#include "core/obj-handle.h"
+
+#include "util/sigconns.h"
+#include "util/qtobj-strand-entry.h"
+
+#include "book/page-num.h"
+#include "book/page-info.h"
 
 
 namespace myapp {
@@ -18,7 +29,21 @@ public:
     virtual ~PageSwitcher();
 
 private:
+    void bookClosed();
+
+    void pageLoaded(const PageInfo &page);
+
+private:
+    QtObjStrandEntry strandEntry_;
+
     Book &book_;
+
+    SigConns sigConns_;
+
+    std::unordered_map<PageNum, PageInfo> loadedPages_{ 987 };
+    opt<PageNum> waitingPage_;
+
+    StrongHandle<PageSwitcher> handle_;
 };
 
 }

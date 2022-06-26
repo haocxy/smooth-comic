@@ -170,9 +170,16 @@ public:
             return LogLine(logger_, lineLevel_, firstObj);
         }
 
+        LogLineMaker &enableIf(bool isEnabled) {
+            if (!isEnabled) {
+                lineLevel_ = Level::Unkown;
+            }
+            return *this;
+        }
+
     private:
         Logger &logger_;
-        const Level lineLevel_;
+        Level lineLevel_ = Level::Unkown;
     };
 
 public:
