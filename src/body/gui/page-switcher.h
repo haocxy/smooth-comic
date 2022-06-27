@@ -15,6 +15,8 @@
 #include "book/page-num.h"
 #include "book/page-info.h"
 
+#include "switch-direction.h"
+
 
 namespace myapp {
 
@@ -39,6 +41,8 @@ public:
     void jumpNext();
 
     void jumpPrev();
+
+    void switchNextPage(SwitchDirection direction);
 
 private:
     void bookClosed();

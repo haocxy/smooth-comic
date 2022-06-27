@@ -25,13 +25,15 @@ PageViewer::PageViewer(Book &book, QWidget *parent)
     centerArea_ = new QWidget(this);
 
     centerLayout_ = new QStackedLayout(this);
+    centerLayout_->setStackingMode(QStackedLayout::StackingMode::StackAll);
+
     centerArea_->setLayout(centerLayout_);
 
     pageSwitcher_ = new PageSwitcher(book_, this);
-    centerLayout_->addWidget(pageSwitcher_);
-
     pageControllLayer_ = new PageControllLayer(this);
+
     centerLayout_->addWidget(pageControllLayer_);
+    centerLayout_->addWidget(pageSwitcher_);
 
     addWidget(thumbArea_);
     addWidget(centerArea_);
@@ -39,6 +41,8 @@ PageViewer::PageViewer(Book &book, QWidget *parent)
     setSizes({ 1, 1000 });
 
     connect(thumbArea_->thumbList(), &ThumbList::sigJumpTo, this, &PageViewer::jumpTo);
+
+    connect(pageControllLayer_, &PageControllLayer::sigCmdSwitchNextPage, pageSwitcher_, &PageSwitcher::switchNextPage);
 }
 
 void PageViewer::jumpTo(PageNum seqNum)

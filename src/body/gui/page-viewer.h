@@ -7,6 +7,7 @@
 #include "book/page-num.h"
 
 #include "thumb-list-scroll-area.h"
+#include "page-controll-layer.h"
 
 
 namespace myapp {
@@ -36,7 +37,7 @@ private:
     QPointer<QWidget> centerArea_;
     QPointer<QStackedLayout> centerLayout_;
     QPointer<PageSwitcher> pageSwitcher_;
-    QPointer<QWidget> pageControllLayer_;
+    QPointer<PageControllLayer> pageControllLayer_;
 };
 
 }

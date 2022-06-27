@@ -71,6 +71,26 @@ void PageSwitcher::jumpPrev()
     }
 }
 
+void PageSwitcher::switchNextPage(SwitchDirection direction)
+{
+    switch (direction) {
+    case SwitchDirection::Left:
+        jumpNext();
+        break;
+    case SwitchDirection::Right:
+        jumpPrev();
+        break;
+    case SwitchDirection::Up:
+        jumpPrev();
+        break;
+    case SwitchDirection::Down:
+        jumpNext();
+        break;
+    default:
+        break;
+    }
+}
+
 void PageSwitcher::bookClosed()
 {
     loadedPages_.clear();
