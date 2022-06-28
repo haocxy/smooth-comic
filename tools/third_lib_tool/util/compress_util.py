@@ -57,7 +57,7 @@ class SmartArchive:
         final_base_dir: Path = p.unpack_dir / final_base_name
         if final_base_dir.exists():
             shutil.rmtree(path=final_base_dir, ignore_errors=False)
-        os.makedirs(final_base_dir.parent)
+        os.makedirs(final_base_dir.parent, exist_ok=True)
         os.rename(src=tmp_base_dir, dst=final_base_dir)
         if tmp_unpack_dir.exists():
             shutil.rmtree(path=tmp_unpack_dir)
@@ -162,6 +162,14 @@ def smart_unpack(archive_file: Path, unpack_dir: Path, base_name: str = None) ->
                 base_name=base_name
             )
             return smart_unpack_by_file_obj(p)
+
+
+def smart_extract(archive: Path, dest_dir: Path) -> Path:
+    return smart_unpack(
+        archive_file=archive,
+        unpack_dir=dest_dir.parent,
+        base_name=dest_dir.name
+    )
 
 
 def main():

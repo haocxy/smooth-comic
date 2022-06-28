@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
 
+from third_lib_tool.util.build_config import BuildConfig, LinkType
+from third_lib_tool.util.build_context import BuildContext
+
 from third_lib_tool import lib_zlib
 from third_lib_tool import lib_libpng
 from third_lib_tool import lib_boost
@@ -27,13 +30,27 @@ NEED_LIBARCHIVE: bool = True
 def main():
     cmake_source_dir = Path(sys.argv[1]).resolve()
     print(f'Preparing libs, cmake_source_dir: [{cmake_source_dir}]')
-    thirdlib_repo_dir = cmake_source_dir / 'prepare' / 'thirdlibs_repo'
+    prepare_dir = cmake_source_dir / 'prepare'
+    thirdlib_repo_dir = prepare_dir / 'thirdlibs_repo'
     repo_thirdlibs.download(clone_dir=thirdlib_repo_dir)
+
+    build_config = BuildConfig()
+    build_config.runtime.linkType = LinkType.Dynamic
+    build_config.runtime.useDebug = False
+    build_config.lib.linkType = LinkType.Dynamic
+    build_config.lib.useDebug = False
+
+    build_context = BuildContext(
+        base_repo_dir=thirdlib_repo_dir,
+        base_extract_dir=prepare_dir / 'source',
+        base_install_dir=prepare_dir / 'install'
+    )
+
     zlib_base_dir: Path = cmake_source_dir / 'prepare' / 'zlib'
     if NEED_ZLIB:
         lib_zlib.prepare(
-            thirdlibs_repo_dir=thirdlib_repo_dir,
-            base_dir=zlib_base_dir
+            context=build_context,
+            config=build_config
         )
     if NEED_LIBPNG:
         lib_libpng.prepare(
