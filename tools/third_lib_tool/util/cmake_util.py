@@ -14,7 +14,7 @@ def mk_cmake_prefix_path_str(cmake_prefix_path: Optional[list[str]]) -> str:
     is_first: bool = True
     for path in cmake_prefix_path:
         if not is_first:
-            result += ':'
+            result += ';'
         result += path
         is_first = False
     return result
