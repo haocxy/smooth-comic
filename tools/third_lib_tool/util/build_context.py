@@ -20,6 +20,12 @@ class BuildContext:
     def get_install_dir(self, lib_name: Union[str | Path]) -> Path:
         return self.base_install_dir / lib_name
 
+    def get_installed_dir(self, lib_name: Union[str | Path]) -> Path:
+        full_dir: Path = self.get_install_dir(lib_name)
+        if not full_dir.exists():
+            raise Exception(f'Dependency [{lib_name}] not built')
+        return full_dir
+
     def find_newest_in_repo(self, relative_path: Union[str | Path]) -> Path:
         full_path: Path = self.get_repo_path(relative_path)
         return find_newest_lib(full_path.parent, full_path.name)
