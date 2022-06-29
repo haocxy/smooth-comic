@@ -28,5 +28,6 @@ def prepare(context: BuildContext, config: BuildConfig):
         cmake_prefix_path=[
             str(context.get_installed_dir('zlib')),
             str(context.get_installed_dir('liblzma'))
-        ]
+        ],
+        other_params='-DENABLE_WERROR=OFF'
     )

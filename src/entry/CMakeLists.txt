@@ -27,5 +27,5 @@ if(MSVC)
 endif()
 
 add_custom_command(TARGET ${appName} POST_BUILD
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/update_output_dir.py ${CMAKE_SOURCE_DIR}/prepare $<TARGET_FILE_DIR:${appName}>
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/update_output_dir.py ${prepareDir}/install $<TARGET_FILE_DIR:${appName}>
 )

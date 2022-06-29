@@ -9,7 +9,7 @@ if(MSVC)
     set(Boost_USE_STATIC_RUNTIME OFF)
 endif()
 
-set(MY_BOOST_ROOT ${prepareDir}/boost)
+set(MY_BOOST_ROOT ${prepareDir}/install/boost)
 set(MY_BOOST_VER "1.78")
 
 
