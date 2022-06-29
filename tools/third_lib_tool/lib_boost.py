@@ -3,7 +3,9 @@ import sys
 from pathlib import Path
 
 from third_lib_tool import logs
-from third_lib_tool.util.compress_util import smart_unpack
+from third_lib_tool.util.build_config import BuildConfig, LinkType
+from third_lib_tool.util.build_context import BuildContext
+from third_lib_tool.util.compress_util import smart_unpack, smart_extract
 
 BOOST_LIB_NAME: str = 'boost_1_78_0'
 
@@ -38,26 +40,37 @@ def get_boost_b2_cmd_name() -> str:
         return './b2'
 
 
-def make_boost_b2_install_cmd_line(install_dir: Path, variant: str, modules: list) -> str:
+def make_boost_b2_install_cmd_line(install_dir: Path, config: BuildConfig, modules: list) -> str:
     b2_cmd_name: str = get_boost_b2_cmd_name()
     cmdline: str = ''
     cmdline += b2_cmd_name
     cmdline += f' --prefix=\"{install_dir}\"'
     for module in modules:
         cmdline += f' --with-{module}'
-    cmdline += f' variant={variant}'
-    if sys.platform == 'win32':
-        cmdline += ' link=static'
-        cmdline += ' runtime-link=shared'
+
+    cmdline += ' variant='
+    if config.lib.useDebug:
+        cmdline += 'debug'
+    else:
+        cmdline += 'release'
+
+    cmdline += ' link=static'
+
+    cmdline += ' runtime-link='
+    if config.runtime.linkType == LinkType.Static:
+        cmdline += 'static'
+    else:
+        cmdline += 'shared'
+
     cmdline += ' install'
     return cmdline
 
 
-def install(source_dir: Path, install_dir: Path, variant: str):
+def install(source_dir: Path, install_dir: Path, config: BuildConfig):
     bootstrap_cmd_name: str = get_boost_booststrap_cmd_name()
     install_cmdline: str = make_boost_b2_install_cmd_line(
         install_dir=install_dir,
-        variant=variant,
+        config=config,
         modules=REQUIRED_BOOST_MODULES)
     print(f'Boost b2 cmd: {install_cmdline}')
     old_dir: str = os.getcwd()
@@ -67,30 +80,17 @@ def install(source_dir: Path, install_dir: Path, variant: str):
     os.chdir(old_dir)
 
 
-def prepare(thirdlibs_repo_dir: Path, base_dir: Path):
-    if base_dir.exists():
-        logs.log_skip('boost', base_dir)
+def prepare(context: BuildContext, config: BuildConfig):
+    lib_name: str = 'boost'
+    if not context.need_build(lib_name):
         return
-    boost_source_dir: Path = unpack(
-        unpack_dir=base_dir / 'src.boost',
-        archive_dir=thirdlibs_repo_dir / 'boost'
-    )
-    boost_install_dir = base_dir / 'install'
-    install(
-        source_dir=boost_source_dir,
-        install_dir=boost_install_dir,
-        variant='debug'
+
+    source_dir = smart_extract(
+        archive=context.find_newest_in_repo('boost/boost_?_?_?.7z'),
+        dest_dir=context.get_extract_dir(lib_name)
     )
     install(
-        source_dir=boost_source_dir,
-        install_dir=boost_install_dir,
-        variant='release'
+        source_dir=source_dir,
+        install_dir=context.get_install_dir(lib_name),
+        config=config
     )
-
-
-def main():
-    prepare(Path(sys.argv[1]), Path(sys.argv[2]))
-
-
-if __name__ == '__main__':
-    main()

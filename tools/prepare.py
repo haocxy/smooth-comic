@@ -9,14 +9,12 @@ from third_lib_tool import repo_thirdlibs
 from third_lib_tool import lib_zlib
 from third_lib_tool import lib_libarchive
 from third_lib_tool import lib_boost
-from third_lib_tool import lib_protobuf
 
 
 NEED_ZLIB: bool = True
 NEED_LIBARCHIVE: bool = True
 
 NEED_BOOST: bool = True
-NEED_PROTOBUF: bool = False
 
 
 def main():
@@ -50,13 +48,8 @@ def main():
         )
     if NEED_BOOST:
         lib_boost.prepare(
-            thirdlibs_repo_dir=thirdlib_repo_dir,
-            base_dir=cmake_source_dir / 'prepare' / 'boost'
-        )
-    if NEED_PROTOBUF:
-        lib_protobuf.prepare(
-            thirdlibs_repo_dir=thirdlib_repo_dir,
-            base_dir=cmake_source_dir / 'prepare' / 'protobuf'
+            context=build_context,
+            config=build_config
         )
 
 
