@@ -4,22 +4,19 @@ from pathlib import Path
 from third_lib_tool.util.build_config import BuildConfig, LinkType
 from third_lib_tool.util.build_context import BuildContext
 
-from third_lib_tool import lib_boost
-from third_lib_tool import lib_protobuf
-from third_lib_tool import lib_zlib
-from third_lib_tool import lib_libarchive
 from third_lib_tool import repo_thirdlibs
 
-if sys.platform == 'win32':
-    from third_lib_tool import lib_nasm
+from third_lib_tool import lib_zlib
+from third_lib_tool import lib_libarchive
+from third_lib_tool import lib_boost
+from third_lib_tool import lib_protobuf
 
 
 NEED_ZLIB: bool = True
+NEED_LIBARCHIVE: bool = True
+
 NEED_BOOST: bool = True
 NEED_PROTOBUF: bool = False
-NEED_NASM: bool = False and (sys.platform == 'win32')
-NEED_OPENSSL: bool = False
-NEED_LIBARCHIVE: bool = True
 
 
 def main():
@@ -46,6 +43,11 @@ def main():
             context=build_context,
             config=build_config
         )
+    if NEED_LIBARCHIVE:
+        lib_libarchive.prepare(
+            context=build_context,
+            config=build_config
+        )
     if NEED_BOOST:
         lib_boost.prepare(
             thirdlibs_repo_dir=thirdlib_repo_dir,
@@ -55,11 +57,6 @@ def main():
         lib_protobuf.prepare(
             thirdlibs_repo_dir=thirdlib_repo_dir,
             base_dir=cmake_source_dir / 'prepare' / 'protobuf'
-        )
-    if NEED_LIBARCHIVE:
-        lib_libarchive.prepare(
-            context=build_context,
-            config=build_config
         )
 
 
