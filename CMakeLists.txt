@@ -4,6 +4,30 @@ set(appName smooth-comic)
 
 project(${appName})
 
+set(myAppUseDebugConfig FALSE)
+
+get_filename_component(buildDirName ${CMAKE_BINARY_DIR} NAME)
+
+function(setMyAppDebugModeByDirName dirName outVar)
+    if(${dirName} MATCHES ".*debug.*")
+        set(${outVar} TRUE PARENT_SCOPE)
+    endif()
+    if()
+        set(${outVar} FALSE PARENT_SCOPE)
+    endif()
+endfunction()
+
+setMyAppDebugModeByDirName(${buildDirName} myAppUseDebugConfig)
+
+set(CMAKE_BUILD_TYPE Release)
+set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/release)
+set(prepareScriptConfigArg release)
+if(myAppUseDebugConfig)
+    set(CMAKE_BUILD_TYPE Debug)
+    set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/debug)
+    set(prepareScriptConfigArg debug)
+endif()
+
 # 自己实现的 CMake 工具
 include(CMake/find_source_files.cmake)
 
@@ -17,12 +41,11 @@ message(STATUS "Python3 Executable: [${Python3_EXECUTABLE}]")
 
 message(STATUS "Preparing third libs")
 execute_process(
-    COMMAND ${Python3_EXECUTABLE} tools/prepare.py ${CMAKE_SOURCE_DIR}
+    COMMAND ${Python3_EXECUTABLE} tools/prepare.py -s ${CMAKE_SOURCE_DIR} -p ${prepareDir} -r ${CMAKE_SOURCE_DIR}/prepare/repo -c ${prepareScriptConfigArg}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
 # 设置第三方库搜索路径
-set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/install)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/libarchive)
 
 # 查找第三方库

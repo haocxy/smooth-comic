@@ -1,4 +1,6 @@
 import sys
+import argparse
+
 from pathlib import Path
 
 from third_lib_tool.util.build_config import BuildConfig, LinkType
@@ -20,17 +22,26 @@ NEED_BOOST: bool = True
 
 
 def main():
-    cmake_source_dir = Path(sys.argv[1]).resolve()
+    parser = argparse.ArgumentParser(description='Prepare dependencies')
+    parser.add_argument('-s', '--source_dir', help='use CMAKE_SOURCE_DIR')
+    parser.add_argument('-p', '--prepare_dir', help='Output directory for prepared libs')
+    parser.add_argument('-r', '--repo_dir', help='Directory of repo in which can find libs')
+    parser.add_argument('-c', '--config', choices=['debug', 'release'])
+    args = parser.parse_args()
+
+    print(f'args: {args}', flush=True)
+
+    cmake_source_dir = Path(args.source_dir)
     print(f'Preparing libs, cmake_source_dir: [{cmake_source_dir}]')
-    prepare_dir = cmake_source_dir / 'prepare'
-    thirdlib_repo_dir = prepare_dir / 'thirdlibs_repo'
+    prepare_dir = Path(args.prepare_dir)
+    thirdlib_repo_dir: Path = Path(args.repo_dir)
     repo_thirdlibs.download(clone_dir=thirdlib_repo_dir)
 
     build_config = BuildConfig()
     build_config.runtime.linkType = LinkType.Dynamic
     build_config.runtime.useDebug = False
     build_config.lib.linkType = LinkType.Dynamic
-    build_config.lib.useDebug = False
+    build_config.lib.useDebug = (args.config == 'debug')
 
     build_context = BuildContext(
         base_repo_dir=thirdlib_repo_dir,
