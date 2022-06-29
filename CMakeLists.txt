@@ -22,8 +22,8 @@ execute_process(
 )
 
 # 设置第三方库搜索路径
-set(prepareDir ${CMAKE_SOURCE_DIR}/prepare)
-list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/libarchive/install)
+set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/install)
+list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/libarchive)
 
 # 查找第三方库
 set(libQt Qt6)
