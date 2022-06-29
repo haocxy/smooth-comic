@@ -7,11 +7,13 @@ from third_lib_tool.util.build_context import BuildContext
 from third_lib_tool import repo_thirdlibs
 
 from third_lib_tool import lib_zlib
+from third_lib_tool import lib_liblzma
 from third_lib_tool import lib_libarchive
 from third_lib_tool import lib_boost
 
 
 NEED_ZLIB: bool = True
+NEED_LIBLZMA: bool = True
 NEED_LIBARCHIVE: bool = True
 
 NEED_BOOST: bool = True
@@ -38,6 +40,11 @@ def main():
 
     if NEED_ZLIB:
         lib_zlib.prepare(
+            context=build_context,
+            config=build_config
+        )
+    if NEED_LIBLZMA:
+        lib_liblzma.prepare(
             context=build_context,
             config=build_config
         )
