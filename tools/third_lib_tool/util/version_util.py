@@ -2,6 +2,7 @@ import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
+from re import Pattern, Match
 from typing import Optional
 
 
@@ -84,13 +85,26 @@ def get_lib_version_by_name_template(name_template: re.Pattern, name: str) -> Op
     return LibVersion([int(group) for group in groups])
 
 
-def find_newest_lib(directory: Path, name_template: str) -> Optional[Path]:
+PAT_MULTI_VOLUMN: Pattern = re.compile(r'^(.*)\.\d+$')
+
+
+def try_find_multi_volumn_part(name: str) -> str:
+    match: Match = PAT_MULTI_VOLUMN.match(name)
+    if match is not None:
+        return match.group(1)
+    else:
+        return name
+
+
+def find_newest_lib(directory: Path, name_template: str, is_multi_volumn: bool = False) -> Optional[Path]:
     if not directory.is_dir():
         raise Exception('Parameter [directory] should be directory')
     pat: re.Pattern = mk_pattern_for_name_template(name_template)
     newest_libver: Optional[LibVersion] = None
     newest_file: Optional[str] = None
     for name in os.listdir(directory):
+        if is_multi_volumn:
+            name = try_find_multi_volumn_part(str(name))
         libver: LibVersion = get_lib_version_by_name_template(pat, str(name))
         if newest_libver is None or libver.newer_than(newest_libver):
             newest_libver = libver

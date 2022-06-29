@@ -26,9 +26,9 @@ class BuildContext:
             raise Exception(f'Dependency [{lib_name}] not built')
         return full_dir
 
-    def find_newest_in_repo(self, relative_path: Union[str | Path]) -> Path:
+    def find_newest_in_repo(self, relative_path: Union[str | Path], is_multi_volumn: bool = False) -> Path:
         full_path: Path = self.get_repo_path(relative_path)
-        return find_newest_lib(full_path.parent, full_path.name)
+        return find_newest_lib(full_path.parent, full_path.name, is_multi_volumn=is_multi_volumn)
 
     def need_build(self, lib_name: str) -> bool:
         if (self.base_install_dir / lib_name).exists():

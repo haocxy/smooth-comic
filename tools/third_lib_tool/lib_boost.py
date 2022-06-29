@@ -86,7 +86,7 @@ def prepare(context: BuildContext, config: BuildConfig):
         return
 
     source_dir = smart_extract(
-        archive=context.find_newest_in_repo('boost/boost_?_?_?.7z'),
+        archive=context.find_newest_in_repo('boost/boost_?_?_?.7z', is_multi_volumn=True),
         dest_dir=context.get_extract_dir(lib_name)
     )
     install(
