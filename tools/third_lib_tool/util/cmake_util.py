@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from typing import Optional
 
+from third_lib_tool.util.build_config import BuildConfig
+
 
 def empty_str(s: Optional[str]) -> bool:
     return s is None or len(s) == 0
@@ -24,7 +26,7 @@ def cmake_build_and_install(
         source_dir: Path,
         build_dir: Path,
         install_dir: Path,
-        build_config: str = 'Release',
+        build_config: BuildConfig,
         other_params: str = '',
         install_retry_times: int = 1,
         cmake_prefix_path: Optional[list[str]] = None):
@@ -34,7 +36,13 @@ def cmake_build_and_install(
 
     generate_cmd: str = ''
     generate_cmd += f'cmake -S {source_dir} -B {build_dir}'
-    generate_cmd += f' -DCMAKE_BUILD_TYPE={build_config}'
+
+    generate_cmd += f' -DCMAKE_BUILD_TYPE='
+    if build_config.lib.useDebug:
+        generate_cmd += 'Debug'
+    else:
+        generate_cmd += 'Release'
+
     generate_cmd += f' -DCMAKE_INSTALL_PREFIX={install_dir}'
 
     cmake_prefix_path_str: str = mk_cmake_prefix_path_str(cmake_prefix_path)
@@ -44,15 +52,21 @@ def cmake_build_and_install(
     if not empty_str(other_params):
         generate_cmd += f' {other_params}'
 
-
     print(f'Executing CMD: {generate_cmd}', flush=True)
     os.system(generate_cmd)
 
     job_count: int = max(1, os.cpu_count() - 1)
 
-    build_and_install_cmd: str = f'cmake --build {build_dir}'\
-                                 + f' -t install --config {build_config}'\
-                                 + f' -j {job_count}'
+    build_and_install_cmd: str = ''
+    build_and_install_cmd += f'cmake --build {build_dir}'
+    build_and_install_cmd += f' -t install --config '
+    if build_config.lib.useDebug:
+        build_and_install_cmd += 'Debug'
+    else:
+        build_and_install_cmd += 'Release'
+
+    build_and_install_cmd += f' -j {job_count}'
+
     for i in range(install_retry_times):
         print(f'Executing CMD: {build_and_install_cmd}', flush=True)
         os.system(build_and_install_cmd)

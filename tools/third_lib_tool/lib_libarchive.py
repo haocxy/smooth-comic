@@ -6,12 +6,12 @@ from third_lib_tool.util.cmake_util import cmake_build_and_install
 from third_lib_tool.util.compress_util import smart_extract
 
 
-def install(source_dir: Path, build_dir: Path, install_dir: Path, zlib_base_dir: Path):
+def install(source_dir: Path, build_dir: Path, install_dir: Path, config: BuildConfig, zlib_base_dir: Path):
     cmake_build_and_install(
         source_dir=source_dir,
         build_dir=build_dir,
         install_dir=install_dir,
-        build_config='Release',
+        build_config=config,
         cmake_prefix_path=[str(zlib_base_dir)]
     )
 
@@ -34,6 +34,7 @@ def prepare(context: BuildContext, config: BuildConfig):
         source_dir=source_dir,
         build_dir=cmake_build_dir,
         install_dir=cmake_install_dir,
+        config=config,
         zlib_base_dir=context.get_installed_dir('zlib')
     )
 

@@ -7,12 +7,12 @@ from third_lib_tool.util.build_context import BuildContext
 from third_lib_tool.util.build_config import BuildConfig
 
 
-def install(source_dir: Path, build_dir: Path, install_dir: Path):
+def install(source_dir: Path, build_dir: Path, install_dir: Path, config: BuildConfig):
     cmake_build_and_install(
         source_dir=source_dir,
         build_dir=build_dir,
         install_dir=install_dir,
-        build_config='Release'
+        build_config=config
     )
 
 
@@ -33,5 +33,6 @@ def prepare(context: BuildContext, config: BuildConfig):
     install(
         source_dir=source_dir,
         build_dir=cmake_build_dir,
-        install_dir=cmake_install_dir
+        install_dir=cmake_install_dir,
+        config=config
     )
