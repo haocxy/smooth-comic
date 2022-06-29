@@ -33,6 +33,7 @@
 
 
 /*build*/
+/*release*/
 /*prepare*/
 .vscode
 /src/**/gen.*.h
