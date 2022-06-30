@@ -33,6 +33,9 @@ void LocalArchivePageDataLoader::threadBody()
     PageNum seqNum = 0;
 
     while (!stopped_ && archive.nextEntry()) {
+        if (archive.isDir()) {
+            continue;
+        }
         ++pageCount;
         sptr<PageData> pageData = std::make_shared<PageData>();
         pageData->seqNum = seqNum++;

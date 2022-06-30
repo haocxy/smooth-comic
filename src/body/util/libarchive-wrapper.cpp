@@ -1,5 +1,7 @@
 #include "libarchive-wrapper.h"
 
+#include <QString>
+
 #include <optional>
 #include <stdexcept>
 #include <sstream>
@@ -72,7 +74,16 @@ public:
     }
 
     u32str path() const {
-        return u8str(reinterpret_cast<const char8_t *>(::archive_entry_pathname_utf8(curEntry_)));
+        const wchar_t *wcharstr = ::archive_entry_pathname_w(curEntry_);
+        if (wcharstr) {
+            return QString::fromWCharArray(wcharstr).toStdU32String();
+        } else {
+            return u32str();
+        }
+    }
+
+    bool isDir() const {
+        return (::archive_entry_filetype(curEntry_) & AE_IFDIR);
     }
 
     void skipContent() {
@@ -116,6 +127,11 @@ bool Archive::nextEntry()
 u32str Archive::path() const
 {
     return impl_->path();
+}
+
+bool Archive::isDir() const
+{
+    return impl_->isDir();
 }
 
 Buff Archive::readContent()
