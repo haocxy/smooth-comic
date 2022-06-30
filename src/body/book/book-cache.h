@@ -140,6 +140,18 @@ private:
             sqlite::Statement stmt_;
         };
 
+        class StmtQueryRawImg {
+        public:
+            void open(sqlite::Database &db);
+
+            void close();
+
+            Buff operator()(PageNum seqNum);
+
+        private:
+            sqlite::Statement stmt_;
+        };
+
     private:
         BookCache &outer_;
         PageSequencer sequencer_;
@@ -152,6 +164,7 @@ private:
         StmtSavePage stmtSavePage_;
         StmtWalkPageInfos stmtWalkPageInfos_;
         StmtQueryThumbImg stmtQueryThumbImg_;
+        StmtQueryRawImg stmtQueryRawImg_;
         StrongHandle<Actor> handle_;
     };
 

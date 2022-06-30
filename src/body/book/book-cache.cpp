@@ -113,7 +113,7 @@ BookCache::Actor::~Actor()
 
 void myapp::BookCache::Actor::loadPageImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb)
 {
-    Buff data = archive_.entryAt(seqNum).data;
+    Buff data = stmtQueryRawImg_(seqNum);
 
     QPixmap img;
     img.loadFromData(reinterpret_cast<const uchar *>(data.data()), static_cast<uint>(data.size()));
@@ -174,6 +174,8 @@ void BookCache::Actor::prepareDb()
     stmtWalkPageInfos_.open(db_);
 
     stmtQueryThumbImg_.open(db_);
+
+    stmtQueryRawImg_.open(db_);
 }
 
 void BookCache::Actor::onPageLoaded(sptr<LoadedPage> page)
@@ -307,6 +309,35 @@ Buff myapp::BookCache::Actor::StmtQueryThumbImg::operator()(PageNum seqNum)
     } else {
         if (*dopLog) {
             gLogger.e << "StmtQueryThumbImg execute failed";
+        }
+    }
+
+    return data;
+}
+
+void BookCache::Actor::StmtQueryRawImg::open(sqlite::Database &db)
+{
+    stmt_.open(db, "select rawImg from pages where seqNum = ?;");
+}
+
+void myapp::BookCache::Actor::StmtQueryRawImg::close()
+{
+    stmt_.close();
+}
+
+Buff myapp::BookCache::Actor::StmtQueryRawImg::operator()(PageNum seqNum)
+{
+    stmt_.reset();
+
+    stmt_.arg(seqNum);
+
+    Buff data;
+
+    if (stmt_.nextRow()) {
+        stmt_.getValue(0, data);
+    } else {
+        if (*dopLog) {
+            gLogger.e << "StmtQueryRawImg execute failed";
         }
     }
 
