@@ -92,47 +92,52 @@ inline std::u32string convertToU32(const std::u8string &u8s)
             continue;
         }
         const char32_t c2 = u8s[i++];
-        if ((c1 & (~keephi2)) == decohi2) {
-            char32_t u = ((c1 << 6) & keephi2)
-                | (c2 & keeplow);
+        if ((c1 & 0b1110'0000) == 0b1100'0000) {
+            char32_t u1 = (c1 & 0b0001'1111);
+            char32_t u2 = (c2 & 0b0011'1111);
+            char32_t u = (u1 << 6) | u2;
             result.push_back(u);
             continue;
         }
         const char32_t c3 = u8s[i++];
-        if ((c1 & (~keephi3)) == decohi3) {
-            char32_t u = ((c1 << 12) & keephi3)
-                | ((c2 << 6) & keeplow)
-                | (c3 & keeplow);
+        if ((c1 & 0b1111'0000) == 0b1110'0000) {
+            char32_t u1 = (c1 & 0b0000'1111);
+            char32_t u2 = (c2 & 0b0011'1111);
+            char32_t u3 = (c3 & 0b0011'1111);
+            char32_t u = (u1 << 12) | (u2 << 6) | u3;
             result.push_back(u);
             continue;
         }
         const char32_t c4 = u8s[i++];
-        if ((c1 & (~keephi4)) == decohi4) {
-            char32_t u = ((c1 << 18) & keephi4)
-                | ((c2 << 12) & keeplow)
-                | ((c3 << 6) & keeplow)
-                | (c4 & keeplow);
+        if ((c1 & 0b1111'1000) == 0b1111'0000) {
+            char32_t u1 = (c1 & 0b0000'0111);
+            char32_t u2 = (c2 & 0b0011'1111);
+            char32_t u3 = (c3 & 0b0011'1111);
+            char32_t u4 = (c4 & 0b0011'1111);
+            char32_t u = (u1 << 18) | (u2 << 12) | (u3 << 6) | u4;
             result.push_back(u);
             continue;
         }
         const char32_t c5 = u8s[i++];
-        if ((c1 & (~keephi5)) == decohi5) {
-            char32_t u = ((c1 << 24) & keephi5)
-                | ((c2 << 18) & keeplow)
-                | ((c3 << 12) & keeplow)
-                | ((c4 << 6) & keeplow)
-                | (c5 & keeplow);
+        if ((c1 & 0b1111'1100) == 0b1111'1000) {
+            char32_t u1 = (c1 & 0b0000'0011);
+            char32_t u2 = (c2 & 0b0011'1111);
+            char32_t u3 = (c3 & 0b0011'1111);
+            char32_t u4 = (c4 & 0b0011'1111);
+            char32_t u5 = (c5 & 0b0011'1111);
+            char32_t u = (u1 << 24) | (u2 << 18) | (u3 << 12) | (u4 << 6) | u5;
             result.push_back(u);
             continue;
         }
         const char32_t c6 = u8s[i++];
-        if ((c1 & (~keephi6)) == decohi6) {
-            char32_t u = ((c1 << 30) & keephi6)
-                | ((c2 << 24) & keeplow)
-                | ((c3 << 18) & keeplow)
-                | ((c4 << 12) & keeplow)
-                | ((c5 << 6) & keeplow)
-                | (c6 & keeplow);
+        if ((c1 & 0b1111'1110) == 0b1111'1100) {
+            char32_t u1 = (c1 & 0b0000'0001);
+            char32_t u2 = (c2 & 0b0011'1111);
+            char32_t u3 = (c3 & 0b0011'1111);
+            char32_t u4 = (c4 & 0b0011'1111);
+            char32_t u5 = (c5 & 0b0011'1111);
+            char32_t u6 = (c6 & 0b0011'1111);
+            char32_t u = (u1 << 30) | (u2 << 24) | (u3 << 18) | (u4 << 12) | (u5 << 6) | u6;
             result.push_back(u);
             continue;
         }
