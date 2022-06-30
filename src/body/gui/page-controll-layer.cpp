@@ -32,10 +32,10 @@ void PageControllLayer::paintEvent(QPaintEvent *e)
 
     QPainter p(this);
 
-    const int w = width();
-    const int h = height();
+    if (showControllAreas_) {
+        const int w = width();
+        const int h = height();
 
-    {
         QColor color(Qt::gray);
         color.setAlphaF(0.5);
         p.fillRect(areaConfig_.leftSwitcher(), color);

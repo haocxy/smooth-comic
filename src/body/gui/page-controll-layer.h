@@ -16,6 +16,18 @@ public:
 
     virtual ~PageControllLayer();
 
+    void setShowControllAreas(bool showControllAreas) {
+        if (showControllAreas_ != showControllAreas) {
+            showControllAreas_ = showControllAreas;
+            update();
+        }
+    }
+
+    void toggleShowControllAreas() {
+        showControllAreas_ = !showControllAreas_;
+        update();
+    }
+
     class AreaConfig {
     public:
         AreaConfig() {}
@@ -81,6 +93,7 @@ protected:
 
 private:
     AreaConfig areaConfig_;
+    bool showControllAreas_{ false };
 };
 
 }
