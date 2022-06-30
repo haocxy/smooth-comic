@@ -20,6 +20,8 @@ public:
 
     u32str path() const;
 
+    bool isRegularFile() const;
+
     bool isDir() const;
 
     Buff readContent();

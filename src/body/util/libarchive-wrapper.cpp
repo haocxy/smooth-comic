@@ -82,6 +82,10 @@ public:
         }
     }
 
+    bool isRegularFile() const {
+        return (::archive_entry_filetype(curEntry_) & AE_IFREG);
+    }
+
     bool isDir() const {
         return (::archive_entry_filetype(curEntry_) & AE_IFDIR);
     }
@@ -127,6 +131,11 @@ bool Archive::nextEntry()
 u32str Archive::path() const
 {
     return impl_->path();
+}
+
+bool Archive::isRegularFile() const
+{
+    return impl_->isRegularFile();
 }
 
 bool Archive::isDir() const

@@ -33,7 +33,7 @@ void LocalArchivePageDataLoader::threadBody()
     PageNum seqNum = 0;
 
     while (!stopped_ && archive.nextEntry()) {
-        if (archive.isDir()) {
+        if (!archive.isRegularFile()) {
             continue;
         }
         ++pageCount;
