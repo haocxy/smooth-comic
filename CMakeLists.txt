@@ -17,13 +17,13 @@ function(setMyAppDebugModeByDirName dirName outVar)
     endif()
 endfunction()
 
-if(myAppUseDebugConfig)
+setMyAppDebugModeByDirName(${buildDirName} myAppUseDebugConfig)
+
+if(${myAppUseDebugConfig})
     set(myAppUseReleaseConfig FALSE)
 else()
     set(myAppUseReleaseConfig TRUE)
 endif()
-
-setMyAppDebugModeByDirName(${buildDirName} myAppUseDebugConfig)
 
 set(CMAKE_BUILD_TYPE Release)
 set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/release)
@@ -113,15 +113,14 @@ if(MSVC)
     )
 endif()
 
-if(myAppUseReleaseConfig AND MSVC)
+if(${myAppUseReleaseConfig} AND MSVC)
     file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/pack.bat" DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/repack.bat" DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/build.bat" DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/rebuild.bat" DESTINATION ${CMAKE_BINARY_DIR})
 endif()
 
-
-if(myAppUseReleaseConfig AND MSVC)
+if(${myAppUseReleaseConfig} AND MSVC)
     getVersionPartByGit(packVersion)
     message(STATUS "Version Part By Git: [${packVersion}]")
     include(install_for_windows.cmake)
