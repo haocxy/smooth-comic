@@ -17,6 +17,12 @@ function(setMyAppDebugModeByDirName dirName outVar)
     endif()
 endfunction()
 
+if(myAppUseDebugConfig)
+    set(myAppUseReleaseConfig FALSE)
+else()
+    set(myAppUseReleaseConfig TRUE)
+endif()
+
 setMyAppDebugModeByDirName(${buildDirName} myAppUseDebugConfig)
 
 set(CMAKE_BUILD_TYPE Release)
@@ -30,6 +36,7 @@ endif()
 
 # 自己实现的 CMake 工具
 include(CMake/find_source_files.cmake)
+include(CMake/git_tools.cmake)
 
 # 全局项目构建配置
 set(CMAKE_CXX_STANDARD 20)
@@ -102,11 +109,15 @@ if(MSVC)
     )
 endif()
 
-if(NOT myAppUseDebugConfig)
-    if(MSVC)
-        file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/pack.bat" DESTINATION ${CMAKE_BINARY_DIR})
-        file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/repack.bat" DESTINATION ${CMAKE_BINARY_DIR})
-        file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/build.bat" DESTINATION ${CMAKE_BINARY_DIR})
-        file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/rebuild.bat" DESTINATION ${CMAKE_BINARY_DIR})
-    endif()
+if(myAppUseReleaseConfig AND MSVC)
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/pack.bat" DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/repack.bat" DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/build.bat" DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY "${CMAKE_SOURCE_DIR}/tools/win32/rebuild.bat" DESTINATION ${CMAKE_BINARY_DIR})
+endif()
+
+
+if(myAppUseReleaseConfig AND MSVC)
+    getVersionPartByGit(versionPart)
+    message(STATUS "Version Part By Git: [${versionPart}]")
 endif()
