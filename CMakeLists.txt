@@ -53,7 +53,11 @@ execute_process(
 )
 
 # 设置第三方库搜索路径
+list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/zlib)
+list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/liblzma)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/libarchive)
+
+
 
 # 查找第三方库
 set(libQt Qt6)
@@ -118,6 +122,7 @@ endif()
 
 
 if(myAppUseReleaseConfig AND MSVC)
-    getVersionPartByGit(versionPart)
-    message(STATUS "Version Part By Git: [${versionPart}]")
+    getVersionPartByGit(packVersion)
+    message(STATUS "Version Part By Git: [${packVersion}]")
+    include(install_for_windows.cmake)
 endif()
