@@ -41,7 +41,7 @@ void setNameForCurrentThread(const std::string_view &name)
 
     curNameRef = name;
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(NDEBUG)
     constexpr UINT page = CP_UTF8;
     constexpr DWORD flags = MB_PRECOMPOSED;
     const char *mbstr = curNameRef.c_str();

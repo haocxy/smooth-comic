@@ -5,7 +5,18 @@ install(TARGETS ${appName} ${appName}-cmd
     CONFIGURATIONS Release
     RUNTIME DESTINATION ".")
 
-function(findPreparedDLL libName outvar)
+function(addSystemDLL libName)
+    find_file(pathOfLib "${libName}"
+        NO_CACHE
+    )
+    if(NOT pathOfLib)
+        message(FATAL_ERROR "Cannot find System DLL: ${libName}")
+    endif()
+    message(STATUS "System DLL [${libName}] Found: [${pathOfLib}]")
+    install(FILES "${pathOfLib}" DESTINATION ".")
+endfunction()
+
+function(addPreparedDLL libName)
     find_file(pathOfLib "${libName}"
         PATH_SUFFIXES "bin"
         NO_CACHE
@@ -14,18 +25,22 @@ function(findPreparedDLL libName outvar)
         message(FATAL_ERROR "Cannot find Prepared DLL: ${libName}")
     endif()
     message(STATUS "Prepared DLL [${libName}] Found: [${pathOfLib}]")
-    set(${outvar} ${pathOfLib} PARENT_SCOPE)
+    install(FILES "${pathOfLib}" DESTINATION ".")
 endfunction()
 
-findPreparedDLL("zlib.dll" dll_zlib)
-install(FILES ${dll_zlib} DESTINATION ".")
+addPreparedDLL(zlib.dll)
+addPreparedDLL(liblzma.dll)
+addPreparedDLL(archive.dll)
 
-findPreparedDLL("liblzma.dll" dll_liblzma)
-install(FILES ${dll_liblzma} DESTINATION ".")
-
-findPreparedDLL("archive.dll" dll_archive)
-install(FILES ${dll_archive} DESTINATION ".")
-
+addSystemDLL(Qt6Core.dll)
+addSystemDLL(Qt6Gui.dll)
+addSystemDLL(Qt6Widgets.dll)
+addSystemDLL(MSVCP140.dll)
+addSystemDLL(MSVCP140_1.dll)
+addSystemDLL(MSVCP140_2.dll)
+addSystemDLL(MSVCP140_ATOMIC_WAIT.dll)
+addSystemDLL(VCRUNTIME140.dll)
+addSystemDLL(VCRUNTIME140_1.dll)
 
 
 set(CPACK_GENERATOR ZIP)
