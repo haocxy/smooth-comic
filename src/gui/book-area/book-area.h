@@ -6,7 +6,7 @@
 
 #include "book/page-num.h"
 
-#include "thumb/thumb-list-scroll-area.h"
+#include "thumb-area/thumb-list-scroll-area.h"
 #include "page-controll-layer.h"
 
 

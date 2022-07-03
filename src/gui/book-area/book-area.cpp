@@ -8,8 +8,6 @@
 #include "page-controll-layer.h"
 #include "book-status.h"
 
-#include "thumb/thumb-list-scroll-area.h"
-
 
 namespace myapp {
 
