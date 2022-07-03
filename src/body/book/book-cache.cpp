@@ -99,7 +99,6 @@ BookCache::Actor::Actor(BookCache &outer)
     bindLoaderSignals();
     loader_->start();
 
-    archive_.open(outer_.archiveFile_);
 
     props_.setLoadStartTime(LoadClock::now());
 }

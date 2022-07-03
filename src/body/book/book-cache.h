@@ -5,7 +5,6 @@
 
 #include "util/sqlite.h"
 #include "util/prop-repo.h"
-#include "util/random-access-archive.h"
 
 #include "page-sequencer.h"
 #include "book-loader.h"
@@ -156,7 +155,6 @@ private:
         BookCache &outer_;
         PageSequencer sequencer_;
         uptr<BookLoader> loader_;
-        RandomAccessArchive archive_;
         SigConns sequencerSigConns_;
         SigConns loaderSigConns_;
         sqlite::Database db_;
