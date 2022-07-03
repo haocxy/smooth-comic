@@ -95,6 +95,8 @@ void PageSwitcher::bookClosed()
 {
     loadedPages_.clear();
     waitingPage_.reset();
+
+    delete pageWidget_;
 }
 
 void PageSwitcher::pageLoaded(const PageInfo &page)
