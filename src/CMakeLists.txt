@@ -21,9 +21,18 @@ include_directories(.)
 # 注意：这个模块的二进制产物应该很小，最好多使用内联
 add_subdirectory(core)
 
+# 模块功能：和业务有一定关系的公用逻辑，例如压缩包的支持
+# 特点：不需要关注大小的静态库
+# 注意：注意区分core模块，core模块可能会被loader模块使用，但util模块仅被body和gui使用
+#       所以，core模块必须尽可能小，但util可以较大
+add_subdirectory(util)
+
 # 模块功能：主要的业务逻辑，项目要实现的具体功能都在这个模块中
 # 特点：很大的静态库
 add_subdirectory(body)
+
+# 模块功能：GUI逻辑
+add_subdirectory(gui)
 
 # 模块功能：没有任何逻辑，仅用于把 body 模块包装为动态库
 add_subdirectory(body-dynamic)
