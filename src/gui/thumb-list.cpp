@@ -4,9 +4,9 @@
 
 #include "book/book.h"
 
-#include "thumb-item.h"
+#include "util/auto-height-layout.h"
 
-#include "auto-height-layout.h"
+#include "thumb-item.h"
 
 
 namespace myapp {
