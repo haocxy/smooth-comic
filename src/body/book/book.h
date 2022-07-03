@@ -15,6 +15,7 @@
 
 #include "open-session-id.h"
 #include "inner_options.h"
+#include "book-error.h"
 
 
 class QPixmap;
@@ -49,6 +50,10 @@ public:
     using CbBookClosed = void(const fs::path &archiveFile);
 
     Signal<CbBookClosed> sigBookClosed;
+
+    using CbLoadFailed = void(BookError err);
+
+    Signal<CbLoadFailed> sigLoadFailed;
 
     void loadThumbImg(PageNum seqNum, std::function<void(const QPixmap &img)> &&cb);
 

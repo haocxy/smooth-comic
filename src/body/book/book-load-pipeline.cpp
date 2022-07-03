@@ -48,6 +48,12 @@ BookLoadPipeline::BookLoadPipeline(uptr<PageDataLoader> &&pageDataLoader)
         });
     });
 
+    sigConnsPageDataLoader_ += pageDataLoader_->sigFailed.connect([this, h = handle_.weak()](BookError err) {
+        h.apply([this, &err] {
+            sigFailed(err);
+        });
+    });
+
     for (i32 i = 0; i < decoderCount_; ++i) {
         decoders_.push_back(std::make_unique<PageDecoder>(stopped_, dataQueue_, rawImgQueue_));
     }

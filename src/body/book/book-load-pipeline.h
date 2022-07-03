@@ -35,6 +35,10 @@ public:
 
     Signal<CbPageCountDetected> sigPageCountDetected;
 
+    using CbFailed = void(BookError err);
+
+    Signal<CbFailed> sigFailed;
+
 private:
 
 

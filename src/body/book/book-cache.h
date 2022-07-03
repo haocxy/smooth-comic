@@ -32,6 +32,10 @@ public:
 
     Signal<CbPageLoaded> sigPageLoaded;
 
+    using CbLoadFailed = void(const OpenSessionId &sessionId, BookError err);
+
+    Signal<CbLoadFailed> sigLoadFailed;
+
     void loadThumbImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);
 
     void loadPageImg(PageNum seqNum, std::function<void(const OpenSessionId &sessionId, const QPixmap &img)> &&cb);

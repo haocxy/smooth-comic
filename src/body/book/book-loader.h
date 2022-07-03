@@ -31,6 +31,10 @@ public:
 
     Signal<CbBookLoaded> sigBookLoaded;
 
+    using CbFailed = void(BookError err);
+
+    Signal<CbFailed> sigFailed;
+
 private:
     void handlePageLoaded(sptr<LoadedPage> page);
 

@@ -152,6 +152,14 @@ void BookCache::Actor::bindLoaderSignals()
             }, Prio::Logic);
         });
     });
+
+    loaderSigConns_ += loader_->sigFailed.connect([this, h = handle_.weak()](BookError err) {
+        h.apply([this, &err] {
+            outer_.exec([this, err] {
+                outer_.sigLoadFailed(outer_.openSessionId(), err);
+            }, Prio::Err);
+        });
+    });
 }
 
 void BookCache::Actor::prepareDb()

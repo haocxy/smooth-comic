@@ -26,6 +26,12 @@ BookLoader::BookLoader(const fs::path &archiveFile, const std::set<u32str> &load
             handlePageCountDetected(pageCount);
         });
     });
+
+    sigConns_ += bookLoadPipeline_->sigFailed.connect([this](BookError err) {
+        exec([this, err] {
+            sigFailed(err);
+        });
+    });
 }
 
 BookLoader::~BookLoader()
