@@ -1,4 +1,4 @@
-#include "page-viewer.h"
+#include "book-area.h"
 
 #include <QPainter>
 

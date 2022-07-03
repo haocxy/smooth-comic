@@ -11,7 +11,7 @@
 #include "core/system.h"
 #include "core/logger.h"
 
-#include "book-area/page-viewer.h"
+#include "book-area/book-area.h"
 
 
 namespace myapp {
