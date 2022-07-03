@@ -2,19 +2,17 @@
 
 #include <QSplitter>
 #include <QPointer>
-#include <QStackedLayout>
 
 #include "book/page-num.h"
 
 #include "thumb-area/thumb-area.h"
-#include "page-area/page-controll-layer.h"
+
+#include "page-area/page-area.h"
 
 
 namespace myapp {
 
 class Book;
-
-class PageSwitcher;
 
 
 // 页面展示器
@@ -36,10 +34,7 @@ private:
     QPointer<ThumbArea> thumbArea_;
     QPointer<QWidget> mainArea_;
     QPointer<QVBoxLayout> mainAreaLayout_;
-    QPointer<QWidget> pageArea_;
-    QPointer<QStackedLayout> pageAreaLayout_;
-    QPointer<PageSwitcher> pageSwitcher_;
-    QPointer<PageControllLayer> pageControllLayer_;
+    QPointer<PageArea> pageArea_;
     QPointer<QWidget> bookStatus_;
 };
 
