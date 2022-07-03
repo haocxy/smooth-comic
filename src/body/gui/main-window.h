@@ -16,10 +16,10 @@ class Engine;
 class PageViewer;
 
 
-class BookViewer : public QMainWindow {
+class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    explicit BookViewer(Engine &engine, QWidget *parent = nullptr);
+    explicit MainWindow(Engine &engine, QWidget *parent = nullptr);
 
 private:
     void initAreas();
@@ -32,11 +32,11 @@ private:
 
     void initStatusArea();
 
-    void bind(QMenu *menu, const QString &name, void(BookViewer:: *f)());
+    void bind(QMenu *menu, const QString &name, void(MainWindow:: *f)());
 
-    void bind(QMenu *menu, const QString &name, void(BookViewer:: *f)(), const QKeySequence &shortcut);
+    void bind(QMenu *menu, const QString &name, void(MainWindow:: *f)(), const QKeySequence &shortcut);
 
-    void bind(QToolBar *toolBar, const QString &name, void(BookViewer:: *f)());
+    void bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)());
 
 private:
     void fileOpenAction();

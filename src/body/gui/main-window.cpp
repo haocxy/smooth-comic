@@ -18,7 +18,7 @@ namespace myapp {
 
 using logger::gLogger;
 
-BookViewer::BookViewer(Engine &engine, QWidget *parent)
+MainWindow::MainWindow(Engine &engine, QWidget *parent)
     : QMainWindow(parent)
     , engine_(engine)
 {
@@ -30,7 +30,7 @@ BookViewer::BookViewer(Engine &engine, QWidget *parent)
     initAreas();
 }
 
-void BookViewer::initAreas()
+void MainWindow::initAreas()
 {
     initMenuBarArea();
     initToolBarArea();
@@ -38,9 +38,9 @@ void BookViewer::initAreas()
     initStatusArea();
 }
 
-void BookViewer::initMenuBarArea()
+void MainWindow::initMenuBarArea()
 {
-    using Class = BookViewer;
+    using Class = MainWindow;
 
     QMenuBar *bar = menuBar();
 
@@ -54,9 +54,9 @@ void BookViewer::initMenuBarArea()
     bind(viewMenu, tr("Prev Page"), &Class::pagePrevAction);
 }
 
-void BookViewer::initToolBarArea()
+void MainWindow::initToolBarArea()
 {
-    using Class = BookViewer;
+    using Class = MainWindow;
 
     QToolBar *fileBar = addToolBar(tr("File"));
     bind(fileBar, tr("Open"), &Class::fileOpenAction);
@@ -68,36 +68,36 @@ void BookViewer::initToolBarArea()
     bind(viewBar, tr("Prev Page"), &Class::pagePrevAction);
 }
 
-void BookViewer::initPageViewerArea()
+void MainWindow::initPageViewerArea()
 {
     pageViewer_ = new PageViewer(*book_, this);
     setCentralWidget(pageViewer_);
 }
 
-void BookViewer::initStatusArea()
+void MainWindow::initStatusArea()
 {
 }
 
-void BookViewer::bind(QMenu *menu, const QString &name, void(BookViewer:: *f)())
+void MainWindow::bind(QMenu *menu, const QString &name, void(MainWindow:: *f)())
 {
     QAction *action = menu->addAction(name);
     connect(action, &QAction::triggered, this, f);
 }
 
-void BookViewer::bind(QMenu *menu, const QString &name, void(BookViewer:: *f)(), const QKeySequence &shortcut)
+void MainWindow::bind(QMenu *menu, const QString &name, void(MainWindow:: *f)(), const QKeySequence &shortcut)
 {
     QAction *action = menu->addAction(name);
     action->setShortcut(shortcut);
     connect(action, &QAction::triggered, this, f);
 }
 
-void BookViewer::bind(QToolBar *toolBar, const QString &name, void(BookViewer:: *f)())
+void MainWindow::bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)())
 {
     QAction *action = toolBar->addAction(name);
     connect(action, &QAction::triggered, this, f);
 }
 
-void BookViewer::fileOpenAction()
+void MainWindow::fileOpenAction()
 {
     const fs::path home = SystemUtil::userHome();
     const QString defaultDir = QString::fromStdU32String(home.generic_u32string());
@@ -106,22 +106,22 @@ void BookViewer::fileOpenAction()
     book_->open(filePath.toStdU32String());
 }
 
-void BookViewer::bookCloseAction()
+void MainWindow::bookCloseAction()
 {
     book_->close();
 }
 
-void BookViewer::bookReloadAction()
+void MainWindow::bookReloadAction()
 {
     book_->reload();
 }
 
-void BookViewer::pageNextAction()
+void MainWindow::pageNextAction()
 {
     pageViewer_->jumpNext();
 }
 
-void BookViewer::pagePrevAction()
+void MainWindow::pagePrevAction()
 {
     pageViewer_->jumpPrev();
 }

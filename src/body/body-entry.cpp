@@ -96,7 +96,7 @@ int body_entry(int argc, char *argv[])
 
     Engine engine;
 
-    BookViewer w(engine);
+    MainWindow w(engine);
     w.show();
 
     return QApplication::exec();
