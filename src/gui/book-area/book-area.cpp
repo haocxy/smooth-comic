@@ -6,8 +6,8 @@
 
 #include "status-area/book-status.h"
 
-#include "page-switcher.h"
-#include "page-controll-layer.h"
+#include "page-area/page-switcher.h"
+#include "page-area/page-controll-layer.h"
 
 
 namespace myapp {

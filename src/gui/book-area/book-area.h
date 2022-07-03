@@ -7,7 +7,7 @@
 #include "book/page-num.h"
 
 #include "thumb-area/thumb-area.h"
-#include "page-controll-layer.h"
+#include "page-area/page-controll-layer.h"
 
 
 namespace myapp {
