@@ -1,4 +1,4 @@
-#include "book-viewer.h"
+#include "main-window.h"
 
 #include <QMenuBar>
 #include <QMenu>

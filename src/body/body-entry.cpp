@@ -10,7 +10,7 @@
 #include "core/debug-option/option-center.h"
 
 #include "engine/engine.h"
-#include "gui/book-viewer.h"
+#include "gui/main-window.h"
 
 #include "register-qt-meta-types.h"
 
