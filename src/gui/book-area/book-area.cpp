@@ -4,9 +4,10 @@
 
 #include "core/logger.h"
 
+#include "status-area/book-status.h"
+
 #include "page-switcher.h"
 #include "page-controll-layer.h"
-#include "book-status.h"
 
 
 namespace myapp {
