@@ -2,12 +2,13 @@
 
 #include <QPainter>
 
-#include "thumb-list-scroll-area.h"
+#include "core/logger.h"
+
 #include "page-switcher.h"
 #include "page-controll-layer.h"
 #include "book-status.h"
 
-#include "core/logger.h"
+#include "thumb/thumb-list-scroll-area.h"
 
 
 namespace myapp {
