@@ -8,6 +8,7 @@
 #include "util/signal.h"
 
 #include "page-data.h"
+#include "book-error.h"
 
 
 namespace myapp {
@@ -34,6 +35,10 @@ public:
     // 当这本书中的总页数明确可知时回调
     // 外部逻辑会利用这一信息检查加载流程是否完全结束
     Signal<CbPageCountDetected> sigPageCountDetected;
+
+    using CbFailed = void(BookError err);
+
+    Signal<CbFailed> sigFailed;
 };
 
 }

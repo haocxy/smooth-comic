@@ -12,9 +12,13 @@ class ArchiveImpl;
 
 class Archive {
 public:
+    Archive();
+
     Archive(const fs::path &file);
 
     ~Archive();
+
+    void open(const fs::path &file);
 
     bool nextEntry();
 

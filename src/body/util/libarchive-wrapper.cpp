@@ -35,8 +35,27 @@ namespace myapp::wrapper::libarchive {
 
 class ArchiveImpl {
 public:
-    ArchiveImpl(const fs::path &file) {
+    ArchiveImpl() {}
 
+    ArchiveImpl(const fs::path &file) {
+        open(file);
+    }
+
+    ~ArchiveImpl() {
+        close();
+    }
+
+    void close() {
+        if (archive_) {
+            int r = ::archive_read_free(archive_);
+            if (r != ARCHIVE_OK) {
+                // TODO 析构函数的错误如何处理？
+            }
+        }
+    }
+
+    void open(const fs::path &file) {
+        close();
         archive_ = ::archive_read_new();
         if (!archive_) {
             throw ArchiveErr("archive_read_new");
@@ -48,15 +67,6 @@ public:
         int r = ::archive_read_open_filename(archive_, file.generic_string().c_str(), 10240);
         if (r != ARCHIVE_OK) {
             throw ArchiveErr("archive_read_open_filename", r);
-        }
-    }
-
-    ~ArchiveImpl() {
-        if (archive_) {
-            int r = ::archive_read_free(archive_);
-            if (r != ARCHIVE_OK) {
-                // TODO 析构函数的错误如何处理？
-            }
         }
     }
 
@@ -112,6 +122,11 @@ private:
     bool finished_{ false };
 };
 
+Archive::Archive()
+    : impl_(new ArchiveImpl)
+{
+}
+
 Archive::Archive(const fs::path &file)
     : impl_(new ArchiveImpl(file))
 {
@@ -121,6 +136,11 @@ Archive::~Archive()
 {
     delete impl_;
     impl_ = nullptr;
+}
+
+void Archive::open(const fs::path &file)
+{
+    impl_->open(file);
 }
 
 bool Archive::nextEntry()

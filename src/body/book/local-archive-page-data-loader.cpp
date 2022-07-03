@@ -26,7 +26,14 @@ void LocalArchivePageDataLoader::threadBody()
 {
     ThreadUtil::setNameForCurrentThread("LocalArchivePageDataLoader.LoadThread");
 
-    wrapper::libarchive::Archive archive(archiveFile_);
+    wrapper::libarchive::Archive archive;
+
+    try {
+        archive.open(archiveFile_);
+    } catch (const std::exception &) {
+        sigFailed(BookError::BadArchive);
+        return;
+    }
 
     i32 pageCount = 0;
 
