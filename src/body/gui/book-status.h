@@ -7,6 +7,8 @@
 #include "util/sigconns.h"
 #include "util/qtobj-strand-entry.h"
 
+#include "book/book-error.h"
+
 
 namespace Ui {
 
@@ -23,6 +25,17 @@ public:
     explicit BookStatus(Book &book, QWidget *parent = nullptr);
 
     virtual ~BookStatus();
+
+private:
+    enum class ShouldClearMsg {
+        Yes, No
+    };
+
+    void reset(ShouldClearMsg shouldClearMsg);
+
+    void onLoadError(BookError err);
+
+    static QString loadErrorToStr(BookError err);
 
 private:
     Book &book_;

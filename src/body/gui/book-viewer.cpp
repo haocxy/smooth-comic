@@ -12,7 +12,6 @@
 #include "core/logger.h"
 
 #include "page-viewer.h"
-#include "book-status.h"
 
 
 namespace myapp {
@@ -77,9 +76,6 @@ void BookViewer::initPageViewerArea()
 
 void BookViewer::initStatusArea()
 {
-    QStatusBar *statusBar = this->statusBar();
-    bookStatus_ = new BookStatus(*book_, this);
-    statusBar->addWidget(bookStatus_);
 }
 
 void BookViewer::bind(QMenu *menu, const QString &name, void(BookViewer:: *f)())

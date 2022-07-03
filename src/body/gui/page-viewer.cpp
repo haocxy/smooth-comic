@@ -5,6 +5,7 @@
 #include "thumb-list-scroll-area.h"
 #include "page-switcher.h"
 #include "page-controll-layer.h"
+#include "book-status.h"
 
 #include "core/logger.h"
 
@@ -22,21 +23,31 @@ PageViewer::PageViewer(Book &book, QWidget *parent)
 
     thumbArea_ = new ThumbListScrollArea(book_, this);
 
-    centerArea_ = new QWidget(this);
+    mainArea_ = new QWidget(this);
 
-    centerLayout_ = new QStackedLayout(this);
-    centerLayout_->setStackingMode(QStackedLayout::StackingMode::StackAll);
+    mainAreaLayout_ = new QVBoxLayout(this);
+    mainArea_->setLayout(mainAreaLayout_);
 
-    centerArea_->setLayout(centerLayout_);
+    pageArea_ = new QWidget(this);
+    
+
+    pageAreaLayout_ = new QStackedLayout(this);
+    pageAreaLayout_->setStackingMode(QStackedLayout::StackingMode::StackAll);
+    pageArea_->setLayout(pageAreaLayout_);
+
+    mainAreaLayout_->addWidget(pageArea_);
 
     pageSwitcher_ = new PageSwitcher(book_, this);
     pageControllLayer_ = new PageControllLayer(this);
 
-    centerLayout_->addWidget(pageControllLayer_);
-    centerLayout_->addWidget(pageSwitcher_);
+    bookStatus_ = new BookStatus(book_, this);
+    mainAreaLayout_->addWidget(bookStatus_);
+
+    pageAreaLayout_->addWidget(pageControllLayer_);
+    pageAreaLayout_->addWidget(pageSwitcher_);
 
     addWidget(thumbArea_);
-    addWidget(centerArea_);
+    addWidget(mainArea_);
 
     setSizes({ 1, 1000 });
 

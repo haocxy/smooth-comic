@@ -62,6 +62,13 @@
      </property>
     </spacer>
    </item>
+   <item>
+    <widget class="QLabel" name="msgValue">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

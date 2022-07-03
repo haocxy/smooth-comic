@@ -55,7 +55,6 @@ private: // non-UI Components
 
 private: // UI Components
     QPointer<PageViewer> pageViewer_;
-    QPointer<QWidget> bookStatus_;
 };
 
 }

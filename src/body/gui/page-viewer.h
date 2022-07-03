@@ -34,10 +34,13 @@ public:
 private:
     Book &book_;
     QPointer<ThumbListScrollArea> thumbArea_;
-    QPointer<QWidget> centerArea_;
-    QPointer<QStackedLayout> centerLayout_;
+    QPointer<QWidget> mainArea_;
+    QPointer<QVBoxLayout> mainAreaLayout_;
+    QPointer<QWidget> pageArea_;
+    QPointer<QStackedLayout> pageAreaLayout_;
     QPointer<PageSwitcher> pageSwitcher_;
     QPointer<PageControllLayer> pageControllLayer_;
+    QPointer<QWidget> bookStatus_;
 };
 
 }
