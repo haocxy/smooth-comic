@@ -27,7 +27,7 @@ PageSwitcher::PageSwitcher(Book &book, QWidget *parent)
     sigConns_ += book_.sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
         h.apply([this] {
             strandEntry_.exec([this] {
-                bookClosed();
+                reset();
             });
         });
     });
@@ -91,10 +91,10 @@ void PageSwitcher::switchNextPage(SwitchDirection direction)
     }
 }
 
-void PageSwitcher::bookClosed()
+void PageSwitcher::reset()
 {
     loadedPages_.clear();
-    waitingPage_.reset();
+    waitingPage_ = 0;
 
     delete pageWidget_;
 }

@@ -45,7 +45,7 @@ public:
     void switchNextPage(SwitchDirection direction);
 
 private:
-    void bookClosed();
+    void reset();
 
     void pageLoaded(const PageInfo &page);
 
