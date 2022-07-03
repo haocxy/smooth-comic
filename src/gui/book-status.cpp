@@ -2,7 +2,7 @@
 
 #include "book/book.h"
 
-#include "property-name.h"
+#include "util/property-name.h"
 
 #include "gen.book-status.ui.h"
 
