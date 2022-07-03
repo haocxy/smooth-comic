@@ -20,7 +20,7 @@ BookArea::BookArea(Book &book, QWidget *parent)
 {
     setChildrenCollapsible(false);
 
-    thumbArea_ = new ThumbListScrollArea(book_, this);
+    thumbArea_ = new ThumbArea(book_, this);
 
     mainArea_ = new QWidget(this);
 

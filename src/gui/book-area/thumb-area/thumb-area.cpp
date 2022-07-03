@@ -9,7 +9,7 @@ namespace myapp {
 
 static constexpr int widthHint = 200;
 
-ThumbListScrollArea::ThumbListScrollArea(Book &book, QWidget *parent)
+ThumbArea::ThumbArea(Book &book, QWidget *parent)
     : QScrollArea(parent)
     , book_(book)
 {
@@ -32,7 +32,7 @@ ThumbListScrollArea::ThumbListScrollArea(Book &book, QWidget *parent)
     setWidgetResizable(true);
 }
 
-void ThumbListScrollArea::resizeEvent(QResizeEvent *)
+void ThumbArea::resizeEvent(QResizeEvent *)
 {
     root_->adjustSize();
 

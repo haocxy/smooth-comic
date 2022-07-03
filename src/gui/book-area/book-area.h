@@ -33,7 +33,7 @@ public:
 
 private:
     Book &book_;
-    QPointer<ThumbListScrollArea> thumbArea_;
+    QPointer<ThumbArea> thumbArea_;
     QPointer<QWidget> mainArea_;
     QPointer<QVBoxLayout> mainAreaLayout_;
     QPointer<QWidget> pageArea_;

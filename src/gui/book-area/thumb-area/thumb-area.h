@@ -16,12 +16,12 @@ namespace myapp {
 class Book;
 
 
-class ThumbListScrollArea : public QScrollArea {
+class ThumbArea : public QScrollArea {
     Q_OBJECT
 public:
-    explicit ThumbListScrollArea(Book &book, QWidget *parent = nullptr);
+    explicit ThumbArea(Book &book, QWidget *parent = nullptr);
 
-    virtual ~ThumbListScrollArea() {}
+    virtual ~ThumbArea() {}
 
     ThumbList *thumbList() {
         return root_;
