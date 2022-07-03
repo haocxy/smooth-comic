@@ -10,9 +10,9 @@
 #include "core/debug-option/option-center.h"
 
 #include "engine/engine.h"
-#include "gui/main-window.h"
 
-#include "register-qt-meta-types.h"
+#include "gui/register-qt-meta-types.h"
+#include "gui/main-window.h"
 
 #include "cmd-option.h"
 
