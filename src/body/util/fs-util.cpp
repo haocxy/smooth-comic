@@ -19,15 +19,16 @@ static std::u32string encode(const std::u32string &path) {
             result.push_back('-');
             result.push_back('A');
         } else if (c >= 0x80) {
-            result.push_back('-');
-            result.push_back('U');
-            result.push_back('[');
-            std::ostringstream ss;
-            ss << std::hex << static_cast<uint32_t>(c);
-            for (char ch : ss.str()) {
-                result.push_back(ch);
-            }
-            result.push_back(']');
+            result.push_back(c);
+            //result.push_back('-');
+            //result.push_back('U');
+            //result.push_back('[');
+            //std::ostringstream ss;
+            //ss << std::hex << static_cast<uint32_t>(c);
+            //for (char ch : ss.str()) {
+            //    result.push_back(ch);
+            //}
+            //result.push_back(']');
         } else {
             result.push_back(c);
         }

@@ -92,7 +92,7 @@ void Database::open(const fs::path &path)
         std::ofstream ofs(path, std::ios::binary | std::ios::app);
     }
     sqlite3 *db = nullptr;
-    int n = sqlite3_open(path.generic_string().c_str(), &db);
+    int n = sqlite3_open(reinterpret_cast<const char *>(path.generic_u8string().c_str()), &db);
     if (n != SQLITE_OK) {
         std::ostringstream ss;
         ss << "cannot open SQLite3 database by file path: [" << path.generic_string() << "] ";
