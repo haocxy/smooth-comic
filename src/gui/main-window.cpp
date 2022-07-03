@@ -70,8 +70,8 @@ void MainWindow::initToolBarArea()
 
 void MainWindow::initPageViewerArea()
 {
-    pageViewer_ = new PageViewer(*book_, this);
-    setCentralWidget(pageViewer_);
+    bookArea_ = new BookArea(*book_, this);
+    setCentralWidget(bookArea_);
 }
 
 void MainWindow::initStatusArea()
@@ -118,12 +118,12 @@ void MainWindow::bookReloadAction()
 
 void MainWindow::pageNextAction()
 {
-    pageViewer_->jumpNext();
+    bookArea_->jumpNext();
 }
 
 void MainWindow::pagePrevAction()
 {
-    pageViewer_->jumpPrev();
+    bookArea_->jumpPrev();
 }
 
 }

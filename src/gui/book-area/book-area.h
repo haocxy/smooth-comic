@@ -20,10 +20,10 @@ class PageSwitcher;
 // 页面展示器
 // 是页面展示区域的最外层组件
 // 负责整合管理和页面显示、操作等有关的各GUI组件
-class PageViewer : public QSplitter {
+class BookArea : public QSplitter {
     Q_OBJECT
 public:
-    explicit PageViewer(Book &book, QWidget *parent = nullptr);
+    explicit BookArea(Book &book, QWidget *parent = nullptr);
 
     void jumpTo(PageNum seqNum);
 

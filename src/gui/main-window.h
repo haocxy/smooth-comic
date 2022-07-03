@@ -13,7 +13,7 @@ namespace myapp {
 
 class Engine;
 
-class PageViewer;
+class BookArea;
 
 
 class MainWindow : public QMainWindow {
@@ -54,7 +54,7 @@ private: // non-UI Components
     uptr<Book> book_;
 
 private: // UI Components
-    QPointer<PageViewer> pageViewer_;
+    QPointer<BookArea> bookArea_;
 };
 
 }

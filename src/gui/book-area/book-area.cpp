@@ -16,7 +16,7 @@ namespace myapp {
 using logger::gLogger;
 
 
-PageViewer::PageViewer(Book &book, QWidget *parent)
+BookArea::BookArea(Book &book, QWidget *parent)
     : QSplitter(parent)
     , book_(book)
 {
@@ -52,22 +52,22 @@ PageViewer::PageViewer(Book &book, QWidget *parent)
 
     setSizes({ 1, 1000 });
 
-    connect(thumbArea_->thumbList(), &ThumbList::sigJumpTo, this, &PageViewer::jumpTo);
+    connect(thumbArea_->thumbList(), &ThumbList::sigJumpTo, this, &BookArea::jumpTo);
 
     connect(pageControllLayer_, &PageControllLayer::sigCmdSwitchNextPage, pageSwitcher_, &PageSwitcher::switchNextPage);
 }
 
-void PageViewer::jumpTo(PageNum seqNum)
+void BookArea::jumpTo(PageNum seqNum)
 {
     pageSwitcher_->jumpTo(seqNum);
 }
 
-void PageViewer::jumpNext()
+void BookArea::jumpNext()
 {
     pageSwitcher_->jumpNext();
 }
 
-void PageViewer::jumpPrev()
+void BookArea::jumpPrev()
 {
     pageSwitcher_->jumpPrev();
 }
