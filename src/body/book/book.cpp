@@ -165,25 +165,17 @@ void Book::Actor::open(const fs::path &archiveFile, ShouldForceReload shouldForc
 
     sigConns_.clear();
 
-    sigConns_ += cache_->sigPageLoaded.connect([this, h = handle_.weak()](const OpenSessionId &sessionId, const PageInfo &page){
-        h.apply([this, sessionId, &page] {
-            outer_.exec([this, sessionId, page] {
-                if (sessionId == currentSessionId_) {
-                    outer_.sigPageLoaded(page);
-                }
-            });
-        });
+    sigConns_ += cache_->sigPageLoaded.connect(handle_, outer_, [this](const OpenSessionId &sessionId, const PageInfo &page){
+        if (sessionId == currentSessionId_) {
+            outer_.sigPageLoaded(page);
+        }
     });
 
-    sigConns_ += cache_->sigLoadFailed.connect([this, h = handle_.weak()](const OpenSessionId &sessionId, BookError err) {
-        h.apply([this, &sessionId, &err] {
-            outer_.exec([this, sessionId, err] {
-                if (sessionId == currentSessionId_) {
-                    outer_.sigLoadFailed(err);
-                    close();
-                }
-            });
-        });
+    sigConns_ += cache_->sigLoadFailed.connect(handle_, outer_, [this](const OpenSessionId &sessionId, BookError err) {
+        if (sessionId == currentSessionId_) {
+            outer_.sigLoadFailed(err);
+            close();
+        }
     });
 
     outer_.sigBookOpenStarted(archiveFile);
