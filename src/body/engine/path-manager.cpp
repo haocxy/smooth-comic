@@ -1,13 +1,15 @@
 #include "path-manager.h"
 
 #include "core/system.h"
+#include "core/logger.h"
 #include "util/fs-util.h"
-
 
 #include "build-info.h"
 
 
 namespace myapp {
+
+using logger::gLogger;
 
 static const std::u32string kDbFileExt{ U"" };
 
@@ -40,10 +42,16 @@ fs::path PathManager::packedStyleDir() const
         }
     }
 
-    for (fs::path dir = exeDir.parent_path(); fs::exists(dir); dir = dir.parent_path()) {
+    for (fs::path dir = exeDir.parent_path();;) {
         const fs::path styleDirPath = dir / styleDirName;
-        if (fs::exists(styleDirName)) {
-            return styleDirName;
+        if (fs::exists(styleDirPath)) {
+            return styleDirPath;
+        }
+        const fs::path parentDir = dir.parent_path();
+        if (parentDir != dir) {
+            dir = parentDir;
+        } else {
+            break;
         }
     }
 
