@@ -23,16 +23,27 @@ fs::path PathManager::mkBookCacheDbFilePath(const fs::path &archiveFile) const
 
 fs::path PathManager::packedStyleDir() const
 {
-    const fs::path packPath = SystemUtil::exePath().parent_path() / "-styles";
+    const std::string styleDirName = "-styles";
+
+    const fs::path exeDir = SystemUtil::exePath().parent_path();
+
+    const fs::path packPath = exeDir / styleDirName;
     if (fs::exists(packPath)) {
         return packPath;
     }
 
     const std::optional<fs::path> &slnDir = BuildInfo::solutionDir;
     if (slnDir) {
-        const fs::path slnPath = (*slnDir) / "-styles";
+        const fs::path slnPath = (*slnDir) / styleDirName;
         if (fs::exists(slnPath)) {
             return slnPath;
+        }
+    }
+
+    for (fs::path dir = exeDir.parent_path(); fs::exists(dir); dir = dir.parent_path()) {
+        const fs::path styleDirPath = dir / styleDirName;
+        if (fs::exists(styleDirName)) {
+            return styleDirName;
         }
     }
 
