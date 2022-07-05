@@ -1,5 +1,5 @@
-#file(GLOB_RECURSE asset_files "assets/*")
-#install(FILES ${asset_files} DESTINATION "assets")
+file(GLOB_RECURSE style_files "-style/*")
+install(FILES ${style_files} DESTINATION "-style")
 
 install(TARGETS ${appName} ${appName}-cmd
     CONFIGURATIONS Release

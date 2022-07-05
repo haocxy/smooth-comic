@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <QApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileSystemWatcher>
 
 #include <boost/program_options.hpp>
 
@@ -10,6 +13,7 @@
 #include "core/debug-option/option-center.h"
 
 #include "engine/engine.h"
+#include "engine/path-manager.h"
 
 #include "gui/register-qt-meta-types.h"
 #include "gui/main-window.h"
@@ -47,6 +51,13 @@ static void listDebugOptions(std::ostream &out)
         }
         out << std::endl;
     });
+}
+
+static QString contentOf(QString filePath)
+{
+    QFile file(filePath);
+    file.open(QIODevice::ReadOnly);
+    return file.readAll();
 }
 
 int body_entry(int argc, char *argv[])
@@ -95,6 +106,19 @@ int body_entry(int argc, char *argv[])
     registerQtMetaTypes();
 
     Engine engine;
+
+    QDir::addSearchPath("style", engine.pathManager().packedStyleDir());
+    const QString cssPath = "style:default.css";
+
+    qApp->setStyleSheet(contentOf(cssPath));
+
+    QFileSystemWatcher cssFileWatcher;
+    cssFileWatcher.addPath(cssPath);
+    QObject::connect(&cssFileWatcher, &QFileSystemWatcher::fileChanged, &cssFileWatcher, [cssPath](const QString &filePath) {
+        if (filePath == cssPath) {
+            qApp->setStyleSheet(contentOf(filePath));
+        }
+    });
 
     MainWindow w(engine);
     w.show();
