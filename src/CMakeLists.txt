@@ -13,6 +13,10 @@ set(MY_BOOST_ROOT ${prepareDir}/install/boost)
 set(MY_BOOST_VER "1.78")
 
 
+if(${myAppUseDebugConfig})
+    add_definitions(-DMYAPP_SOLUTION_ROOT_DIR=\"${CMAKE_SOURCE_DIR}\")
+endif()
+
 
 include_directories(.)
 
