@@ -13,6 +13,8 @@ public:
 
     fs::path mkBookCacheDbFilePath(const fs::path &archiveFile) const;
 
+    fs::path packedStyleDir() const;
+
 private:
     fs::path cacheDir_;
 };
