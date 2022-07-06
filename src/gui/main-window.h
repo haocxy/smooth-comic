@@ -5,6 +5,7 @@
 #include <QPointer>
 #include <QStackedLayout>
 #include <QScrollArea>
+#include <QPushButton>
 
 #include "book/book.h"
 
@@ -20,6 +21,10 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
     explicit MainWindow(Engine &engine, QWidget *parent = nullptr);
+
+protected:
+
+    virtual bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
 
 private:
     void initAreas();
@@ -38,6 +43,8 @@ private:
 
     void bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)());
 
+
+
 private:
     void fileOpenAction();
 
@@ -55,6 +62,12 @@ private: // non-UI Components
 
 private: // UI Components
     QPointer<BookArea> bookArea_;
+    QPointer<QPushButton> maxButton_;
+
+    int borderWidth_ = 5;
+    QMargins margins_;
+    QMargins frames_;
+    bool justMaximized_ = false;
 };
 
 }
