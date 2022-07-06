@@ -131,23 +131,6 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
         long x = GET_X_LPARAM(msg->lParam);
         long y = GET_Y_LPARAM(msg->lParam);
 
-        if (x >= r.left && x < r.left + bw) {
-            *result = HTLEFT;
-            return true;
-        }
-        if (x < r.right && x >= r.right - bw) {
-            *result = HTRIGHT;
-            return true;
-        }
-
-        if (y < r.bottom && y >= r.bottom - bw) {
-            *result = HTBOTTOM;
-            return true;
-        }
-        if (y >= r.top && y < r.top + bw) {
-            *result = HTTOP;
-            return true;
-        }
         if (x >= r.left && x < r.left + bw &&
             y < r.bottom && y >= r.bottom - bw) {
             *result = HTBOTTOMLEFT;
@@ -168,6 +151,24 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
             *result = HTTOPRIGHT;
             return true;
         }
+        if (x >= r.left && x < r.left + bw) {
+            *result = HTLEFT;
+            return true;
+        }
+        if (x < r.right && x >= r.right - bw) {
+            *result = HTRIGHT;
+            return true;
+        }
+
+        if (y < r.bottom && y >= r.bottom - bw) {
+            *result = HTBOTTOM;
+            return true;
+        }
+        if (y >= r.top && y < r.top + bw) {
+            *result = HTTOP;
+            return true;
+        }
+
 
         double dpr = this->devicePixelRatioF();
         QPoint gpos = QPoint(x / dpr, y / dpr);
