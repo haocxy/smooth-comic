@@ -25,7 +25,7 @@ fs::path PathManager::mkBookCacheDbFilePath(const fs::path &archiveFile) const
 
 fs::path PathManager::packedStyleDir() const
 {
-    const std::string styleDirName = "-styles";
+    const std::string styleDirName = "styles";
 
     const fs::path exeDir = SystemUtil::exePath().parent_path();
 

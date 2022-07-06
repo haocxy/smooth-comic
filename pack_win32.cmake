@@ -1,5 +1,5 @@
-file(GLOB_RECURSE style_files "-styles/*")
-install(FILES ${style_files} DESTINATION "-styles")
+file(GLOB_RECURSE style_files "styles/*")
+install(FILES ${style_files} DESTINATION "styles")
 
 install(TARGETS ${appName} ${appName}-cmd
     CONFIGURATIONS Release
