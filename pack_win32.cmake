@@ -37,7 +37,7 @@ function(addQtPlugin libName pluginPath)
         message(FATAL_ERROR "Cannot find Qt Plugin: ${libName}")
     endif()
     message(STATUS "Qt Plugin [${libName}] Found: [${pathOfLib}]")
-    install(FILES "${pathOfLib}" DESTINATION "${pluginPath}")
+    install(FILES "${pathOfLib}" DESTINATION "plugins/${pluginPath}")
 endfunction()
 
 addPreparedDLL(zlib.dll)
