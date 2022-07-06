@@ -98,7 +98,7 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
         QPoint gpos = QPoint(x / dpr, y / dpr);
         QPoint pos = mapFromGlobal(QPoint(x / dpr, y / dpr));
         if (maxButton_->rect().contains(maxButton_->mapFromGlobal(gpos))) {
-            *result = 0;
+            emit maxButton_->clicked();
             return true;
         }
         *result = 0;
@@ -176,13 +176,17 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
         if (maxButton_->rect().contains(maxButton_->mapFromGlobal(gpos))) {
             *result = HTMAXBUTTON;
 
-            QHoverEvent e(QEvent::HoverMove, maxButton_->mapFromGlobal(gpos), gpos);
-
-            qApp->sendEvent(maxButton_, &e);
+            maxButton_->setStyleSheet("QPushButton{color:black;}");
+            maxButtonHasStyle_ = true;
 
             gLogger.d << "WM_NCHITTEST";
 
             return true;
+        } else {
+            if (maxButtonHasStyle_) {
+                maxButton_->setStyleSheet(QString());
+                maxButtonHasStyle_ = false;
+            }
         }
 
         if (menuBar()->rect().contains(pos)) {
@@ -265,9 +269,15 @@ void MainWindow::initToolBarArea()
 
     maxButton_ = new MyButton("Max Window");
     viewBar->addWidget(maxButton_);
+    maxButton_->setFlat(true);
     connect(maxButton_, &QPushButton::clicked, this, [this] {
-        int n = 0;
-        this->showMaximized();
+        if (isMaximized()) {
+            showNormal();
+            maxButton_->setText("Max Window");
+        } else {
+            showMaximized();
+            maxButton_->setText("Normal Window");
+        }
     });
 }
 

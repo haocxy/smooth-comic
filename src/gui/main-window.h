@@ -68,6 +68,7 @@ private: // UI Components
     QMargins margins_;
     QMargins frames_;
     bool justMaximized_ = false;
+    bool maxButtonHasStyle_ = false;
 };
 
 }
