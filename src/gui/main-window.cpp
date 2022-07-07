@@ -42,19 +42,7 @@ bool MainWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 
 bool MainWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
 {
-    QMenuBar *menuArea = menuBar();
-
-    const QPoint menuLocalPos = menuArea->mapFromGlobal(gpos);
-
-    if (!menuArea->rect().contains(menuLocalPos)) {
-        return false;
-    }
-
-    if (menuArea->actionAt(menuLocalPos)) {
-        return false;
-    }
-
-    return true;
+    return false;
 }
 
 void MainWindow::initAreas()
