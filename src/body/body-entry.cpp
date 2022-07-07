@@ -17,7 +17,7 @@
 #include "engine/path-manager.h"
 
 #include "gui/register-qt-meta-types.h"
-#include "gui/main-window.h"
+#include "gui/app-window.h"
 
 #include "cmd-option.h"
 
