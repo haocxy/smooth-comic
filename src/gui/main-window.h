@@ -7,6 +7,9 @@
 #include <QScrollArea>
 #include <QPushButton>
 
+#include "util/frameless-window.h"
+#include "util/title-bar-button.h"
+
 #include "book/book.h"
 
 
@@ -17,14 +20,17 @@ class Engine;
 class BookArea;
 
 
-class MainWindow : public QMainWindow {
+class MainWindow : public FramelessWindow {
     Q_OBJECT
 public:
     explicit MainWindow(Engine &engine, QWidget *parent = nullptr);
 
 protected:
+    virtual TitleBarButton *windowMaxButton() override;
 
-    virtual bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
+    virtual bool isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const override;
+
+    virtual bool isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const override;
 
 private:
     void initAreas();
@@ -43,8 +49,6 @@ private:
 
     void bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)());
 
-
-
 private:
     void fileOpenAction();
 
@@ -62,13 +66,7 @@ private: // non-UI Components
 
 private: // UI Components
     QPointer<BookArea> bookArea_;
-    QPointer<QPushButton> maxButton_;
-
-    int borderWidth_ = 5;
-    QMargins margins_;
-    QMargins frames_;
-    bool justMaximized_ = false;
-    bool maxButtonHasStyle_ = false;
+    QPointer<TitleBarButton> windowMaxButton_;
 };
 
 }
