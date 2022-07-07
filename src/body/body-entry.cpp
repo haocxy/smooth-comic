@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileSystemWatcher>
+#include <QFontDatabase>
 
 #include <boost/program_options.hpp>
 
@@ -109,6 +110,8 @@ int body_entry(int argc, char *argv[])
 
     QDir::addSearchPath("style", engine.pathManager().packedStyleDir());
     const QString cssPath = "style:default.css";
+
+    QFontDatabase::addApplicationFont("style:win.Segoe-Fluent-Icons.zip");
 
     qApp->setStyleSheet(contentOf(cssPath));
 
