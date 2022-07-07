@@ -16,6 +16,8 @@ public:
 
     virtual ~FramelessWindow();
 
+    void setFramelessWindowMargins(const QMargins &margins);
+
 protected:
 
     // 窗口的 窗口最大化按钮
@@ -80,7 +82,9 @@ private:
 
 private:
     int resizeAreaWidth_{ 10 };
-    opt<QMargins> normalMargins_;
+    QMargins windowFrames_;
+    QMargins margins_;
+    bool isWindowRectAdjusted_{ false };
     bool isWindowMaxButtonMouseOvered_{ false };
 };
 

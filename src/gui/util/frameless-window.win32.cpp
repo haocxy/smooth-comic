@@ -30,6 +30,12 @@ FramelessWindow::~FramelessWindow()
 {
 }
 
+void FramelessWindow::setFramelessWindowMargins(const QMargins &margins)
+{
+    QMainWindow::setContentsMargins(windowFrames_ + margins);
+    margins_ = margins;
+}
+
 bool FramelessWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
 {
     MSG *msg = reinterpret_cast<MSG *>(message);
@@ -118,19 +124,20 @@ FramelessWindow::Res FramelessWindow::handle_WM_GETMINMAXINFO(MSG &msg)
         AdjustWindowRectEx(&frame, WS_OVERLAPPEDWINDOW, FALSE, 0);
 
         const Win32FrameSizeCvt cvt(devicePixelRatioF());
-        QMargins margins;
-        margins.setTop(cvt(frame.top));
-        margins.setRight(cvt(frame.right));
-        margins.setBottom(cvt(frame.bottom));
-        margins.setLeft(cvt(frame.left));
 
-        normalMargins_ = contentsMargins();
+        windowFrames_.setTop(cvt(frame.bottom));
+        windowFrames_.setRight(cvt(frame.right));
+        windowFrames_.setBottom(cvt(frame.bottom));
+        windowFrames_.setLeft(cvt(frame.left));
 
-        setContentsMargins(*normalMargins_ + margins);
+        setFramelessWindowMargins(margins_);
+
+        isWindowRectAdjusted_ = true;
     } else {
-        if (normalMargins_) {
-            setContentsMargins(*normalMargins_);
-            normalMargins_ = std::nullopt;
+        if (isWindowRectAdjusted_) {
+            setContentsMargins(margins_);
+            windowFrames_ = QMargins();
+            isWindowRectAdjusted_ = false;
         }
     }
 
