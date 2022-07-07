@@ -7,8 +7,6 @@ namespace myapp {
 
 class TitleBarButton : public QPushButton {
     Q_OBJECT
-
-    Q_PROPERTY(bool mouseOver READ mouseOver WRITE setMouseOver)
 public:
     explicit TitleBarButton(const QString &text, QWidget *parent = nullptr);
 
@@ -20,12 +18,7 @@ public:
         return mouseOver_;
     }
 
-    void setMouseOver(bool mouseOver) {
-        if (mouseOver_ != mouseOver) {
-            mouseOver_ = mouseOver;
-            update();
-        }
-    }
+    void setMouseOver(bool mouseOver);
 
 private:
     void init();

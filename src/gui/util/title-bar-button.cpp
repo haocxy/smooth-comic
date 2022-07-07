@@ -30,9 +30,18 @@ TitleBarButton::TitleBarButton(QWidget *parent)
     init();
 }
 
+void TitleBarButton::setMouseOver(bool mouseOver) {
+    if (mouseOver_ != mouseOver) {
+        mouseOver_ = mouseOver;
+        update();
+    }
+}
+
 void TitleBarButton::init()
 {
     setFlat(true);
+
+    
 }
 
 }

@@ -164,11 +164,24 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCCALCSIZE(MSG &msg)
 
 FramelessWindow::Res FramelessWindow::handle_WM_NCLBUTTONDOWN(MSG &msg)
 {
+    if (TitleBarButton *btn = windowMaxButton()) {
+        const QPoint gpos = globalPos(msg);
+        if (isWindowMaxButtonContainsGlobalPos(gpos)) {
+            emit btn->clicked();
+            return 0;
+        }
+    }
     return Res();
 }
 
 FramelessWindow::Res FramelessWindow::handle_WM_NCLBUTTONUP(MSG &msg)
 {
+    if (TitleBarButton *btn = windowMaxButton()) {
+        const QPoint gpos = globalPos(msg);
+        if (isWindowMaxButtonContainsGlobalPos(gpos)) {
+            return 0;
+        }
+    }
     return Res();
 }
 
