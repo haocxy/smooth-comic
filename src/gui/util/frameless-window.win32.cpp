@@ -10,8 +10,17 @@
 #pragma comment (lib,"Dwmapi.lib")
 #pragma comment (lib,"user32.lib")
 
+#include "core/logger.h"
+#include "core/debug-option.h"
+
 
 namespace myapp {
+
+using logger::gLogger;
+
+static const DebugOption<bool> dopLogTrackMouseEvent(
+    "log.need.frameless-window.track-mouse-event", false,
+    "Is log for TrackMouseEvent in FramelessWindow needed?");
 
 FramelessWindow::FramelessWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,6 +33,8 @@ FramelessWindow::FramelessWindow(QWidget *parent)
     setWindowFlag(Qt::WindowMaximizeButtonHint, false);
 
     initWin32Window();
+
+    setMouseTracking(true);
 }
 
 FramelessWindow::~FramelessWindow()
@@ -48,6 +59,9 @@ bool FramelessWindow::nativeEvent(const QByteArray &eventType, void *message, qi
         break;
     case WM_MOUSEMOVE:
         optres = handle_WM_MOUSEMOVE(*msg);
+        break;
+    case WM_NCMOUSELEAVE:
+        optres = handle_WM_NCMOUSELEAVE(*msg);
         break;
     case WM_NCCALCSIZE:
         optres = handle_WM_NCCALCSIZE(*msg);
@@ -101,6 +115,34 @@ void FramelessWindow::initWin32Window()
     DwmExtendFrameIntoClientArea(hwnd, &shadow);
 }
 
+void FramelessWindow::startMouseTrack(HWND hwnd)
+{
+    if (!isTrackMouseStarted_) {
+        TRACKMOUSEEVENT tme;
+        tme.cbSize = sizeof(tme);
+        tme.dwFlags = TME_NONCLIENT;
+        tme.hwndTrack = hwnd;
+        tme.dwHoverTime = 0;
+        ::TrackMouseEvent(&tme);
+        isTrackMouseStarted_ = true;
+        gLogger.d.enableIf(*dopLogTrackMouseEvent) << "TrackMouseEvent begin";
+    }
+}
+
+void FramelessWindow::stopMouseTrack(HWND hwnd)
+{
+    if (isTrackMouseStarted_) {
+        TRACKMOUSEEVENT tme;
+        tme.cbSize = sizeof(tme);
+        tme.dwFlags = TME_NONCLIENT;
+        tme.hwndTrack = hwnd;
+        tme.dwHoverTime = 0;
+        ::TrackMouseEvent(&tme);
+        isTrackMouseStarted_ = false;
+        gLogger.d.enableIf(*dopLogTrackMouseEvent) << "TrackMouseEvent stop";
+    }
+}
+
 namespace {
 
 class Win32FrameSizeCvt {
@@ -146,6 +188,21 @@ FramelessWindow::Res FramelessWindow::handle_WM_GETMINMAXINFO(MSG &msg)
 
 FramelessWindow::Res FramelessWindow::handle_WM_MOUSEMOVE(MSG &msg)
 {
+    return Res();
+}
+
+FramelessWindow::Res FramelessWindow::handle_WM_NCMOUSELEAVE(MSG &msg)
+{
+    HWND hwnd = reinterpret_cast<HWND>(winId());
+
+    gLogger.d.enableIf(*dopLogTrackMouseEvent) << "handle_WM_NCMOUSELEAVE";
+
+    if (TitleBarButton *b = windowMaxButton()) {
+        b->setMouseOver(false);
+    }
+
+    stopMouseTrack(hwnd);
+
     return Res();
 }
 
@@ -195,6 +252,7 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
     using Win32Size = decltype(r.left);
 
     const Win32Size w = resizeAreaWidth_;
+    const Win32Size resizeAreaTopHeight = resizeAreaTopHeight_;
     const Win32Size x = GET_X_LPARAM(msg.lParam);
     const Win32Size y = GET_Y_LPARAM(msg.lParam);
 
@@ -202,7 +260,10 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
     if (x < r.left + w) { // 水平左
         if (y >= r.bottom - w) { // 左下
             return HTBOTTOMLEFT;
-        } else if (y < r.top + w) { //左上
+        } else if (y < r.top + resizeAreaTopHeight) { //左上
+            if (TitleBarButton *maxBtn = windowMaxButton()) {
+                maxBtn->setMouseOver(false);
+            }
             return HTTOPLEFT;
         } else {
             return HTLEFT; // 左中
@@ -210,7 +271,10 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
     } else if (x >= r.right - w) { // 水平右
         if (y >= r.bottom - w) { // 右下
             return HTBOTTOMRIGHT;
-        } else if (y < r.top + w) { // 右上
+        } else if (y < r.top + resizeAreaTopHeight) { // 右上
+            if (TitleBarButton *maxBtn = windowMaxButton()) {
+                maxBtn->setMouseOver(false);
+            }
             return HTTOPRIGHT;
         } else {
             return HTRIGHT; // 右中
@@ -218,7 +282,10 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
     } else { // 水平中
         if (y >= r.bottom - w) { // 中下
             return HTBOTTOM;
-        } else if (y < r.top + w) { // 中上
+        } else if (y < r.top + resizeAreaTopHeight) { // 中上
+            if (TitleBarButton *maxBtn = windowMaxButton()) {
+                maxBtn->setMouseOver(false);
+            }
             return HTTOP;
         }
     }
@@ -230,11 +297,13 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
         if (isWindowMaxButtonContainsGlobalPos(gpos)) {
             maxBtn->setMouseOver(true);
             isWindowMaxButtonMouseOvered_ = true;
+            startMouseTrack(hwnd);
             return HTMAXBUTTON;
         } else {
             if (isWindowMaxButtonMouseOvered_) {
                 maxBtn->setMouseOver(false);
                 isWindowMaxButtonMouseOvered_ = false;
+                stopMouseTrack(hwnd);
             }
         }
     }

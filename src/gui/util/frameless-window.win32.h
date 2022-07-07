@@ -42,12 +42,14 @@ protected:
 protected:
     virtual bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
 
-
-
 private:
     QPoint globalPos(const MSG &msg);
 
     void initWin32Window();
+
+    void startMouseTrack(HWND hwnd);
+
+    void stopMouseTrack(HWND hwnd);
 
     class Res {
     public:
@@ -72,6 +74,8 @@ private:
 
     Res handle_WM_MOUSEMOVE(MSG &msg);
 
+    Res handle_WM_NCMOUSELEAVE(MSG &msg);
+
     Res handle_WM_NCCALCSIZE(MSG &msg);
 
     Res handle_WM_NCLBUTTONDOWN(MSG &msg);
@@ -82,10 +86,12 @@ private:
 
 private:
     int resizeAreaWidth_{ 10 };
+    int resizeAreaTopHeight_{ 5 };
     QMargins windowFrames_;
     QMargins margins_;
     bool isWindowRectAdjusted_{ false };
     bool isWindowMaxButtonMouseOvered_{ false };
+    bool isTrackMouseStarted_{ false };
 };
 
 }
