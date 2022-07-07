@@ -19,6 +19,12 @@ TitleBarArea::TitleBarArea(QWidget *parent)
 
     rootLayout_->addStretch();
 
+    windowFullScreenButton_ = new TitleBarButton(FontIconEnum::WindowFullScreen);
+    rootLayout_->addWidget(windowFullScreenButton_);
+
+    windowMinButton_ = new TitleBarButton(FontIconEnum::WindowMinimize);
+    rootLayout_->addWidget(windowMinButton_);
+
     windowMaxButton_ = new TitleBarButton(FontIconEnum::WindowMaximize);
     rootLayout_->addWidget(windowMaxButton_);
 

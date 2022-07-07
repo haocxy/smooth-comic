@@ -26,6 +26,16 @@ AppWidget::~AppWidget()
 {
 }
 
+TitleBarButton *AppWidget::windowFullScreenButton()
+{
+    return titleBarArea_->windowFullScreenButton();
+}
+
+TitleBarButton *AppWidget::windowMinButton()
+{
+    return titleBarArea_->windowMinButton();
+}
+
 TitleBarButton *AppWidget::windowMaxButton()
 {
     return titleBarArea_->windowMaxButton();

@@ -24,6 +24,8 @@ protected:
     virtual bool isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const override;
 
 private:
+    void toggleWindowFullScreen();
+
     void toggleWindowMaxAction();
 
 

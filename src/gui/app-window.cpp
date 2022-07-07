@@ -15,6 +15,8 @@ AppWindow::AppWindow(Engine &engine, QWidget *parent)
     appWidget_ = new AppWidget(engine, this);
     setCentralWidget(appWidget_);
 
+    connect(appWidget_->windowFullScreenButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowFullScreen);
+    connect(appWidget_->windowMinButton(), &QPushButton::clicked, this, &AppWindow::showMinimized);
     connect(appWidget_->windowMaxButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowMaxAction);
     connect(appWidget_->windowCloseButton(), &QPushButton::clicked, this, &AppWindow::close);
 }
@@ -33,6 +35,15 @@ bool AppWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 bool AppWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
 {
     return appWidget_->isWindowMoveAreaContainsGlobalPos(gpos);
+}
+
+void AppWindow::toggleWindowFullScreen()
+{
+    if (isFullScreen()) {
+        showNormal();
+    } else {
+        showFullScreen();
+    }
 }
 
 void AppWindow::toggleWindowMaxAction()

@@ -16,6 +16,14 @@ public:
 
     virtual ~TitleBarArea();
 
+    TitleBarButton *windowFullScreenButton() {
+        return windowFullScreenButton_;
+    }
+
+    TitleBarButton *windowMinButton() {
+        return windowMinButton_;
+    }
+
     TitleBarButton *windowMaxButton() {
         return windowMaxButton_;
     }
@@ -28,6 +36,8 @@ public:
 
 private:
     QPointer<QHBoxLayout> rootLayout_;
+    QPointer<TitleBarButton> windowFullScreenButton_;
+    QPointer<TitleBarButton> windowMinButton_;
     QPointer<TitleBarButton> windowMaxButton_;
     QPointer<TitleBarButton> windowCloseButton_;
 };

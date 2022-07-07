@@ -24,6 +24,10 @@ public:
 
     virtual ~AppWidget();
 
+    TitleBarButton *windowFullScreenButton();
+
+    TitleBarButton *windowMinButton();
+
     TitleBarButton *windowMaxButton();
 
     TitleBarButton *windowCloseButton();
