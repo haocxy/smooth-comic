@@ -2,6 +2,8 @@
 
 #include <QPushButton>
 
+#include "font-icon-enum.h"
+
 
 namespace myapp {
 
@@ -10,7 +12,7 @@ class TitleBarButton : public QPushButton {
 public:
     explicit TitleBarButton(const QString &text, QWidget *parent = nullptr);
 
-    TitleBarButton(char16_t fontIcon, QWidget *parent = nullptr);
+    TitleBarButton(FontIconEnum fontIcon, QWidget *parent = nullptr);
 
     TitleBarButton(const QIcon &icon, const QString &text, QWidget *parent = nullptr);
 

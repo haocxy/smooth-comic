@@ -23,8 +23,8 @@ TitleBarButton::TitleBarButton(const QString &text, QWidget *parent)
     init();
 }
 
-TitleBarButton::TitleBarButton(char16_t fontIcon, QWidget *parent)
-    : QPushButton(QString(QChar(fontIcon)), parent)
+TitleBarButton::TitleBarButton(FontIconEnum fontIcon, QWidget *parent)
+    : QPushButton(QString(QChar(char16_t(fontIcon))), parent)
 {
     init();
 }
