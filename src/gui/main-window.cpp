@@ -11,6 +11,7 @@
 #include "core/system.h"
 #include "core/logger.h"
 
+#include "title-bar-area/title-bar-area.h"
 #include "book-area/book-area.h"
 
 
@@ -32,78 +33,48 @@ MainWindow::MainWindow(Engine &engine, QWidget *parent)
 
 TitleBarButton *MainWindow::windowMaxButton()
 {
-    return windowMaxButton_;
+    return titleBarArea_->windowMaxButton();
 }
 
 bool MainWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 {
-    return windowMaxButton_->rect().contains(windowMaxButton_->mapFromGlobal(gpos));
+    TitleBarButton *b = titleBarArea_->windowMaxButton();
+    return b->rect().contains(b->mapFromGlobal(gpos));
 }
 
 bool MainWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
 {
-    return false;
+    return titleBarArea_->isWindowMoveAreaContainsGlobalPos(gpos);
 }
 
 void MainWindow::initAreas()
 {
-    initMenuBarArea();
-    initToolBarArea();
-    initPageViewerArea();
-    initStatusArea();
+    rootWidget_ = new QWidget(this);
+    rootWidget_->setContentsMargins(QMargins());
+    setCentralWidget(rootWidget_);
+
+    rootLayout_ = new QVBoxLayout(this);
+    rootLayout_->setContentsMargins(QMargins());
+    rootWidget_->setLayout(rootLayout_);
+
+    initTitleBarArea();
+
+    initBookArea();
 }
 
-void MainWindow::initMenuBarArea()
+void MainWindow::initTitleBarArea()
 {
-    return;
+    titleBarArea_ = new TitleBarArea(this);
+    rootLayout_->addWidget(titleBarArea_);
 
-    using Class = MainWindow;
-
-    QMenuBar *bar = menuBar();
-
-    QMenu *fileMenu = bar->addMenu(tr("File"));
-    bind(fileMenu, tr("Open"), &Class::fileOpenAction, QKeySequence::StandardKey::Open);
-    bind(fileMenu, tr("Close"), &Class::bookCloseAction, QKeySequence::StandardKey::Close);
-    bind(fileMenu, tr("Reload"), &Class::bookReloadAction, QKeySequence::StandardKey::Refresh);
-
-    QMenu *viewMenu = bar->addMenu(tr("View"));
-    bind(viewMenu, tr("Next Page"), &Class::pageNextAction);
-    bind(viewMenu, tr("Prev Page"), &Class::pagePrevAction);
+    connect(titleBarArea_->windowMaxButton(), &QPushButton::clicked, this, &MainWindow::toggleWindowMaxAction);
+    connect(titleBarArea_->windowCloseButton(), &QPushButton::clicked, this, &MainWindow::close);
 }
 
-void MainWindow::initToolBarArea()
-{
-    using Class = MainWindow;
-
-    QToolBar *fileBar = addToolBar(tr("File"));
-    bind(fileBar, tr("Open"), &Class::fileOpenAction);
-    bind(fileBar, tr("Close"), &Class::bookCloseAction);
-    bind(fileBar, tr("Reload"), &Class::bookReloadAction);
-
-    QToolBar *viewBar = addToolBar(tr("View"));
-    bind(viewBar, tr("Next Page"), &Class::pageNextAction);
-    bind(viewBar, tr("Prev Page"), &Class::pagePrevAction);
-
-    windowMaxButton_ = new TitleBarButton("Max Window");
-    viewBar->addWidget(windowMaxButton_);
-
-    connect(windowMaxButton_, &QPushButton::clicked, this, [this] {
-        if (isMaximized()) {
-            showNormal();
-        } else {
-            showMaximized();
-        }
-    });
-}
-
-void MainWindow::initPageViewerArea()
+void MainWindow::initBookArea()
 {
     bookArea_ = new BookArea(*book_, this);
-    setCentralWidget(bookArea_);
-}
-
-void MainWindow::initStatusArea()
-{
+    rootLayout_->addWidget(bookArea_);
 }
 
 void MainWindow::bind(QMenu *menu, const QString &name, void(MainWindow:: *f)())
@@ -123,6 +94,15 @@ void MainWindow::bind(QToolBar *toolBar, const QString &name, void(MainWindow:: 
 {
     QAction *action = toolBar->addAction(name);
     connect(action, &QAction::triggered, this, f);
+}
+
+void MainWindow::toggleWindowMaxAction()
+{
+    if (isMaximized()) {
+        showNormal();
+    } else {
+        showMaximized();
+    }
 }
 
 void MainWindow::fileOpenAction()

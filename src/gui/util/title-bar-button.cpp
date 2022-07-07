@@ -1,5 +1,8 @@
 #include "title-bar-button.h"
 
+#include <QPainter>
+#include <QStyle>
+
 #include "util/property-name.h"
 
 #include "font-icon-enum.h"
@@ -16,6 +19,12 @@ using PropName = gui::PropertyName;
 
 TitleBarButton::TitleBarButton(const QString &text, QWidget *parent)
     : QPushButton(text, parent)
+{
+    init();
+}
+
+TitleBarButton::TitleBarButton(char16_t fontIcon, QWidget *parent)
+    : QPushButton(QString(QChar(fontIcon)), parent)
 {
     init();
 }
@@ -39,13 +48,42 @@ void TitleBarButton::setMouseOver(bool mouseOver) {
     }
 }
 
+QSize TitleBarButton::sizeHint() const
+{
+    return fontMetrics().size(Qt::TextFlag::TextSingleLine, text()).grownBy(margins_);
+}
+
+void TitleBarButton::paintEvent(QPaintEvent *e)
+{
+    QPainter p(this);
+
+    if (mouseOver_) {
+        p.fillRect(rect(), palette().base().color().lighter());
+    }
+
+    style()->drawItemText(&p, rect(), Qt::AlignCenter, palette(), true, text());
+}
+
+void TitleBarButton::enterEvent(QEnterEvent *e)
+{
+    setMouseOver(true);
+}
+
+void TitleBarButton::leaveEvent(QEvent *e)
+{
+    setMouseOver(false);
+}
+
 void TitleBarButton::init()
 {
     setFlat(true);
 
-    setFont(QFont("Segoe Fluent Icons", 20));
+    margins_.setTop(10);
+    margins_.setBottom(10);
+    margins_.setLeft(20);
+    margins_.setRight(20);
 
-    setText(QChar(FontIconEnum::ChromeMaximize));
+    setFont(QFont("Segoe Fluent Icons", 8));
 }
 
 }

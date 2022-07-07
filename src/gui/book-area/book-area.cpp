@@ -18,6 +18,10 @@ BookArea::BookArea(Book &book, QWidget *parent)
     : QSplitter(parent)
     , book_(book)
 {
+    QSizePolicy sp{ sizePolicy() };
+    sp.setVerticalPolicy(QSizePolicy::Policy::Expanding);
+    setSizePolicy(sp);
+
     setChildrenCollapsible(false);
 
     thumbArea_ = new ThumbArea(book_, this);

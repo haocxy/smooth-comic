@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include <QSplitter>
 #include <QPointer>
+#include <QBoxLayout>
 #include <QStackedLayout>
 #include <QScrollArea>
 #include <QPushButton>
@@ -16,6 +17,8 @@
 namespace myapp {
 
 class Engine;
+
+class TitleBarArea;
 
 class BookArea;
 
@@ -35,13 +38,9 @@ protected:
 private:
     void initAreas();
 
-    void initMenuBarArea();
+    void initTitleBarArea();
 
-    void initToolBarArea();
-
-    void initPageViewerArea();
-
-    void initStatusArea();
+    void initBookArea();
 
     void bind(QMenu *menu, const QString &name, void(MainWindow:: *f)());
 
@@ -50,6 +49,8 @@ private:
     void bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)());
 
 private:
+    void toggleWindowMaxAction();
+
     void fileOpenAction();
 
     void bookCloseAction();
@@ -65,8 +66,10 @@ private: // non-UI Components
     uptr<Book> book_;
 
 private: // UI Components
+    QPointer<QWidget> rootWidget_;
+    QPointer<QVBoxLayout> rootLayout_;
+    QPointer<TitleBarArea> titleBarArea_;
     QPointer<BookArea> bookArea_;
-    QPointer<TitleBarButton> windowMaxButton_;
 };
 
 }
