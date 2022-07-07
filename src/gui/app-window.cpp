@@ -19,7 +19,7 @@ namespace myapp {
 
 using logger::gLogger;
 
-MainWindow::MainWindow(Engine &engine, QWidget *parent)
+AppWindow::AppWindow(Engine &engine, QWidget *parent)
     : FramelessWindow(parent)
     , engine_(engine)
 {
@@ -31,23 +31,23 @@ MainWindow::MainWindow(Engine &engine, QWidget *parent)
     initAreas();
 }
 
-TitleBarButton *MainWindow::windowMaxButton()
+TitleBarButton *AppWindow::windowMaxButton()
 {
     return titleBarArea_->windowMaxButton();
 }
 
-bool MainWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
+bool AppWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 {
     TitleBarButton *b = titleBarArea_->windowMaxButton();
     return b->rect().contains(b->mapFromGlobal(gpos));
 }
 
-bool MainWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
+bool AppWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
 {
     return titleBarArea_->isWindowMoveAreaContainsGlobalPos(gpos);
 }
 
-void MainWindow::initAreas()
+void AppWindow::initAreas()
 {
     rootWidget_ = new QWidget(this);
     rootWidget_->setContentsMargins(QMargins());
@@ -62,41 +62,41 @@ void MainWindow::initAreas()
     initBookArea();
 }
 
-void MainWindow::initTitleBarArea()
+void AppWindow::initTitleBarArea()
 {
     titleBarArea_ = new TitleBarArea(this);
     rootLayout_->addWidget(titleBarArea_);
 
-    connect(titleBarArea_->windowMaxButton(), &QPushButton::clicked, this, &MainWindow::toggleWindowMaxAction);
-    connect(titleBarArea_->windowCloseButton(), &QPushButton::clicked, this, &MainWindow::close);
+    connect(titleBarArea_->windowMaxButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowMaxAction);
+    connect(titleBarArea_->windowCloseButton(), &QPushButton::clicked, this, &AppWindow::close);
 }
 
-void MainWindow::initBookArea()
+void AppWindow::initBookArea()
 {
     bookArea_ = new BookArea(*book_, this);
     rootLayout_->addWidget(bookArea_);
 }
 
-void MainWindow::bind(QMenu *menu, const QString &name, void(MainWindow:: *f)())
+void AppWindow::bind(QMenu *menu, const QString &name, void(AppWindow:: *f)())
 {
     QAction *action = menu->addAction(name);
     connect(action, &QAction::triggered, this, f);
 }
 
-void MainWindow::bind(QMenu *menu, const QString &name, void(MainWindow:: *f)(), const QKeySequence &shortcut)
+void AppWindow::bind(QMenu *menu, const QString &name, void(AppWindow:: *f)(), const QKeySequence &shortcut)
 {
     QAction *action = menu->addAction(name);
     action->setShortcut(shortcut);
     connect(action, &QAction::triggered, this, f);
 }
 
-void MainWindow::bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)())
+void AppWindow::bind(QToolBar *toolBar, const QString &name, void(AppWindow:: *f)())
 {
     QAction *action = toolBar->addAction(name);
     connect(action, &QAction::triggered, this, f);
 }
 
-void MainWindow::toggleWindowMaxAction()
+void AppWindow::toggleWindowMaxAction()
 {
     if (isMaximized()) {
         showNormal();
@@ -105,7 +105,7 @@ void MainWindow::toggleWindowMaxAction()
     }
 }
 
-void MainWindow::fileOpenAction()
+void AppWindow::fileOpenAction()
 {
     const fs::path home = SystemUtil::userHome();
     const QString defaultDir = QString::fromStdU32String(home.generic_u32string());
@@ -114,22 +114,22 @@ void MainWindow::fileOpenAction()
     book_->open(filePath.toStdU32String());
 }
 
-void MainWindow::bookCloseAction()
+void AppWindow::bookCloseAction()
 {
     book_->close();
 }
 
-void MainWindow::bookReloadAction()
+void AppWindow::bookReloadAction()
 {
     book_->reload();
 }
 
-void MainWindow::pageNextAction()
+void AppWindow::pageNextAction()
 {
     bookArea_->jumpNext();
 }
 
-void MainWindow::pagePrevAction()
+void AppWindow::pagePrevAction()
 {
     bookArea_->jumpPrev();
 }

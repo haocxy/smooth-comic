@@ -123,7 +123,7 @@ int body_entry(int argc, char *argv[])
         }
     });
 
-    MainWindow w(engine);
+    AppWindow w(engine);
     w.show();
 
     return QApplication::exec();

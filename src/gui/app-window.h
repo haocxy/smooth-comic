@@ -23,10 +23,10 @@ class TitleBarArea;
 class BookArea;
 
 
-class MainWindow : public FramelessWindow {
+class AppWindow : public FramelessWindow {
     Q_OBJECT
 public:
-    explicit MainWindow(Engine &engine, QWidget *parent = nullptr);
+    explicit AppWindow(Engine &engine, QWidget *parent = nullptr);
 
 protected:
     virtual TitleBarButton *windowMaxButton() override;
@@ -42,11 +42,11 @@ private:
 
     void initBookArea();
 
-    void bind(QMenu *menu, const QString &name, void(MainWindow:: *f)());
+    void bind(QMenu *menu, const QString &name, void(AppWindow:: *f)());
 
-    void bind(QMenu *menu, const QString &name, void(MainWindow:: *f)(), const QKeySequence &shortcut);
+    void bind(QMenu *menu, const QString &name, void(AppWindow:: *f)(), const QKeySequence &shortcut);
 
-    void bind(QToolBar *toolBar, const QString &name, void(MainWindow:: *f)());
+    void bind(QToolBar *toolBar, const QString &name, void(AppWindow:: *f)());
 
 private:
     void toggleWindowMaxAction();
