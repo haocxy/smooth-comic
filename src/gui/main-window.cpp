@@ -53,7 +53,7 @@ void MainWindow::initAreas()
     rootWidget_->setContentsMargins(QMargins());
     setCentralWidget(rootWidget_);
 
-    rootLayout_ = new QVBoxLayout(this);
+    rootLayout_ = new QVBoxLayout(rootWidget_);
     rootLayout_->setContentsMargins(QMargins());
     rootWidget_->setLayout(rootLayout_);
 
