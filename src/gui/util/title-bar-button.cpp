@@ -43,7 +43,7 @@ void TitleBarButton::init()
 {
     setFlat(true);
 
-    setFont(QFont("Segoe Fluent Icons", 24));
+    setFont(QFont("Segoe Fluent Icons", 20));
 
     setText(QChar(FontIconEnum::ChromeMaximize));
 }

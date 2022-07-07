@@ -67,6 +67,8 @@ void MainWindow::initAreas()
 
 void MainWindow::initMenuBarArea()
 {
+    return;
+
     using Class = MainWindow;
 
     QMenuBar *bar = menuBar();
