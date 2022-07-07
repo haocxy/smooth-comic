@@ -18,6 +18,8 @@ public:
 
     explicit TitleBarButton(QWidget *parent = nullptr);
 
+    void setFontIcon(FontIconEnum fontIcon);
+
     bool mouseOver() const {
         return mouseOver_;
     }

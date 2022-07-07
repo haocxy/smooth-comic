@@ -41,6 +41,11 @@ TitleBarButton::TitleBarButton(QWidget *parent)
     init();
 }
 
+void TitleBarButton::setFontIcon(FontIconEnum fontIcon)
+{
+    setText(QString(QChar(char16_t(fontIcon))));
+}
+
 void TitleBarButton::setMouseOver(bool mouseOver) {
     if (mouseOver_ != mouseOver) {
         mouseOver_ = mouseOver;

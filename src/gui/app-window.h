@@ -23,15 +23,20 @@ protected:
 
     virtual bool isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const override;
 
+    virtual void changeEvent(QEvent *e) override;
+
 private:
-    void toggleWindowFullScreen();
+    void toggleWindowFullScreenAction();
 
     void toggleWindowMaxAction();
 
+    void switchWindowStateTo(Qt::WindowState newState);
 
+    void onWindowStateChanged(Qt::WindowStates oldStates, Qt::WindowStates newStates);
 
 private:
     QPointer<AppWidget> appWidget_;
+    QRect normalSizeGeometry_;
 };
 
 }
