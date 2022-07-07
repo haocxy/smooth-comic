@@ -1,7 +1,5 @@
 #include "title-bar-area.h"
 
-#include "font-icon-enum.h"
-
 
 namespace myapp {
 
