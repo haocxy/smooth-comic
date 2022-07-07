@@ -10,6 +10,8 @@
 #pragma comment (lib,"Dwmapi.lib")
 #pragma comment (lib,"user32.lib")
 
+#include <QEvent>
+
 #include "core/logger.h"
 #include "core/debug-option.h"
 
@@ -21,6 +23,22 @@ using logger::gLogger;
 static const DebugOption<bool> dopLogTrackMouseEvent(
     "log.need.frameless-window.track-mouse-event", false,
     "Is log for TrackMouseEvent in FramelessWindow needed?");
+
+namespace {
+
+class Win32FrameSizeCvt {
+public:
+    Win32FrameSizeCvt(qreal dpr) : dpr_(dpr) {}
+
+    int operator()(::LONG win32FrameSize) const {
+        return std::abs(win32FrameSize) / dpr_ + 0.5;
+    }
+
+private:
+    const qreal dpr_;
+};
+
+}
 
 FramelessWindow::FramelessWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -87,6 +105,19 @@ bool FramelessWindow::nativeEvent(const QByteArray &eventType, void *message, qi
     }
 }
 
+void FramelessWindow::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+
+    switch (e->type()) {
+    case QEvent::Type::WindowStateChange:
+        updateFramelessWindowMargins();
+        break;
+    default:
+        break;
+    }
+}
+
 QPoint FramelessWindow::globalPos(const MSG &msg)
 {
     const long x = GET_X_LPARAM(msg.lParam);
@@ -143,25 +174,16 @@ void FramelessWindow::stopMouseTrack(HWND hwnd)
     }
 }
 
-namespace {
-
-class Win32FrameSizeCvt {
-public:
-    Win32FrameSizeCvt(qreal dpr) : dpr_(dpr) {}
-
-    int operator()(::LONG win32FrameSize) const {
-        return std::abs(win32FrameSize) / dpr_ + 0.5;
-    }
-
-private:
-    const qreal dpr_;
-};
-
-}
-
-FramelessWindow::Res FramelessWindow::handle_WM_GETMINMAXINFO(MSG &msg)
+void FramelessWindow::updateFramelessWindowMargins()
 {
-    if (::IsZoomed(msg.hwnd)) {
+    const Qt::WindowStates s = windowState();
+
+    using e = Qt::WindowState;
+
+    if (s.testFlag(e::WindowFullScreen) || s.testFlag(e::WindowNoState)) {
+        windowFrames_ = QMargins();
+        setFramelessWindowMargins(margins_);
+    } else if (s.testFlag(e::WindowMaximized)) {
         ::RECT frame{};
         AdjustWindowRectEx(&frame, WS_OVERLAPPEDWINDOW, FALSE, 0);
 
@@ -173,16 +195,12 @@ FramelessWindow::Res FramelessWindow::handle_WM_GETMINMAXINFO(MSG &msg)
         windowFrames_.setLeft(cvt(frame.left));
 
         setFramelessWindowMargins(margins_);
-
-        isWindowRectAdjusted_ = true;
-    } else {
-        if (isWindowRectAdjusted_) {
-            setContentsMargins(margins_);
-            windowFrames_ = QMargins();
-            isWindowRectAdjusted_ = false;
-        }
     }
+}
 
+FramelessWindow::Res FramelessWindow::handle_WM_GETMINMAXINFO(MSG &msg)
+{
+    updateFramelessWindowMargins();
     return Res();
 }
 

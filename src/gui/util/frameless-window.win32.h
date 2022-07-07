@@ -42,6 +42,8 @@ protected:
 protected:
     virtual bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
 
+    virtual void changeEvent(QEvent *e) override;
+
 private:
     QPoint globalPos(const MSG &msg);
 
@@ -50,6 +52,8 @@ private:
     void startMouseTrack(HWND hwnd);
 
     void stopMouseTrack(HWND hwnd);
+
+    void updateFramelessWindowMargins();
 
     class Res {
     public:
