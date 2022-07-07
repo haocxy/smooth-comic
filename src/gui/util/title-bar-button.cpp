@@ -41,7 +41,7 @@ void TitleBarButton::init()
 {
     setFlat(true);
 
-    
+    setFont(QFont("Segoe Fluent Icons"));
 }
 
 }
