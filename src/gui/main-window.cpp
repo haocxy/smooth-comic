@@ -100,10 +100,8 @@ void MainWindow::initToolBarArea()
     connect(windowMaxButton_, &QPushButton::clicked, this, [this] {
         if (isMaximized()) {
             showNormal();
-            windowMaxButton_->setText("Max Window");
         } else {
             showMaximized();
-            windowMaxButton_->setText("Normal Window");
         }
     });
 }

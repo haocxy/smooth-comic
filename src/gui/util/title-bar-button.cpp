@@ -2,6 +2,8 @@
 
 #include "util/property-name.h"
 
+#include "font-icon-enum.h"
+
 
 namespace myapp {
 
@@ -41,7 +43,9 @@ void TitleBarButton::init()
 {
     setFlat(true);
 
-    setFont(QFont("Segoe Fluent Icons"));
+    setFont(QFont("Segoe Fluent Icons", 24));
+
+    setText(QChar(FontIconEnum::ChromeMaximize));
 }
 
 }
