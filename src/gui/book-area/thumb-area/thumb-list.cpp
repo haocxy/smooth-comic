@@ -16,7 +16,7 @@ namespace myapp {
 using logger::gLogger;
 
 ThumbList::ThumbList(Controller &controller, QWidget *parent)
-    : QWidget(parent)
+    : QFrame(parent)
     , controller_(controller)
     , handle_(*this)
 {
@@ -56,14 +56,14 @@ ThumbList::~ThumbList()
 
 void ThumbList::moveEvent(QMoveEvent *e)
 {
-    QWidget::moveEvent(e);
+    QFrame::moveEvent(e);
 
     updateThumbsVisiableState();
 }
 
 void ThumbList::resizeEvent(QResizeEvent *e)
 {
-    QWidget::resizeEvent(e);
+    QFrame::resizeEvent(e);
 
     updateThumbsVisiableState();
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QFrame>
 #include <QBoxLayout>
 #include <QPointer>
 
@@ -17,7 +17,7 @@ class Controller;
 
 class ThumbItem;
 
-class ThumbList : public QWidget {
+class ThumbList : public QFrame {
     Q_OBJECT
 public:
     explicit ThumbList(Controller &controller, QWidget *parent = nullptr);

@@ -14,3 +14,7 @@
 #ControllBarArea QLabel {
     color: rgb(0, 0, 0);
 }
+
+#ThumbList {
+    background-color: aqua;
+}
