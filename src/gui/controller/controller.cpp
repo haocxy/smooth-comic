@@ -19,4 +19,9 @@ Controller::~Controller()
 {
 }
 
+void Controller::reloadComic()
+{
+    book_->reload();
+}
+
 }

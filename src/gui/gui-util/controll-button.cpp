@@ -38,8 +38,8 @@ void ControllButton::paintEvent(QPaintEvent *e)
     QPainter p(this);
 
     const QColor colorForNormal{ 0x235a9f };
-    const QColor colorForMouseOver{ colorForNormal.lighter(150) };
-    const QColor colorForMouseDown{ colorForNormal.darker(150) };
+    const QColor colorForMouseOver{ colorForNormal.lighter(180) };
+    const QColor colorForMouseDown{ colorForNormal };
 
     if (isDown()) {
         p.setPen(colorForMouseDown);

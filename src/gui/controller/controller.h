@@ -31,6 +31,8 @@ public:
         return *book_;
     }
 
+    void reloadComic();
+
 signals:
     void cmdOpenComic();
 

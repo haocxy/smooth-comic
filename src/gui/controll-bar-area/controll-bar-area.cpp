@@ -19,12 +19,11 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
 
     ctrOpen_ = new ControllItem(FontIconEnum::OpenFile, tr("Open"), this);
     layout_->addWidget(ctrOpen_);
-    connect(ctrOpen_, &ControllItem::clicked, this, [this] {
-        emit controller_.cmdOpenComic();
-    });
+    connect(ctrOpen_, &ControllItem::clicked, &controller_, &Controller::cmdOpenComic);
 
     ctrReload_ = new ControllItem(FontIconEnum::Refresh, tr("Reload"), this);
     layout_->addWidget(ctrReload_);
+    connect(ctrReload_, &ControllItem::clicked, &controller_, &Controller::reloadComic);
 
     layout_->addStretch();
 }
