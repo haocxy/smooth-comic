@@ -15,14 +15,17 @@ ControllItem::ControllItem(FontIconEnum icon, const QString &text, QWidget *pare
     setSizePolicy(sp);
 
     layout_ = new QVBoxLayout(this);
+    layout_->setSpacing(5);
     setLayout(layout_);
 
     button_ = new ControllButton(icon, this);
     layout_->addWidget(button_);
 
-    text_ = new QLabel(text);
-    text_->setAlignment(Qt::AlignCenter);
-    layout_->addWidget(text_);
+    label_ = new QLabel(text);
+    label_->setAlignment(Qt::AlignCenter);
+    layout_->addWidget(label_);
+
+    setShowLabel(false);
 
     connect(button_, &QPushButton::clicked, this, &ControllItem::clicked);
 }
@@ -34,6 +37,15 @@ ControllItem::~ControllItem()
 void ControllItem::setIcon(FontIconEnum icon)
 {
     button_->setIcon(icon);
+}
+
+void ControllItem::setShowLabel(bool showLabel)
+{
+    if (showLabel) {
+        label_->show();
+    } else {
+        label_->hide();
+    }
 }
 
 }

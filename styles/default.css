@@ -2,10 +2,15 @@
     background-color: rgb(228, 228, 228);
 }
 
-#ControllBarArea, #ControllBarArea QLabel  {
-    background-color: rgb(218, 146, 146);
+#ControllBarArea {
+    padding: 0px;
 }
 
+#ControllBarArea, #ControllBarArea QLabel  {
+    background-color: rgb(200, 200, 200);
+}
+
+
 #ControllBarArea QLabel {
-    color: white;
+    color: rgb(0, 0, 0);
 }

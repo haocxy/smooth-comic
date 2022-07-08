@@ -13,10 +13,11 @@ ControllButton::ControllButton(FontIconEnum icon, QWidget *parent)
     setFlat(true);
     setFont(QFont(FontConfig::UiFontFamily, 20));
 
-    margins_.setTop(10);
-    margins_.setBottom(10);
-    margins_.setLeft(10);
-    margins_.setRight(10);
+    constexpr int margin = 4;
+    margins_.setTop(margin);
+    margins_.setBottom(margin);
+    margins_.setLeft(margin);
+    margins_.setRight(margin);
 }
 
 ControllButton::~ControllButton()

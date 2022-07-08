@@ -21,13 +21,15 @@ public:
 
     void setIcon(FontIconEnum icon);
 
+    void setShowLabel(bool showLabel);
+
 signals:
     void clicked();
 
 private:
     QPointer<QVBoxLayout> layout_;
     QPointer<ControllButton> button_;
-    QPointer<QLabel> text_;
+    QPointer<QLabel> label_;
 };
 
 }
