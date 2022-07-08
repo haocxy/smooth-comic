@@ -21,6 +21,7 @@ ControllItem::ControllItem(FontIconEnum icon, const QString &text, QWidget *pare
     layout_->addWidget(button_);
 
     text_ = new QLabel(text);
+    text_->setAlignment(Qt::AlignCenter);
     layout_->addWidget(text_);
 
     connect(button_, &QPushButton::clicked, this, &ControllItem::clicked);
