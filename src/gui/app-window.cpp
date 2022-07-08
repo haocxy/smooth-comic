@@ -119,8 +119,6 @@ void AppWindow::switchWindowStateTo(Qt::WindowState newState)
 
 void AppWindow::onWindowStateChanged(Qt::WindowStates oldStates, Qt::WindowStates newStates)
 {
-    qDebug() << "AppWindow::onWindowStateChanged() from " << oldStates << " to " << newStates;
-
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
         using s = Qt::WindowState;
         using f = FontIconEnum;
