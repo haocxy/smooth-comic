@@ -2,7 +2,7 @@
 
 #include <QPointer>
 
-#include "util/frameless-window.h"
+#include "gui-util/frameless-window.h"
 
 
 namespace myapp {

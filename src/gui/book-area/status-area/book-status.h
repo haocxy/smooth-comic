@@ -5,7 +5,7 @@
 #include "core/basetype.h"
 
 #include "util/sigconns.h"
-#include "util/qtobj-strand-entry.h"
+#include "gui-util/qtobj-strand-entry.h"
 
 #include "book/book-error.h"
 

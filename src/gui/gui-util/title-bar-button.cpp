@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QStyle>
 
-#include "util/property-name.h"
+#include "gui-util/property-name.h"
 
 #include "font-icon-enum.h"
 

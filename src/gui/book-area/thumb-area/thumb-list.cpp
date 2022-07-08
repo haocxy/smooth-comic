@@ -4,7 +4,7 @@
 
 #include "book/book.h"
 
-#include "util/auto-height-layout.h"
+#include "gui-util/auto-height-layout.h"
 
 #include "thumb-item.h"
 

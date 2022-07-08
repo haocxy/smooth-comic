@@ -10,7 +10,7 @@
 #include "core/obj-handle.h"
 
 #include "util/sigconns.h"
-#include "util/qtobj-strand-entry.h"
+#include "gui-util/qtobj-strand-entry.h"
 
 #include "book/page-num.h"
 #include "book/page-info.h"

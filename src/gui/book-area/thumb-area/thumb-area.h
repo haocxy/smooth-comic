@@ -7,7 +7,7 @@
 
 #include "core/basetype.h"
 
-#include "util/jump-bar.h"
+#include "gui-util/jump-bar.h"
 #include "thumb-list.h"
 
 

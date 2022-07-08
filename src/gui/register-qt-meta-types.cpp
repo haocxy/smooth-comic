@@ -1,6 +1,6 @@
 #include "register-qt-meta-types.h"
 
-#include "util/qtobj-strand-entry.h"
+#include "gui-util/qtobj-strand-entry.h"
 
 
 namespace myapp {

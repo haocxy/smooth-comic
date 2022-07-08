@@ -4,7 +4,7 @@
 
 #include "core/basetype.h"
 
-#include "util/title-bar-button.h"
+#include "title-bar-button.h"
 
 
 namespace myapp {

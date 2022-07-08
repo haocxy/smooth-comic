@@ -4,7 +4,7 @@
 #include <QPixmap>
 
 #include "core/basetype.h"
-#include "util/qtobj-strand-entry.h"
+#include "gui-util/qtobj-strand-entry.h"
 #include "book/page-num.h"
 
 

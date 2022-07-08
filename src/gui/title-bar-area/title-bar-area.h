@@ -4,7 +4,7 @@
 #include <QPointer>
 #include <QBoxLayout>
 
-#include "util/title-bar-button.h"
+#include "gui-util/title-bar-button.h"
 
 
 namespace myapp {
