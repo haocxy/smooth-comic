@@ -15,7 +15,7 @@
 #include "book/page-num.h"
 #include "book/page-info.h"
 
-#include "switch-direction.h"
+#include "controller/switch-direction.h"
 
 
 namespace myapp {

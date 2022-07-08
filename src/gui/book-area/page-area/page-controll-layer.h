@@ -4,7 +4,7 @@
 
 #include "core/basetype.h"
 
-#include "switch-direction.h"
+#include "controller/switch-direction.h"
 
 
 namespace myapp {

@@ -2,8 +2,9 @@
 
 namespace myapp {
 
-Controller::Controller(QObject *parent)
+Controller::Controller(Book &book, QObject *parent)
     : QObject(parent)
+    , book_(book)
 {
 }
 
