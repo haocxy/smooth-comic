@@ -13,6 +13,8 @@ public:
     explicit ControllButton(FontIconEnum icon, QWidget *parent = nullptr);
 
     virtual ~ControllButton();
+
+    void setIcon(FontIconEnum icon);
 };
 
 }

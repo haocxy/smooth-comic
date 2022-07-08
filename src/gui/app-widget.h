@@ -11,11 +11,13 @@ namespace myapp {
 
 class Engine;
 
+class Controller;
+
 class TitleBarArea;
 
 class BookArea;
 
-class Controller;
+class ControllBarArea;
 
 
 class AppWidget : public QWidget {
@@ -38,6 +40,8 @@ private:
 
     void initBookArea();
 
+    void initControllBarArea();
+
 private:
     void fileOpenAction();
 
@@ -57,6 +61,7 @@ private: // UI Components
     QPointer<QVBoxLayout> rootLayout_;
     QPointer<TitleBarArea> titleBarArea_;
     QPointer<BookArea> bookArea_;
+    QPointer<ControllBarArea> controllBarArea_;
 };
 
 }

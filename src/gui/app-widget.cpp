@@ -7,8 +7,10 @@
 #include "book/book.h"
 
 #include "controller/controller.h"
+
 #include "title-bar-area/title-bar-area.h"
 #include "book-area/book-area.h"
+#include "controll-bar-area/controll-bar-area.h"
 
 
 namespace myapp {
@@ -46,6 +48,8 @@ void AppWidget::initAreas()
     initTitleBarArea();
 
     initBookArea();
+
+    initControllBarArea();
 }
 
 void AppWidget::initTitleBarArea()
@@ -58,6 +62,12 @@ void AppWidget::initBookArea()
 {
     bookArea_ = new BookArea(*controller_, this);
     rootLayout_->addWidget(bookArea_);
+}
+
+void AppWidget::initControllBarArea()
+{
+    controllBarArea_ = new ControllBarArea(*controller_, this);
+    rootLayout_->addWidget(controllBarArea_);
 }
 
 void AppWidget::fileOpenAction()

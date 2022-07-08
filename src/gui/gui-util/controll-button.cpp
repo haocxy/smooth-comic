@@ -12,4 +12,9 @@ ControllButton::~ControllButton()
 {
 }
 
+void ControllButton::setIcon(FontIconEnum icon)
+{
+    setText(QString(QChar(char16_t(icon))));
+}
+
 }
