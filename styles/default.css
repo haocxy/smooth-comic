@@ -29,7 +29,7 @@ QSplitter::handle {
     background-color: rgb(200, 200, 200);
 }
 
-#ThumbArea * {
+#ThumbArea, #ThumbArea * {
     background-color: rgb(105, 105, 105);
 }
 
