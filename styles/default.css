@@ -1,8 +1,10 @@
+
 #TitleBarArea {
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(105, 105, 105);
 }
 
 #ControllBarArea {
+    border-top: 100px;
     padding: 0px;
 }
 
@@ -10,13 +12,25 @@
     background-color: rgb(200, 200, 200);
 }
 
+#BookArea {
+    background-color: rgb(255, 255, 255);
+}
 
 #ControllBarArea QLabel {
     color: rgb(0, 0, 0);
 }
 
+#ThumbArea {
+    border: 0px;
+    margin: 0px;
+}
+
+QSplitter::handle {
+    background-color: rgb(200, 200, 200);
+}
+
 #ThumbArea * {
-    background-color: rgb(50, 39, 25);
+    background-color: rgb(105, 105, 105);
 }
 
 #ThumbArea QLabel {
