@@ -15,6 +15,22 @@ public:
     virtual ~ControllButton();
 
     void setIcon(FontIconEnum icon);
+
+    virtual QSize sizeHint() const override;
+
+protected:
+    virtual void paintEvent(QPaintEvent *e) override;
+
+    virtual void enterEvent(QEnterEvent *e) override;
+
+    virtual void leaveEvent(QEvent *e) override;
+
+private:
+    void setMouseOver(bool mouseOver);
+
+private:
+    QMargins margins_;
+    bool mouseOver_{ false };
 };
 
 }
