@@ -91,24 +91,4 @@ void AppWidget::fileOpenAction()
     }
 }
 
-void AppWidget::bookCloseAction()
-{
-    controller_->book().close();
-}
-
-void AppWidget::bookReloadAction()
-{
-    controller_->book().reload();
-}
-
-void AppWidget::pageNextAction()
-{
-    bookArea_->jumpNext();
-}
-
-void AppWidget::pagePrevAction()
-{
-    bookArea_->jumpPrev();
-}
-
 }

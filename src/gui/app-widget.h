@@ -45,14 +45,6 @@ private:
 private:
     void fileOpenAction();
 
-    void bookCloseAction();
-
-    void bookReloadAction();
-
-    void pageNextAction();
-
-    void pagePrevAction();
-
 private: // non-UI Components
     Engine &engine_;
     QPointer<Controller> controller_;
