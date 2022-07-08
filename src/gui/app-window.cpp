@@ -42,6 +42,8 @@ bool AppWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
         TitleBarButton *btn = bar->windowMaxButton();
         return btn->rect().contains(btn->mapFromGlobal(gpos));
+    } else {
+        return false;
     }
 }
 
