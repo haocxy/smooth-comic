@@ -5,6 +5,8 @@
 
 #include "core/logger.h"
 
+#include "title-bar-area/title-bar-area.h"
+
 #include "app-widget.h"
 
 
@@ -18,21 +20,29 @@ AppWindow::AppWindow(Engine &engine, QWidget *parent)
     appWidget_ = new AppWidget(engine, this);
     setCentralWidget(appWidget_);
 
-    connect(appWidget_->windowFullScreenButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowFullScreenAction);
-    connect(appWidget_->windowMinButton(), &QPushButton::clicked, this, &AppWindow::showMinimized);
-    connect(appWidget_->windowMaxButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowMaxAction);
-    connect(appWidget_->windowCloseButton(), &QPushButton::clicked, this, &AppWindow::close);
+    if (TitleBarArea *bar = appWidget_->titleBarArea()) {
+        connect(bar->windowFullScreenButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowFullScreenAction);
+        connect(bar->windowMinButton(), &QPushButton::clicked, this, &AppWindow::showMinimized);
+        connect(bar->windowMaxButton(), &QPushButton::clicked, this, &AppWindow::toggleWindowMaxAction);
+        connect(bar->windowCloseButton(), &QPushButton::clicked, this, &AppWindow::close);
+    }
 }
 
 TitleBarButton *AppWindow::windowMaxButton()
 {
-    return appWidget_->windowMaxButton();
+    if (TitleBarArea *bar = appWidget_->titleBarArea()) {
+        return bar->windowMaxButton();
+    } else {
+        return nullptr;
+    }
 }
 
 bool AppWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 {
-    TitleBarButton *b = appWidget_->windowMaxButton();
-    return b->rect().contains(b->mapFromGlobal(gpos));
+    if (TitleBarArea *bar = appWidget_->titleBarArea()) {
+        TitleBarButton *btn = bar->windowMaxButton();
+        return btn->rect().contains(btn->mapFromGlobal(gpos));
+    }
 }
 
 bool AppWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
@@ -109,15 +119,19 @@ void AppWindow::onWindowStateChanged(Qt::WindowStates oldStates, Qt::WindowState
 {
     qDebug() << "AppWindow::onWindowStateChanged() from " << oldStates << " to " << newStates;
 
-    if (newStates.testFlag(Qt::WindowState::WindowFullScreen)) {
-        appWidget_->windowFullScreenButton()->setFontIcon(FontIconEnum::WindowBackToWindow);
-        appWidget_->windowMaxButton()->setFontIcon(FontIconEnum::WindowMaximize);
-    } else if (newStates.testFlag(Qt::WindowState::WindowMaximized)) {
-        appWidget_->windowFullScreenButton()->setFontIcon(FontIconEnum::WindowFullScreen);
-        appWidget_->windowMaxButton()->setFontIcon(FontIconEnum::WindowRestore);
-    } else if (newStates.testFlag(Qt::WindowState::WindowNoState)) {
-        appWidget_->windowFullScreenButton()->setFontIcon(FontIconEnum::WindowFullScreen);
-        appWidget_->windowMaxButton()->setFontIcon(FontIconEnum::WindowMaximize);
+    if (TitleBarArea *bar = appWidget_->titleBarArea()) {
+        using s = Qt::WindowState;
+        using f = FontIconEnum;
+        if (newStates.testFlag(s::WindowFullScreen)) {
+            bar->windowFullScreenButton()->setFontIcon(f::WindowBackToWindow);
+            bar->windowMaxButton()->setFontIcon(f::WindowMaximize);
+        } else if (newStates.testFlag(s::WindowMaximized)) {
+            bar->windowFullScreenButton()->setFontIcon(f::WindowFullScreen);
+            bar->windowMaxButton()->setFontIcon(f::WindowRestore);
+        } else if (newStates.testFlag(s::WindowNoState)) {
+            bar->windowFullScreenButton()->setFontIcon(f::WindowFullScreen);
+            bar->windowMaxButton()->setFontIcon(f::WindowMaximize);
+        }
     }
 }
 

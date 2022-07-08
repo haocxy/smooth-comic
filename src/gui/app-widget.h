@@ -24,13 +24,9 @@ public:
 
     virtual ~AppWidget();
 
-    TitleBarButton *windowFullScreenButton();
-
-    TitleBarButton *windowMinButton();
-
-    TitleBarButton *windowMaxButton();
-
-    TitleBarButton *windowCloseButton();
+    TitleBarArea *titleBarArea() {
+        return titleBarArea_;
+    }
 
     bool isWindowMoveAreaContainsGlobalPos(const QPoint &gpos);
 
