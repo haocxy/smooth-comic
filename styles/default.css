@@ -15,6 +15,11 @@
     color: rgb(0, 0, 0);
 }
 
-#ThumbList {
-    background-color: aqua;
+#ThumbArea * {
+    background-color: rgb(50, 39, 25);
 }
+
+#ThumbArea QLabel {
+    color: white;
+}
+

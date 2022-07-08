@@ -17,6 +17,8 @@ using logger::gLogger;
 BookArea::BookArea(Controller &controller, QWidget *parent)
     : QSplitter(parent)
 {
+    setObjectName("BookArea");
+
     QSizePolicy sp{ sizePolicy() };
     sp.setVerticalPolicy(QSizePolicy::Policy::Expanding);
     setSizePolicy(sp);
