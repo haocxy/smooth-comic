@@ -12,7 +12,7 @@
     background-color: rgb(200, 200, 200);
 }
 
-#BookArea * {
+#BookArea *, QSplitter::handle {
     background-color: rgb(247, 245, 245);
 }
 
@@ -23,10 +23,6 @@
 #ThumbArea {
     border: 0px;
     margin: 0px;
-}
-
-QSplitter::handle {
-    background-color: rgb(200, 200, 200);
 }
 
 #ThumbArea, #ThumbArea * {
