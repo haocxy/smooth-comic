@@ -16,6 +16,8 @@ ThumbItem::ThumbItem(Book &book, PageNum seqNum, const u32str &entryPath, i32 wi
     , seqNum_(seqNum)
     , entryPath_(entryPath)
 {
+    setObjectName("ThumbItem");
+
     img_ = new ThumbImg(book, seqNum, width, height, this);
 
     text_ = new QLabel(this);

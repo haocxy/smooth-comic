@@ -26,6 +26,8 @@ ThumbImg::ThumbImg(Book &book, PageNum seqNum, i32 width, i32 height, QWidget *p
     , height_(height)
     , handle_(*this)
 {
+    setObjectName("ThumbImg");
+
     QSizePolicy spImg(sizePolicy());
     spImg.setVerticalPolicy(QSizePolicy::Policy::Ignored);
     spImg.setHorizontalPolicy(QSizePolicy::Policy::Expanding);

@@ -16,6 +16,8 @@ ThumbArea::ThumbArea(Controller &controller, QWidget *parent)
     : QScrollArea(parent)
     , controller_(controller)
 {
+    setObjectName("ThumbArea");
+
     setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
 

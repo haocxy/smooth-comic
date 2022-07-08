@@ -20,6 +20,8 @@ ThumbList::ThumbList(Controller &controller, QWidget *parent)
     , controller_(controller)
     , handle_(*this)
 {
+    setObjectName("ThumbList");
+
     layout_ = new AutoHeightLayout(this);
     setLayout(layout_);
 
