@@ -33,6 +33,14 @@ AppWidget::~AppWidget()
 
 bool AppWidget::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos)
 {
+    if (!titleBarArea_) {
+        return false;
+    }
+
+    if (!titleBarArea_->rect().contains(titleBarArea_->mapFromGlobal(gpos))) {
+        return false;
+    }
+
     return titleBarArea_->isWindowMoveAreaContainsGlobalPos(gpos);
 }
 
