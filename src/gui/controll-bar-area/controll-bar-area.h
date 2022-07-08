@@ -9,6 +9,8 @@ namespace myapp {
 
 class Controller;
 
+class ControllItem;
+
 
 class ControllBarArea : public QWidget {
     Q_OBJECT
@@ -20,6 +22,8 @@ public:
 private:
     Controller &controller_;
     QPointer<QHBoxLayout> layout_;
+    QPointer<ControllItem> ctrOpen_;
+    QPointer<ControllItem> ctrReload_;
 };
 
 }

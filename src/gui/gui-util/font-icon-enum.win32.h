@@ -4,11 +4,12 @@
 namespace myapp {
 
 enum class FontIconEnum : char16_t {
-    ChromeBackToWindow = 0xe92c,
-    WindowBackToWindow = ChromeBackToWindow,
+    Refresh = 0xe72c,
 
-    ChromeFullScreen = 0xe92d,
-    WindowFullScreen = ChromeFullScreen,
+    ChromeClose = 0xe8bb,
+    WindowClose = ChromeClose,
+
+    OpenFile = 0xe8e5,
 
     ChromeMinimize = 0xe921,
     WindowMinimize = ChromeMinimize,
@@ -19,8 +20,16 @@ enum class FontIconEnum : char16_t {
     ChromeRestore = 0xe923,
     WindowRestore = ChromeRestore,
 
-    ChromeClose = 0xe8bb,
-    WindowClose = ChromeClose,
+    ChromeBackToWindow = 0xe92c,
+    WindowBackToWindow = ChromeBackToWindow,
+
+    ChromeFullScreen = 0xe92d,
+    WindowFullScreen = ChromeFullScreen,
+
+
+
+
+
 };
 
 }

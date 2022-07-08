@@ -32,6 +32,8 @@ public:
     }
 
 signals:
+    void cmdOpenComic();
+
     void cmdSwitchPage(SwitchDirection direction);
 
 private:

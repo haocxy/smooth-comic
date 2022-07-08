@@ -1,5 +1,8 @@
 #include "controll-bar-area.h"
 
+
+#include "controller/controller.h"
+
 #include "controll-item.h"
 
 
@@ -12,8 +15,18 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
 
-    layout_->addWidget(new ControllItem(FontIconEnum::ChromeBackToWindow, "A1", this));
-    layout_->addWidget(new ControllItem(FontIconEnum::ChromeFullScreen, "A2", this));
+    layout_->addStretch();
+
+    ctrOpen_ = new ControllItem(FontIconEnum::OpenFile, tr("Open"), this);
+    layout_->addWidget(ctrOpen_);
+    connect(ctrOpen_, &ControllItem::clicked, this, [this] {
+        emit controller_.cmdOpenComic();
+    });
+
+    ctrReload_ = new ControllItem(FontIconEnum::Refresh, tr("Reload"), this);
+    layout_->addWidget(ctrReload_);
+
+    layout_->addStretch();
 }
 
 ControllBarArea::~ControllBarArea()

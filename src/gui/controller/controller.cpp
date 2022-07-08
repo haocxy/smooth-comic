@@ -1,5 +1,9 @@
 #include "controller.h"
 
+#include <QFileDialog>
+
+#include "core/system.h"
+
 #include "book/book.h"
 
 

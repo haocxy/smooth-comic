@@ -25,6 +25,8 @@ AppWidget::AppWidget(Engine &engine, QWidget *parent)
     setMinimumSize(800, 600);
 
     initAreas();
+
+    connect(controller_, &Controller::cmdOpenComic, this, &AppWidget::fileOpenAction);
 }
 
 AppWidget::~AppWidget()
@@ -84,7 +86,9 @@ void AppWidget::fileOpenAction()
     const QString defaultDir = QString::fromStdU32String(home.generic_u32string());
     const QString filePath = QFileDialog::getOpenFileName(this, tr("Open Comic"), defaultDir);
 
-    controller_->book().open(filePath.toStdU32String());
+    if (QFile(filePath).exists()) {
+        controller_->book().open(filePath.toStdU32String());
+    }
 }
 
 void AppWidget::bookCloseAction()

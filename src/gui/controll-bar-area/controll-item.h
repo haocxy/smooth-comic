@@ -21,6 +21,9 @@ public:
 
     void setIcon(FontIconEnum icon);
 
+signals:
+    void clicked();
+
 private:
     QPointer<QVBoxLayout> layout_;
     QPointer<ControllButton> button_;
