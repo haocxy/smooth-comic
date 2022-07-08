@@ -51,6 +51,7 @@ void AppWidget::initAreas()
     setContentsMargins(QMargins());
 
     rootLayout_ = new QVBoxLayout(this);
+    rootLayout_->setSpacing(0);
     rootLayout_->setContentsMargins(QMargins());
 
     setLayout(rootLayout_);

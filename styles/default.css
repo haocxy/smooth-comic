@@ -3,6 +3,6 @@
 }
 
 #ControllBarArea {
-
-    background-color: rgb(223, 223, 223);
+    border-top: 2px solid rgb(172, 43, 43);
+    background-color: rgb(218, 146, 146);
 }
