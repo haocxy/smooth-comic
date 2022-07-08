@@ -6,6 +6,12 @@ namespace myapp {
 enum class FontIconEnum : char16_t {
     Refresh = 0xe72c,
 
+    ChevronLeft = 0xe76b,
+    SwitchLeft = ChevronLeft,
+
+    ChevronRight = 0xe76c,
+    SwitchRight = ChevronRight,
+
     ChromeClose = 0xe8bb,
     WindowClose = ChromeClose,
 
@@ -27,7 +33,7 @@ enum class FontIconEnum : char16_t {
     WindowFullScreen = ChromeFullScreen,
 
     ArrowLeft8 = 0xf0b0,
-    SwitchLeft = ArrowLeft8,
+    
 
 
 };

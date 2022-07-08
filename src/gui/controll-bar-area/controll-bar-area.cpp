@@ -29,9 +29,13 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
 
     ctrSwitchLeft_ = new ControllItem(FontIconEnum::SwitchLeft, tr("Left"), this);
     layout_->addWidget(ctrSwitchLeft_);
-    connect(ctrSwitchLeft_, &ControllItem::clicked, &controller_, std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Left));
+    connect(ctrSwitchLeft_, &ControllItem::clicked, &controller_,
+        std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Left));
 
-
+    ctrSwitchRight_ = new ControllItem(FontIconEnum::SwitchRight, tr("Right"), this);
+    layout_->addWidget(ctrSwitchRight_);
+    connect(ctrSwitchRight_, &ControllItem::clicked, &controller_,
+        std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Right));
 
     layout_->addStretch();
 }

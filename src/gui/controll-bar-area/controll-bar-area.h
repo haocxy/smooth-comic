@@ -27,6 +27,7 @@ private:
     QPointer<ControllItem> ctrOpen_;
     QPointer<ControllItem> ctrReload_;
     QPointer<ControllItem> ctrSwitchLeft_;
+    QPointer<ControllItem> ctrSwitchRight_;
 };
 
 }
