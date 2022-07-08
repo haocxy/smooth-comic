@@ -36,14 +36,9 @@ TitleBarArea::~TitleBarArea()
 {
 }
 
-bool TitleBarArea::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos)
+bool TitleBarArea::isWindowMoveAreaContainsLocalPos(const QPoint &localPos)
 {
-    const QPoint localPos = mapFromGlobal(gpos);
-    if (childAt(localPos)) {
-        return false;
-    } else {
-        return true;
-    }
+    return childAt(localPos) == nullptr;
 }
 
 }

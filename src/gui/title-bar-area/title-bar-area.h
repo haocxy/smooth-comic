@@ -32,7 +32,7 @@ public:
         return windowCloseButton_;
     }
 
-    bool isWindowMoveAreaContainsGlobalPos(const QPoint &gpos);
+    bool isWindowMoveAreaContainsLocalPos(const QPoint &localPos);
 
 private:
     QPointer<QHBoxLayout> rootLayout_;
