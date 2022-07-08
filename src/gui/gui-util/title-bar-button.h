@@ -26,9 +26,9 @@ public:
 
     void setMouseOver(bool mouseOver);
 
-protected:
     virtual QSize sizeHint() const override;
 
+protected:
     virtual void paintEvent(QPaintEvent *e) override;
 
     virtual void enterEvent(QEnterEvent *e) override;
