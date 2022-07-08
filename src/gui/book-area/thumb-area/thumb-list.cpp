@@ -6,6 +6,8 @@
 
 #include "gui-util/auto-height-layout.h"
 
+#include "controller/controller.h"
+
 #include "thumb-item.h"
 
 
@@ -13,15 +15,15 @@ namespace myapp {
 
 using logger::gLogger;
 
-ThumbList::ThumbList(Book &book, QWidget *parent)
+ThumbList::ThumbList(Controller &controller, QWidget *parent)
     : QWidget(parent)
-    , book_(book)
+    , controller_(controller)
     , handle_(*this)
 {
     layout_ = new AutoHeightLayout(this);
     setLayout(layout_);
 
-    sigConns_ += book_.sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
+    sigConns_ += controller_.book().sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
         h.apply([this, &page] {
             strandEntry_.exec([this, page] {
                 addThumbItem(page.seqNum, QString::fromStdU32String(page.name), page.rawWidth, page.rawHeight);
@@ -29,7 +31,7 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
         });
     });
 
-    sigConns_ += book_.sigBookOpenStarted.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+    sigConns_ += controller_.book().sigBookOpenStarted.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
         h.apply([this] {
             strandEntry_.exec([this] {
                 removeAllThumbs();
@@ -37,7 +39,7 @@ ThumbList::ThumbList(Book &book, QWidget *parent)
         });
     });
 
-    sigConns_ += book_.sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+    sigConns_ += controller_.book().sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
         h.apply([this] {
             strandEntry_.exec([this] {
                 removeAllThumbs();
@@ -66,8 +68,8 @@ void ThumbList::resizeEvent(QResizeEvent *e)
 
 void ThumbList::addThumbItem(PageNum seqNum, const QString &entryName, i32 imgRawWidth, i32 imgRawHeight)
 {
-    ThumbItem *thumb = new ThumbItem(book_, seqNum, entryName.toStdU32String(), imgRawWidth, imgRawHeight, this);
-    connect(thumb->img(), &ThumbImg::sigJumpTo, this, &ThumbList::sigJumpTo);
+    ThumbItem *thumb = new ThumbItem(controller_.book(), seqNum, entryName.toStdU32String(), imgRawWidth, imgRawHeight, this);
+    connect(thumb->img(), &ThumbImg::sigJumpTo, &controller_, &Controller::cmdJumpToPage);
 
     layout_->addWidget(thumb);
 

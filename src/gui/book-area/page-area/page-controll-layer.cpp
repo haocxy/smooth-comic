@@ -3,11 +3,14 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+#include "controller/controller.h"
+
 
 namespace myapp {
 
-PageControllLayer::PageControllLayer(QWidget *parent)
+PageControllLayer::PageControllLayer(Controller &controller, QWidget *parent)
     : QWidget(parent)
+    , controller_(controller)
 {
     QSizePolicy sp{ sizePolicy() };
     sp.setHorizontalStretch(QSizePolicy::Policy::Expanding);
@@ -46,12 +49,12 @@ void PageControllLayer::paintEvent(QPaintEvent *e)
 void PageControllLayer::mouseReleaseEvent(QMouseEvent *e)
 {
     if (areaConfig_.leftSwitcher().contains(e->pos())) {
-        emit sigCmdSwitchNextPage(SwitchDirection::Left);
+        emit controller_.cmdSwitchPage(SwitchDirection::Left);
         return;
     }
 
     if (areaConfig_.rightSwitcher().contains(e->pos())) {
-        emit sigCmdSwitchNextPage(SwitchDirection::Right);
+        emit controller_.cmdSwitchPage(SwitchDirection::Right);
         return;
     }
 }

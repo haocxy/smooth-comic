@@ -26,8 +26,8 @@ enum class FontIconEnum : char16_t {
     ChromeFullScreen = 0xe92d,
     WindowFullScreen = ChromeFullScreen,
 
-
-
+    ArrowLeft8 = 0xf0b0,
+    SwitchLeft = ArrowLeft8,
 
 
 };

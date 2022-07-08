@@ -9,10 +9,13 @@
 
 namespace myapp {
 
+class Controller;
+
+
 class PageControllLayer : public QWidget {
     Q_OBJECT
 public:
-    explicit PageControllLayer(QWidget *parent = nullptr);
+    explicit PageControllLayer(Controller &controller, QWidget *parent = nullptr);
 
     virtual ~PageControllLayer();
 
@@ -81,9 +84,6 @@ public:
         mutable opt<QRect> rightSwitcher_;
     };
 
-signals:
-    void sigCmdSwitchNextPage(SwitchDirection direction);
-
 protected:
     virtual void resizeEvent(QResizeEvent *e) override;
 
@@ -92,6 +92,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *e) override;
 
 private:
+    Controller &controller_;
     AreaConfig areaConfig_;
     bool showControllAreas_{ false };
 };

@@ -43,6 +43,9 @@ PageSwitcher::PageSwitcher(Controller &controller, QWidget *parent)
     });
 
     waitingPage_ = 0;
+
+    connect(&controller_, &Controller::cmdJumpToPage, this, &PageSwitcher::jumpTo);
+    connect(&controller_, &Controller::cmdSwitchPage, this, &PageSwitcher::switchNextPage);
 }
 
 PageSwitcher::~PageSwitcher()

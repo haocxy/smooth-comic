@@ -40,23 +40,6 @@ BookArea::BookArea(Controller &controller, QWidget *parent)
     addWidget(mainArea_);
 
     setSizes({ 1, 1000 });
-
-    connect(thumbArea_->thumbList(), &ThumbList::sigJumpTo, this, &BookArea::jumpTo);
-}
-
-void BookArea::jumpTo(PageNum seqNum)
-{
-    pageArea_->jumpTo(seqNum);
-}
-
-void BookArea::jumpNext()
-{
-    pageArea_->jumpNext();
-}
-
-void BookArea::jumpPrev()
-{
-    pageArea_->jumpPrev();
 }
 
 }

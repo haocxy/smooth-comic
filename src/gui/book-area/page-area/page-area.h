@@ -22,12 +22,6 @@ public:
 
     virtual ~PageArea();
 
-    void jumpTo(PageNum pageNum);
-
-    void jumpNext();
-
-    void jumpPrev();
-
 private:
     QPointer<QStackedLayout> layout_;
     QPointer<PageControllLayer> controllLayer_;

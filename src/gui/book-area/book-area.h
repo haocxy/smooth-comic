@@ -25,12 +25,6 @@ class BookArea : public QSplitter {
 public:
     explicit BookArea(Controller &controller, QWidget *parent = nullptr);
 
-    void jumpTo(PageNum seqNum);
-
-    void jumpNext();
-
-    void jumpPrev();
-
 private:
     QPointer<ThumbArea> thumbArea_;
     QPointer<QWidget> mainArea_;

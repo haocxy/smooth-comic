@@ -4,6 +4,8 @@
 
 #include "core/declare_ptr.h"
 
+#include "book/page-num.h"
+
 #include "switch-direction.h"
 
 
@@ -37,6 +39,8 @@ signals:
     void cmdOpenComic();
 
     void cmdSwitchPage(SwitchDirection direction);
+
+    void cmdJumpToPage(PageNum pageSeq);
 
 private:
     DeclarePtr<Book> book_;

@@ -13,14 +13,14 @@
 
 namespace myapp {
 
-class Book;
+class Controller;
 
 class ThumbItem;
 
 class ThumbList : public QWidget {
     Q_OBJECT
 public:
-    explicit ThumbList(Book &book, QWidget *parent = nullptr);
+    explicit ThumbList(Controller &controller, QWidget *parent = nullptr);
 
     virtual ~ThumbList();
 
@@ -42,7 +42,7 @@ private:
     void updateThumbsVisiableState();
 
 private:
-    Book &book_;
+    Controller &controller_;
 
 private:
     QPointer<QLayout> layout_;

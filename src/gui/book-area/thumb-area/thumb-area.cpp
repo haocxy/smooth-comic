@@ -29,7 +29,7 @@ ThumbArea::ThumbArea(Controller &controller, QWidget *parent)
         scrollPercent_ = double(value) / jumpBar_->maximum();
     });
 
-    root_ = new ThumbList(controller_.book(), this);
+    root_ = new ThumbList(controller_, this);
     setWidget(root_);
 
     setWidgetResizable(true);
