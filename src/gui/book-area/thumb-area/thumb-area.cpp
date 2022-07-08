@@ -1,6 +1,9 @@
 #include "thumb-area.h"
 
 #include "book/book.h"
+
+#include "controller/controller.h"
+
 #include "thumb-item.h"
 #include "thumb-list.h"
 
@@ -9,9 +12,9 @@ namespace myapp {
 
 static constexpr int widthHint = 200;
 
-ThumbArea::ThumbArea(Book &book, QWidget *parent)
+ThumbArea::ThumbArea(Controller &controller, QWidget *parent)
     : QScrollArea(parent)
-    , book_(book)
+    , controller_(controller)
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
@@ -26,7 +29,7 @@ ThumbArea::ThumbArea(Book &book, QWidget *parent)
         scrollPercent_ = double(value) / jumpBar_->maximum();
     });
 
-    root_ = new ThumbList(book, this);
+    root_ = new ThumbList(controller_.book(), this);
     setWidget(root_);
 
     setWidgetResizable(true);

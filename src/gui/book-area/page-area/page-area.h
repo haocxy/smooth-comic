@@ -12,10 +12,13 @@ namespace myapp {
 
 class Book;
 
+class Controller;
+
+
 class PageArea : public QWidget {
     Q_OBJECT
 public:
-    explicit PageArea(Book &book, QWidget *parent = nullptr);
+    explicit PageArea(Controller &controller, QWidget *parent = nullptr);
 
     virtual ~PageArea();
 

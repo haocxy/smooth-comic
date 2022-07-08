@@ -1,11 +1,14 @@
 #include "controller.h"
 
+#include "book/book.h"
+
+
 namespace myapp {
 
-Controller::Controller(Book &book, QObject *parent)
+Controller::Controller(Engine &engine, QObject *parent)
     : QObject(parent)
-    , book_(book)
 {
+    book_ = new Book(engine);
 }
 
 Controller::~Controller()

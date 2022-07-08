@@ -20,9 +20,10 @@
 
 namespace myapp {
 
-class Book;
+class Controller;
 
 class PageWidget;
+
 
 // 页面切换器
 // 是页面的管理器，管理页面的显示逻辑和页面的生命周期
@@ -30,7 +31,7 @@ class PageWidget;
 class PageSwitcher : public QWidget {
     Q_OBJECT
 public:
-    explicit PageSwitcher(Book &book, QWidget *parent = nullptr);
+    explicit PageSwitcher(Controller &controller, QWidget *parent = nullptr);
 
     virtual ~PageSwitcher();
 
@@ -54,9 +55,9 @@ private:
     void onLoadPageImgDone(PageNum seqNum, const QPixmap &img);
 
 private:
-    QtObjStrandEntry strandEntry_;
+    Controller &controller_;
 
-    Book &book_;
+    QtObjStrandEntry strandEntry_;
 
     SigConns sigConns_;
 

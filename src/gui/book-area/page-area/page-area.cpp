@@ -3,7 +3,7 @@
 
 namespace myapp {
 
-PageArea::PageArea(Book &book, QWidget *parent)
+PageArea::PageArea(Controller &controller, QWidget *parent)
     : QWidget(parent)
 {
     layout_ = new QStackedLayout(this);
@@ -13,7 +13,7 @@ PageArea::PageArea(Book &book, QWidget *parent)
     controllLayer_ = new PageControllLayer(this);
     layout_->addWidget(controllLayer_);
 
-    switcher_ = new PageSwitcher(book, this);
+    switcher_ = new PageSwitcher(controller, this);
     layout_->addWidget(switcher_);
 
     connect(controllLayer_, &PageControllLayer::sigCmdSwitchNextPage, switcher_, &PageSwitcher::switchNextPage);

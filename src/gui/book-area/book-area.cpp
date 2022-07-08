@@ -14,9 +14,8 @@ namespace myapp {
 using logger::gLogger;
 
 
-BookArea::BookArea(Book &book, QWidget *parent)
+BookArea::BookArea(Controller &controller, QWidget *parent)
     : QSplitter(parent)
-    , book_(book)
 {
     QSizePolicy sp{ sizePolicy() };
     sp.setVerticalPolicy(QSizePolicy::Policy::Expanding);
@@ -24,17 +23,17 @@ BookArea::BookArea(Book &book, QWidget *parent)
 
     setChildrenCollapsible(false);
 
-    thumbArea_ = new ThumbArea(book_, this);
+    thumbArea_ = new ThumbArea(controller, this);
 
     mainArea_ = new QWidget(this);
 
     mainAreaLayout_ = new QVBoxLayout(this);
     mainArea_->setLayout(mainAreaLayout_);
 
-    pageArea_ = new PageArea(book, this);
+    pageArea_ = new PageArea(controller, this);
     mainAreaLayout_->addWidget(pageArea_);
 
-    bookStatus_ = new BookStatus(book_, this);
+    bookStatus_ = new BookStatus(controller, this);
     mainAreaLayout_->addWidget(bookStatus_);
 
     addWidget(thumbArea_);

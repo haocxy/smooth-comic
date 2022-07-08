@@ -3,6 +3,7 @@
 #include "book/book.h"
 
 #include "gui-util/property-name.h"
+#include "controller/controller.h"
 
 #include "gen.book-status.ui.h"
 
@@ -23,14 +24,14 @@ const PropName hasError{ "hasError" };
 namespace myapp {
 
 
-BookStatus::BookStatus(Book &book, QWidget *parent)
-    : book_(book)
+BookStatus::BookStatus(Controller &controller, QWidget *parent)
+    : controller_(controller)
     , ui_(new Ui::BookStatus)
     , handle_(*this)
 {
     ui_->setupUi(this);
 
-    sigConns_ += book_.sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
+    sigConns_ += controller_.book().sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
         h.apply([this, &page] {
             strandEntry_.exec([this, page] {
                 ++pageCount_;
@@ -39,7 +40,7 @@ BookStatus::BookStatus(Book &book, QWidget *parent)
         });
     });
 
-    sigConns_ += book_.sigBookOpenStarted.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+    sigConns_ += controller_.book().sigBookOpenStarted.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
         h.apply([this, &archiveFile] {
             strandEntry_.exec([this, archiveFile] {
                 reset(ShouldClearMsg::Yes);
@@ -47,7 +48,7 @@ BookStatus::BookStatus(Book &book, QWidget *parent)
         });
     });
 
-    sigConns_ += book_.sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+    sigConns_ += controller_.book().sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
         h.apply([this, &archiveFile] {
             strandEntry_.exec([this, archiveFile] {
                 reset(ShouldClearMsg::No);
@@ -55,7 +56,7 @@ BookStatus::BookStatus(Book &book, QWidget *parent)
         });
     });
 
-    sigConns_ += book_.sigLoadFailed.connect([this, h = handle_.weak()](BookError err) {
+    sigConns_ += controller_.book().sigLoadFailed.connect([this, h = handle_.weak()](BookError err) {
         h.apply([this, &err] {
             strandEntry_.exec([this, err] {
                 onLoadError(err);

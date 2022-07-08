@@ -5,6 +5,8 @@
 
 #include "book/book.h"
 
+#include "controller/controller.h"
+
 #include "page-widget.h"
 
 
@@ -16,15 +18,15 @@ static DebugOption<bool> dopLog("log.need.page-switcher", true,
 using logger::gLogger;
 
 
-PageSwitcher::PageSwitcher(Book &book, QWidget *parent)
+PageSwitcher::PageSwitcher(Controller &controller, QWidget *parent)
     : QWidget(parent)
-    , book_(book)
+    , controller_(controller)
     , handle_(*this)
 {
     pageLayout_ = new QVBoxLayout(this);
     setLayout(pageLayout_);
 
-    sigConns_ += book_.sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+    sigConns_ += controller_.book().sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
         h.apply([this] {
             strandEntry_.exec([this] {
                 reset();
@@ -32,7 +34,7 @@ PageSwitcher::PageSwitcher(Book &book, QWidget *parent)
         });
     });
 
-    sigConns_ += book_.sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
+    sigConns_ += controller_.book().sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
         h.apply([this, &page] {
             strandEntry_.exec([this, page] {
                 pageLoaded(page);
@@ -110,7 +112,7 @@ void PageSwitcher::pageLoaded(const PageInfo &page)
 
 void PageSwitcher::asyncLoadImg(PageNum seqNum)
 {
-    book_.loadPageImg(seqNum, [this, seqNum, h = handle_.weak()](const QPixmap &img) {
+    controller_.book().loadPageImg(seqNum, [this, seqNum, h = handle_.weak()](const QPixmap &img) {
         h.apply([this, &seqNum, &img] {
             strandEntry_.exec([this, seqNum, img] {
                 onLoadPageImgDone(seqNum, img);
@@ -132,7 +134,7 @@ void PageSwitcher::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)
         pageWidget_ = nullptr;
     }
 
-    pageWidget_ = new PageWidget(book_, seqNum, img, this);
+    pageWidget_ = new PageWidget(controller_.book(), seqNum, img, this);
     pageLayout_->addWidget(pageWidget_);
 }
 

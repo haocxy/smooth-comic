@@ -2,10 +2,14 @@
 
 #include <QObject>
 
+#include "core/declare_ptr.h"
+
 #include "switch-direction.h"
 
 
 namespace myapp {
+
+class Engine;
 
 class Book;
 
@@ -19,19 +23,19 @@ class Book;
 class Controller : public QObject {
     Q_OBJECT
 public:
-    explicit Controller(Book &book, QObject *parent = nullptr);
+    explicit Controller(Engine &engine, QObject *parent = nullptr);
 
     virtual ~Controller();
 
     Book &book() {
-        return book_;
+        return *book_;
     }
 
 signals:
     void cmdSwitchPage(SwitchDirection direction);
 
 private:
-    Book &book_;
+    DeclarePtr<Book> book_;
 };
 
 }

@@ -6,8 +6,6 @@
 
 #include "gui-util/title-bar-button.h"
 
-#include "book/book.h"
-
 
 namespace myapp {
 
@@ -16,6 +14,9 @@ class Engine;
 class TitleBarArea;
 
 class BookArea;
+
+class Controller;
+
 
 class AppWidget : public QWidget {
     Q_OBJECT
@@ -50,7 +51,7 @@ private:
 
 private: // non-UI Components
     Engine &engine_;
-    uptr<Book> book_;
+    QPointer<Controller> controller_;
 
 private: // UI Components
     QPointer<QVBoxLayout> rootLayout_;

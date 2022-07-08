@@ -18,11 +18,11 @@ class BookStatus;
 
 namespace myapp {
 
-class Book;
+class Controller;
 
 class BookStatus : public QWidget {
 public:
-    explicit BookStatus(Book &book, QWidget *parent = nullptr);
+    explicit BookStatus(Controller &controller, QWidget *parent = nullptr);
 
     virtual ~BookStatus();
 
@@ -38,7 +38,7 @@ private:
     static QString loadErrorToStr(BookError err);
 
 private:
-    Book &book_;
+    Controller &controller_;
     Ui::BookStatus *ui_{};
     i32 pageCount_{};
     QtObjStrandEntry strandEntry_;

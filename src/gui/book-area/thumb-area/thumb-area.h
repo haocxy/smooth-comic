@@ -13,13 +13,13 @@
 
 namespace myapp {
 
-class Book;
+class Controller;
 
 
 class ThumbArea : public QScrollArea {
     Q_OBJECT
 public:
-    explicit ThumbArea(Book &book, QWidget *parent = nullptr);
+    explicit ThumbArea(Controller &controller, QWidget *parent = nullptr);
 
     virtual ~ThumbArea() {}
 
@@ -31,7 +31,7 @@ protected:
     virtual void resizeEvent(QResizeEvent *) override;
 
 private:
-    Book &book_;
+    Controller &controller_;
 
 private:
     QPointer<JumpBar> jumpBar_;
