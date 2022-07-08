@@ -1,6 +1,6 @@
 
 #TitleBarArea {
-    background-color: rgb(105, 105, 105);
+    background-color: rgb(200, 200, 200);
 }
 
 #ControllBarArea {
@@ -12,8 +12,8 @@
     background-color: rgb(200, 200, 200);
 }
 
-#BookArea {
-    background-color: rgb(255, 255, 255);
+#BookArea * {
+    background-color: rgb(247, 245, 245);
 }
 
 #ControllBarArea QLabel {

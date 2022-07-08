@@ -12,6 +12,7 @@ PageWidget::PageWidget(Book &book, PageNum seqNum, const QPixmap &img, QWidget *
     , seqNum_(seqNum)
     , img_(img)
 {
+    setObjectName("PageWidget");
 }
 
 PageWidget::~PageWidget()
@@ -33,7 +34,7 @@ static QSize calcShowSize(const QSize &imgSize, const QSize &areaSize)
 void PageWidget::paintEvent(QPaintEvent *e)
 {
     QPainter p(this);
-    p.fillRect(rect(), palette().color(QPalette::ColorRole::AlternateBase));
+    p.fillRect(rect(), palette().color(QPalette::Base));
 
     const QSize areaSize = size();
     const QSize showSize = calcShowSize(img_.size(), areaSize);
