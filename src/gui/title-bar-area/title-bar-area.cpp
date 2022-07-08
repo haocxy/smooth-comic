@@ -4,8 +4,10 @@
 namespace myapp {
 
 TitleBarArea::TitleBarArea(QWidget *parent)
-    : QWidget(parent)
+    : QFrame(parent)
 {
+    setObjectName("TitleBarArea");
+
     QSizePolicy sp{ sizePolicy() };
     sp.setVerticalPolicy(QSizePolicy::Policy::Minimum);
     setSizePolicy(sp);

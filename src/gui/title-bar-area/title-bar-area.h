@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QFrame>
 #include <QPointer>
 #include <QBoxLayout>
 
@@ -9,7 +9,7 @@
 
 namespace myapp {
 
-class TitleBarArea : public QWidget {
+class TitleBarArea : public QFrame {
     Q_OBJECT
 public:
     explicit TitleBarArea(QWidget *parent = nullptr);
