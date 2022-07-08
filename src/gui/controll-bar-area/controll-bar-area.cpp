@@ -9,9 +9,11 @@
 namespace myapp {
 
 ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
-    : QWidget(parent)
+    : QFrame(parent)
     , controller_(controller)
 {
+    setObjectName("ControllBarArea");
+
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
 

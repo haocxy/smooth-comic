@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QFrame>
 #include <QPointer>
 #include <QBoxLayout>
 
@@ -12,7 +12,7 @@ class Controller;
 class ControllItem;
 
 
-class ControllBarArea : public QWidget {
+class ControllBarArea : public QFrame {
     Q_OBJECT
 public:
     explicit ControllBarArea(Controller &controller, QWidget *parent = nullptr);
