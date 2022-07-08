@@ -38,8 +38,10 @@ QSplitter::handle {
 }
 
 QScrollBar:vertical {
-    border: 4px solid rgb(105, 105, 105);
-    width: 20px;
+    border-top: 4px solid rgb(105, 105, 105);
+    border-right: 4px solid rgb(105, 105, 105);
+    border-bottom: 4px solid rgb(105, 105, 105);
+    width: 18px;
     margin: 0;
 }
 
