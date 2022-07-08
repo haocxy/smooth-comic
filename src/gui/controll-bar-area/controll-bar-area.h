@@ -19,6 +19,8 @@ public:
 
     virtual ~ControllBarArea();
 
+    bool isWindowMoveAreaContainsLocalPos(const QPoint &localPos) const;
+
 private:
     Controller &controller_;
     QPointer<QHBoxLayout> layout_;

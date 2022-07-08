@@ -35,15 +35,18 @@ AppWidget::~AppWidget()
 
 bool AppWidget::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos)
 {
-    if (!titleBarArea_) {
-        return false;
+    if (titleBarArea_ && titleBarArea_->rect().contains(titleBarArea_->mapFromGlobal(gpos))) {
+        return titleBarArea_->isWindowMoveAreaContainsGlobalPos(gpos);
     }
 
-    if (!titleBarArea_->rect().contains(titleBarArea_->mapFromGlobal(gpos))) {
-        return false;
+    if (controllBarArea_) {
+        const QPoint localPos = controllBarArea_->mapFromGlobal(gpos);
+        if (controllBarArea_->rect().contains(localPos)) {
+            return controllBarArea_->isWindowMoveAreaContainsLocalPos(localPos);
+        }
     }
 
-    return titleBarArea_->isWindowMoveAreaContainsGlobalPos(gpos);
+    return false;
 }
 
 void AppWidget::initAreas()

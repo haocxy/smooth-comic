@@ -34,4 +34,9 @@ ControllBarArea::~ControllBarArea()
 {
 }
 
+bool ControllBarArea::isWindowMoveAreaContainsLocalPos(const QPoint &localPos) const
+{
+    return childAt(localPos) == nullptr;
+}
+
 }
