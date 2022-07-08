@@ -37,3 +37,29 @@ QSplitter::handle {
     color: white;
 }
 
+QScrollBar:vertical {
+    border: 4px solid rgb(105, 105, 105);
+    width: 20px;
+    margin: 0;
+}
+
+QScrollBar::handle:vertical {
+    background: white;
+    min-height: 80px;
+}
+
+QScrollBar::add-line:vertical {
+    height: 0;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    height: 0;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
