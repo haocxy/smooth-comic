@@ -6,6 +6,7 @@
 #include "gui-util/property-name.h"
 
 #include "font-icon-enum.h"
+#include "font-config.h"
 
 
 namespace myapp {
@@ -88,7 +89,7 @@ void TitleBarButton::init()
     margins_.setLeft(20);
     margins_.setRight(20);
 
-    setFont(QFont("Segoe Fluent Icons", 8));
+    setFont(QFont(FontConfig::UiFontFamily, 8));
 }
 
 }
