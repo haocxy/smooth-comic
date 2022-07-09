@@ -26,6 +26,10 @@ public:
     explicit BookArea(Controller &controller, QWidget *parent = nullptr);
 
 private:
+    void toggleThumbArea();
+
+private:
+    Controller &controller_;
     QPointer<ThumbArea> thumbArea_;
     QPointer<QWidget> mainArea_;
     QPointer<QVBoxLayout> mainAreaLayout_;
