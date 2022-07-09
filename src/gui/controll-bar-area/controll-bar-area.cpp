@@ -14,37 +14,54 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
 {
     setObjectName("ControllBarArea");
 
-    layout_ = new QHBoxLayout(this);
-    setLayout(layout_);
+    rootLayout_ = new QHBoxLayout(this);
+    rootLayout_->setContentsMargins(QMargins());
+    setLayout(rootLayout_);
+
+    leftArea_ = new QWidget(this);
+    leftLayout_ = new QHBoxLayout(leftArea_);
+    leftArea_->setLayout(leftLayout_);
+    rootLayout_->addWidget(leftArea_);
+
+    rootLayout_->addStretch();
+
+    centerArea_ = new QWidget(this);
+    centerLayout_ = new QHBoxLayout(centerArea_);
+    centerArea_->setLayout(centerLayout_);
+    rootLayout_->addWidget(centerArea_);
+
+    rootLayout_->addStretch();
+
+    rightArea_ = new QWidget(this);
+    rightLayout_ = new QHBoxLayout(rightArea_);
+    rightArea_->setLayout(rightLayout_);
+    rootLayout_->addWidget(rightArea_);
 
     ctrToggleThumbArea_ = new ControllItem(FontIconEnum::DockRightMirrored, tr("Thumb Area"), this);
-    layout_->addWidget(ctrToggleThumbArea_);
+    leftLayout_->addWidget(ctrToggleThumbArea_);
     connect(ctrToggleThumbArea_, &ControllItem::clicked, &controller_, &Controller::cmdToggleThumbArea);
 
-    layout_->addStretch();
-
     ctrOpen_ = new ControllItem(FontIconEnum::OpenFile, tr("Open"), this);
-    layout_->addWidget(ctrOpen_);
+    centerLayout_->addWidget(ctrOpen_);
     connect(ctrOpen_, &ControllItem::clicked, &controller_, &Controller::cmdOpenComic);
 
     ctrReload_ = new ControllItem(FontIconEnum::Refresh, tr("Reload"), this);
-    layout_->addWidget(ctrReload_);
+    centerLayout_->addWidget(ctrReload_);
     connect(ctrReload_, &ControllItem::clicked, &controller_, &Controller::reloadComic);
 
     ctrSwitchLeft_ = new ControllItem(FontIconEnum::SwitchLeft, tr("Left"), this);
-    layout_->addWidget(ctrSwitchLeft_);
+    centerLayout_->addWidget(ctrSwitchLeft_);
     connect(ctrSwitchLeft_, &ControllItem::clicked, &controller_,
         std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Left));
 
     ctrSwitchRight_ = new ControllItem(FontIconEnum::SwitchRight, tr("Right"), this);
-    layout_->addWidget(ctrSwitchRight_);
+    centerLayout_->addWidget(ctrSwitchRight_);
     connect(ctrSwitchRight_, &ControllItem::clicked, &controller_,
         std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Right));
 
-    layout_->addStretch();
 
     ctrGlobalMenu_ = new ControllItem(FontIconEnum::More, tr("Menu"), this);
-    layout_->addWidget(ctrGlobalMenu_);
+    rightLayout_->addWidget(ctrGlobalMenu_);
     // TODO connect
 }
 
