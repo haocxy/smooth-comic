@@ -7,11 +7,11 @@
 
 namespace myapp {
 
-ControllButton::ControllButton(FontIconEnum icon, QWidget *parent)
-    : QPushButton(QString(QChar(char16_t(icon))))
+ControllButton::ControllButton(const FontIcon &icon, QWidget *parent)
+    : QPushButton(QString(QChar(icon.code())))
 {
     setFlat(true);
-    setFont(QFont(FontConfig::UiFontFamily, 20));
+    setFont(QFont(icon.fontFamily(), 20));
 
     constexpr int margin = 4;
     margins_.setTop(margin);
@@ -24,9 +24,13 @@ ControllButton::~ControllButton()
 {
 }
 
-void ControllButton::setIcon(FontIconEnum icon)
+void ControllButton::setIcon(const FontIcon &icon)
 {
-    setText(QString(QChar(char16_t(icon))));
+    QFont f = font();
+    f.setFamily(icon.fontFamily());
+    setFont(f);
+
+    setText(QString(QChar(icon.code())));
 }
 
 QSize ControllButton::sizeHint() const

@@ -6,7 +6,7 @@
 
 namespace myapp {
 
-ControllItem::ControllItem(FontIconEnum icon, const QString &text, QWidget *parent)
+ControllItem::ControllItem(const FontIcon &icon, const QString &text, QWidget *parent)
     : QWidget(parent)
 {
     QSizePolicy sp{ sizePolicy() };
@@ -34,7 +34,7 @@ ControllItem::~ControllItem()
 {
 }
 
-void ControllItem::setIcon(FontIconEnum icon)
+void ControllItem::setIcon(const FontIcon &icon)
 {
     button_->setIcon(icon);
 }

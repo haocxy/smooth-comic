@@ -5,7 +5,7 @@
 #include <QBoxLayout>
 #include <QLabel>
 
-#include "gui-util/font-icon-enum.h"
+#include "gui-util/font-icon.h"
 
 
 namespace myapp {
@@ -15,11 +15,11 @@ class ControllButton;
 class ControllItem : public QWidget {
     Q_OBJECT
 public:
-    explicit ControllItem(FontIconEnum icon, const QString &text, QWidget *parent = nullptr);
+    explicit ControllItem(const FontIcon &icon, const QString &text, QWidget *parent = nullptr);
 
     virtual ~ControllItem();
 
-    void setIcon(FontIconEnum icon);
+    void setIcon(const FontIcon &icon);
 
     void setShowLabel(bool showLabel);
 

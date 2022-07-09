@@ -2,7 +2,7 @@
 
 #include <QPushButton>
 
-#include "gui-util/font-icon-enum.h"
+#include "font-icon.h"
 
 
 namespace myapp {
@@ -10,11 +10,11 @@ namespace myapp {
 class ControllButton : public QPushButton {
     Q_OBJECT
 public:
-    explicit ControllButton(FontIconEnum icon, QWidget *parent = nullptr);
+    explicit ControllButton(const FontIcon &iconicon, QWidget *parent = nullptr);
 
     virtual ~ControllButton();
 
-    void setIcon(FontIconEnum icon);
+    void setIcon(const FontIcon &icon);
 
     virtual QSize sizeHint() const override;
 
