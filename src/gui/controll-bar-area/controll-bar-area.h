@@ -24,10 +24,18 @@ public:
 private:
     Controller &controller_;
     QPointer<QHBoxLayout> layout_;
+
+    // left
+    QPointer<ControllItem> ctrToggleThumbArea_;
+
+    // center
     QPointer<ControllItem> ctrOpen_;
     QPointer<ControllItem> ctrReload_;
     QPointer<ControllItem> ctrSwitchLeft_;
     QPointer<ControllItem> ctrSwitchRight_;
+
+    // right
+    QPointer<ControllItem> ctrGlobalMenu_;
 };
 
 }

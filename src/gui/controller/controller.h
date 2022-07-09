@@ -36,6 +36,8 @@ public:
     void reloadComic();
 
 signals:
+    void cmdToggleThumbArea();
+
     void cmdOpenComic();
 
     void cmdSwitchPage(SwitchDirection direction);

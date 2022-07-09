@@ -17,6 +17,10 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
     layout_ = new QHBoxLayout(this);
     setLayout(layout_);
 
+    ctrToggleThumbArea_ = new ControllItem(FontIconEnum::DockRightMirrored, tr("Thumb Area"), this);
+    layout_->addWidget(ctrToggleThumbArea_);
+    connect(ctrToggleThumbArea_, &ControllItem::clicked, &controller_, &Controller::cmdToggleThumbArea);
+
     layout_->addStretch();
 
     ctrOpen_ = new ControllItem(FontIconEnum::OpenFile, tr("Open"), this);
@@ -38,6 +42,10 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
         std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Right));
 
     layout_->addStretch();
+
+    ctrGlobalMenu_ = new ControllItem(FontIconEnum::More, tr("Menu"), this);
+    layout_->addWidget(ctrGlobalMenu_);
+    // TODO connect
 }
 
 ControllBarArea::~ControllBarArea()

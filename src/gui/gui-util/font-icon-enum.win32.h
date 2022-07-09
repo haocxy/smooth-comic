@@ -4,6 +4,11 @@
 namespace myapp {
 
 enum class FontIconEnum : char16_t {
+
+    GlobalNavButton = 0xe700,
+
+    More = 0xe712,
+
     Refresh = 0xe72c,
 
     ChevronLeft = 0xe76b,
@@ -31,6 +36,8 @@ enum class FontIconEnum : char16_t {
 
     ChromeFullScreen = 0xe92d,
     WindowFullScreen = ChromeFullScreen,
+
+    DockRightMirrored = 0xea4b,
 
     ArrowLeft8 = 0xf0b0,
     
