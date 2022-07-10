@@ -13,9 +13,27 @@ using logger::gLogger;
 
 static const std::u32string kDbFileExt{ U"" };
 
+static fs::path selectDefaultBaseCacheDir()
+{
+    if (!SystemType::IsWindows) {
+        return SystemUtil::userHome();
+    }
+
+    if (fs::exists("D:/")) {
+        return "D:/";
+    }
+
+    return "C:/";
+}
+
+static fs::path selectDefaultCacheDir()
+{
+    return selectDefaultBaseCacheDir() / ".smooth-comic-cache";
+}
+
 PathManager::PathManager()
 {
-    cacheDir_ = "D:/smooth-comic-cache";
+    cacheDir_ = selectDefaultCacheDir();
 }
 
 fs::path PathManager::mkBookCacheDbFilePath(const fs::path &archiveFile) const
