@@ -1,4 +1,4 @@
-#include "popup_widget.h"
+#include "popup.h"
 
 #include <QBitmap>
 #include <QPainter>

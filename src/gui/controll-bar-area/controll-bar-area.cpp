@@ -1,7 +1,7 @@
 #include "controll-bar-area.h"
 
 
-#include "gui-util/popup_widget.h"
+#include "gui-util/popup.h"
 
 #include "controller/controller.h"
 
