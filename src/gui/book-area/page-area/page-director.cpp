@@ -46,6 +46,10 @@ PageDirector::~PageDirector()
 void PageDirector::updateShowSize(const QSize &size)
 {
     showSize_ = size;
+
+    if (primaryScene_) {
+        primaryScene_->updateSceneSize(size);
+    }
 }
 
 void PageDirector::reset()
@@ -129,6 +133,9 @@ void PageDirector::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)
     waitingPage_ = std::nullopt;
 
     primaryScene_ = new PageScene;
+
+    primaryScene_->updateSceneSize(showSize_);
+
     primaryScene_->addPage(seqNum, new PageSprite(img));
 
     emit cmdUpdate();

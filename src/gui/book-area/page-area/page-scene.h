@@ -3,6 +3,7 @@
 #include <map>
 
 #include <QObject>
+#include <QSize>
 
 #include "core/declare_ptr.h"
 
@@ -29,8 +30,12 @@ public:
 
     void addPage(PageNum seqNum, DeclarePtr<PageSprite> &&sprite);
 
+    void updateSceneSize(const QSizeF &sceneSize);
+
 private:
     std::map<PageNum, DeclarePtr<PageSprite>> sprites_;
+
+    QSizeF sceneSize_;
 };
 
 }

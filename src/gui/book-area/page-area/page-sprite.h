@@ -7,6 +7,8 @@
 #include <QSize>
 #include <QTransform>
 
+#include "page-direction.h"
+
 
 class QPainter;
 
@@ -22,10 +24,14 @@ public:
 
     void draw(QPainter &painter) const;
 
+    void move(const QPointF &pos);
+
+    void rotate(PageDirection direction);
+
 
 
 private:
-    void updateMatrix();
+    void updateMatrix() const;
 
 private:
     QPixmap rawImg_;
@@ -34,12 +40,16 @@ private:
 
     QPointF anchor_{ 0.5, 0.5 };
 
-    int rotateDegree_{ 0 };
+    PageDirection dir_{ PageDirection::Up };
 
     float scale_{ 1 };
 
-    QTransform matrix_;
+    mutable QTransform matrix_;
+
+    mutable bool dirty_{ true };
 };
+
+
 
 
 }
