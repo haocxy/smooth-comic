@@ -6,14 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>64</height>
+    <width>419</width>
+    <height>59</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QRadioButton" name="radioButton_5">
+     <property name="text">
+      <string>No Scale</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QRadioButton" name="radioButton">
      <property name="enabled">
