@@ -75,6 +75,8 @@ private:
 
     opt<PageNum> waitingPage_;
 
+    opt<PageNum> currPage_;
+
     QSize showSize_;
 
     DeclarePtr<PageScene> primaryScene_;

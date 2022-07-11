@@ -77,12 +77,16 @@ void PageDirector::jumpTo(PageNum pageNum)
 
 void PageDirector::jumpNext()
 {
-    // TODO
+    if (currPage_) {
+        jumpTo(*currPage_ + 1);
+    }
 }
 
 void PageDirector::jumpPrev()
 {
-    // TODO
+    if (currPage_) {
+        jumpTo(*currPage_ - 1);
+    }
 }
 
 void PageDirector::switchNextPage(SwitchDirection direction)
@@ -146,6 +150,8 @@ void PageDirector::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)
     primaryScene_->updateSceneSize(showSize_);
 
     primaryScene_->addPage(seqNum, new PageSprite(img));
+
+    currPage_ = seqNum;
 
     emit cmdUpdate();
 }
