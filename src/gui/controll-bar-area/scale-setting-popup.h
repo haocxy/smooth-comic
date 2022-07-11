@@ -2,6 +2,8 @@
 
 #include <QFrame>
 
+#include "gui-util/popup.h"
+
 #include "core/declare_ptr.h"
 
 
@@ -11,7 +13,7 @@ class ScaleSetting;
 
 namespace myapp {
 
-class ScaleSettingPopup : public QFrame {
+class ScaleSettingPopup : public Popup {
     Q_OBJECT
 public:
     explicit ScaleSettingPopup(QWidget *parent = nullptr);
@@ -19,6 +21,7 @@ public:
     virtual ~ScaleSettingPopup();
 
 private:
+    QPointer<QFrame> rootWidget_;
     DeclarePtr<Ui::ScaleSetting> ui_;
 };
 

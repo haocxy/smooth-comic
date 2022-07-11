@@ -11,8 +11,6 @@ class Controller;
 
 class ControllItem;
 
-class Popup;
-
 class ScaleSettingPopup;
 
 
@@ -52,8 +50,7 @@ private:
     QPointer<ControllItem> ctrGlobalMenu_;
 
     // menu
-    QPointer<Popup> scaleSettingPopup_;
-    QPointer<ScaleSettingPopup> scaleSettingWidget_;
+    QPointer<ScaleSettingPopup> scaleSettingPopup_;
 };
 
 }
