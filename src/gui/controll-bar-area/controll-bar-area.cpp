@@ -1,6 +1,8 @@
 #include "controll-bar-area.h"
 
 
+#include "gui-util/popup_widget.h"
+
 #include "controller/controller.h"
 
 #include "controll-item.h"
@@ -74,7 +76,9 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
     // TODO connect
 
 
-    scaleSettingPopup_ = new ScaleSettingPopup(this);
+    scaleSettingPopup_ = new PopupWidget(this);
+    scaleSettingWidget_ = new ScaleSettingPopup(this);
+    scaleSettingPopup_->setWidget(scaleSettingWidget_);
 }
 
 ControllBarArea::~ControllBarArea()

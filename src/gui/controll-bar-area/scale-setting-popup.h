@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/declare_ptr.h"
+#include <QFrame>
 
-#include "gui-util/popup_widget.h"
+#include "core/declare_ptr.h"
 
 
 namespace Ui {
@@ -11,7 +11,7 @@ class ScaleSetting;
 
 namespace myapp {
 
-class ScaleSettingPopup : public PopupWidget {
+class ScaleSettingPopup : public QFrame {
     Q_OBJECT
 public:
     explicit ScaleSettingPopup(QWidget *parent = nullptr);

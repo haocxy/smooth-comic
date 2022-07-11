@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QFrame>
+#include <QPointer>
+#include <QBoxLayout>
 
 
 namespace myapp
@@ -15,8 +17,12 @@ public:
 
     void locate(QWidget *base);
 
+    void setWidget(QWidget *widget);
+
 protected:
     virtual void mousePressEvent(QMouseEvent *e) override;
+
+    virtual void resizeEvent(QResizeEvent *e) override;
 
 private:
     void locateRelativeTo(QWidget *parent);
@@ -24,6 +30,9 @@ private:
     void locateWithoutParent();
 
     void locateWithParent(const QWidget &parent);
+
+private:
+    QPointer<QVBoxLayout> rootLayout_;
 };
 
 }

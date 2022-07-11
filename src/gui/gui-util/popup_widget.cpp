@@ -1,5 +1,8 @@
 #include "popup_widget.h"
 
+#include <QBitmap>
+#include <QPainter>
+
 
 namespace myapp
 {
@@ -7,8 +10,15 @@ namespace myapp
 PopupWidget::PopupWidget(QWidget *parent)
     : QFrame(parent) {
 
-    setWindowFlag(Qt::FramelessWindowHint);
     setWindowFlag(Qt::Popup);
+    setWindowFlag(Qt::FramelessWindowHint);
+    setWindowFlag(Qt::NoDropShadowWindowHint);
+
+    setAttribute(Qt::WA_TranslucentBackground);
+
+    rootLayout_ = new QVBoxLayout(this);
+    rootLayout_->setContentsMargins(QMargins());
+    setLayout(rootLayout_);
 }
 
 PopupWidget::~PopupWidget()
@@ -30,10 +40,38 @@ void PopupWidget::locate(QWidget *base)
     move(x, y);
 }
 
+void PopupWidget::setWidget(QWidget *widget)
+{
+    if (widget) {
+        const int count = rootLayout_->count();
+        for (int i = 0; i < count; ++i) {
+            delete rootLayout_->takeAt(i);
+        }
+
+        widget->setParent(this);
+        rootLayout_->addWidget(widget);
+    }
+}
+
 void PopupWidget::mousePressEvent(QMouseEvent *e)
 {
     setAttribute(Qt::WA_NoMouseReplay);
     QFrame::mousePressEvent(e);
+}
+
+void PopupWidget::resizeEvent(QResizeEvent *e)
+{
+    return;
+    QBitmap bmp(size());
+    bmp.fill();
+
+    QPainter painter(&bmp);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(Qt::black);
+    painter.drawRoundedRect(bmp.rect(), 6, 6);
+
+    setMask(bmp);
 }
 
 void PopupWidget::locateWithoutParent()

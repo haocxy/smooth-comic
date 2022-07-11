@@ -7,7 +7,7 @@
 namespace myapp {
 
 ScaleSettingPopup::ScaleSettingPopup(QWidget *parent)
-    : PopupWidget(parent)
+    : QFrame(parent)
 {
     setObjectName("ScaleSettingPopup");
 
