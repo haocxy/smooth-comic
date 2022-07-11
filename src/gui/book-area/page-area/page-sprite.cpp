@@ -3,8 +3,9 @@
 
 namespace myapp {
 
-PageSprite::PageSprite(QObject *parent)
+PageSprite::PageSprite(const QPixmap &rawImg, QObject *parent)
     : QObject(parent)
+    , rawImg_(rawImg)
 {
 }
 

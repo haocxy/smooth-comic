@@ -22,7 +22,7 @@ namespace myapp {
 
 class Controller;
 
-class PageWidget;
+class PageDirector;
 
 
 // 页面切换器
@@ -35,38 +35,19 @@ public:
 
     virtual ~PageSwitcher();
 
-    // 跳转到指定页，只能是已经加载的页
-    void jumpTo(PageNum pageNum);
+protected:
+    virtual void resizeEvent(QResizeEvent *e) override;
 
-    //
-    void jumpNext();
-
-    void jumpPrev();
-
-    void switchNextPage(SwitchDirection direction);
+    virtual void paintEvent(QPaintEvent *e) override;
 
 private:
-    void reset();
-
-    void pageLoaded(const PageInfo &page);
-
-    void asyncLoadImg(PageNum seqNum);
-
-    void onLoadPageImgDone(PageNum seqNum, const QPixmap &img);
 
 private:
     Controller &controller_;
 
     QtObjStrandEntry strandEntry_;
 
-    SigConns sigConns_;
-
-    std::unordered_map<PageNum, PageInfo> loadedPages_{ 987 };
-
-    opt<PageNum> waitingPage_;
-
-    QPointer<QLayout> pageLayout_;
-    QPointer<PageWidget> pageWidget_;
+    QPointer<PageDirector> director_;
 
     StrongHandle<PageSwitcher> handle_;
 };

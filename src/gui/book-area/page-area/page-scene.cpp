@@ -12,4 +12,9 @@ PageScene::~PageScene()
 {
 }
 
+void PageScene::addPage(PageNum seqNum, DeclarePtr<PageSprite> &&sprite)
+{
+    sprites_[seqNum] = std::move(sprite);
+}
+
 }

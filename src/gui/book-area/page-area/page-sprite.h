@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QPixmap>
 
 
 namespace myapp {
@@ -8,9 +9,12 @@ namespace myapp {
 class PageSprite : public QObject {
     Q_OBJECT
 public:
-    explicit PageSprite(QObject *parent = nullptr);
+    explicit PageSprite(const QPixmap &rawImg, QObject *parent = nullptr);
 
     virtual ~PageSprite();
+
+private:
+    QPixmap rawImg_;
 };
 
 
