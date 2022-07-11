@@ -11,7 +11,12 @@
 #include "page-sprite.h"
 
 
+class QPainter;
+
+
 namespace myapp {
+
+
 
 class PageScene : public QObject {
     Q_OBJECT
@@ -19,6 +24,8 @@ public:
     explicit PageScene(QObject *parent = nullptr);
 
     virtual ~PageScene();
+
+    void draw(QPainter &painter) const;
 
     void addPage(PageNum seqNum, DeclarePtr<PageSprite> &&sprite);
 

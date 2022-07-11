@@ -26,6 +26,8 @@ PageSwitcher::PageSwitcher(Controller &controller, QWidget *parent)
     , handle_(*this)
 {
     director_ = new PageDirector(controller_, this);
+
+    connect(director_, &PageDirector::cmdUpdate, this, [this] { update(); });
 }
 
 PageSwitcher::~PageSwitcher()

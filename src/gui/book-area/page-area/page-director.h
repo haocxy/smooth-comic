@@ -7,6 +7,7 @@
 
 #include "core/basetype.h"
 #include "core/obj-handle.h"
+#include "core/declare_ptr.h"
 #include "util/sigconns.h"
 
 #include "gui-util/qtobj-strand-entry.h"
@@ -22,6 +23,8 @@ class QPainter;
 namespace myapp {
 
 class Controller;
+
+class PageScene;
 
 
 class PageDirector : public QObject {
@@ -45,6 +48,9 @@ public:
 
     void switchNextPage(SwitchDirection direction);
 
+signals:
+    void cmdUpdate();
+
 private:
     void reset();
 
@@ -66,6 +72,8 @@ private:
     opt<PageNum> waitingPage_;
 
     QSize showSize_;
+
+    DeclarePtr<PageScene> primaryScene_;
 
     StrongHandle<PageDirector> handle_;
 };

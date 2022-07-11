@@ -7,6 +7,8 @@
 
 #include "controller/controller.h"
 
+#include "page-scene.h"
+
 
 namespace myapp {
 
@@ -54,7 +56,9 @@ void PageDirector::reset()
 
 void PageDirector::draw(QPainter &p) const
 {
-    p.drawLine(10, 10, showSize_.width() - 20, showSize_.height() - 20);
+    if (primaryScene_) {
+        primaryScene_->draw(p);
+    }
 }
 
 void PageDirector::jumpTo(PageNum pageNum)
@@ -124,7 +128,10 @@ void PageDirector::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)
 
     waitingPage_ = std::nullopt;
 
-    // TODO
+    primaryScene_ = new PageScene;
+    primaryScene_->addPage(seqNum, new PageSprite(img));
+
+    emit cmdUpdate();
 }
 
 }
