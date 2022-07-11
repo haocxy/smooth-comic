@@ -24,13 +24,17 @@ public:
 
     void draw(QPainter &painter) const;
 
-    void move(const QPointF &pos);
+    void adjustArea(const QSizeF &areaSize);
 
     void rotate(PageDirection direction);
 
+    void moveTo(const QPointF &pos);
 
+    void moveBy(qreal dx, qreal dy);
 
 private:
+    void scale(float f);
+
     void updateMatrix() const;
 
 private:

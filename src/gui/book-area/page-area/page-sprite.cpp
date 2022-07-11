@@ -57,28 +57,58 @@ void PageSprite::draw(QPainter &painter) const
     qreal w = rawImg_.width();
     qreal h = rawImg_.height();
 
-    qreal ox = pos_.x();
-    qreal oy = pos_.y();
-
     qreal x = -w * anchor_.x();
     qreal y = -h * anchor_.y();
-
-    painter.translate(ox, oy);
 
     painter.setTransform(matrix_);
 
     painter.drawPixmap(QRect(x, y, w, h), rawImg_);
 }
 
-void PageSprite::move(const QPointF &pos)
+static QSizeF calcShowSize(const QSizeF &imgSize, const QSizeF &areaSize)
 {
-    pos_ = pos;
-    dirty_ = true;
+    if (imgSize.width() > 0 && imgSize.height() > 0) {
+        const qreal scaleW = areaSize.width() / imgSize.width();
+        const qreal scaleH = areaSize.height() / imgSize.height();
+        const qreal scale = std::min(scaleW, scaleH);
+        return imgSize * scale;
+    } else {
+        return QSizeF();
+    }
+}
+
+void PageSprite::adjustArea(const QSizeF &areaSize)
+{
+    const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
+
+    if (rotatedSize.width() > 0) {
+        const QSizeF showSize = calcShowSize(rotatedSize, areaSize);
+        scale(showSize.width() / rotatedSize.width());
+    }
 }
 
 void PageSprite::rotate(PageDirection direction)
 {
     dir_ = direction;
+    dirty_ = true;
+}
+
+void PageSprite::moveTo(const QPointF &pos)
+{
+    pos_ = pos;
+    dirty_ = true;
+}
+
+void PageSprite::moveBy(qreal dx, qreal dy)
+{
+    pos_.rx() += dx;
+    pos_.ry() += dy;
+    dirty_ = true;
+}
+
+void PageSprite::scale(float f)
+{
+    scale_ = f;
     dirty_ = true;
 }
 
@@ -90,9 +120,10 @@ void PageSprite::updateMatrix() const
 
     matrix_.reset();
 
+    matrix_.translate(pos_.x(), pos_.y());
     matrix_.rotate(toDegree(dir_));
     matrix_.scale(scale_, scale_);
-    matrix_.translate(pos_.x(), pos_.y());
+    
 
     dirty_ = false;
 }

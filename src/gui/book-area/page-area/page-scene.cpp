@@ -43,7 +43,8 @@ void PageScene::updateSceneSize(const QSizeF &sceneSize)
 
     for (const auto &pair : sprites_) {
         const DeclarePtr<PageSprite> &sprite = pair.second;
-        sprite->move(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
+        sprite->adjustArea(sceneSize_);
+        sprite->moveTo(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
     }
 }
 
