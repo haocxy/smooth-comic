@@ -14,7 +14,6 @@ Popup::Popup(QWidget *parent)
     setAttribute(Qt::WA_TranslucentBackground);
 
     rootLayout_ = new QVBoxLayout(this);
-    rootLayout_->setContentsMargins(QMargins());
     setLayout(rootLayout_);
 }
 
@@ -48,6 +47,11 @@ void Popup::setWidget(QWidget *widget)
         widget->setParent(this);
         rootLayout_->addWidget(widget);
     }
+}
+
+void Popup::setLayoutMargin(int margin)
+{
+    rootLayout_->setContentsMargins(QMargins(margin, margin, margin, margin));
 }
 
 void Popup::mousePressEvent(QMouseEvent *e)

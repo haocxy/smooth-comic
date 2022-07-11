@@ -19,6 +19,8 @@ public:
 
     void setWidget(QWidget *widget);
 
+    void setLayoutMargin(int margin);
+
 protected:
     virtual void mousePressEvent(QMouseEvent *e) override;
 

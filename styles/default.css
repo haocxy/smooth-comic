@@ -64,9 +64,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 #ScaleSettingPopup {
     border-radius: 8px;
-    border-width: 1px;
+    /* border-width: 1px;
     border-color: rgb(166, 166, 166);
-    border-style: solid;
+    border-style: solid; */
     background-color: rgb(200, 200, 200);
     padding: 10px;
 }
