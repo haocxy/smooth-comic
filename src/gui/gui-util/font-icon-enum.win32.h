@@ -37,6 +37,8 @@ enum class FontIconEnum : char16_t {
     ChromeFullScreen = 0xe92d,
     WindowFullScreen = ChromeFullScreen,
 
+    FitPage = 0xe9a6,
+
     DockRightMirrored = 0xea4b,
 
     ArrowLeft8 = 0xf0b0,

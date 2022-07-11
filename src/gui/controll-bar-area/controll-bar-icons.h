@@ -14,6 +14,8 @@ extern const FontIcon SwitchLeft;
 
 extern const FontIcon SwitchRight;
 
+extern const FontIcon Scale;
+
 extern const FontIcon GlobalMenu;
 
 }

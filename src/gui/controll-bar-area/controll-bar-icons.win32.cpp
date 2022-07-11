@@ -17,6 +17,8 @@ const FontIcon SwitchLeft{ fam, FontIconEnum::SwitchLeft };
 
 const FontIcon SwitchRight{ fam, FontIconEnum::SwitchRight };
 
+const FontIcon Scale{ fam, FontIconEnum::FitPage };
+
 const FontIcon GlobalMenu{ fam, FontIconEnum::More };
 
 }

@@ -6,6 +6,7 @@
 #include "controll-item.h"
 
 #include "controll-bar-icons.h"
+#include "scale-setting-popup.h"
 
 
 namespace myapp {
@@ -63,10 +64,17 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
     connect(ctrSwitchRight_, &ControllItem::clicked, &controller_,
         std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Right));
 
+    ctrScale_ = new ControllItem(i::Scale, tr("Scale"), this);
+    centerLayout_->addWidget(ctrScale_);
+    connect(ctrScale_, &ControllItem::clicked, this, &ControllBarArea::showScaleMenu);
+
 
     ctrGlobalMenu_ = new ControllItem(i::GlobalMenu, tr("Menu"), this);
     rightLayout_->addWidget(ctrGlobalMenu_);
     // TODO connect
+
+
+    scaleSettingPopup_ = new ScaleSettingPopup(this);
 }
 
 ControllBarArea::~ControllBarArea()
@@ -76,6 +84,12 @@ ControllBarArea::~ControllBarArea()
 bool ControllBarArea::isWindowMoveAreaContainsLocalPos(const QPoint &localPos) const
 {
     return childAt(localPos) == nullptr;
+}
+
+void ControllBarArea::showScaleMenu()
+{
+    scaleSettingPopup_->locate(ctrScale_);
+    scaleSettingPopup_->show();
 }
 
 }
