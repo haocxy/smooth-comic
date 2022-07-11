@@ -19,6 +19,8 @@ enum class FontIconEnum : char16_t {
 
     FolderOpen = 0xe838,
 
+    ZoomIn = 0xe8a3,
+
     ChromeClose = 0xe8bb,
     WindowClose = ChromeClose,
 
