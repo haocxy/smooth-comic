@@ -9,7 +9,7 @@ static const char *const fam = "Segoe Fluent Icons";
 
 const FontIcon ToggleThumbArea{ fam, FontIconEnum::DockRightMirrored };
 
-const FontIcon OpenComic{ fam, FontIconEnum::OpenFile };
+const FontIcon OpenComic{ fam, FontIconEnum::FolderOpen };
 
 const FontIcon Rotate{ fam, FontIconEnum::Refresh };
 

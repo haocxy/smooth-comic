@@ -17,6 +17,8 @@ enum class FontIconEnum : char16_t {
     ChevronRight = 0xe76c,
     SwitchRight = ChevronRight,
 
+    FolderOpen = 0xe838,
+
     ChromeClose = 0xe8bb,
     WindowClose = ChromeClose,
 
