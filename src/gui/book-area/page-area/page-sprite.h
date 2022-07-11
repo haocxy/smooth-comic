@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QRect>
 #include <QSize>
+#include <QTransform>
 
 
 class QPainter;
@@ -21,12 +22,23 @@ public:
 
     void draw(QPainter &painter) const;
 
+
+
+private:
+    void updateMatrix();
+
 private:
     QPixmap rawImg_;
 
+    QPointF pos_{ 0, 0 };
+
     QPointF anchor_{ 0.5, 0.5 };
 
-    QSize showSize_;
+    int rotateDegree_{ 0 };
+
+    float scale_{ 1 };
+
+    QTransform matrix_;
 };
 
 
