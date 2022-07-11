@@ -76,7 +76,7 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
     // TODO connect
 
 
-    scaleSettingPopup_ = new PopupWidget(this);
+    scaleSettingPopup_ = new Popup(this);
     scaleSettingWidget_ = new ScaleSettingPopup(this);
     scaleSettingPopup_->setWidget(scaleSettingWidget_);
 }

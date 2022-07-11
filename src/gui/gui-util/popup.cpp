@@ -7,7 +7,7 @@
 namespace myapp
 {
 
-PopupWidget::PopupWidget(QWidget *parent)
+Popup::Popup(QWidget *parent)
     : QFrame(parent) {
 
     setWindowFlag(Qt::Popup);
@@ -21,11 +21,11 @@ PopupWidget::PopupWidget(QWidget *parent)
     setLayout(rootLayout_);
 }
 
-PopupWidget::~PopupWidget()
+Popup::~Popup()
 {
 }
 
-void PopupWidget::locate(QWidget *base)
+void Popup::locate(QWidget *base)
 {
     if (!base) {
         return;
@@ -40,7 +40,7 @@ void PopupWidget::locate(QWidget *base)
     move(x, y);
 }
 
-void PopupWidget::setWidget(QWidget *widget)
+void Popup::setWidget(QWidget *widget)
 {
     if (widget) {
         const int count = rootLayout_->count();
@@ -53,39 +53,24 @@ void PopupWidget::setWidget(QWidget *widget)
     }
 }
 
-void PopupWidget::mousePressEvent(QMouseEvent *e)
+void Popup::mousePressEvent(QMouseEvent *e)
 {
     setAttribute(Qt::WA_NoMouseReplay);
     QFrame::mousePressEvent(e);
 }
 
-void PopupWidget::resizeEvent(QResizeEvent *e)
-{
-    return;
-    QBitmap bmp(size());
-    bmp.fill();
-
-    QPainter painter(&bmp);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::black);
-    painter.drawRoundedRect(bmp.rect(), 6, 6);
-
-    setMask(bmp);
-}
-
-void PopupWidget::locateWithoutParent()
+void Popup::locateWithoutParent()
 {
     // TODO
     move(0, 0);
 }
 
-void PopupWidget::locateWithParent(const QWidget &parent)
+void Popup::locateWithParent(const QWidget &parent)
 {
 
 }
 
-void PopupWidget::locateRelativeTo(QWidget *parent)
+void Popup::locateRelativeTo(QWidget *parent)
 {
     if (parent) {
         locateWithParent(*parent);

@@ -8,12 +8,12 @@
 namespace myapp
 {
 
-class PopupWidget : public QFrame {
+class Popup : public QFrame {
     Q_OBJECT
 public:
-    explicit PopupWidget(QWidget *parent = nullptr);
+    explicit Popup(QWidget *parent = nullptr);
 
-    virtual ~PopupWidget();
+    virtual ~Popup();
 
     void locate(QWidget *base);
 
@@ -21,8 +21,6 @@ public:
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e) override;
-
-    virtual void resizeEvent(QResizeEvent *e) override;
 
 private:
     void locateRelativeTo(QWidget *parent);
