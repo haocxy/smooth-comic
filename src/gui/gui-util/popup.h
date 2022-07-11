@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QFrame>
+#include <QWidget>
 #include <QPointer>
 #include <QBoxLayout>
 
@@ -8,7 +8,7 @@
 namespace myapp
 {
 
-class Popup : public QFrame {
+class Popup : public QWidget {
     Q_OBJECT
 public:
     explicit Popup(QWidget *parent = nullptr);

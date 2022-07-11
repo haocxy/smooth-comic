@@ -1,14 +1,11 @@
 #include "popup.h"
 
-#include <QBitmap>
-#include <QPainter>
-
 
 namespace myapp
 {
 
 Popup::Popup(QWidget *parent)
-    : QFrame(parent) {
+    : QWidget(parent) {
 
     setWindowFlag(Qt::Popup);
     setWindowFlag(Qt::FramelessWindowHint);
@@ -56,7 +53,7 @@ void Popup::setWidget(QWidget *widget)
 void Popup::mousePressEvent(QMouseEvent *e)
 {
     setAttribute(Qt::WA_NoMouseReplay);
-    QFrame::mousePressEvent(e);
+    QWidget::mousePressEvent(e);
 }
 
 void Popup::locateWithoutParent()
