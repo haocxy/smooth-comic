@@ -11,7 +11,7 @@ const FontIcon ToggleThumbArea{ fam, FontIconEnum::DockRightMirrored };
 
 const FontIcon OpenComic{ fam, FontIconEnum::OpenFile };
 
-const FontIcon Reload{ fam, FontIconEnum::Refresh };
+const FontIcon Rotate{ fam, FontIconEnum::Refresh };
 
 const FontIcon SwitchLeft{ fam, FontIconEnum::SwitchLeft };
 

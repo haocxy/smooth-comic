@@ -26,7 +26,9 @@ public:
 
     void adjustArea(const QSizeF &areaSize);
 
-    void rotate(PageDirection direction);
+    void rotateTo(PageDirection direction);
+
+    void rotateByOneStep();
 
     void moveTo(const QPointF &pos);
 

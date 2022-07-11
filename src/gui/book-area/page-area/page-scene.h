@@ -32,6 +32,13 @@ public:
 
     void updateSceneSize(const QSizeF &sceneSize);
 
+    void rotatePagesByOneStep();
+
+private:
+    void layoutPages();
+
+    void layoutPage(PageSprite &sprite);
+
 private:
     std::map<PageNum, DeclarePtr<PageSprite>> sprites_;
 

@@ -8,7 +8,7 @@ extern const FontIcon ToggleThumbArea;
 
 extern const FontIcon OpenComic;
 
-extern const FontIcon Reload;
+extern const FontIcon Rotate;
 
 extern const FontIcon SwitchLeft;
 

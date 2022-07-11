@@ -40,6 +40,8 @@ signals:
 
     void cmdOpenComic();
 
+    void cmdRotatePageByOneStep();
+
     void cmdSwitchPage(SwitchDirection direction);
 
     void cmdJumpToPage(PageNum pageSeq);

@@ -49,9 +49,9 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
     centerLayout_->addWidget(ctrOpen_);
     connect(ctrOpen_, &ControllItem::clicked, &controller_, &Controller::cmdOpenComic);
 
-    ctrReload_ = new ControllItem(i::Reload, tr("Reload"), this);
-    centerLayout_->addWidget(ctrReload_);
-    connect(ctrReload_, &ControllItem::clicked, &controller_, &Controller::reloadComic);
+    ctrRotate_ = new ControllItem(i::Rotate, tr("Rotate"), this);
+    centerLayout_->addWidget(ctrRotate_);
+    connect(ctrRotate_, &ControllItem::clicked, &controller_, &Controller::cmdRotatePageByOneStep);
 
     ctrSwitchLeft_ = new ControllItem(i::SwitchLeft, tr("Left"), this);
     centerLayout_->addWidget(ctrSwitchLeft_);

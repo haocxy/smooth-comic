@@ -34,7 +34,7 @@ private:
     QPointer<QWidget> centerArea_;
     QPointer<QHBoxLayout> centerLayout_;
     QPointer<ControllItem> ctrOpen_;
-    QPointer<ControllItem> ctrReload_;
+    QPointer<ControllItem> ctrRotate_;
     QPointer<ControllItem> ctrSwitchLeft_;
     QPointer<ControllItem> ctrSwitchRight_;
 

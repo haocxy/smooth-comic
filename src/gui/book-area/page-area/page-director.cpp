@@ -37,6 +37,7 @@ PageDirector::PageDirector(Controller &controller, QObject *parent)
 
     connect(&controller_, &Controller::cmdJumpToPage, this, &PageDirector::jumpTo);
     connect(&controller_, &Controller::cmdSwitchPage, this, &PageDirector::switchNextPage);
+    connect(&controller_, &Controller::cmdRotatePageByOneStep, this, &PageDirector::rotatePageByOneStep);
 }
 
 PageDirector::~PageDirector()
@@ -101,6 +102,14 @@ void PageDirector::switchNextPage(SwitchDirection direction)
         break;
     default:
         break;
+    }
+}
+
+void PageDirector::rotatePageByOneStep()
+{
+    if (primaryScene_) {
+        primaryScene_->rotatePagesByOneStep();
+        emit cmdUpdate();
     }
 }
 

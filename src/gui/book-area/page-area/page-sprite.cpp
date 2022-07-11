@@ -87,9 +87,31 @@ void PageSprite::adjustArea(const QSizeF &areaSize)
     }
 }
 
-void PageSprite::rotate(PageDirection direction)
+void PageSprite::rotateTo(PageDirection direction)
 {
     dir_ = direction;
+    dirty_ = true;
+}
+
+void PageSprite::rotateByOneStep()
+{
+    switch (dir_) {
+    case PageDirection::Up:
+        dir_ = PageDirection::Right;
+        break;
+    case PageDirection::Right:
+        dir_ = PageDirection::Down;
+        break;
+    case PageDirection::Down:
+        dir_ = PageDirection::Left;
+        break;
+    case PageDirection::Left:
+        dir_ = PageDirection::Up;
+        break;
+    default:
+        break;
+    }
+
     dirty_ = true;
 }
 

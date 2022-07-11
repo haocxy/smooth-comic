@@ -16,6 +16,8 @@
 
 #include "book/page-info.h"
 
+#include "page-direction.h"
+
 
 class QPainter;
 
@@ -47,6 +49,8 @@ public:
     void jumpPrev();
 
     void switchNextPage(SwitchDirection direction);
+
+    void rotatePageByOneStep();
 
 signals:
     void cmdUpdate();

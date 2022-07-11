@@ -41,11 +41,31 @@ void PageScene::updateSceneSize(const QSizeF &sceneSize)
 {
     sceneSize_ = sceneSize;
 
+    layoutPages();
+}
+
+void PageScene::rotatePagesByOneStep()
+{
     for (const auto &pair : sprites_) {
         const DeclarePtr<PageSprite> &sprite = pair.second;
         sprite->adjustArea(sceneSize_);
-        sprite->moveTo(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
+        sprite->rotateByOneStep();
+        layoutPage(*sprite);
     }
+}
+
+void PageScene::layoutPages()
+{
+    for (const auto &pair : sprites_) {
+        const DeclarePtr<PageSprite> &sprite = pair.second;
+        layoutPage(*sprite);
+    }
+}
+
+void PageScene::layoutPage(PageSprite &sprite)
+{
+    sprite.adjustArea(sceneSize_);
+    sprite.moveTo(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
 }
 
 
