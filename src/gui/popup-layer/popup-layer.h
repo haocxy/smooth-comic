@@ -18,6 +18,10 @@ public:
 
     void addPopup(QWidget *popup);
 
+    // 是否处于模态状态
+    // 注意！判断的是此时此刻的实际状态
+    bool inModalState() const;
+
 private:
     virtual void mousePressEvent(QMouseEvent *e) override;
 

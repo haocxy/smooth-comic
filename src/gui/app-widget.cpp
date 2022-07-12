@@ -46,10 +46,14 @@ bool AppWidget::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos)
         }
     }
 
-    if (controllBarArea_) {
-        const QPoint localPos = controllBarArea_->mapFromGlobal(gpos);
-        if (controllBarArea_->rect().contains(localPos)) {
-            return controllBarArea_->isWindowMoveAreaContainsLocalPos(localPos);
+    // 除了窗口标题栏区域之外的其它区域都只有在非模态状态时才可用于移动窗口
+
+    if (!popupLayer_->inModalState()) {
+        if (controllBarArea_) {
+            const QPoint localPos = controllBarArea_->mapFromGlobal(gpos);
+            if (controllBarArea_->rect().contains(localPos)) {
+                return controllBarArea_->isWindowMoveAreaContainsLocalPos(localPos);
+            }
         }
     }
 

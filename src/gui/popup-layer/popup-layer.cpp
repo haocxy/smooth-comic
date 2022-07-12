@@ -29,6 +29,12 @@ void PopupLayer::addPopup(QWidget *popup)
     layout_->addWidget(popup);
 }
 
+bool PopupLayer::inModalState() const
+{
+    // TODO 考虑是否细化判断方式
+    return isVisible();
+}
+
 void PopupLayer::mousePressEvent(QMouseEvent *e)
 {
     if (!childAt(e->pos())) {
