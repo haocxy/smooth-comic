@@ -13,7 +13,6 @@
 #include "title-bar-area/title-bar-area.h"
 #include "book-area/book-area.h"
 #include "controll-bar-area/controll-bar-area.h"
-#include "controll-bar-area/scale-setting-popup.h"
 
 
 namespace myapp {
@@ -30,8 +29,6 @@ AppWidget::AppWidget(Engine &engine, QWidget *parent)
     initAreas();
 
     connect(controller_, &Controller::cmdOpenComic, this, &AppWidget::fileOpenAction);
-
-    connect(controller_, &Controller::cmdToggleScaleSettingPopup, this, &AppWidget::toggleScaleSettingPopup);
 }
 
 AppWidget::~AppWidget()
@@ -73,8 +70,6 @@ void AppWidget::initAreas()
     popupLayer_ = new PopupLayer(this);
     layersLayout_->addWidget(popupLayer_);
     popupLayer_->hide();
-
-    popupLayer_->addPopup(new ScaleSettingPopup(this));
 
     mainLayer_ = new QWidget(this);
     layersLayout_->addWidget(mainLayer_);
@@ -119,11 +114,6 @@ void AppWidget::fileOpenAction()
     if (QFile(filePath).exists()) {
         controller_->book().open(filePath.toStdU32String());
     }
-}
-
-void AppWidget::toggleScaleSettingPopup()
-{
-    popupLayer_->show();
 }
 
 }

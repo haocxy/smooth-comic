@@ -26,7 +26,7 @@ public:
     bool isWindowMoveAreaContainsLocalPos(const QPoint &localPos) const;
 
 private:
-    void showScaleMenu();
+    void toggleScaleSetting();
 
 private:
     Controller &controller_;

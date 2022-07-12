@@ -1,7 +1,7 @@
 #include "controll-bar-area.h"
 
 
-#include "gui-util/popup.h"
+#include "gui-util/popup-layer/popup-layer.h"
 
 #include "controller/controller.h"
 
@@ -69,7 +69,7 @@ ControllBarArea::ControllBarArea(Controller &controller, PopupLayer &popupLayer,
 
     ctrScale_ = new ControllItem(i::Scale, tr("Scale"), this);
     centerLayout_->addWidget(ctrScale_);
-    connect(ctrScale_, &ControllItem::clicked, &controller_, &Controller::cmdToggleScaleSettingPopup);
+    connect(ctrScale_, &ControllItem::clicked, this, &ControllBarArea::toggleScaleSetting);
 
 
     ctrGlobalMenu_ = new ControllItem(i::GlobalMenu, tr("Menu"), this);
@@ -77,7 +77,7 @@ ControllBarArea::ControllBarArea(Controller &controller, PopupLayer &popupLayer,
     // TODO connect
 
 
-    scaleSettingPopup_ = new ScaleSettingPopup(this);
+    scaleSettingPopup_ = new ScaleSettingPopup(popupLayer_);
 }
 
 ControllBarArea::~ControllBarArea()
@@ -89,10 +89,9 @@ bool ControllBarArea::isWindowMoveAreaContainsLocalPos(const QPoint &localPos) c
     return childAt(localPos) == nullptr;
 }
 
-void ControllBarArea::showScaleMenu()
+void ControllBarArea::toggleScaleSetting()
 {
-    scaleSettingPopup_->locate(ctrScale_);
-    scaleSettingPopup_->show();
+    scaleSettingPopup_->setPopupVisible(!scaleSettingPopup_->isPopupVisible());
 }
 
 }

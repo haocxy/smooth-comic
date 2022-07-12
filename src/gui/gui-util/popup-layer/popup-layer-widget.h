@@ -1,16 +1,26 @@
 #pragma once
 
-#include <QWidget>
+#include <QFrame>
 
 
 namespace myapp {
 
-class PopupLayerWidget : public QWidget {
+class PopupLayer;
+
+
+class PopupLayerWidget : public QFrame {
     Q_OBJECT
 public:
-    explicit PopupLayerWidget(QWidget *parent = nullptr);
+    explicit PopupLayerWidget(PopupLayer &popupLayer);
 
     virtual ~PopupLayerWidget();
+
+    bool isPopupVisible() const;
+
+    void setPopupVisible(bool visible);
+
+private:
+    PopupLayer &popupLayer_;
 };
 
 }

@@ -49,8 +49,6 @@ private:
 private:
     void fileOpenAction();
 
-    void toggleScaleSettingPopup();
-
 private: // non-UI Components
     Engine &engine_;
     QPointer<Controller> controller_;

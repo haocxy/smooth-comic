@@ -7,24 +7,20 @@
 
 namespace myapp {
 
-ScaleSettingPopup::ScaleSettingPopup(QWidget *parent)
-    : Popup(parent)
+ScaleSettingPopup::ScaleSettingPopup(PopupLayer &popupLayer)
+    : PopupLayerWidget(popupLayer)
 {
-    rootWidget_ = new QFrame(this);
-    rootWidget_->setObjectName("ScaleSettingPopup");
+    setObjectName("ScaleSettingPopup");
+
+    ui_ = new Ui::ScaleSetting;
+    ui_->setupUi(this);
 
     const int shadowRadius = 20;
-    setLayoutMargin(shadowRadius);
 
     QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
     shadow->setBlurRadius(shadowRadius);
     shadow->setOffset(0, 0);
-    rootWidget_->setGraphicsEffect(shadow);
-
-    ui_ = new Ui::ScaleSetting;
-    ui_->setupUi(rootWidget_);
-
-    setWidget(rootWidget_);
+    setGraphicsEffect(shadow);
 }
 
 ScaleSettingPopup::~ScaleSettingPopup()
