@@ -46,7 +46,8 @@ bool AppWidget::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos)
         }
     }
 
-    // 除了窗口标题栏区域之外的其它区域都只有在非模态状态时才可用于移动窗口
+    // 除了窗口标题栏区域之外的其它区域都只有在弹出层激活时才可用于移动窗口
+    // 其它区域均用于处理和弹出层相关的逻辑，例如点击菜单之外时关闭弹出层
 
     if (!popupLayer_->inModalState()) {
         if (controllBarArea_) {
