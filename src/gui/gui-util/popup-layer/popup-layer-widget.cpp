@@ -27,4 +27,11 @@ void PopupLayerWidget::setPopupVisible(bool visible)
     setVisible(visible);
 }
 
+void PopupLayerWidget::pinTo(QWidget *target, int padding)
+{
+    pinType_ = PinType::ToWidget;
+    pinTarget_ = target;
+    pinPadding_ = padding;
+}
+
 }

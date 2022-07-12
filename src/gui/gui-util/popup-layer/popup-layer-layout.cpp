@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QMargins>
 
+#include "popup-layer-widget.h"
+
 
 namespace myapp {
 
@@ -18,7 +20,12 @@ PopupLayerLayout::~PopupLayerLayout()
 
 void PopupLayerLayout::addItem(QLayoutItem *item)
 {
-    items_.push_back(uptr<QLayoutItem>(item));
+    QWidget *widget = item->widget();
+    if (widget && dynamic_cast<PopupLayerWidget *>(widget)) {
+        items_.push_back(uptr<QLayoutItem>(item));
+    } else {
+        throw std::logic_error("PopupLayerLayout can only add PopupLayerWidget");
+    }
 }
 
 Qt::Orientations PopupLayerLayout::expandingDirections() const
@@ -65,12 +72,88 @@ QSize PopupLayerLayout::minimumSize() const
     );
 }
 
+QRect PopupLayerLayout::calcGeometryForPinToWidget(const QRect &rect, const PopupLayerWidget &popup) const
+{
+    const QWidget *target = popup.pinTarget();
+
+    const QSize sizeHint = popup.sizeHint();
+
+    const int rw = rect.width();
+    const int rh = rect.height();
+
+    const int w = sizeHint.width();
+    const int h = sizeHint.height();
+
+    {
+        if (!target) [[unlikely]] {
+            const int x = (rw - w) / 2;
+            const int y = (rh - h) / 2;
+            return QRect(x, y, sizeHint.width(), sizeHint.height());
+        }
+    }
+
+    const QWidget *layer = parentWidget();
+
+    // step 1: 根据目标控件找到目标点坐标
+    const QPoint globalPinPos = target->mapToGlobal(QPoint(target->width() / 2, 0));
+
+    // step 2: 根据目标点坐标找到弹出控件的基准点坐标
+    const QPoint globalPopupBasePos = QPoint(globalPinPos.x(), globalPinPos.y() - popup.pinPadding());
+
+    // step 3: 根据弹出控件的基准点坐标找到弹出控件的坐标
+    const QPoint globalPopupPos = QPoint(globalPopupBasePos.x() - w / 2, globalPopupBasePos.y() - h);
+
+    QPoint localPopupPos = layer->mapFromGlobal(globalPopupPos);
+
+    if (localPopupPos.x() < 0) {
+        localPopupPos.setX(0);
+    }
+
+    const int xLimit = rw - w;
+    if (localPopupPos.x() > xLimit) {
+        localPopupPos.setX(xLimit);
+    }
+
+    if (localPopupPos.y() < 0) {
+        localPopupPos.setY(0);
+    }
+
+    const int yLimit = rh - h;
+    if (localPopupPos.y() > yLimit) {
+        localPopupPos.setY(yLimit);
+    }
+
+    return QRect(rect.topLeft() + localPopupPos, sizeHint);
+}
+
+QRect PopupLayerLayout::calcGeometry(const QRect &rect, const PopupLayerWidget &popup) const
+{
+    const std::optional<PopupLayerWidget::PinType> pinType = popup.pinType();
+    if (pinType) {
+        switch (*pinType) {
+        case PopupLayerWidget::PinType::ToWidget:
+            return calcGeometryForPinToWidget(rect, popup);
+        default:
+            throw std::logic_error("PopupLayerLayout: bad pinType");
+        }
+    } else {
+        throw std::logic_error(
+            std::format("PopupLayerLayout: pinType unspecified for {}",
+                popup.metaObject()->className()
+            )
+        );
+    }
+}
+
 void PopupLayerLayout::setGeometry(const QRect &rect)
 {
     QLayout::setGeometry(rect);
 
     for (auto &item : items_) {
-        item->setGeometry(QRect(QPoint(rect.width() / 2, rect.height() - 200), item->sizeHint()));
+        PopupLayerWidget *wid = static_cast<PopupLayerWidget *>(item->widget());
+        const QRect geometry = calcGeometry(rect, *wid);
+            item->setGeometry(geometry);
+
     }
 }
 

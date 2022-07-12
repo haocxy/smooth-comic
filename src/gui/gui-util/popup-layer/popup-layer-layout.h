@@ -3,11 +3,15 @@
 #include <vector>
 
 #include <QLayout>
+#include <QRect>
 
 #include "core/basetype.h"
 
 
 namespace myapp {
+
+class PopupLayerWidget;
+
 
 class PopupLayerLayout : public QLayout {
 public:
@@ -30,6 +34,11 @@ public:
     virtual QSize sizeHint() const override;
 
     virtual QLayoutItem *takeAt(int index) override;
+
+private:
+    QRect calcGeometryForPinToWidget(const QRect &rect, const PopupLayerWidget &popup) const;
+
+    QRect calcGeometry(const QRect &rect, const PopupLayerWidget &popup) const;
 
 private:
     std::vector<uptr<QLayoutItem>> items_;
