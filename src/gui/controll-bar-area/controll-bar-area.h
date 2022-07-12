@@ -9,6 +9,8 @@ namespace myapp {
 
 class Controller;
 
+class PopupLayer;
+
 class ControllItem;
 
 class ScaleSettingPopup;
@@ -17,7 +19,7 @@ class ScaleSettingPopup;
 class ControllBarArea : public QFrame {
     Q_OBJECT
 public:
-    explicit ControllBarArea(Controller &controller, QWidget *parent = nullptr);
+    explicit ControllBarArea(Controller &controller, PopupLayer &popupLayer, QWidget *parent = nullptr);
 
     virtual ~ControllBarArea();
 
@@ -28,6 +30,9 @@ private:
 
 private:
     Controller &controller_;
+    PopupLayer &popupLayer_;
+
+private:
     QPointer<QHBoxLayout> rootLayout_;
 
     // left

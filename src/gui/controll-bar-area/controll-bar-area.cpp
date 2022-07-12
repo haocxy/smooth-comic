@@ -13,9 +13,10 @@
 
 namespace myapp {
 
-ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
+ControllBarArea::ControllBarArea(Controller &controller, PopupLayer &popupLayer, QWidget *parent)
     : QFrame(parent)
     , controller_(controller)
+    , popupLayer_(popupLayer)
 {
     namespace i = ControllBarIcons;
 

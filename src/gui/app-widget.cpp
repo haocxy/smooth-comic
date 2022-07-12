@@ -106,7 +106,7 @@ void AppWidget::initBookArea()
 
 void AppWidget::initControllBarArea()
 {
-    controllBarArea_ = new ControllBarArea(*controller_, this);
+    controllBarArea_ = new ControllBarArea(*controller_, *popupLayer_, this);
     mainLayerLayout_->addWidget(controllBarArea_);
 }
 
