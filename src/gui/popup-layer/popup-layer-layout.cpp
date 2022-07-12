@@ -2,6 +2,7 @@
 
 #include <QLayoutItem>
 #include <QWidget>
+#include <QMargins>
 
 
 namespace myapp {
@@ -56,7 +57,12 @@ QSize PopupLayerLayout::minimumSize() const
         }
     }
 
-    return QSize(maxMinWidth, maxMinHeight);
+    const QMargins m = contentsMargins();
+
+    return QSize(
+        maxMinWidth + m.left() + m.right(),
+        maxMinHeight + m.top() + m.bottom()
+    );
 }
 
 void PopupLayerLayout::setGeometry(const QRect &rect)
