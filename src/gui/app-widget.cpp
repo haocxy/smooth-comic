@@ -8,6 +8,7 @@
 
 #include "controller/controller.h"
 
+#include "popup-layer/popup-layer.h"
 #include "title-bar-area/title-bar-area.h"
 #include "book-area/book-area.h"
 #include "controll-bar-area/controll-bar-area.h"
@@ -56,11 +57,21 @@ void AppWidget::initAreas()
 {
     setContentsMargins(QMargins());
 
-    rootLayout_ = new QVBoxLayout(this);
-    rootLayout_->setSpacing(0);
-    rootLayout_->setContentsMargins(QMargins());
+    layersLayout_ = new QStackedLayout(this);
+    layersLayout_->setStackingMode(QStackedLayout::StackingMode::StackAll);
+    setLayout(layersLayout_);
 
-    setLayout(rootLayout_);
+    popupLayer_ = new PopupLayer(this);
+    layersLayout_->addWidget(popupLayer_);
+
+    mainLayer_ = new QWidget(this);
+    layersLayout_->addWidget(mainLayer_);
+
+    mainLayerLayout_ = new QVBoxLayout(mainLayer_);
+    mainLayerLayout_->setSpacing(0);
+    mainLayerLayout_->setContentsMargins(QMargins());
+
+    mainLayer_->setLayout(mainLayerLayout_);
 
     initTitleBarArea();
 
@@ -72,19 +83,19 @@ void AppWidget::initAreas()
 void AppWidget::initTitleBarArea()
 {
     titleBarArea_ = new TitleBarArea(this);
-    rootLayout_->addWidget(titleBarArea_);
+    mainLayerLayout_->addWidget(titleBarArea_);
 }
 
 void AppWidget::initBookArea()
 {
     bookArea_ = new BookArea(*controller_, this);
-    rootLayout_->addWidget(bookArea_);
+    mainLayerLayout_->addWidget(bookArea_);
 }
 
 void AppWidget::initControllBarArea()
 {
     controllBarArea_ = new ControllBarArea(*controller_, this);
-    rootLayout_->addWidget(controllBarArea_);
+    mainLayerLayout_->addWidget(controllBarArea_);
 }
 
 void AppWidget::fileOpenAction()

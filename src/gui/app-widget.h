@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QPointer>
 #include <QBoxLayout>
+#include <QStackedLayout>
 
 #include "gui-util/title-bar-button.h"
 
@@ -11,6 +12,8 @@ namespace myapp {
 
 class Engine;
 
+class PopupLayer;
+
 class Controller;
 
 class TitleBarArea;
@@ -18,6 +21,7 @@ class TitleBarArea;
 class BookArea;
 
 class ControllBarArea;
+
 
 
 class AppWidget : public QWidget {
@@ -50,7 +54,10 @@ private: // non-UI Components
     QPointer<Controller> controller_;
 
 private: // UI Components
-    QPointer<QVBoxLayout> rootLayout_;
+    QPointer<QStackedLayout> layersLayout_;
+    QPointer<QWidget> popupLayer_;
+    QPointer<QWidget> mainLayer_;
+    QPointer<QVBoxLayout> mainLayerLayout_;
     QPointer<TitleBarArea> titleBarArea_;
     QPointer<BookArea> bookArea_;
     QPointer<ControllBarArea> controllBarArea_;

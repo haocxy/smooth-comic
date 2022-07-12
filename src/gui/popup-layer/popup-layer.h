@@ -11,6 +11,9 @@ public:
     explicit PopupLayer(QWidget *parent = nullptr);
 
     virtual ~PopupLayer();
+
+protected:
+    virtual void paintEvent(QPaintEvent *e) override;
 };
 
 }
