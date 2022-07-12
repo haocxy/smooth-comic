@@ -6,9 +6,10 @@
 
 #include "book/book.h"
 
+#include "gui-util/popup-layer/popup-layer.h"
+
 #include "controller/controller.h"
 
-#include "popup-layer/popup-layer.h"
 #include "title-bar-area/title-bar-area.h"
 #include "book-area/book-area.h"
 #include "controll-bar-area/controll-bar-area.h"
