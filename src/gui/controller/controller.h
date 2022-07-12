@@ -46,6 +46,8 @@ signals:
 
     void cmdJumpToPage(PageNum pageSeq);
 
+    void cmdToggleScaleSettingPopup();
+
 private:
     DeclarePtr<Book> book_;
 };

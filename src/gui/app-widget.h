@@ -49,13 +49,15 @@ private:
 private:
     void fileOpenAction();
 
+    void toggleScaleSettingPopup();
+
 private: // non-UI Components
     Engine &engine_;
     QPointer<Controller> controller_;
 
 private: // UI Components
     QPointer<QStackedLayout> layersLayout_;
-    QPointer<QWidget> popupLayer_;
+    QPointer<PopupLayer> popupLayer_;
     QPointer<QWidget> mainLayer_;
     QPointer<QVBoxLayout> mainLayerLayout_;
     QPointer<TitleBarArea> titleBarArea_;

@@ -1,6 +1,9 @@
 #include "popup-layer.h"
 
 #include <QPainter>
+#include <QMouseEvent>
+
+#include "popup-layer-layout.h"
 
 
 namespace myapp {
@@ -12,18 +15,25 @@ PopupLayer::PopupLayer(QWidget *parent)
     sp.setHorizontalPolicy(QSizePolicy::Policy::Ignored);
     sp.setVerticalPolicy(QSizePolicy::Policy::Ignored);
     setSizePolicy(sp);
+
+    layout_ = new PopupLayerLayout(this);
+    setLayout(layout_);
 }
 
 PopupLayer::~PopupLayer()
 {
 }
 
-void PopupLayer::paintEvent(QPaintEvent *e)
+void PopupLayer::addPopup(QWidget *popup)
 {
-    QWidget::paintEvent(e);
+    layout_->addWidget(popup);
+}
 
-    QPainter p(this);
-    p.drawRect(10, 10, width() - 20, height() - 20);
+void PopupLayer::mousePressEvent(QMouseEvent *e)
+{
+    if (!childAt(e->pos())) {
+        hide();
+    }
 }
 
 }

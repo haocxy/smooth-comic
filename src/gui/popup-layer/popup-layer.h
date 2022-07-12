@@ -1,9 +1,13 @@
 #pragma once
 
 #include <QWidget>
+#include <QPointer>
 
 
 namespace myapp {
+
+class PopupLayerLayout;
+
 
 class PopupLayer : public QWidget {
     Q_OBJECT
@@ -12,8 +16,13 @@ public:
 
     virtual ~PopupLayer();
 
-protected:
-    virtual void paintEvent(QPaintEvent *e) override;
+    void addPopup(QWidget *popup);
+
+private:
+    virtual void mousePressEvent(QMouseEvent *e) override;
+
+private:
+    QPointer<PopupLayerLayout> layout_;
 };
 
 }

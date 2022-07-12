@@ -68,7 +68,7 @@ ControllBarArea::ControllBarArea(Controller &controller, QWidget *parent)
 
     ctrScale_ = new ControllItem(i::Scale, tr("Scale"), this);
     centerLayout_->addWidget(ctrScale_);
-    connect(ctrScale_, &ControllItem::clicked, this, &ControllBarArea::showScaleMenu);
+    connect(ctrScale_, &ControllItem::clicked, &controller_, &Controller::cmdToggleScaleSettingPopup);
 
 
     ctrGlobalMenu_ = new ControllItem(i::GlobalMenu, tr("Menu"), this);
