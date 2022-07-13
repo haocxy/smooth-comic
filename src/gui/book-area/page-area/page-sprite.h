@@ -24,6 +24,10 @@ public:
 
     virtual ~PageSprite();
 
+    PageNum pageSeq() const {
+        return seqNum_;
+    }
+
     void draw(QPainter &painter) const;
 
     void adjustArea(const QSizeF &areaSize);

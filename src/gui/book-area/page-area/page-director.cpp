@@ -33,8 +33,6 @@ PageDirector::PageDirector(Controller &controller, QObject *parent)
             });
     });
 
-    waitingPage_ = 0;
-
     connect(&controller_, &Controller::cmdJumpToPage, this, &PageDirector::jumpTo);
     connect(&controller_, &Controller::cmdSwitchPage, this, &PageDirector::switchNextPage);
     connect(&controller_, &Controller::cmdRotatePageByOneStep, this, &PageDirector::rotatePageByOneStep);
@@ -56,7 +54,6 @@ void PageDirector::updateShowSize(const QSize &size)
 void PageDirector::reset()
 {
     loadedPages_.clear();
-    waitingPage_ = 0;
 }
 
 void PageDirector::draw(QPainter &p) const
@@ -72,20 +69,24 @@ void PageDirector::jumpTo(PageNum pageNum)
         return;
     }
 
-    asyncLoadImg(pageNum);
+    primaryScene_ = new PageScene(controller_, pageNum);
+
+    connect(primaryScene_, &PageScene::cmdUpdate, this, &PageDirector::cmdUpdate);
+
+    primaryScene_->updateSceneSize(showSize_);
 }
 
 void PageDirector::jumpNext()
 {
-    if (currPage_) {
-        jumpTo(*currPage_ + 1);
+    if (primaryScene_) {
+        jumpTo(primaryScene_->primaryPageSeq() + 1);
     }
 }
 
 void PageDirector::jumpPrev()
 {
-    if (currPage_) {
-        jumpTo(*currPage_ - 1);
+    if (primaryScene_) {
+        jumpTo(primaryScene_->primaryPageSeq() - 1);
     }
 }
 
@@ -121,39 +122,10 @@ void PageDirector::pageLoaded(const PageInfo &page)
 {
     loadedPages_[page.seqNum] = page;
 
-    if (waitingPage_ && *waitingPage_ == page.seqNum) {
-        asyncLoadImg(*waitingPage_);
+    // TODO 改成由 Book 对象用一个专用的信号通知初始页
+    if (0 == page.seqNum) {
+        jumpTo(0);
     }
-}
-
-void PageDirector::asyncLoadImg(PageNum seqNum)
-{
-    controller_.book().loadPageImg(seqNum, [this, seqNum, h = handle_.weak()](const QPixmap &img) {
-        h.apply([this, &seqNum, &img] {
-            strandEntry_.exec([this, seqNum, img] {
-                onLoadPageImgDone(seqNum, img);
-                });
-            });
-    });
-}
-
-void PageDirector::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)
-{
-    if (waitingPage_ && *waitingPage_ != seqNum) {
-        return;
-    }
-
-    waitingPage_ = std::nullopt;
-
-    primaryScene_ = new PageScene(controller_);
-
-    primaryScene_->setPrimaryPage(new PageSprite(seqNum, img));
-
-    primaryScene_->updateSceneSize(showSize_);
-
-    currPage_ = seqNum;
-
-    emit cmdUpdate();
 }
 
 }

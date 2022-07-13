@@ -1,13 +1,17 @@
 #pragma once
 
 #include <map>
+#include <optional>
 
 #include <QObject>
 #include <QSize>
 
 #include "core/declare_ptr.h"
+#include "core/obj-handle.h"
 
 #include "book/page-num.h"
+
+#include "gui/gui-util/qtobj-strand-entry.h"
 
 #include "page-sprite.h"
 
@@ -23,30 +27,43 @@ class Controller;
 class PageScene : public QObject {
     Q_OBJECT
 public:
-    explicit PageScene(Controller &controller, QObject *parent = nullptr);
+    explicit PageScene(Controller &controller, PageNum primaryPage, QObject *parent = nullptr);
 
     virtual ~PageScene();
 
     void draw(QPainter &painter) const;
 
-    void setPrimaryPage(DeclarePtr<PageSprite> &&sprite);
+    PageNum primaryPageSeq() const;
 
     void updateSceneSize(const QSizeF &sceneSize);
 
     void rotatePagesByOneStep();
+
+signals:
+    void cmdUpdate();
 
 private:
     void layoutPages();
 
     void layoutPage(PageSprite &sprite);
 
-private:
-    Controller &controller_;
+    void setPrimaryPage(DeclarePtr<PageSprite> &&sprite);
+
+    void preparePrimaryPage(PageNum seqNum);
 
 private:
+    QtObjStrandEntry strandEntry_;
+
+    Controller &controller_;
+
+    PageNum primaryPageSeq_{ 0 };
+
     DeclarePtr<PageSprite> primaryPage_;
 
     QSizeF sceneSize_;
+
+
+    StrongHandle<PageScene> handle_;
 };
 
 }

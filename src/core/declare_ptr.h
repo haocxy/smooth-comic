@@ -88,6 +88,14 @@ public:
         return holder_ && (holder_->ptr());
     }
 
+    operator pointer() const {
+        if (holder_) {
+            return reinterpret_cast<pointer>(holder_->ptr());
+        } else {
+            return nullptr;
+        }
+    }
+
     pointer operator->() const {
         return reinterpret_cast<pointer>(holder_->ptr());
     }

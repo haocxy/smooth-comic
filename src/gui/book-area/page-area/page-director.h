@@ -60,10 +60,6 @@ private:
 
     void pageLoaded(const PageInfo &page);
 
-    void asyncLoadImg(PageNum seqNum);
-
-    void onLoadPageImgDone(PageNum seqNum, const QPixmap &img);
-
 private:
     Controller &controller_;
 
@@ -72,10 +68,6 @@ private:
     SigConns sigConns_;
 
     std::unordered_map<PageNum, PageInfo> loadedPages_{ 987 };
-
-    opt<PageNum> waitingPage_;
-
-    opt<PageNum> currPage_;
 
     QSize showSize_;
 
