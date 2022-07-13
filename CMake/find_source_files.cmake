@@ -41,6 +41,7 @@ function(findSourceFiles output_files)
         "${CMAKE_CURRENT_SOURCE_DIR}/*.txt"
         "${CMAKE_CURRENT_SOURCE_DIR}/*.cmake"
         "${CMAKE_CURRENT_SOURCE_DIR}/*.sql"
+        "${CMAKE_CURRENT_SOURCE_DIR}/*.ui"
     )
     list(APPEND result ${other_files})
     source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/.." FILES ${result})
