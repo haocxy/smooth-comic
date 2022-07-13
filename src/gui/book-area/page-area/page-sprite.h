@@ -34,7 +34,11 @@ public:
 
     float calcMaxScale(const QSizeF &areaSize) const;
 
-    void adjustArea(const QSizeF &areaSize);
+    void adjustAreaSize(const QSizeF &areaSize);
+
+    void adjustAreaWidth(int areaWidth);
+
+    void adjustAreaHeight(int areaHeight);
 
     void rotateTo(PageDirection direction);
 

@@ -7,6 +7,7 @@
 #include "book/page-num.h"
 
 #include "switch-direction.h"
+#include "scale-mode.h"
 
 
 namespace myapp {
@@ -47,6 +48,8 @@ signals:
     void cmdJumpToPage(PageNum pageSeq);
 
     void cmdToggleScaleSettingPopup();
+
+    void cmdSetScaleMode(ScaleMode mode);
 
     void sigScaleRangeUpdated(float min, float max);
 

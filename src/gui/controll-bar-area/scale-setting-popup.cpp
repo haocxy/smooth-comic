@@ -26,8 +26,19 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     shadow->setOffset(0, 0);
     setGraphicsEffect(shadow);
 
-    connect(&controller_, &Controller::sigScaleRangeUpdated,
-        this, &ScaleSettingPopup::updateScaleRange);
+    connect(&controller_, &Controller::sigScaleRangeUpdated, this,
+        &ScaleSettingPopup::updateScaleRange);
+
+    connect(ui_->radioScaleBySize, &QRadioButton::clicked, &controller_,
+        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaSize));
+
+    connect(ui_->radioScaleByWidth, &QRadioButton::clicked, &controller_,
+        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaWidth));
+
+    connect(ui_->radioScaleByHeight, &QRadioButton::clicked, &controller_,
+        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaHeight));
+
+    ui_->radioScaleBySize->setChecked(true);
 }
 
 ScaleSettingPopup::~ScaleSettingPopup()

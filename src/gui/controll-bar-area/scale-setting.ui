@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
-    <height>336</height>
+    <width>590</width>
+    <height>383</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Auto Scale</string>
+         <string>Scale Mode</string>
         </property>
        </widget>
       </item>
@@ -59,7 +59,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton">
+       <widget class="QRadioButton" name="radioScaleBySize">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -69,16 +69,23 @@
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_2">
+       <widget class="QRadioButton" name="radioScaleByWidth">
         <property name="text">
          <string>By Width</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_3">
+       <widget class="QRadioButton" name="radioScaleByHeight">
         <property name="text">
          <string>By Height</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioScaleManual">
+        <property name="text">
+         <string>Manual</string>
         </property>
        </widget>
       </item>

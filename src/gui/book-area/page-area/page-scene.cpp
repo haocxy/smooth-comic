@@ -18,6 +18,8 @@ PageScene::PageScene(Controller &controller, PageNum primaryPage, QObject *paren
     , handle_(*this)
 {
     preparePrimaryPage(primaryPageSeq_);
+
+    connect(&controller_, &Controller::cmdSetScaleMode, this, &PageScene::setScaleMode);
 }
 
 PageScene::~PageScene()
@@ -43,6 +45,15 @@ void PageScene::onBecomePrimaryScene()
     const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
 
     emit controller_.sigScaleRangeUpdated(minScale, maxScale);
+}
+
+void PageScene::setScaleMode(ScaleMode scaleMode)
+{
+    if (scaleMode_ != scaleMode) {
+        scaleMode_ = scaleMode;
+
+        layoutPages();
+    }
 }
 
 void PageScene::draw(QPainter &painter) const
@@ -80,7 +91,6 @@ void PageScene::updateSceneSize(const QSizeF &sceneSize)
 void PageScene::rotatePagesByOneStep()
 {
     if (primaryPage_) {
-        primaryPage_->adjustArea(sceneSize_);
         primaryPage_->rotateByOneStep();
         layoutPage(*primaryPage_);
     }
@@ -102,6 +112,11 @@ void PageScene::setIsPrimaryScene(bool isPrimaryScene)
     }
 }
 
+ScaleMode PageScene::scaleMode() const
+{
+    return scaleMode_;
+}
+
 void PageScene::layoutPages()
 {
     if (primaryPage_) {
@@ -111,8 +126,26 @@ void PageScene::layoutPages()
 
 void PageScene::layoutPage(PageSprite &sprite)
 {
-    sprite.adjustArea(sceneSize_);
+    switch (scaleMode_) {
+    case ScaleMode::AutoFitAreaSize:
+        sprite.adjustAreaSize(sceneSize_);
+        break;
+    case ScaleMode::AutoFitAreaWidth:
+        sprite.adjustAreaWidth(sceneSize_.width());
+        break;
+    case ScaleMode::AutoFitAreaHeight:
+        sprite.adjustAreaHeight(sceneSize_.height());
+        break;
+    case ScaleMode::Manual:
+        // 手动定位模式时，不自动调整页面缩放
+        break;
+    default:
+        break;
+    }
+
     sprite.moveTo(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
+
+    emit cmdUpdate();
 }
 
 

@@ -28,7 +28,6 @@ PageSwitcher::PageSwitcher(Controller &controller, QWidget *parent)
     director_ = new PageDirector(controller_, this);
 
     connect(director_, &PageDirector::cmdUpdate, this, [this] {
-        director_->updateShowSize(size());
         update();
     });
 }
@@ -41,7 +40,6 @@ PageSwitcher::~PageSwitcher()
 void PageSwitcher::resizeEvent(QResizeEvent *e)
 {
     director_->updateShowSize(size());
-    update();
 }
 
 void PageSwitcher::paintEvent(QPaintEvent *e)

@@ -13,6 +13,8 @@
 
 #include "gui/gui-util/qtobj-strand-entry.h"
 
+#include "controller/scale-mode.h"
+
 #include "page-sprite.h"
 
 
@@ -43,6 +45,10 @@ public:
 
     void setIsPrimaryScene(bool isPrimaryScene);
 
+    ScaleMode scaleMode() const;
+
+    void setScaleMode(ScaleMode scaleMode);
+
 signals:
     void cmdUpdate();
 
@@ -59,6 +65,8 @@ private:
 
     void onBecomePrimaryScene();
 
+    
+
 private:
     QtObjStrandEntry strandEntry_;
 
@@ -72,6 +80,7 @@ private:
 
     QSizeF sceneSize_;
 
+    ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
 
     StrongHandle<PageScene> handle_;
 };

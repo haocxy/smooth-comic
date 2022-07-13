@@ -88,13 +88,29 @@ static QSizeF calcShowSize(const QSizeF &imgSize, const QSizeF &areaSize)
     }
 }
 
-void PageSprite::adjustArea(const QSizeF &areaSize)
+void PageSprite::adjustAreaSize(const QSizeF &areaSize)
 {
     const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
 
     if (rotatedSize.width() > 0) {
         const QSizeF showSize = calcShowSize(rotatedSize, areaSize);
         scale(showSize.width() / rotatedSize.width());
+    }
+}
+
+void PageSprite::adjustAreaWidth(int areaWidth)
+{
+    const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
+    if (rotatedSize.width() > 0 && areaWidth > 0) {
+        scale(areaWidth / rotatedSize.width());
+    }
+}
+
+void PageSprite::adjustAreaHeight(int areaHeight)
+{
+    const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
+    if (rotatedSize.height() > 0 && areaHeight > 0) {
+        scale(areaHeight / rotatedSize.height());
     }
 }
 

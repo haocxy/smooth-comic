@@ -13,6 +13,7 @@
 #include "gui-util/qtobj-strand-entry.h"
 
 #include "controller/switch-direction.h"
+#include "controller/scale-mode.h"
 
 #include "book/page-info.h"
 
@@ -60,6 +61,8 @@ private:
 
     void pageLoaded(const PageInfo &page);
 
+    void saveCurrentScaleMode(ScaleMode mode);
+
 private:
     Controller &controller_;
 
@@ -70,6 +73,8 @@ private:
     std::unordered_map<PageNum, PageInfo> loadedPages_{ 987 };
 
     QSize showSize_;
+
+    ScaleMode currentScaleMode_{ ScaleMode::AutoFitAreaSize };
 
     DeclarePtr<PageScene> primaryScene_;
 

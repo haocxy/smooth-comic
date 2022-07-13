@@ -36,6 +36,7 @@ PageDirector::PageDirector(Controller &controller, QObject *parent)
     connect(&controller_, &Controller::cmdJumpToPage, this, &PageDirector::jumpTo);
     connect(&controller_, &Controller::cmdSwitchPage, this, &PageDirector::switchNextPage);
     connect(&controller_, &Controller::cmdRotatePageByOneStep, this, &PageDirector::rotatePageByOneStep);
+    connect(&controller_, &Controller::cmdSetScaleMode, this, &PageDirector::saveCurrentScaleMode);
 }
 
 PageDirector::~PageDirector()
@@ -82,6 +83,7 @@ void PageDirector::jumpTo(PageNum pageNum)
         primaryScene_ = std::move(preparingScene_);
         primaryScene_->updateSceneSize(showSize_);
         primaryScene_->setIsPrimaryScene(true);
+        primaryScene_->setScaleMode(currentScaleMode_);
 
         connect(primaryScene_, &PageScene::cmdUpdate, this, &PageDirector::cmdUpdate);
 
@@ -139,6 +141,11 @@ void PageDirector::pageLoaded(const PageInfo &page)
     if (0 == page.seqNum) {
         jumpTo(0);
     }
+}
+
+void PageDirector::saveCurrentScaleMode(ScaleMode mode)
+{
+    currentScaleMode_ = mode;
 }
 
 }
