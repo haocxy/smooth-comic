@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>611</width>
+    <width>625</width>
     <height>336</height>
    </rect>
   </property>
@@ -137,7 +137,7 @@
        <widget class="QSlider" name="horizontalSlider">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>300</width>
           <height>0</height>
          </size>
         </property>
@@ -171,6 +171,20 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Current Scale: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="currentScaleValue">
+        <property name="text">
+         <string>0%</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
