@@ -10,9 +10,7 @@ namespace myapp {
 ScaleSettingPopup::ScaleSettingPopup(PopupLayer &popupLayer)
     : PopupLayerWidget(popupLayer)
 {
-    setObjectName("ScaleSettingPopup");
-
-    ui_ = new Ui::ScaleSetting;
+    ui_ = new Ui::ScaleSettingPopup;
     ui_->setupUi(this);
 
     const int shadowRadius = 20;

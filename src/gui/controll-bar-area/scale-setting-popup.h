@@ -8,7 +8,7 @@
 
 
 namespace Ui {
-class ScaleSetting;
+class ScaleSettingPopup;
 }
 
 namespace myapp {
@@ -21,7 +21,7 @@ public:
     virtual ~ScaleSettingPopup();
 
 private:
-    DeclarePtr<Ui::ScaleSetting> ui_;
+    DeclarePtr<Ui::ScaleSettingPopup> ui_;
 };
 
 }
