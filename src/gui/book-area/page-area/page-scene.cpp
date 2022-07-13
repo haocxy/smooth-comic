@@ -35,6 +35,16 @@ void PageScene::preparePrimaryPage(PageNum seqNum)
     });
 }
 
+void PageScene::onBecomePrimaryScene()
+{
+    assert(primaryPage_);
+
+    const float minScale = primaryPage_->calcMinScale(sceneSize_);
+    const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
+
+    emit controller_.sigScaleRangeUpdated(minScale, maxScale);
+}
+
 void PageScene::draw(QPainter &painter) const
 {
     PainterSaver saver(painter);
@@ -73,6 +83,22 @@ void PageScene::rotatePagesByOneStep()
         primaryPage_->adjustArea(sceneSize_);
         primaryPage_->rotateByOneStep();
         layoutPage(*primaryPage_);
+    }
+}
+
+bool PageScene::isPrimaryScene() const
+{
+    return isPrimaryScene_;
+}
+
+void PageScene::setIsPrimaryScene(bool isPrimaryScene)
+{
+    if (isPrimaryScene_ != isPrimaryScene) {
+        isPrimaryScene_ = isPrimaryScene;
+
+        if (isPrimaryScene_ && primaryPage_) {
+            onBecomePrimaryScene();
+        }
     }
 }
 

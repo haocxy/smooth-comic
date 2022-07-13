@@ -13,14 +13,24 @@ class ScaleSettingPopup;
 
 namespace myapp {
 
+class Controller;
+
+
 class ScaleSettingPopup : public PopupLayerWidget {
     Q_OBJECT
 public:
-    explicit ScaleSettingPopup(PopupLayer &popupLayer);
+    explicit ScaleSettingPopup(Controller &controller, PopupLayer &popupLayer);
 
     virtual ~ScaleSettingPopup();
 
 private:
+    void updateScaleRange(float minScale, float maxScale);
+
+    void updateScale(float scale);
+
+private:
+    Controller &controller_;
+
     DeclarePtr<Ui::ScaleSettingPopup> ui_;
 };
 

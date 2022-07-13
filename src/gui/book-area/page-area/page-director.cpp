@@ -81,6 +81,7 @@ void PageDirector::jumpTo(PageNum pageNum)
 
         primaryScene_ = std::move(preparingScene_);
         primaryScene_->updateSceneSize(showSize_);
+        primaryScene_->setIsPrimaryScene(true);
 
         connect(primaryScene_, &PageScene::cmdUpdate, this, &PageDirector::cmdUpdate);
 

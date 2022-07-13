@@ -77,7 +77,7 @@ ControllBarArea::ControllBarArea(Controller &controller, PopupLayer &popupLayer,
     // TODO connect
 
 
-    scaleSettingPopup_ = new ScaleSettingPopup(popupLayer_);
+    scaleSettingPopup_ = new ScaleSettingPopup(controller_, popupLayer_);
     scaleSettingPopup_->pinTo(ctrScale_, 20);
 }
 

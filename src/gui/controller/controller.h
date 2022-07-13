@@ -48,7 +48,9 @@ signals:
 
     void cmdToggleScaleSettingPopup();
 
-    void sigScaleStateUpdated(float cur, float min, float max);
+    void sigScaleRangeUpdated(float min, float max);
+
+    void sigScaleUpdated(float scale);
 
 private:
     DeclarePtr<Book> book_;

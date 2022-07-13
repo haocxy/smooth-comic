@@ -30,6 +30,10 @@ public:
 
     void draw(QPainter &painter) const;
 
+    float calcMinScale(const QSizeF &areaSize) const;
+
+    float calcMaxScale(const QSizeF &areaSize) const;
+
     void adjustArea(const QSizeF &areaSize);
 
     void rotateTo(PageDirection direction);

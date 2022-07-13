@@ -39,6 +39,10 @@ public:
 
     void rotatePagesByOneStep();
 
+    bool isPrimaryScene() const;
+
+    void setIsPrimaryScene(bool isPrimaryScene);
+
 signals:
     void cmdUpdate();
 
@@ -53,10 +57,14 @@ private:
 
     void preparePrimaryPage(PageNum seqNum);
 
+    void onBecomePrimaryScene();
+
 private:
     QtObjStrandEntry strandEntry_;
 
     Controller &controller_;
+
+    bool isPrimaryScene_{ false };
 
     PageNum primaryPageSeq_{ 0 };
 

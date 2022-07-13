@@ -66,6 +66,16 @@ void PageSprite::draw(QPainter &painter) const
     painter.drawPixmap(QRect(x, y, w, h), rawImg_);
 }
 
+float PageSprite::calcMinScale(const QSizeF &areaSize) const
+{
+    return 0.5f; // TODO
+}
+
+float PageSprite::calcMaxScale(const QSizeF &areaSize) const
+{
+    return 2.0f; // TODO
+}
+
 static QSizeF calcShowSize(const QSizeF &imgSize, const QSizeF &areaSize)
 {
     if (imgSize.width() > 0 && imgSize.height() > 0) {
