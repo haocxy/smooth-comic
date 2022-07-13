@@ -73,6 +73,8 @@ private:
 
     DeclarePtr<PageScene> primaryScene_;
 
+    DeclarePtr<PageScene> preparingScene_;
+
     StrongHandle<PageDirector> handle_;
 };
 

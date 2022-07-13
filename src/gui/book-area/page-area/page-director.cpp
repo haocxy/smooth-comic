@@ -69,11 +69,23 @@ void PageDirector::jumpTo(PageNum pageNum)
         return;
     }
 
-    primaryScene_ = new PageScene(controller_, pageNum);
+    // 如果有正在准备的场景，则不进行跳转，
+    // 直到准备中的场景完成准备并切换为当前场景才可以跳转
+    if (preparingScene_) {
+        return;
+    }
 
-    connect(primaryScene_, &PageScene::cmdUpdate, this, &PageDirector::cmdUpdate);
+    preparingScene_ = new PageScene(controller_, pageNum);
 
-    primaryScene_->updateSceneSize(showSize_);
+    connect(preparingScene_, &PageScene::sigPrimaryPagePrepared, this, [this] {
+
+        primaryScene_ = std::move(preparingScene_);
+        primaryScene_->updateSceneSize(showSize_);
+
+        connect(primaryScene_, &PageScene::cmdUpdate, this, &PageDirector::cmdUpdate);
+
+        emit cmdUpdate();
+    });
 }
 
 void PageDirector::jumpNext()

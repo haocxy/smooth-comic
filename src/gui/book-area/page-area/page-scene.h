@@ -42,6 +42,8 @@ public:
 signals:
     void cmdUpdate();
 
+    void sigPrimaryPagePrepared();
+
 private:
     void layoutPages();
 

@@ -55,6 +55,8 @@ void PageScene::setPrimaryPage(DeclarePtr<PageSprite> &&sprite)
 {
     primaryPage_ = std::move(sprite);
 
+    emit sigPrimaryPagePrepared();
+
     emit cmdUpdate();
 }
 
