@@ -150,10 +150,12 @@ void PopupLayerLayout::setGeometry(const QRect &rect)
     QLayout::setGeometry(rect);
 
     for (auto &item : items_) {
-        PopupLayerWidget *wid = static_cast<PopupLayerWidget *>(item->widget());
-        const QRect geometry = calcGeometry(rect, *wid);
-            item->setGeometry(geometry);
-
+        PopupLayerWidget *popup = static_cast<PopupLayerWidget *>(item->widget());
+        if (!popup->isVisible()) {
+            continue;
+        }
+        const QRect geometry = calcGeometry(rect, *popup);
+        item->setGeometry(geometry);
     }
 }
 
