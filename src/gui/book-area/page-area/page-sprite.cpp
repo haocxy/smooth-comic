@@ -37,8 +37,9 @@ static int toDegree(PageDirection dir)
     }
 }
 
-PageSprite::PageSprite(const QPixmap &rawImg, QObject *parent)
+PageSprite::PageSprite(PageNum seqNum, const QPixmap &rawImg, QObject *parent)
     : QObject(parent)
+    , seqNum_(seqNum)
     , rawImg_(rawImg)
 {
     updateMatrix();

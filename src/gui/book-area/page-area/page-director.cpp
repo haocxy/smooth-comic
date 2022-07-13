@@ -145,11 +145,11 @@ void PageDirector::onLoadPageImgDone(PageNum seqNum, const QPixmap &img)
 
     waitingPage_ = std::nullopt;
 
-    primaryScene_ = new PageScene;
+    primaryScene_ = new PageScene(controller_);
+
+    primaryScene_->setPrimaryPage(new PageSprite(seqNum, img));
 
     primaryScene_->updateSceneSize(showSize_);
-
-    primaryScene_->addPage(seqNum, new PageSprite(img));
 
     currPage_ = seqNum;
 

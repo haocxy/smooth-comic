@@ -17,18 +17,19 @@ class QPainter;
 
 namespace myapp {
 
+class Controller;
 
 
 class PageScene : public QObject {
     Q_OBJECT
 public:
-    explicit PageScene(QObject *parent = nullptr);
+    explicit PageScene(Controller &controller, QObject *parent = nullptr);
 
     virtual ~PageScene();
 
     void draw(QPainter &painter) const;
 
-    void addPage(PageNum seqNum, DeclarePtr<PageSprite> &&sprite);
+    void setPrimaryPage(DeclarePtr<PageSprite> &&sprite);
 
     void updateSceneSize(const QSizeF &sceneSize);
 
@@ -40,7 +41,10 @@ private:
     void layoutPage(PageSprite &sprite);
 
 private:
-    std::map<PageNum, DeclarePtr<PageSprite>> sprites_;
+    Controller &controller_;
+
+private:
+    DeclarePtr<PageSprite> primaryPage_;
 
     QSizeF sceneSize_;
 };

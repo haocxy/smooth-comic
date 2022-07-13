@@ -7,8 +7,9 @@
 
 namespace myapp {
 
-PageScene::PageScene(QObject *parent)
+PageScene::PageScene(Controller &controller, QObject *parent)
     : QObject(parent)
+    , controller_(controller)
 {
 }
 
@@ -22,19 +23,14 @@ void PageScene::draw(QPainter &painter) const
 
     painter.translate(sceneSize_.width() / 2, sceneSize_.height() / 2);
 
-    for (const auto &pair : sprites_) {
-        const PageNum seqNum = pair.first;
-        const DeclarePtr<PageSprite> &sprite = pair.second;
-
-        sprite->draw(painter);
+    if (primaryPage_) {
+        primaryPage_->draw(painter);
     }
 }
 
-void PageScene::addPage(PageNum seqNum, DeclarePtr<PageSprite> &&sprite)
+void PageScene::setPrimaryPage(DeclarePtr<PageSprite> &&sprite)
 {
-    DeclarePtr<PageSprite> &p = sprites_[seqNum];
-
-    p = std::move(sprite);
+    primaryPage_ = std::move(sprite);
 }
 
 void PageScene::updateSceneSize(const QSizeF &sceneSize)
@@ -46,19 +42,17 @@ void PageScene::updateSceneSize(const QSizeF &sceneSize)
 
 void PageScene::rotatePagesByOneStep()
 {
-    for (const auto &pair : sprites_) {
-        const DeclarePtr<PageSprite> &sprite = pair.second;
-        sprite->adjustArea(sceneSize_);
-        sprite->rotateByOneStep();
-        layoutPage(*sprite);
+    if (primaryPage_) {
+        primaryPage_->adjustArea(sceneSize_);
+        primaryPage_->rotateByOneStep();
+        layoutPage(*primaryPage_);
     }
 }
 
 void PageScene::layoutPages()
 {
-    for (const auto &pair : sprites_) {
-        const DeclarePtr<PageSprite> &sprite = pair.second;
-        layoutPage(*sprite);
+    if (primaryPage_) {
+        layoutPage(*primaryPage_);
     }
 }
 

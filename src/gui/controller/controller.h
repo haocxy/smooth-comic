@@ -48,6 +48,8 @@ signals:
 
     void cmdToggleScaleSettingPopup();
 
+    void sigScaleStateUpdated(float cur, float min, float max);
+
 private:
     DeclarePtr<Book> book_;
 };

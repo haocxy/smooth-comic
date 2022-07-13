@@ -7,6 +7,8 @@
 #include <QSize>
 #include <QTransform>
 
+#include "book/page-num.h"
+
 #include "page-direction.h"
 
 
@@ -18,7 +20,7 @@ namespace myapp {
 class PageSprite : public QObject {
     Q_OBJECT
 public:
-    explicit PageSprite(const QPixmap &rawImg, QObject *parent = nullptr);
+    explicit PageSprite(PageNum seqNum, const QPixmap &rawImg, QObject *parent = nullptr);
 
     virtual ~PageSprite();
 
@@ -40,6 +42,8 @@ private:
     void updateMatrix() const;
 
 private:
+    const PageNum seqNum_;
+
     QPixmap rawImg_;
 
     QPointF pos_{ 0, 0 };
