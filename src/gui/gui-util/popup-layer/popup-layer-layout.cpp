@@ -105,21 +105,21 @@ QRect PopupLayerLayout::calcGeometryForPinToWidget(const QRect &rect, const Popu
 
     QPoint localPopupPos = layer->mapFromGlobal(globalPopupPos);
 
-    if (localPopupPos.x() < 0) {
-        localPopupPos.setX(0);
+    if (localPopupPos.x() < contentsMargins().left()) [[unlikely]] {
+        localPopupPos.setX(contentsMargins().left());
     }
 
-    const int xLimit = rw - w;
-    if (localPopupPos.x() > xLimit) {
+    const int xLimit = rw - w - contentsMargins().right();
+    if (localPopupPos.x() > xLimit) [[unlikely]] {
         localPopupPos.setX(xLimit);
     }
 
-    if (localPopupPos.y() < 0) {
-        localPopupPos.setY(0);
+    if (localPopupPos.y() < contentsMargins().top()) [[unlikely]] {
+        localPopupPos.setY(contentsMargins().top());
     }
 
-    const int yLimit = rh - h;
-    if (localPopupPos.y() > yLimit) {
+    const int yLimit = rh - h - contentsMargins().bottom();
+    if (localPopupPos.y() > yLimit) [[unlikely]] {
         localPopupPos.setY(yLimit);
     }
 
@@ -151,9 +151,6 @@ void PopupLayerLayout::setGeometry(const QRect &rect)
 
     for (auto &item : items_) {
         PopupLayerWidget *popup = static_cast<PopupLayerWidget *>(item->widget());
-        if (!popup->isVisible()) {
-            continue;
-        }
         const QRect geometry = calcGeometry(rect, *popup);
         item->setGeometry(geometry);
     }
