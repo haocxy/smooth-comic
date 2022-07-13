@@ -67,8 +67,23 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     /* border-width: 1px;
     border-color: rgb(166, 166, 166);
     border-style: solid; */
-    background-color: rgb(200, 200, 200);
-    padding: 10px;
+    /* background-color: rgb(154, 218, 235); */
 }
 
+#ScaleSettingPopup #AutoScaleArea {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: rgb(206, 224, 249);
+    /* border-bottom: 2px solid white; */
+}
 
+#ScaleSettingPopup #ManualScaleArea {
+    background-color: rgb(194, 216, 244);
+    /* border-bottom: 2px solid white; */
+}
+
+#ScaleSettingPopup #NoScaleArea {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: rgb(184, 208, 238);
+}
