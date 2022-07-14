@@ -34,84 +34,76 @@
     <name>ScaleSettingPopup</name>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="14"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="128"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="174"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="44"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="175"/>
         <source>Auto Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="64"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="129"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="176"/>
         <source>No Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="74"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="130"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="177"/>
         <source>By Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="81"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="131"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="178"/>
         <source>By Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="88"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="132"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="179"/>
         <source>By Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="107"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="180"/>
         <source>Fixed Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="130"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="181"/>
         <source>Fix Width (%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="137"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="182"/>
         <source>Fix Height (%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="144"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="183"/>
         <source>Fix Width (px)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="151"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="184"/>
         <source>Fix Height (px)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="133"/>
-        <source>Manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="134"/>
-        <source>Manual &amp;&amp; Fix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="176"/>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="205"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="135"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="185"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="186"/>
         <source>0%</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="136"/>
-        <source>200%</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
