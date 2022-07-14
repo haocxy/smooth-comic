@@ -90,11 +90,11 @@ void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
             const QPointF ratioPos = sprite.ratioPos();
             const QSize spriteSize = sprite.realSize();
             if (spriteSize.width() > sceneSize_.width()) {
-                targetPos.setX(sceneSize_.width() * ratioPos.x());
-                targetPos.setY(sceneSize_.height() / 2);
+                targetPos.setX(std::round(sceneSize_.width() * ratioPos.x()));
+                targetPos.setY(sprite.pos().y());
             } else if (spriteSize.height() > sceneSize_.height()) {
-                targetPos.setX(sceneSize_.width() / 2);
-                targetPos.setY(sceneSize_.height() * ratioPos.y());
+                targetPos.setX(sprite.pos().x());
+                targetPos.setY(std::round(sceneSize_.height() * ratioPos.y()));
             }
 
         } else {
@@ -103,6 +103,7 @@ void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
 
         // 如果四周有多余的空间，则调整页面位置以利用
         const QRect tryRect = sprite.spriteRectForPos(targetPos);
+
         //const int hUsableSpace = sceneSize_.width() - tryRect.width();
         //const int vUsableSpace = sceneSize_.height() - tryRect.height();
 
@@ -130,13 +131,13 @@ void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
             targetPos.ry() -= tryRect.top();
         }
         if (tryRect.bottom() < sceneSize_.height()) {
-            targetPos.ry() += sceneSize_.height() - tryRect.bottom();
+            targetPos.ry() += sceneSize_.height() - tryRect.bottom() - 1;
         }
         if (tryRect.left() > 0) {
             targetPos.rx() -= tryRect.left();
         }
         if (tryRect.right() < sceneSize_.width()) {
-            targetPos.rx() += sceneSize_.width() - tryRect.right();
+            targetPos.rx() += sceneSize_.width() - tryRect.right() - 1;
         }
         sprite.moveTo(targetPos);
     } else {
