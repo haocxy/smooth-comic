@@ -59,6 +59,42 @@ PageScene::MoveLock PageScene::determineMoveLock() const
     }
 }
 
+void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
+{
+    if (sprite.isMovable(sceneSize_)) {
+
+        QPoint targetPos;
+        if (scaleMode_ == ScaleMode::AutoFitAreaWidth) {
+            targetPos.setX(sceneSize_.width() / 2);
+            targetPos.setY(sceneSize_.height() * sprite.ratioPos().y());
+        } else if (scaleMode_ == ScaleMode::AutoFitAreaHeight) {
+            targetPos.setX(sceneSize_.width() * sprite.ratioPos().x());
+            targetPos.setY(sceneSize_.height() / 2);
+        } else {
+            throw std::logic_error("PageScene::adjustSpritePosByRatio() bad scaleMode_");
+        }
+
+        const QRect tryRect = sprite.spriteRectForPos(targetPos);
+
+        // 如果四周有多余的空间，则调整页面位置以利用
+        if (tryRect.top() > 0) {
+            targetPos.ry() -= tryRect.top();
+        }
+        if (tryRect.bottom() < sceneSize_.height()) {
+            targetPos.ry() += sceneSize_.height() - tryRect.bottom();
+        }
+        if (tryRect.left() > 0) {
+            targetPos.rx() -= tryRect.left();
+        }
+        if (tryRect.right() < sceneSize_.width()) {
+            targetPos.rx() += sceneSize_.width() - tryRect.right();
+        }
+        sprite.moveTo(targetPos);
+    } else {
+        sprite.moveTo(QPoint(sceneSize_.width() / 2, sceneSize_.height() / 2));
+    }
+}
+
 void PageScene::setScaleMode(ScaleMode scaleMode)
 {
     if (scaleMode_ != scaleMode) {
@@ -112,6 +148,8 @@ void PageScene::movePage(int dx, int dy)
         }
 
         primaryPage_->moveBy(realDX, realDY);
+
+        primaryPage_->setRatioPosByAreaSize(sceneSize_);
 
         emit cmdUpdate();
     }
@@ -190,12 +228,15 @@ void PageScene::layoutPage(PageSprite &sprite)
     switch (scaleMode_) {
     case ScaleMode::AutoFitAreaSize:
         sprite.adjustAreaSize(sceneSize_);
+        sprite.moveTo(QPoint(sceneSize_.width() / 2, sceneSize_.height() / 2));
         break;
     case ScaleMode::AutoFitAreaWidth:
         sprite.adjustAreaWidth(sceneSize_.width());
+        adjustSpritePosByRatio(sprite);
         break;
     case ScaleMode::AutoFitAreaHeight:
         sprite.adjustAreaHeight(sceneSize_.height());
+        adjustSpritePosByRatio(sprite);
         break;
     case ScaleMode::Manual:
         // 手动定位模式时，不自动调整页面缩放
@@ -204,7 +245,7 @@ void PageScene::layoutPage(PageSprite &sprite)
         break;
     }
 
-    sprite.moveTo(QPoint(sceneSize_.width() / 2, sceneSize_.height() / 2));
+    sprite.setRatioPosByAreaSize(sceneSize_);
 
     emit cmdUpdate();
 }

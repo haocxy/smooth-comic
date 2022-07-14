@@ -76,6 +76,8 @@ private:
     };
 
     MoveLock determineMoveLock() const;
+
+    void adjustSpritePosByRatio(PageSprite &sprite);
     
 
 private:

@@ -48,6 +48,18 @@ public:
 
     void moveBy(int dx, int dy);
 
+    const QPointF &ratioPos() const {
+        return ratioPos_;
+    }
+
+    // 直接设置此属性不会改变绘制状态，这个属性是由外部逻辑使用的。
+    // 若要真正修改位置，要使用 moveXXX 系列函数。
+    void setRatioPos(const QPointF &ratioPos) {
+        ratioPos_ = ratioPos;
+    }
+
+    void setRatioPosByAreaSize(const QSize &areaSize);
+
     bool isMovable(const QSize &areaSize) const;
 
     QPoint pos() const {
@@ -62,10 +74,14 @@ public:
     }
 
     QRect spriteRect() const {
+        return spriteRectForPos(pos_);
+    }
+
+    QRect spriteRectForPos(const QPoint &pos) const {
         const QSize realSize = this->realSize();
         QRect rect(QPoint(0, 0), realSize);
         rect.translate(-realSize.width() * anchor_.x(), -realSize.height() * anchor_.y());
-        rect.translate(pos_);
+        rect.translate(pos);
         return rect;
     }
 
@@ -79,8 +95,13 @@ private:
 
     QPixmap rawImg_;
 
+    // 锚点在显示区域的绝对坐标
     QPoint pos_{ 0, 0 };
 
+    // 锚点在显示区域的比例坐标，范围为 0 到 1
+    QPointF ratioPos_{ 0.5, 0.5 };
+
+    // 锚点，范围为 0 到 1
     QPointF anchor_{ 0.5, 0.5 };
 
     PageDirection dir_{ PageDirection::Up };
