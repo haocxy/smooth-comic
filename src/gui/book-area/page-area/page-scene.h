@@ -71,6 +71,11 @@ private:
 
     void onBecomePrimaryScene();
 
+    enum class MoveLock {
+        NoLock, LockHorizontal, LocakVertical,
+    };
+
+    MoveLock determineMoveLock() const;
     
 
 private:

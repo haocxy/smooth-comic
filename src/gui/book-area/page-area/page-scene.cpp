@@ -47,6 +47,18 @@ void PageScene::onBecomePrimaryScene()
     emit controller_.sigScaleRangeUpdated(minScale, maxScale);
 }
 
+PageScene::MoveLock PageScene::determineMoveLock() const
+{
+    switch (scaleMode_) {
+    case ScaleMode::AutoFitAreaWidth:
+        return PageScene::MoveLock::LockHorizontal;
+    case ScaleMode::AutoFitAreaHeight:
+        return PageScene::MoveLock::LocakVertical;
+    default:
+        return PageScene::MoveLock::NoLock;
+    }
+}
+
 void PageScene::setScaleMode(ScaleMode scaleMode)
 {
     if (scaleMode_ != scaleMode) {
@@ -79,18 +91,24 @@ void PageScene::movePage(int dx, int dy)
     if (primaryPage_) {
         const QRect spriteRect = primaryPage_->spriteRect();
 
+        const MoveLock lock = determineMoveLock();
+
         int realDX = 0;
-        if (dx > 0) {
-            realDX = boundMoveVal(dx, -spriteRect.left());
-        } else if (dx < 0) {
-            realDX = -boundMoveVal(-dx, spriteRect.right() - sceneSize_.width());
+        if (lock != MoveLock::LockHorizontal) {
+            if (dx > 0) {
+                realDX = boundMoveVal(dx, -spriteRect.left());
+            } else if (dx < 0) {
+                realDX = -boundMoveVal(-dx, spriteRect.right() - sceneSize_.width());
+            }
         }
 
         int realDY = 0;
-        if (dy > 0) {
-            realDY = boundMoveVal(dy, -spriteRect.top());
-        } else if (dy < 0) {
-            realDY = -boundMoveVal(-dy, spriteRect.bottom() - sceneSize_.height());
+        if (lock != MoveLock::LocakVertical) {
+            if (dy > 0) {
+                realDY = boundMoveVal(dy, -spriteRect.top());
+            } else if (dy < 0) {
+                realDY = -boundMoveVal(-dy, spriteRect.bottom() - sceneSize_.height());
+            }
         }
 
         primaryPage_->moveBy(realDX, realDY);
