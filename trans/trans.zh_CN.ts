@@ -40,48 +40,76 @@
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="44"/>
+        <source>Auto Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="64"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="129"/>
         <source>No Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="54"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="74"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="130"/>
         <source>By Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="61"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="81"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="131"/>
         <source>By Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="68"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="88"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="132"/>
         <source>By Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="75"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="107"/>
+        <source>Fixed Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="130"/>
+        <source>Fix Width (%)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="137"/>
+        <source>Fix Height (%)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="144"/>
+        <source>Fix Width (px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="151"/>
+        <source>Fix Height (px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="133"/>
         <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="82"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="134"/>
         <source>Manual &amp;&amp; Fix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="107"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="176"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="205"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="135"/>
         <source>0%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="136"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="136"/>
         <source>200%</source>
         <translation type="unfinished"></translation>
