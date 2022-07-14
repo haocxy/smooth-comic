@@ -59,7 +59,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton">
+       <widget class="QRadioButton" name="radioNoScale">
         <property name="text">
          <string>No Scale</string>
         </property>
@@ -125,28 +125,28 @@
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_5">
+       <widget class="QRadioButton" name="radioFixWidthRatio">
         <property name="text">
          <string>Fix Width (%)</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_6">
+       <widget class="QRadioButton" name="radioFixHeightRatio">
         <property name="text">
          <string>Fix Height (%)</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_4">
+       <widget class="QRadioButton" name="radioFixWidthPx">
         <property name="text">
          <string>Fix Width (px)</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_3">
+       <widget class="QRadioButton" name="radioFixHeightPx">
         <property name="text">
          <string>Fix Height (px)</string>
         </property>

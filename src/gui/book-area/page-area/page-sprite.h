@@ -44,6 +44,8 @@ public:
 
     void rotateByOneStep();
 
+    void scale(float f);
+
     void moveTo(const QPoint &pos);
 
     void moveBy(int dx, int dy);
@@ -86,8 +88,6 @@ public:
     }
 
 private:
-    void scale(float f);
-
     void updateMatrix() const;
 
 private:
@@ -99,7 +99,7 @@ private:
     QPoint pos_{ 0, 0 };
 
     // 锚点在显示区域的比例坐标，范围为 0 到 1
-    QPointF ratioPos_{ 0.5, 0.5 };
+    QPointF ratioPos_{ 0, 0 };
 
     // 锚点，范围为 0 到 1
     QPointF anchor_{ 0.5, 0.5 };

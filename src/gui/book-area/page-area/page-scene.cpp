@@ -49,13 +49,29 @@ void PageScene::onBecomePrimaryScene()
 
 PageScene::MoveLock PageScene::determineMoveLock() const
 {
+    using Lock = PageScene::MoveLock;
+
     switch (scaleMode_) {
+    case ScaleMode::NoScale:
+    {
+        const QSize realSize = primaryPage_->realSize();
+        const bool hOver = realSize.width() > sceneSize_.width();
+        const bool vOver = realSize.height() > sceneSize_.height();
+        if (hOver && vOver) {
+            return Lock::NoLock;
+        } else if (hOver) {
+            return Lock::LocakVertical;
+        } else {
+            // if vOver
+            return Lock::LockHorizontal;
+        }
+    }
     case ScaleMode::AutoFitAreaWidth:
-        return PageScene::MoveLock::LockHorizontal;
+        return Lock::LockHorizontal;
     case ScaleMode::AutoFitAreaHeight:
-        return PageScene::MoveLock::LocakVertical;
+        return Lock::LocakVertical;
     default:
-        return PageScene::MoveLock::NoLock;
+        return Lock::NoLock;
     }
 }
 
@@ -70,13 +86,46 @@ void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
         } else if (scaleMode_ == ScaleMode::AutoFitAreaHeight) {
             targetPos.setX(sceneSize_.width() * sprite.ratioPos().x());
             targetPos.setY(sceneSize_.height() / 2);
+        } else if (scaleMode_ == ScaleMode::NoScale) {
+            const QPointF ratioPos = sprite.ratioPos();
+            const QSize spriteSize = sprite.realSize();
+            if (spriteSize.width() > sceneSize_.width()) {
+                targetPos.setX(sceneSize_.width() * ratioPos.x());
+                targetPos.setY(sceneSize_.height() / 2);
+            } else if (spriteSize.height() > sceneSize_.height()) {
+                targetPos.setX(sceneSize_.width() / 2);
+                targetPos.setY(sceneSize_.height() * ratioPos.y());
+            }
+
         } else {
             throw std::logic_error("PageScene::adjustSpritePosByRatio() bad scaleMode_");
         }
 
-        const QRect tryRect = sprite.spriteRectForPos(targetPos);
-
         // 如果四周有多余的空间，则调整页面位置以利用
+        const QRect tryRect = sprite.spriteRectForPos(targetPos);
+        //const int hUsableSpace = sceneSize_.width() - tryRect.width();
+        //const int vUsableSpace = sceneSize_.height() - tryRect.height();
+
+        //if (hUsableSpace > 0) {
+        //    const int leftUsableSpace = tryRect.left();
+        //    const int rightUsableSpace = sceneSize_.width() - tryRect.right() - 1;
+        //    if (leftUsableSpace >= rightUsableSpace) {
+        //        targetPos.rx() -= hUsableSpace / 2;
+        //    } else {
+        //        targetPos.rx() += hUsableSpace / 2;
+        //    }
+        //}
+
+        //if (vUsableSpace > 0) {
+        //    const int topUsableSpace = tryRect.top();
+        //    const int bottomUsableSpace = sceneSize_.height() - tryRect.bottom() - 1;
+        //    if (topUsableSpace > 0 && bottomUsableSpace <= 0) {
+        //        targetPos.ry() -= vUsableSpace / 2;
+        //    } else if (bottomUsableSpace > 0 && topUsableSpace <= 0) {
+        //        targetPos.ry() += vUsableSpace / 2;
+        //    }
+        //}
+
         if (tryRect.top() > 0) {
             targetPos.ry() -= tryRect.top();
         }
@@ -226,6 +275,10 @@ void PageScene::layoutPages()
 void PageScene::layoutPage(PageSprite &sprite)
 {
     switch (scaleMode_) {
+    case ScaleMode::NoScale:
+        sprite.scale(1.0);
+        adjustSpritePosByRatio(sprite);
+        break;
     case ScaleMode::AutoFitAreaSize:
         sprite.adjustAreaSize(sceneSize_);
         sprite.moveTo(QPoint(sceneSize_.width() / 2, sceneSize_.height() / 2));
@@ -237,9 +290,6 @@ void PageScene::layoutPage(PageSprite &sprite)
     case ScaleMode::AutoFitAreaHeight:
         sprite.adjustAreaHeight(sceneSize_.height());
         adjustSpritePosByRatio(sprite);
-        break;
-    case ScaleMode::Manual:
-        // 手动定位模式时，不自动调整页面缩放
         break;
     default:
         break;

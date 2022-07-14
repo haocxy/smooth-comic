@@ -29,6 +29,9 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     connect(&controller_, &Controller::sigScaleRangeUpdated, this,
         &ScaleSettingPopup::updateScaleRange);
 
+    connect(ui_->radioNoScale, &QRadioButton::clicked, &controller_,
+        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::NoScale));
+
     connect(ui_->radioScaleBySize, &QRadioButton::clicked, &controller_,
         std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaSize));
 
