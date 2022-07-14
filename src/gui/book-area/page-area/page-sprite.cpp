@@ -70,17 +70,17 @@ void PageSprite::draw(QPainter &painter) const
     painter.drawPixmap(QRect(x, y, w, h), rawImg_);
 }
 
-float PageSprite::calcMinScale(const QSizeF &areaSize) const
+float PageSprite::calcMinScale(const QSize &areaSize) const
 {
     return 0.5f; // TODO
 }
 
-float PageSprite::calcMaxScale(const QSizeF &areaSize) const
+float PageSprite::calcMaxScale(const QSize &areaSize) const
 {
     return 2.0f; // TODO
 }
 
-static QSizeF calcShowSizeForAdjustAreaSize(const QSizeF &imgSize, const QSizeF &areaSize)
+static QSize calcShowSizeForAdjustAreaSize(const QSize &imgSize, const QSizeF &areaSize)
 {
     if (imgSize.width() > 0 && imgSize.height() > 0) {
         const qreal scaleW = areaSize.width() / imgSize.width();
@@ -88,29 +88,29 @@ static QSizeF calcShowSizeForAdjustAreaSize(const QSizeF &imgSize, const QSizeF 
         const qreal scale = std::min(scaleW, scaleH);
         return imgSize * scale;
     } else {
-        return QSizeF();
+        return QSize();
     }
 }
 
-void PageSprite::adjustAreaSize(const QSizeF &areaSize)
+void PageSprite::adjustAreaSize(const QSize &areaSize)
 {
     if (rotatedSize_.width() > 0) {
-        const QSizeF showSize = calcShowSizeForAdjustAreaSize(rotatedSize_, areaSize);
-        scale(showSize.width() / rotatedSize_.width());
+        const QSize showSize = calcShowSizeForAdjustAreaSize(rotatedSize_, areaSize);
+        scale(qreal(showSize.width()) / rotatedSize_.width());
     }
 }
 
 void PageSprite::adjustAreaWidth(int areaWidth)
 {
     if (rotatedSize_.width() > 0 && areaWidth > 0) {
-        scale(areaWidth / rotatedSize_.width());
+        scale(qreal(areaWidth) / rotatedSize_.width());
     }
 }
 
 void PageSprite::adjustAreaHeight(int areaHeight)
 {
     if (rotatedSize_.height() > 0 && areaHeight > 0) {
-        scale(areaHeight / rotatedSize_.height());
+        scale(qreal(areaHeight) / rotatedSize_.height());
     }
 }
 
@@ -147,28 +147,23 @@ void PageSprite::rotateByOneStep()
     dirty_ = true;
 }
 
-void PageSprite::moveTo(const QPointF &pos)
+void PageSprite::moveTo(const QPoint &pos)
 {
     pos_ = pos;
     dirty_ = true;
 }
 
-void PageSprite::moveBy(qreal dx, qreal dy)
+void PageSprite::moveBy(int dx, int dy)
 {
     pos_.rx() += dx;
     pos_.ry() += dy;
     dirty_ = true;
 }
 
-bool PageSprite::isMovable(const QSizeF &areaSize) const
+bool PageSprite::isMovable(const QSize &areaSize) const
 {
     return std::floor(rotatedSize_.width() * scale_) > areaSize.width()
         || std::floor(rotatedSize_.height() * scale_) > areaSize.height();
-}
-
-QSizeF PageSprite::rotatedSize() const
-{
-    return QSizeF();
 }
 
 void PageSprite::scale(float f)

@@ -5,7 +5,9 @@
 
 #include <QObject>
 #include <QSize>
+#include <QPoint>
 
+#include "core/basetype.h"
 #include "core/declare_ptr.h"
 #include "core/obj-handle.h"
 
@@ -37,7 +39,7 @@ public:
 
     PageNum primaryPageSeq() const;
 
-    void updateSceneSize(const QSizeF &sceneSize);
+    void updateSceneSize(const QSize &sceneSize);
 
     void rotatePagesByOneStep();
 
@@ -50,6 +52,8 @@ public:
     void setScaleMode(ScaleMode scaleMode);
 
     bool isPageMovable() const;
+
+    void movePage(int dx, int dy);
 
 signals:
     void cmdUpdate();
@@ -80,7 +84,7 @@ private:
 
     DeclarePtr<PageSprite> primaryPage_;
 
-    QSizeF sceneSize_;
+    QSize sceneSize_;
 
     ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
 

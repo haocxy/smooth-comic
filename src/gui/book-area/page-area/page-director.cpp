@@ -135,7 +135,22 @@ void PageDirector::rotatePageByOneStep()
 
 bool PageDirector::isPageMovable() const
 {
-    return primaryScene_ && primaryScene_->isPageMovable();
+    if (primaryScene_) {
+        if (isAlwaysCanMovePage_) {
+            return true;
+        } else {
+            return primaryScene_->isPageMovable();
+        }
+    } else {
+        return false;
+    }
+}
+
+void PageDirector::movePage(int dx, int dy)
+{
+    if (primaryScene_) {
+        primaryScene_->movePage(dx, dy);
+    }
 }
 
 void PageDirector::pageLoaded(const PageInfo &page)

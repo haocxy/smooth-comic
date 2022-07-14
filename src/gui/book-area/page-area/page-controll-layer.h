@@ -93,7 +93,11 @@ protected:
 
     virtual void enterEvent(QEnterEvent *e) override;
 
+    virtual void mousePressEvent(QMouseEvent *e) override;
+
     virtual void mouseReleaseEvent(QMouseEvent *e) override;
+
+    virtual void mouseMoveEvent(QMouseEvent *e) override;
 
 private:
     Controller &controller_;
@@ -103,6 +107,12 @@ private:
     AreaConfig areaConfig_;
 
     bool showControllAreas_{ false };
+
+    bool isPageMovable_{ false };
+
+    bool isPageMoving_{ false };
+
+    QPoint moveStart_;
 };
 
 }

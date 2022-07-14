@@ -61,6 +61,44 @@ bool PageScene::isPageMovable() const
     return primaryPage_ && primaryPage_->isMovable(sceneSize_);
 }
 
+static int boundMoveVal(int x, int max)
+{
+    if (x < 0) [[unlikely]] {
+        return 0;
+    }
+
+    if (x > max) [[unlikely]] {
+        return max;
+    }
+
+    return x;
+}
+
+void PageScene::movePage(int dx, int dy)
+{
+    if (primaryPage_) {
+        const QRect spriteRect = primaryPage_->spriteRect();
+
+        int realDX = 0;
+        if (dx > 0) {
+            realDX = boundMoveVal(dx, -spriteRect.left());
+        } else if (dx < 0) {
+            realDX = -boundMoveVal(-dx, spriteRect.right() - sceneSize_.width());
+        }
+
+        int realDY = 0;
+        if (dy > 0) {
+            realDY = boundMoveVal(dy, -spriteRect.top());
+        } else if (dy < 0) {
+            realDY = -boundMoveVal(-dy, spriteRect.bottom() - sceneSize_.height());
+        }
+
+        primaryPage_->moveBy(realDX, realDY);
+
+        emit cmdUpdate();
+    }
+}
+
 void PageScene::draw(QPainter &painter) const
 {
     PainterSaver saver(painter);
@@ -86,7 +124,7 @@ void PageScene::setPrimaryPage(DeclarePtr<PageSprite> &&sprite)
     emit cmdUpdate();
 }
 
-void PageScene::updateSceneSize(const QSizeF &sceneSize)
+void PageScene::updateSceneSize(const QSize &sceneSize)
 {
     sceneSize_ = sceneSize;
 
@@ -148,7 +186,7 @@ void PageScene::layoutPage(PageSprite &sprite)
         break;
     }
 
-    sprite.moveTo(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
+    sprite.moveTo(QPoint(sceneSize_.width() / 2, sceneSize_.height() / 2));
 
     emit cmdUpdate();
 }

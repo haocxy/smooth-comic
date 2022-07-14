@@ -30,11 +30,11 @@ public:
 
     void draw(QPainter &painter) const;
 
-    float calcMinScale(const QSizeF &areaSize) const;
+    float calcMinScale(const QSize &areaSize) const;
 
-    float calcMaxScale(const QSizeF &areaSize) const;
+    float calcMaxScale(const QSize &areaSize) const;
 
-    void adjustAreaSize(const QSizeF &areaSize);
+    void adjustAreaSize(const QSize &areaSize);
 
     void adjustAreaWidth(int areaWidth);
 
@@ -44,13 +44,30 @@ public:
 
     void rotateByOneStep();
 
-    void moveTo(const QPointF &pos);
+    void moveTo(const QPoint &pos);
 
-    void moveBy(qreal dx, qreal dy);
+    void moveBy(int dx, int dy);
 
-    bool isMovable(const QSizeF &areaSize) const;
+    bool isMovable(const QSize &areaSize) const;
 
-    QSizeF rotatedSize() const;
+    QPoint pos() const {
+        return pos_;
+    }
+
+    QSize realSize() const {
+        return QSize(
+            rotatedSize_.width() * scale_,
+            rotatedSize_.height() * scale_
+        );
+    }
+
+    QRect spriteRect() const {
+        const QSize realSize = this->realSize();
+        QRect rect(QPoint(0, 0), realSize);
+        rect.translate(-realSize.width() * anchor_.x(), -realSize.height() * anchor_.y());
+        rect.translate(pos_);
+        return rect;
+    }
 
 private:
     void scale(float f);
@@ -62,15 +79,15 @@ private:
 
     QPixmap rawImg_;
 
-    QPointF pos_{ 0, 0 };
+    QPoint pos_{ 0, 0 };
 
     QPointF anchor_{ 0.5, 0.5 };
 
     PageDirection dir_{ PageDirection::Up };
 
-    QSizeF rotatedSize_;
+    QSize rotatedSize_;
 
-    float scale_{ 1 };
+    qreal scale_{ 1 };
 
     mutable QTransform matrix_;
 

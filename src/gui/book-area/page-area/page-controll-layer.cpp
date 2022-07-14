@@ -51,23 +51,52 @@ void PageControllLayer::paintEvent(QPaintEvent *e)
 
 void PageControllLayer::enterEvent(QEnterEvent *e)
 {
-    if (director_.isPageMovable()) {
+    isPageMovable_ = director_.isPageMovable();
+
+    if (isPageMovable_) {
         setCursor(Qt::CursorShape::OpenHandCursor);
     } else {
         setCursor(Qt::CursorShape::ArrowCursor);
     }
 }
 
+void PageControllLayer::mousePressEvent(QMouseEvent *e)
+{
+    if (isPageMovable_) {
+        isPageMoving_ = true;
+        setCursor(Qt::CursorShape::ClosedHandCursor);
+
+        moveStart_ = e->pos();
+    }
+}
+
 void PageControllLayer::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (areaConfig_.leftSwitcher().contains(e->pos())) {
-        emit controller_.cmdSwitchPage(SwitchDirection::Left);
-        return;
-    }
+    if (isPageMoving_) {
 
-    if (areaConfig_.rightSwitcher().contains(e->pos())) {
-        emit controller_.cmdSwitchPage(SwitchDirection::Right);
-        return;
+        isPageMoving_ = false;
+        setCursor(Qt::CursorShape::OpenHandCursor);
+
+    } else {
+
+        if (areaConfig_.leftSwitcher().contains(e->pos())) {
+            emit controller_.cmdSwitchPage(SwitchDirection::Left);
+        } else if (areaConfig_.rightSwitcher().contains(e->pos())) {
+            emit controller_.cmdSwitchPage(SwitchDirection::Right);
+        }
+
+    }
+}
+
+void PageControllLayer::mouseMoveEvent(QMouseEvent *e)
+{
+    if (isPageMoving_) {
+        const QPoint moveStart = moveStart_;
+        const QPoint moveEnd = e->pos();
+        moveStart_ = moveEnd;
+
+        const QPoint moveDelta = moveEnd - moveStart;
+        director_.movePage(moveDelta.x(), moveDelta.y());
     }
 }
 

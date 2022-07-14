@@ -55,6 +55,8 @@ public:
 
     bool isPageMovable() const;
 
+    void movePage(int dx, int dy);
+
 signals:
     void cmdUpdate();
 
@@ -77,6 +79,8 @@ private:
     QSize showSize_;
 
     ScaleMode currentScaleMode_{ ScaleMode::AutoFitAreaSize };
+
+    bool isAlwaysCanMovePage_{ false };
 
     DeclarePtr<PageScene> primaryScene_;
 
