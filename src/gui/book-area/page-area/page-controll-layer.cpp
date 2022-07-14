@@ -5,12 +5,15 @@
 
 #include "controller/controller.h"
 
+#include "page-director.h"
+
 
 namespace myapp {
 
-PageControllLayer::PageControllLayer(Controller &controller, QWidget *parent)
+PageControllLayer::PageControllLayer(Controller &controller, PageDirector &director, QWidget *parent)
     : QWidget(parent)
     , controller_(controller)
+    , director_(director)
 {
     QSizePolicy sp{ sizePolicy() };
     sp.setHorizontalStretch(QSizePolicy::Policy::Expanding);
@@ -43,6 +46,15 @@ void PageControllLayer::paintEvent(QPaintEvent *e)
         color.setAlphaF(0.5);
         p.fillRect(areaConfig_.leftSwitcher(), color);
         p.fillRect(areaConfig_.rightSwitcher(), color);
+    }
+}
+
+void PageControllLayer::enterEvent(QEnterEvent *e)
+{
+    if (director_.isPageMovable()) {
+        setCursor(Qt::CursorShape::OpenHandCursor);
+    } else {
+        setCursor(Qt::CursorShape::ArrowCursor);
     }
 }
 

@@ -31,7 +31,7 @@ class PageDirector;
 class PageSwitcher : public QWidget {
     Q_OBJECT
 public:
-    explicit PageSwitcher(Controller &controller, QWidget *parent = nullptr);
+    explicit PageSwitcher(Controller &controller, PageDirector &director, QWidget *parent = nullptr);
 
     virtual ~PageSwitcher();
 
@@ -45,9 +45,9 @@ private:
 private:
     Controller &controller_;
 
-    QtObjStrandEntry strandEntry_;
+    PageDirector &director_;
 
-    QPointer<PageDirector> director_;
+    QtObjStrandEntry strandEntry_;
 
     StrongHandle<PageSwitcher> handle_;
 };

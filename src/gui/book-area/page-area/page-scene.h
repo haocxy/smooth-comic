@@ -49,6 +49,8 @@ public:
 
     void setScaleMode(ScaleMode scaleMode);
 
+    bool isPageMovable() const;
+
 signals:
     void cmdUpdate();
 

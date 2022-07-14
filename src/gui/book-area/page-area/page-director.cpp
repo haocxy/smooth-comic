@@ -133,6 +133,11 @@ void PageDirector::rotatePageByOneStep()
     }
 }
 
+bool PageDirector::isPageMovable() const
+{
+    return primaryScene_ && primaryScene_->isPageMovable();
+}
+
 void PageDirector::pageLoaded(const PageInfo &page)
 {
     loadedPages_[page.seqNum] = page;

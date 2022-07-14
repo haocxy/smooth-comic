@@ -20,14 +20,13 @@ static DebugOption<bool> dopLog("log.need.page-switcher", true,
 using logger::gLogger;
 
 
-PageSwitcher::PageSwitcher(Controller &controller, QWidget *parent)
+PageSwitcher::PageSwitcher(Controller &controller, PageDirector &director, QWidget *parent)
     : QWidget(parent)
     , controller_(controller)
+    , director_(director)
     , handle_(*this)
 {
-    director_ = new PageDirector(controller_, this);
-
-    connect(director_, &PageDirector::cmdUpdate, this, [this] {
+    connect(&director_, &PageDirector::cmdUpdate, this, [this] {
         update();
     });
 }
@@ -39,13 +38,13 @@ PageSwitcher::~PageSwitcher()
 
 void PageSwitcher::resizeEvent(QResizeEvent *e)
 {
-    director_->updateShowSize(size());
+    director_.updateShowSize(size());
 }
 
 void PageSwitcher::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
-    director_->draw(painter);
+    director_.draw(painter);
 }
 
 }

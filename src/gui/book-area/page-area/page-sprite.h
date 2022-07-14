@@ -48,6 +48,10 @@ public:
 
     void moveBy(qreal dx, qreal dy);
 
+    bool isMovable(const QSizeF &areaSize) const;
+
+    QSizeF rotatedSize() const;
+
 private:
     void scale(float f);
 
@@ -63,6 +67,8 @@ private:
     QPointF anchor_{ 0.5, 0.5 };
 
     PageDirection dir_{ PageDirection::Up };
+
+    QSizeF rotatedSize_;
 
     float scale_{ 1 };
 

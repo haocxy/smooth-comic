@@ -56,6 +56,11 @@ void PageScene::setScaleMode(ScaleMode scaleMode)
     }
 }
 
+bool PageScene::isPageMovable() const
+{
+    return primaryPage_ && primaryPage_->isMovable(sceneSize_);
+}
+
 void PageScene::draw(QPainter &painter) const
 {
     PainterSaver saver(painter);

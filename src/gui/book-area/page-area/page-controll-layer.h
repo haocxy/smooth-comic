@@ -11,11 +11,13 @@ namespace myapp {
 
 class Controller;
 
+class PageDirector;
+
 
 class PageControllLayer : public QWidget {
     Q_OBJECT
 public:
-    explicit PageControllLayer(Controller &controller, QWidget *parent = nullptr);
+    explicit PageControllLayer(Controller &controller, PageDirector &director, QWidget *parent = nullptr);
 
     virtual ~PageControllLayer();
 
@@ -89,11 +91,17 @@ protected:
 
     virtual void paintEvent(QPaintEvent *e) override;
 
+    virtual void enterEvent(QEnterEvent *e) override;
+
     virtual void mouseReleaseEvent(QMouseEvent *e) override;
 
 private:
     Controller &controller_;
+
+    PageDirector &director_;
+
     AreaConfig areaConfig_;
+
     bool showControllAreas_{ false };
 };
 

@@ -1,5 +1,7 @@
 #include "page-sprite.h"
 
+#include <cmath>
+
 #include <QPainter>
 
 #include "gui-util/painter-saver.h"
@@ -43,6 +45,8 @@ PageSprite::PageSprite(PageNum seqNum, const QPixmap &rawImg, QObject *parent)
     , rawImg_(rawImg)
 {
     updateMatrix();
+
+    rotatedSize_ = calcRotatedSize(rawImg_.size(), dir_);
 }
 
 PageSprite::~PageSprite()
@@ -76,7 +80,7 @@ float PageSprite::calcMaxScale(const QSizeF &areaSize) const
     return 2.0f; // TODO
 }
 
-static QSizeF calcShowSize(const QSizeF &imgSize, const QSizeF &areaSize)
+static QSizeF calcShowSizeForAdjustAreaSize(const QSizeF &imgSize, const QSizeF &areaSize)
 {
     if (imgSize.width() > 0 && imgSize.height() > 0) {
         const qreal scaleW = areaSize.width() / imgSize.width();
@@ -90,33 +94,32 @@ static QSizeF calcShowSize(const QSizeF &imgSize, const QSizeF &areaSize)
 
 void PageSprite::adjustAreaSize(const QSizeF &areaSize)
 {
-    const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
-
-    if (rotatedSize.width() > 0) {
-        const QSizeF showSize = calcShowSize(rotatedSize, areaSize);
-        scale(showSize.width() / rotatedSize.width());
+    if (rotatedSize_.width() > 0) {
+        const QSizeF showSize = calcShowSizeForAdjustAreaSize(rotatedSize_, areaSize);
+        scale(showSize.width() / rotatedSize_.width());
     }
 }
 
 void PageSprite::adjustAreaWidth(int areaWidth)
 {
-    const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
-    if (rotatedSize.width() > 0 && areaWidth > 0) {
-        scale(areaWidth / rotatedSize.width());
+    if (rotatedSize_.width() > 0 && areaWidth > 0) {
+        scale(areaWidth / rotatedSize_.width());
     }
 }
 
 void PageSprite::adjustAreaHeight(int areaHeight)
 {
-    const QSizeF rotatedSize = calcRotatedSize(rawImg_.size(), dir_);
-    if (rotatedSize.height() > 0 && areaHeight > 0) {
-        scale(areaHeight / rotatedSize.height());
+    if (rotatedSize_.height() > 0 && areaHeight > 0) {
+        scale(areaHeight / rotatedSize_.height());
     }
 }
 
 void PageSprite::rotateTo(PageDirection direction)
 {
     dir_ = direction;
+
+    rotatedSize_ = calcRotatedSize(rawImg_.size(), dir_);
+
     dirty_ = true;
 }
 
@@ -139,6 +142,8 @@ void PageSprite::rotateByOneStep()
         break;
     }
 
+    rotatedSize_ = calcRotatedSize(rawImg_.size(), dir_);
+
     dirty_ = true;
 }
 
@@ -153,6 +158,17 @@ void PageSprite::moveBy(qreal dx, qreal dy)
     pos_.rx() += dx;
     pos_.ry() += dy;
     dirty_ = true;
+}
+
+bool PageSprite::isMovable(const QSizeF &areaSize) const
+{
+    return std::floor(rotatedSize_.width() * scale_) > areaSize.width()
+        || std::floor(rotatedSize_.height() * scale_) > areaSize.height();
+}
+
+QSizeF PageSprite::rotatedSize() const
+{
+    return QSizeF();
 }
 
 void PageSprite::scale(float f)

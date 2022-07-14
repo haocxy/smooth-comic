@@ -53,6 +53,8 @@ public:
 
     void rotatePageByOneStep();
 
+    bool isPageMovable() const;
+
 signals:
     void cmdUpdate();
 

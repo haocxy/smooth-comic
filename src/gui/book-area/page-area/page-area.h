@@ -4,6 +4,8 @@
 #include <QPointer>
 #include <QStackedLayout>
 
+#include "core/declare_ptr.h"
+
 #include "page-controll-layer.h"
 #include "page-switcher.h"
 
@@ -14,6 +16,8 @@ class Book;
 
 class Controller;
 
+class PageDirector;
+
 
 class PageArea : public QWidget {
     Q_OBJECT
@@ -23,6 +27,7 @@ public:
     virtual ~PageArea();
 
 private:
+    DeclarePtr<PageDirector> director_;
     QPointer<QStackedLayout> layout_;
     QPointer<PageControllLayer> controllLayer_;
     QPointer<PageSwitcher> switcher_;
