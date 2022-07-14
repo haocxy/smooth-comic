@@ -21,6 +21,7 @@ namespace myapp {
 class Controller;
 
 class BookStatus : public QWidget {
+    Q_OBJECT
 public:
     explicit BookStatus(Controller &controller, QWidget *parent = nullptr);
 

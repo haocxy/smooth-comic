@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QFileSystemWatcher>
 #include <QFontDatabase>
+#include <QTranslator>
 
 #include <boost/program_options.hpp>
 
@@ -21,6 +22,19 @@
 
 #include "cmd-option.h"
 
+
+class QtResourceSystemIniter {
+public:
+    QtResourceSystemIniter() {
+        Q_INIT_RESOURCE(resources);
+    }
+
+    ~QtResourceSystemIniter() {
+        Q_CLEANUP_RESOURCE(resources);
+    }
+};
+
+static const QtResourceSystemIniter gQtResourceSystemIniter;
 
 namespace myapp {
 
@@ -105,6 +119,11 @@ int body_entry(int argc, char *argv[])
     QApplication app(argc, argv);
 
     registerQtMetaTypes();
+
+    QTranslator translator;
+    if (translator.load(QLocale(), "trans", ".", ":/trans")) {
+        QCoreApplication::installTranslator(&translator);
+    }
 
     Engine engine;
 
