@@ -41,3 +41,4 @@
 /src/**/asset.*.h
 /src/**/asset.*.cpp
 
+/trans/*.qm

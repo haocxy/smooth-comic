@@ -95,6 +95,16 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     message(STATUS "option: -lpthread")
 endif()
 
+# 更新Qt翻译文件(.ts)和发布文件(.qm文件)
+execute_process(
+    COMMAND "lupdate" "src/gui" "-ts" "trans/trans.zh_CN.ts"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+execute_process(
+    COMMAND "lrelease" "trans/trans.zh_CN.ts" "-qm" "trans/trans.zh_CN.qm"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
 add_subdirectory(src)
 
 set_target_properties(
