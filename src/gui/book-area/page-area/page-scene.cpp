@@ -102,7 +102,7 @@ void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
         }
 
         // 如果四周有多余的空间，则调整页面位置以利用
-        const QRect tryRect = sprite.spriteRectForPos(targetPos);
+        QRect tryRect = sprite.spriteRectForPos(targetPos);
 
         //const int hUsableSpace = sceneSize_.width() - tryRect.width();
         //const int vUsableSpace = sceneSize_.height() - tryRect.height();
@@ -127,17 +127,36 @@ void PageScene::adjustSpritePosByRatio(PageSprite &sprite)
         //    }
         //}
 
+        bool topMoved = false;
         if (tryRect.top() > 0) {
-            targetPos.ry() -= tryRect.top();
+            const int dy = -tryRect.top();
+            targetPos.ry() += dy;
+            tryRect.translate(0, dy);
+            topMoved = true;
         }
         if (tryRect.bottom() < sceneSize_.height()) {
-            targetPos.ry() += sceneSize_.height() - tryRect.bottom() - 1;
+            const int space = sceneSize_.height() - tryRect.bottom() - 1;
+            if (topMoved) {
+                targetPos.ry() += space / 2;
+            } else {
+                targetPos.ry() += space;
+            }
         }
+
+        bool leftMoved = false;
         if (tryRect.left() > 0) {
-            targetPos.rx() -= tryRect.left();
+            const int dx = -tryRect.left();
+            targetPos.rx() += dx;
+            tryRect.translate(dx, 0);
+            leftMoved = true;
         }
         if (tryRect.right() < sceneSize_.width()) {
-            targetPos.rx() += sceneSize_.width() - tryRect.right() - 1;
+            const int space = sceneSize_.width() - tryRect.right() - 1;
+            if (leftMoved) {
+                targetPos.rx() += space / 2;
+            } else {
+                targetPos.rx() += space;
+            }
         }
         sprite.moveTo(targetPos);
     } else {
