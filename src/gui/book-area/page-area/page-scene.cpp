@@ -78,6 +78,8 @@ PageScene::MoveLock PageScene::determineMoveLock() const
 static int goodPrimaryPageOffset(qreal ratioOffset, int pageLength, int sceneLength)
 {
     if (pageLength <= sceneLength) {
+        // 这个逻辑很重要！
+        // 用于保证当页面在该方向上没有超出显示范围时不会发生由浮点数运算或逻辑错误引入的抖动
         return sceneLength / 2;
     } else {
         return int(std::round(ratioOffset * sceneLength));
