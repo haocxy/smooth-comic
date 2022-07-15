@@ -247,14 +247,14 @@ void PageScene::movePage(int dx, int dy)
         switch (scaleMode_) {
         case ScaleMode::NoScale:
         case ScaleMode::AutoFitAreaSize:
-        case ScaleMode::AutoFitAreaWidth:
-        case ScaleMode::AutoFitAreaHeight:
             savePrimaryPageRatioPos();
             break;
+        case ScaleMode::AutoFitAreaWidth:
         case ScaleMode::FixWidthByRatio:
         case ScaleMode::FixWidthByPixel:
             savePrimaryPageRatioY();
             break;
+        case ScaleMode::AutoFitAreaHeight:
         case ScaleMode::FixHeightByRatio:
         case ScaleMode::FixHeightByPixel:
             savePrimaryPageRatioX();
