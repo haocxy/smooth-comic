@@ -83,10 +83,6 @@ private:
 
     void savePrimaryPageRatioPos();
 
-    void savePrimaryPageRatioX();
-
-    void savePrimaryPageRatioY();
-
     void savePrimaryPageRatioSize();
 
     void savePrimaryPageRatioWidth();

@@ -153,18 +153,6 @@ void PageScene::savePrimaryPageRatioPos()
     primaryPageRatioPos_.setY(qreal(pos.y()) / sceneSize_.height());
 }
 
-void PageScene::savePrimaryPageRatioX()
-{
-    const QPoint pos = primaryPage_->pos();
-    primaryPageRatioPos_.setX(qreal(pos.x()) / sceneSize_.width());
-}
-
-void PageScene::savePrimaryPageRatioY()
-{
-    const QPoint pos = primaryPage_->pos();
-    primaryPageRatioPos_.setY(qreal(pos.y()) / sceneSize_.height());
-}
-
 void PageScene::savePrimaryPageRatioSize()
 {
     const QSize realSize = primaryPage_->realSize();
@@ -244,24 +232,7 @@ void PageScene::movePage(int dx, int dy)
 
         primaryPage_->moveBy(realDX, realDY);
 
-        switch (scaleMode_) {
-        case ScaleMode::NoScale:
-        case ScaleMode::AutoFitAreaSize:
-            savePrimaryPageRatioPos();
-            break;
-        case ScaleMode::AutoFitAreaWidth:
-        case ScaleMode::FixWidthByRatio:
-        case ScaleMode::FixWidthByPixel:
-            savePrimaryPageRatioY();
-            break;
-        case ScaleMode::AutoFitAreaHeight:
-        case ScaleMode::FixHeightByRatio:
-        case ScaleMode::FixHeightByPixel:
-            savePrimaryPageRatioX();
-            break;
-        default:
-            break;
-        }
+        savePrimaryPageRatioPos();
 
         emit cmdUpdate();
     }
@@ -369,7 +340,7 @@ void PageScene::layoutPage(PageSprite &sprite)
             sprite.adjustAreaSize(sceneSize_);
         }
         adjustSpritePos(sprite);
-        savePrimaryPageRatioY();
+        savePrimaryPageRatioPos();
         savePrimaryPageRatioHeight();
         break;
     case ScaleMode::FixHeightByRatio:
@@ -379,7 +350,7 @@ void PageScene::layoutPage(PageSprite &sprite)
             sprite.adjustAreaSize(sceneSize_);
         }
         adjustSpritePos(sprite);
-        savePrimaryPageRatioX();
+        savePrimaryPageRatioPos();
         savePrimaryPageRatioWidth();
         break;
     default:
