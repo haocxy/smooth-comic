@@ -50,18 +50,6 @@ public:
 
     void moveBy(int dx, int dy);
 
-    const QPointF &ratioPos() const {
-        return ratioPos_;
-    }
-
-    // 直接设置此属性不会改变绘制状态，这个属性是由外部逻辑使用的。
-    // 若要真正修改位置，要使用 moveXXX 系列函数。
-    void setRatioPos(const QPointF &ratioPos) {
-        ratioPos_ = ratioPos;
-    }
-
-    void setRatioPosByAreaSize(const QSize &areaSize);
-
     bool isMovable(const QSize &areaSize) const;
 
     QPoint pos() const {
@@ -87,6 +75,30 @@ public:
         return rect;
     }
 
+public:
+
+    const QPointF &ratioPos() const {
+        return ratioPos_;
+    }
+
+    // 直接设置此属性不会改变绘制状态，这个属性是由外部逻辑使用的。
+    // 若要真正修改位置，要使用 moveXXX 系列函数。
+    void setRatioPos(const QPointF &ratioPos) {
+        ratioPos_ = ratioPos;
+    }
+
+    void setRatioPosByAreaSize(const QSize &areaSize);
+
+    const std::optional<QPointF> &ratioSize() const {
+        return ratioSize_;
+    }
+
+    void setRatioSize(const QPointF &ratioSize) {
+        ratioSize_ = ratioSize;
+    }
+
+    void setRatioSizeByAreaSize(const QSize &areaSize);
+
 private:
     void updateMatrix() const;
 
@@ -97,9 +109,6 @@ private:
 
     // 锚点在显示区域的绝对坐标
     QPoint pos_{ 0, 0 };
-
-    // 锚点在显示区域的比例坐标，范围为 0 到 1
-    QPointF ratioPos_{ 0, 0 };
 
     // 锚点，范围为 0 到 1
     QPointF anchor_{ 0.5, 0.5 };
@@ -113,9 +122,15 @@ private:
     mutable QTransform matrix_;
 
     mutable bool dirty_{ true };
+
+private:
+
+    // 锚点在显示区域的比例坐标，仅由外部逻辑使用
+    QPointF ratioPos_{ 0, 0 };
+
+    // 按比例计算的页面尺寸，仅由外部逻辑使用
+    std::optional<QPointF> ratioSize_;
 };
-
-
 
 
 }

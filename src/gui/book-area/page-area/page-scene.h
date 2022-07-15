@@ -77,8 +77,7 @@ private:
 
     MoveLock determineMoveLock() const;
 
-    void adjustSpritePosByRatio(PageSprite &sprite);
-    
+    void adjustSpritePos(PageSprite &sprite);
 
 private:
     QtObjStrandEntry strandEntry_;

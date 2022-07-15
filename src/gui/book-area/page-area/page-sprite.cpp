@@ -179,6 +179,14 @@ void PageSprite::scale(float f)
     dirty_ = true;
 }
 
+void PageSprite::setRatioSizeByAreaSize(const QSize &areaSize)
+{
+    const QSize realSize = this->realSize();
+    const qreal wRatio = qreal(realSize.width()) / areaSize.width();
+    const qreal hRatio = qreal(realSize.height()) / areaSize.height();
+    setRatioSize(QPointF(wRatio, hRatio));
+}
+
 void PageSprite::updateMatrix() const
 {
     if (!dirty_) {

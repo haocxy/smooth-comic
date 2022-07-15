@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+#include <QButtonGroup>
 #include <QGraphicsDropShadowEffect>
 
 #include "controller/controller.h"
@@ -26,20 +27,11 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     shadow->setOffset(0, 0);
     setGraphicsEffect(shadow);
 
+
     connect(&controller_, &Controller::sigScaleRangeUpdated, this,
         &ScaleSettingPopup::updateScaleRange);
 
-    connect(ui_->radioNoScale, &QRadioButton::clicked, &controller_,
-        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::NoScale));
-
-    connect(ui_->radioScaleBySize, &QRadioButton::clicked, &controller_,
-        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaSize));
-
-    connect(ui_->radioScaleByWidth, &QRadioButton::clicked, &controller_,
-        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaWidth));
-
-    connect(ui_->radioScaleByHeight, &QRadioButton::clicked, &controller_,
-        std::bind(&Controller::cmdSetScaleMode, &controller_, ScaleMode::AutoFitAreaHeight));
+    bindScaleModeButtons();
 
     ui_->radioScaleBySize->setChecked(true);
 }
@@ -51,6 +43,35 @@ ScaleSettingPopup::~ScaleSettingPopup()
 static QString percentToText(int p)
 {
     return QString::number(p) + QString("%");
+}
+
+void ScaleSettingPopup::bindScaleModeButtons()
+{
+    QButtonGroup *group = new QButtonGroup(this);
+
+    auto bind = [this, group](QRadioButton *button, ScaleMode mode) {
+        group->addButton(button);
+        connect(button, &QRadioButton::clicked, &controller_,
+            std::bind(&Controller::cmdSetScaleMode, &controller_, mode));
+    };
+
+    using e = ScaleMode;
+
+    bind(ui_->radioNoScale, e::NoScale);
+
+    bind(ui_->radioScaleBySize, e::AutoFitAreaSize);
+
+    bind(ui_->radioScaleByWidth, e::AutoFitAreaWidth);
+
+    bind(ui_->radioScaleByHeight, e::AutoFitAreaHeight);
+
+    bind(ui_->radioFixWidthRatio, e::FixWidthByRatio);
+
+    bind(ui_->radioFixHeightRatio, e::FixHeightByRatio);
+
+    bind(ui_->radioFixWidthPx, e::FixWidthByPixel);
+
+    bind(ui_->radioFixHeightPx, e::FixHeightByPixel);
 }
 
 void ScaleSettingPopup::updateScaleRange(float minScale, float maxScale)

@@ -24,6 +24,8 @@ public:
     virtual ~ScaleSettingPopup();
 
 private:
+    void bindScaleModeButtons();
+
     void updateScaleRange(float minScale, float maxScale);
 
     void updateScale(float scale);
