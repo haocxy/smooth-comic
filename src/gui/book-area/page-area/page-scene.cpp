@@ -164,6 +164,17 @@ void PageScene::adjustSpritePos(PageSprite &sprite)
     }
 }
 
+bool PageScene::shouldUpdateRatio() const
+{
+    switch (scaleMode_) {
+    case ScaleMode::FixWidthByRatio:
+    case ScaleMode::FixHeightByRatio:
+        return false;
+    default:
+        return true;
+    }
+}
+
 void PageScene::setScaleMode(ScaleMode scaleMode)
 {
     if (scaleMode_ != scaleMode) {
@@ -222,7 +233,9 @@ void PageScene::movePage(int dx, int dy)
 
         primaryPage_->moveBy(realDX, realDY);
 
-        primaryPage_->setRatioPosByAreaSize(sceneSize_);
+        if (shouldUpdateRatio()) {
+            primaryPage_->setRatioPosByAreaSize(sceneSize_);
+        }
 
         emit cmdUpdate();
     }
@@ -331,8 +344,10 @@ void PageScene::layoutPage(PageSprite &sprite)
 
     adjustSpritePos(sprite);
 
-    sprite.setRatioPosByAreaSize(sceneSize_);
-    sprite.setRatioSizeByAreaSize(sceneSize_);
+    if (shouldUpdateRatio()) {
+        sprite.setRatioPosByAreaSize(sceneSize_);
+        sprite.setRatioSizeByAreaSize(sceneSize_);
+    }
 
     emit cmdUpdate();
 }

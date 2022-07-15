@@ -79,6 +79,8 @@ private:
 
     void adjustSpritePos(PageSprite &sprite);
 
+    bool shouldUpdateRatio() const;
+
 private:
     QtObjStrandEntry strandEntry_;
 
