@@ -340,21 +340,25 @@ void PageScene::layoutPage(PageSprite &sprite)
     switch (scaleMode_) {
     case ScaleMode::NoScale:
         sprite.scale(1.0);
+        adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
         break;
     case ScaleMode::AutoFitAreaSize:
         sprite.adjustAreaSize(sceneSize_);
+        adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
         break;
     case ScaleMode::AutoFitAreaWidth:
         sprite.adjustAreaWidth(sceneSize_.width());
+        adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
         break;
     case ScaleMode::AutoFitAreaHeight:
         sprite.adjustAreaHeight(sceneSize_.height());
+        adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
         break;
@@ -364,6 +368,7 @@ void PageScene::layoutPage(PageSprite &sprite)
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
+        adjustSpritePos(sprite);
         savePrimaryPageRatioY();
         savePrimaryPageRatioHeight();
         break;
@@ -373,14 +378,13 @@ void PageScene::layoutPage(PageSprite &sprite)
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
+        adjustSpritePos(sprite);
         savePrimaryPageRatioX();
         savePrimaryPageRatioWidth();
         break;
     default:
         break;
     }
-
-    adjustSpritePos(sprite);
 
     emit cmdUpdate();
 }
