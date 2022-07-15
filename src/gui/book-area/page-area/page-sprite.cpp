@@ -160,13 +160,6 @@ void PageSprite::moveBy(int dx, int dy)
     dirty_ = true;
 }
 
-void PageSprite::setRatioPosByAreaSize(const QSize &areaSize)
-{
-    const qreal xRatio = qreal(pos_.x()) / areaSize.width();
-    const qreal yRatio = qreal(pos_.y()) / areaSize.height();
-    setRatioPos(QPointF(xRatio, yRatio));
-}
-
 bool PageSprite::isMovable(const QSize &areaSize) const
 {
     return std::floor(rotatedSize_.width() * scale_) > areaSize.width()
@@ -177,14 +170,6 @@ void PageSprite::scale(float f)
 {
     scale_ = f;
     dirty_ = true;
-}
-
-void PageSprite::setRatioSizeByAreaSize(const QSize &areaSize)
-{
-    const QSize realSize = this->realSize();
-    const qreal wRatio = qreal(realSize.width()) / areaSize.width();
-    const qreal hRatio = qreal(realSize.height()) / areaSize.height();
-    setRatioSize(QPointF(wRatio, hRatio));
 }
 
 void PageSprite::updateMatrix() const

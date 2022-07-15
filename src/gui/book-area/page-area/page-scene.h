@@ -77,9 +77,21 @@ private:
 
     MoveLock determineMoveLock() const;
 
+    QPoint goodPrimaryPagePoint() const;
+
     void adjustSpritePos(PageSprite &sprite);
 
-    bool shouldUpdateRatio() const;
+    void savePrimaryPageRatioPos();
+
+    void savePrimaryPageRatioX();
+
+    void savePrimaryPageRatioY();
+
+    void savePrimaryPageRatioSize();
+
+    void savePrimaryPageRatioWidth();
+
+    void savePrimaryPageRatioHeight();
 
 private:
     QtObjStrandEntry strandEntry_;
@@ -95,6 +107,12 @@ private:
     QSize sceneSize_;
 
     ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
+
+    // 主页面锚点在显示区域的比例坐标，仅由外部逻辑使用
+    QPointF primaryPageRatioPos_{ 0, 0 };
+
+    // 主页面按比例计算的页面尺寸，仅由外部逻辑使用
+    std::optional<QSizeF> primaryPageRatioSize_;
 
     StrongHandle<PageScene> handle_;
 };
