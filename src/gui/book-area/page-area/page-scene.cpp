@@ -166,6 +166,8 @@ void PageScene::adjustSpritePos(PageSprite &sprite)
 
 bool PageScene::shouldUpdateRatio() const
 {
+    // 在某些缩放模式中不更新比例，避免因浮点数误差导致的多次调整窗口尺寸后积累误差
+
     switch (scaleMode_) {
     case ScaleMode::FixWidthByRatio:
     case ScaleMode::FixHeightByRatio:
