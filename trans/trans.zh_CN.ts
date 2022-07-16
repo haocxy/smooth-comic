@@ -78,19 +78,19 @@
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="130"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="181"/>
         <source>Fix Pixel Size</source>
-        <translation type="unfinished">固定像素尺寸</translation>
+        <translation type="unfinished">像素尺寸</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="137"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="182"/>
         <source>Fix Width (%)</source>
-        <translation type="unfinished">固定宽度占比</translation>
+        <translation type="unfinished">宽度占比</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="144"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="183"/>
         <source>Fix Height (%)</source>
-        <translation type="unfinished">固定高度占比</translation>
+        <translation type="unfinished">高度占比</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="163"/>
