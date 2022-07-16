@@ -59,9 +59,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioNoScale">
+       <widget class="QRadioButton" name="radioRawSize">
         <property name="text">
-         <string>No Scale</string>
+         <string>Raw Size</string>
         </property>
        </widget>
       </item>

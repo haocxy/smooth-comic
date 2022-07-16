@@ -4,7 +4,7 @@
 namespace myapp {
 
 enum class ScaleMode {
-    NoScale,
+    RawSize,
     AutoFitAreaSize,
     AutoFitAreaWidth,
     AutoFitAreaHeight,

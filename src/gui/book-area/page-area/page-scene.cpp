@@ -52,7 +52,7 @@ PageScene::MoveLock PageScene::determineMoveLock() const
     using Lock = PageScene::MoveLock;
 
     switch (scaleMode_) {
-    case ScaleMode::NoScale:
+    case ScaleMode::RawSize:
     {
         const QSize realSize = primaryPage_->realSize();
         const bool hOver = realSize.width() > sceneSize_.width();
@@ -311,7 +311,7 @@ void PageScene::layoutPages()
 void PageScene::layoutPage(PageSprite &sprite)
 {
     switch (scaleMode_) {
-    case ScaleMode::NoScale:
+    case ScaleMode::RawSize:
         sprite.scale(1.0);
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();

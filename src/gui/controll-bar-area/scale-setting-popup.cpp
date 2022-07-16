@@ -57,7 +57,7 @@ void ScaleSettingPopup::bindScaleModeButtons()
 
     using e = ScaleMode;
 
-    bind(ui_->radioNoScale, e::NoScale);
+    bind(ui_->radioRawSize, e::RawSize);
 
     bind(ui_->radioScaleBySize, e::AutoFitAreaSize);
 

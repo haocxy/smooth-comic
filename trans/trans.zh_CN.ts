@@ -47,14 +47,14 @@
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="64"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="176"/>
-        <source>No Scale</source>
-        <translation type="unfinished">原始大小</translation>
+        <source>Raw Size</source>
+        <translation type="unfinished">原始尺寸</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="74"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="177"/>
         <source>By Size</source>
-        <translation type="unfinished">适应尺寸</translation>
+        <translation type="unfinished">适应区域</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="81"/>
