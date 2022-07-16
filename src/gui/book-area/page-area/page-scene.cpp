@@ -355,12 +355,6 @@ void PageScene::layoutPage(PageSprite &sprite)
         savePrimaryPageRatioPos();
         savePrimaryPageRatioWidth();
         break;
-    case ScaleMode::FixByPixel:
-        // 维持当前缩放即可
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        break;
     default:
         break;
     }

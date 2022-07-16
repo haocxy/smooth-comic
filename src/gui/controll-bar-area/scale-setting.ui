@@ -125,9 +125,16 @@
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioFixPx">
+       <widget class="QRadioButton" name="radioFixWidthPx">
         <property name="text">
-         <string>Fix Pixel Size</string>
+         <string>Fix Width (px)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioFixHeightPx">
+        <property name="text">
+         <string>Fix Height (px)</string>
         </property>
        </widget>
       </item>
