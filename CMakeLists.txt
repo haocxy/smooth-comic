@@ -97,7 +97,7 @@ endif()
 
 # 更新Qt翻译文件(.ts)和发布文件(.qm文件)
 execute_process(
-    COMMAND "lupdate" "src/gui" "-ts" "trans/trans.zh_CN.ts"
+    COMMAND "lupdate" "src/gui" "-ts" "-no-obsolete" "trans/trans.zh_CN.ts"
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 execute_process(

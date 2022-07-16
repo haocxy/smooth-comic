@@ -10,8 +10,7 @@ enum class ScaleMode {
     AutoFitAreaHeight,
     FixWidthByRatio,
     FixHeightByRatio,
-    FixWidthByPixel,
-    FixHeightByPixel,
+    FixByPixel,
 };
 
 }

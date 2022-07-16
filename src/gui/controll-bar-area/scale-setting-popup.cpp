@@ -69,9 +69,7 @@ void ScaleSettingPopup::bindScaleModeButtons()
 
     bind(ui_->radioFixHeightRatio, e::FixHeightByRatio);
 
-    bind(ui_->radioFixWidthPx, e::FixWidthByPixel);
-
-    bind(ui_->radioFixHeightPx, e::FixHeightByPixel);
+    bind(ui_->radioFixPx, e::FixByPixel);
 }
 
 void ScaleSettingPopup::updateScaleRange(float minScale, float maxScale)

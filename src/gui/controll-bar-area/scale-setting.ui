@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
+    <width>679</width>
     <height>390</height>
    </rect>
   </property>
@@ -125,6 +125,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QRadioButton" name="radioFixPx">
+        <property name="text">
+         <string>Fix Pixel Size</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QRadioButton" name="radioFixWidthRatio">
         <property name="text">
          <string>Fix Width (%)</string>
@@ -135,20 +142,6 @@
        <widget class="QRadioButton" name="radioFixHeightRatio">
         <property name="text">
          <string>Fix Height (%)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="radioFixWidthPx">
-        <property name="text">
-         <string>Fix Width (px)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="radioFixHeightPx">
-        <property name="text">
-         <string>Fix Height (px)</string>
         </property>
        </widget>
       </item>
@@ -164,6 +157,13 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Manual Scale</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLabel" name="scaleMinValue">
         <property name="minimumSize">
