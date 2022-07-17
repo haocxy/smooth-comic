@@ -176,6 +176,11 @@ void PageScene::savePrimaryPageRatioHeight()
     primaryPageRatioSize_->setHeight(qreal(realSize.height()) / sceneSize_.height());
 }
 
+void PageScene::savePrimaryPagePixelSize()
+{
+    primaryPagePixelSize_ = primaryPage_->realSize();
+}
+
 void PageScene::setScaleMode(ScaleMode scaleMode)
 {
     if (scaleMode_ != scaleMode) {
@@ -316,24 +321,28 @@ void PageScene::layoutPage(PageSprite &sprite)
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
+        savePrimaryPagePixelSize();
         break;
     case ScaleMode::AutoFitAreaSize:
         sprite.adjustAreaSize(sceneSize_);
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
+        savePrimaryPagePixelSize();
         break;
     case ScaleMode::AutoFitAreaWidth:
         sprite.adjustAreaWidth(sceneSize_.width());
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
+        savePrimaryPagePixelSize();
         break;
     case ScaleMode::AutoFitAreaHeight:
         sprite.adjustAreaHeight(sceneSize_.height());
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioSize();
+        savePrimaryPagePixelSize();
         break;
     case ScaleMode::FixWidthByRatio:
         if (primaryPageRatioSize_) {
@@ -344,6 +353,7 @@ void PageScene::layoutPage(PageSprite &sprite)
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioHeight();
+        savePrimaryPagePixelSize();
         break;
     case ScaleMode::FixHeightByRatio:
         if (primaryPageRatioSize_) {
@@ -354,6 +364,29 @@ void PageScene::layoutPage(PageSprite &sprite)
         adjustSpritePos(sprite);
         savePrimaryPageRatioPos();
         savePrimaryPageRatioWidth();
+        savePrimaryPagePixelSize();
+        break;
+    case ScaleMode::FixWidthByPixel:
+        if (primaryPagePixelSize_) {
+            sprite.adjustAreaWidth(primaryPagePixelSize_->width());
+        } else {
+            sprite.adjustAreaSize(sceneSize_);
+        }
+        adjustSpritePos(sprite);
+        savePrimaryPageRatioPos();
+        savePrimaryPageRatioSize();
+        savePrimaryPagePixelSize();
+        break;
+    case ScaleMode::FixHeightByPixel:
+        if (primaryPagePixelSize_) {
+            sprite.adjustAreaHeight(primaryPagePixelSize_->height());
+        } else {
+            sprite.adjustAreaSize(sceneSize_);
+        }
+        adjustSpritePos(sprite);
+        savePrimaryPageRatioPos();
+        savePrimaryPageRatioSize();
+        savePrimaryPagePixelSize();
         break;
     default:
         break;

@@ -89,6 +89,8 @@ private:
 
     void savePrimaryPageRatioHeight();
 
+    void savePrimaryPagePixelSize();
+
 private:
     QtObjStrandEntry strandEntry_;
 
@@ -109,6 +111,8 @@ private:
 
     // 主页面按比例计算的页面尺寸，仅由外部逻辑使用
     std::optional<QSizeF> primaryPageRatioSize_;
+
+    std::optional<QSize> primaryPagePixelSize_;
 
     StrongHandle<PageScene> handle_;
 };
