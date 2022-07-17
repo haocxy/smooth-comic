@@ -2,6 +2,7 @@
 
 #include <QFrame>
 #include <QPointer>
+#include <QLabel>
 #include <QBoxLayout>
 
 #include "gui-util/popup-layer/popup-layer-widget.h"
@@ -30,6 +31,8 @@ public:
 private:
     void bindScaleModeButtons();
 
+    void updateCurPercent(float scale);
+
 private:
     Controller &controller_;
 
@@ -38,6 +41,8 @@ private:
     QPointer<QHBoxLayout> controllAreaLayout_;
 
     QPointer<ControllButton> btnZoomOut_;
+
+    QPointer<QLabel> labelCurPercent_;
 
     QPointer<ControllButton> btnZoomIn_;
 };

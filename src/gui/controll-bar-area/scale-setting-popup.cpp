@@ -34,6 +34,11 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     controllAreaLayout_->addWidget(btnZoomOut_);
     connect(btnZoomOut_, &QPushButton::clicked, &controller_, &Controller::cmdZoomOut);
 
+    labelCurPercent_ = new QLabel(this);
+    labelCurPercent_->setMinimumWidth(32);
+    labelCurPercent_->setAlignment(Qt::AlignCenter);
+    controllAreaLayout_->addWidget(labelCurPercent_);
+
     btnZoomIn_ = new ControllButton(i::ZoomIn, this);
     controllAreaLayout_->addWidget(btnZoomIn_);
     connect(btnZoomIn_, &QPushButton::clicked, &controller_, &Controller::cmdZoomIn);
@@ -48,6 +53,8 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     setGraphicsEffect(shadow);
 
     bindScaleModeButtons();
+
+    connect(&controller_, &Controller::sigScaleUpdated, this, &ScaleSettingPopup::updateCurPercent);
 
     ui_->radioScaleBySize->setChecked(true);
 }
@@ -88,6 +95,12 @@ void ScaleSettingPopup::bindScaleModeButtons()
     bind(ui_->radioFixWidthPx, e::FixWidthByPixel);
 
     bind(ui_->radioFixHeightPx, e::FixHeightByPixel);
+}
+
+void ScaleSettingPopup::updateCurPercent(float scale)
+{
+    const int percent = std::round(scale * 100.0f);
+    labelCurPercent_->setText(percentToText(percent));
 }
 
 }

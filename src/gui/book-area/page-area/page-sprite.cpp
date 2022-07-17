@@ -83,12 +83,12 @@ static qreal calcScaleForAdjustAreaSize(const QSize &imgSize, const QSize &areaS
 
 float PageSprite::calcMinScale(const QSize &areaSize) const
 {
-    return std::min(1.0, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize / 2));
+    return std::min(0.5, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize / 2));
 }
 
 float PageSprite::calcMaxScale(const QSize &areaSize) const
 {
-    return std::max(1.0, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize * 2));
+    return std::max(2.0, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize * 2));
 }
 
 void PageSprite::adjustAreaSize(const QSize &areaSize)
