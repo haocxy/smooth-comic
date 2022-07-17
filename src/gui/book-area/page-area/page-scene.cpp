@@ -356,8 +356,19 @@ ScaleMode PageScene::scaleMode() const
 void PageScene::updateScaleRange()
 {
     if (primaryPage_) {
-        minScale_ = primaryPage_->calcMinScale(sceneSize_);
-        maxScale_ = primaryPage_->calcMaxScale(sceneSize_);
+
+        // 缩放范围只变大，保证已经选择的缩放比例不会变成无效值
+
+        const float minScale = primaryPage_->calcMinScale(sceneSize_);
+        if (minScale < minScale_) {
+            minScale_ = minScale;
+        }
+
+        const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
+        if (maxScale > maxScale_) {
+            maxScale_ = maxScale;
+        }
+
         emit controller_.sigScaleRangeUpdated(minScale_, maxScale_);
     }
 }

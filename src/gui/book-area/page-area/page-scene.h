@@ -118,9 +118,11 @@ private:
 
     ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
 
-    float minScale_{ 0 };
+    // 初始值选择一个比所有可能的值都大的值以保证能够被初始化
+    float minScale_{ std::numeric_limits<float>::max() };
 
-    float maxScale_{ 0 };
+    // 初始值选择一个比所有可能的值都小的值以保证能够被初始化
+    float maxScale_{ std::numeric_limits<float>::min() };
 
     // 主页面锚点在显示区域的比例坐标，仅由外部逻辑使用
     QPointF primaryPageRatioPos_{ 0, 0 };
