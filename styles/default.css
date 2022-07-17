@@ -90,3 +90,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     background-color: rgb(200, 200, 200);
     padding: 10px;
 }
+
+#ScaleSettingPopup #SliderArea QLabel {
+    color:rgb(80, 80, 80);
+}
+
+#ScaleSettingPopup #SliderArea #labelCurrScale {
+    color: rgb(0, 0, 0);
+}
