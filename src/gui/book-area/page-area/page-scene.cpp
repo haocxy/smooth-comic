@@ -363,7 +363,7 @@ void PageScene::adjustPageSize(PageSprite &sprite)
 {
     switch (scaleMode_) {
     case ScaleMode::RawSize:
-        sprite.scale(1.0);
+        sprite.setScale(1.0);
         break;
     case ScaleMode::AutoFitAreaSize:
         sprite.adjustAreaSize(sceneSize_);

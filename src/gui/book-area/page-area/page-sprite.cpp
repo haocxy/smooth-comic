@@ -96,21 +96,21 @@ void PageSprite::adjustAreaSize(const QSize &areaSize)
 {
     if (rotatedSize_.width() > 0) {
         const QSize showSize = calcShowSizeForAdjustAreaSize(rotatedSize_, areaSize);
-        scale(qreal(showSize.width()) / rotatedSize_.width());
+        setScale(qreal(showSize.width()) / rotatedSize_.width());
     }
 }
 
 void PageSprite::adjustAreaWidth(int areaWidth)
 {
     if (rotatedSize_.width() > 0 && areaWidth > 0) {
-        scale(qreal(areaWidth) / rotatedSize_.width());
+        setScale(qreal(areaWidth) / rotatedSize_.width());
     }
 }
 
 void PageSprite::adjustAreaHeight(int areaHeight)
 {
     if (rotatedSize_.height() > 0 && areaHeight > 0) {
-        scale(qreal(areaHeight) / rotatedSize_.height());
+        setScale(qreal(areaHeight) / rotatedSize_.height());
     }
 }
 
@@ -166,7 +166,7 @@ bool PageSprite::isMovable(const QSize &areaSize) const
         || std::floor(rotatedSize_.height() * scale_) > areaSize.height();
 }
 
-void PageSprite::scale(float f)
+void PageSprite::setScale(float f)
 {
     scale_ = f;
     dirty_ = true;

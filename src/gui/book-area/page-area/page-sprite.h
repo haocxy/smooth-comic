@@ -44,7 +44,7 @@ public:
 
     void rotateByOneStep();
 
-    void scale(float f);
+    void setScale(float f);
 
     void moveTo(const QPoint &pos);
 
