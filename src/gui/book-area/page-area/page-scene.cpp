@@ -227,6 +227,8 @@ void PageScene::setScale(float scale)
         const float boundedScale = boundScale(scale, minScale_, maxScale_);
         if (primaryPage_->scale() != boundedScale) {
             primaryPage_->setScale(boundedScale);
+            savePrimaryPagePixelSize();
+            savePrimaryPageRatioSize();
             emit controller_.sigScaleUpdated(boundedScale);
             emit cmdUpdate();
         }

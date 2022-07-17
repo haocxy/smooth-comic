@@ -102,7 +102,6 @@ void ScaleSettingPopup::updateScale(float scale)
 
 void ScaleSettingPopup::setScaleByPercent(int percent)
 {
-    qDebug() << "ScaleSettingPopup::setScaleByPercent(" << percent << ")";
     const float scale = float(percent) / 100.0f;
     emit controller_.cmdSetScale(scale);
 }
