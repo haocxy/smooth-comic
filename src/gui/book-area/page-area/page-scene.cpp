@@ -164,6 +164,27 @@ void PageScene::savePrimaryPageRatioSize()
     );
 }
 
+void PageScene::savePrimaryPageRatioSize(bool recalcRatioWidth, bool recalcRatioHeight)
+{
+    if (!primaryPageRatioSize_) [[unlikely]] {
+        savePrimaryPageRatioSize();
+        return;
+    }
+
+    if (recalcRatioWidth || recalcRatioHeight) {
+
+        const QSize realSize = primaryPage_->realSize();
+
+        if (recalcRatioWidth) {
+            primaryPageRatioSize_->setWidth(qreal(realSize.width()) / sceneSize_.width());
+        }
+
+        if (recalcRatioHeight) {
+            primaryPageRatioSize_->setHeight(qreal(realSize.height()) / sceneSize_.height());
+        }
+    }
+}
+
 void PageScene::savePrimaryPageRatioWidth()
 {
     const QSize realSize = primaryPage_->realSize();
@@ -315,34 +336,43 @@ void PageScene::layoutPages()
 
 void PageScene::layoutPage(PageSprite &sprite)
 {
+    // 调整页面尺寸
+    adjustPageSize(sprite);
+
+    // 调整页面位置
+    adjustSpritePos(sprite);
+
+    // 保存页面比例位置
+    savePrimaryPageRatioPos();
+
+    // 保存页面比例大小
+    // 为了避免运算误差导致抖动和位置错误，按需保存比例，如无必要则尽可能维持旧值
+    savePrimaryPageRatioSize(
+        shouldRecalcRatioWidth(),
+        shouldRecalcRatioHeight()
+    );
+
+    // 保存页面像素大小
+    savePrimaryPagePixelSize();
+
+    // 通知外部逻辑场景有更新
+    emit cmdUpdate();
+}
+
+void PageScene::adjustPageSize(PageSprite &sprite)
+{
     switch (scaleMode_) {
     case ScaleMode::RawSize:
         sprite.scale(1.0);
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::AutoFitAreaSize:
         sprite.adjustAreaSize(sceneSize_);
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::AutoFitAreaWidth:
         sprite.adjustAreaWidth(sceneSize_.width());
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::AutoFitAreaHeight:
         sprite.adjustAreaHeight(sceneSize_.height());
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::FixWidthByRatio:
         if (primaryPageRatioSize_) {
@@ -350,10 +380,6 @@ void PageScene::layoutPage(PageSprite &sprite)
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioHeight();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::FixHeightByRatio:
         if (primaryPageRatioSize_) {
@@ -361,10 +387,6 @@ void PageScene::layoutPage(PageSprite &sprite)
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioWidth();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::FixWidthByPixel:
         if (primaryPagePixelSize_) {
@@ -372,10 +394,6 @@ void PageScene::layoutPage(PageSprite &sprite)
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        savePrimaryPagePixelSize();
         break;
     case ScaleMode::FixHeightByPixel:
         if (primaryPagePixelSize_) {
@@ -383,16 +401,30 @@ void PageScene::layoutPage(PageSprite &sprite)
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
-        adjustSpritePos(sprite);
-        savePrimaryPageRatioPos();
-        savePrimaryPageRatioSize();
-        savePrimaryPagePixelSize();
         break;
     default:
         break;
     }
+}
 
-    emit cmdUpdate();
+bool PageScene::shouldRecalcRatioWidth() const
+{
+    switch (scaleMode_) {
+    case ScaleMode::FixWidthByRatio:
+        return false;
+    default:
+        return true;
+    }
+}
+
+bool PageScene::shouldRecalcRatioHeight() const
+{
+    switch (scaleMode_) {
+    case ScaleMode::FixHeightByRatio:
+        return false;
+    default:
+        return true;
+    }
 }
 
 

@@ -65,6 +65,12 @@ private:
 
     void layoutPage(PageSprite &sprite);
 
+    void adjustPageSize(PageSprite &sprite);
+
+    bool shouldRecalcRatioWidth() const;
+
+    bool shouldRecalcRatioHeight() const;
+
     void setPrimaryPage(DeclarePtr<PageSprite> &&sprite);
 
     void preparePrimaryPage(PageNum seqNum);
@@ -84,6 +90,8 @@ private:
     void savePrimaryPageRatioPos();
 
     void savePrimaryPageRatioSize();
+
+    void savePrimaryPageRatioSize(bool recalcRatioWidth, bool recalcRatioHeight);
 
     void savePrimaryPageRatioWidth();
 
