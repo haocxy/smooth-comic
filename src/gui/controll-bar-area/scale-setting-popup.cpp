@@ -31,6 +31,9 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     connect(&controller_, &Controller::sigScaleRangeUpdated, this,
         &ScaleSettingPopup::updateScaleRange);
 
+    connect(&controller_, &Controller::sigScaleUpdated, this,
+        &ScaleSettingPopup::updateScale);
+
     bindScaleModeButtons();
 
     ui_->radioScaleBySize->setChecked(true);
@@ -76,8 +79,8 @@ void ScaleSettingPopup::bindScaleModeButtons()
 
 void ScaleSettingPopup::updateScaleRange(float minScale, float maxScale)
 {
-    const int minPercent = std::floor(minScale * 100);
-    const int maxPercent = std::ceil(maxScale * 100);
+    const int minPercent = std::ceil(minScale * 100);
+    const int maxPercent = std::floor(maxScale * 100);
 
     ui_->scaleSlider->setMinimum(minPercent);
     ui_->scaleSlider->setMaximum(maxPercent);
@@ -88,7 +91,7 @@ void ScaleSettingPopup::updateScaleRange(float minScale, float maxScale)
 
 void ScaleSettingPopup::updateScale(float scale)
 {
-    const int percent = std::round(scale);
+    const int percent = std::round(scale * 100);
 
     ui_->scaleSlider->setValue(percent);
 }

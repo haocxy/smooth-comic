@@ -70,34 +70,30 @@ void PageSprite::draw(QPainter &painter) const
     painter.drawPixmap(QRect(x, y, w, h), rawImg_);
 }
 
+static qreal calcScaleForAdjustAreaSize(const QSize &imgSize, const QSize &areaSize)
+{
+    if (imgSize.width() > 0 && areaSize.width() > 0) {
+        const qreal scaleW = qreal(areaSize.width()) / imgSize.width();
+        const qreal scaleH = qreal(areaSize.height()) / imgSize.height();
+        return std::min(scaleW, scaleH);
+    } else {
+        return 0;
+    }
+}
+
 float PageSprite::calcMinScale(const QSize &areaSize) const
 {
-    return 0.5f; // TODO
+    return std::min(1.0, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize / 2));
 }
 
 float PageSprite::calcMaxScale(const QSize &areaSize) const
 {
-    return 2.0f; // TODO
-}
-
-static QSize calcShowSizeForAdjustAreaSize(const QSize &imgSize, const QSizeF &areaSize)
-{
-    if (imgSize.width() > 0 && imgSize.height() > 0) {
-        const qreal scaleW = areaSize.width() / imgSize.width();
-        const qreal scaleH = areaSize.height() / imgSize.height();
-        const qreal scale = std::min(scaleW, scaleH);
-        return imgSize * scale;
-    } else {
-        return QSize();
-    }
+    return std::max(1.0, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize * 2));
 }
 
 void PageSprite::adjustAreaSize(const QSize &areaSize)
 {
-    if (rotatedSize_.width() > 0) {
-        const QSize showSize = calcShowSizeForAdjustAreaSize(rotatedSize_, areaSize);
-        setScale(qreal(showSize.width()) / rotatedSize_.width());
-    }
+    setScale(calcScaleForAdjustAreaSize(rawImg_.size(), areaSize));
 }
 
 void PageSprite::adjustAreaWidth(int areaWidth)

@@ -40,11 +40,6 @@ void PageScene::preparePrimaryPage(PageNum seqNum)
 void PageScene::onBecomePrimaryScene()
 {
     assert(primaryPage_);
-
-    const float minScale = primaryPage_->calcMinScale(sceneSize_);
-    const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
-
-    emit controller_.sigScaleRangeUpdated(minScale, maxScale);
 }
 
 PageScene::MoveLock PageScene::determineMoveLock() const
@@ -295,6 +290,8 @@ void PageScene::updateSceneSize(const QSize &sceneSize)
 {
     sceneSize_ = sceneSize;
 
+    updateScaleRange();
+
     layoutPages();
 }
 
@@ -327,6 +324,15 @@ ScaleMode PageScene::scaleMode() const
     return scaleMode_;
 }
 
+void PageScene::updateScaleRange()
+{
+    if (primaryPage_) {
+        const float minScale = primaryPage_->calcMinScale(sceneSize_);
+        const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
+        emit controller_.sigScaleRangeUpdated(minScale, maxScale);
+    }
+}
+
 void PageScene::layoutPages()
 {
     if (primaryPage_) {
@@ -336,6 +342,8 @@ void PageScene::layoutPages()
 
 void PageScene::layoutPage(PageSprite &sprite)
 {
+    const float oldScale = sprite.scale();
+
     // 调整页面尺寸
     adjustPageSize(sprite);
 
@@ -354,6 +362,11 @@ void PageScene::layoutPage(PageSprite &sprite)
 
     // 保存页面像素大小
     savePrimaryPagePixelSize();
+
+    const float newScale = sprite.scale();
+    if (oldScale != newScale) {
+        emit controller_.sigScaleUpdated(newScale);
+    }
 
     // 通知外部逻辑场景有更新
     emit cmdUpdate();

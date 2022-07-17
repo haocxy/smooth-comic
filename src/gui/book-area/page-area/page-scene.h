@@ -61,6 +61,8 @@ signals:
     void sigPrimaryPagePrepared();
 
 private:
+    void updateScaleRange();
+
     void layoutPages();
 
     void layoutPage(PageSprite &sprite);
