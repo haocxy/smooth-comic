@@ -20,6 +20,8 @@ PageScene::PageScene(Controller &controller, PageNum primaryPage, QObject *paren
     preparePrimaryPage(primaryPageSeq_);
 
     connect(&controller_, &Controller::cmdSetScaleMode, this, &PageScene::setScaleMode);
+
+    connect(&controller_, &Controller::cmdSetScale, this, &PageScene::setScale);
 }
 
 PageScene::~PageScene()
@@ -206,6 +208,31 @@ void PageScene::setScaleMode(ScaleMode scaleMode)
     }
 }
 
+static float boundScale(float scale, float min, float max)
+{
+    if (scale < min) [[unlikely]] {
+        return min;
+    }
+
+    if (scale > max) [[unlikely]] {
+        return max;
+    }
+
+    return scale;
+}
+
+void PageScene::setScale(float scale)
+{
+    if (primaryPage_) {
+        const float boundedScale = boundScale(scale, minScale_, maxScale_);
+        if (primaryPage_->scale() != boundedScale) {
+            primaryPage_->setScale(boundedScale);
+            emit controller_.sigScaleUpdated(boundedScale);
+            emit cmdUpdate();
+        }
+    }
+}
+
 bool PageScene::isPageMovable() const
 {
     return primaryPage_ && primaryPage_->isMovable(sceneSize_);
@@ -327,9 +354,9 @@ ScaleMode PageScene::scaleMode() const
 void PageScene::updateScaleRange()
 {
     if (primaryPage_) {
-        const float minScale = primaryPage_->calcMinScale(sceneSize_);
-        const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
-        emit controller_.sigScaleRangeUpdated(minScale, maxScale);
+        minScale_ = primaryPage_->calcMinScale(sceneSize_);
+        maxScale_ = primaryPage_->calcMaxScale(sceneSize_);
+        emit controller_.sigScaleRangeUpdated(minScale_, maxScale_);
     }
 }
 

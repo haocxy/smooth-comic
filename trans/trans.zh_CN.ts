@@ -34,81 +34,77 @@
     <name>ScaleSettingPopup</name>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="14"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="180"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="182"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="44"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="181"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="183"/>
         <source>Auto Scale</source>
         <translation type="unfinished">自动缩放</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="64"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="182"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="184"/>
         <source>Raw Size</source>
         <translation type="unfinished">原始尺寸</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="74"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="183"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="185"/>
         <source>By Size</source>
         <translation type="unfinished">适应区域</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="81"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="184"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="186"/>
         <source>By Width</source>
         <translation type="unfinished">适应宽度</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="88"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="185"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="187"/>
         <source>By Height</source>
         <translation type="unfinished">适应高度</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="107"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="186"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="188"/>
         <source>Fixed Scale</source>
         <translation type="unfinished">固定缩放</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="130"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="187"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="189"/>
         <source>Fix Width (px)</source>
         <translation type="unfinished">宽度像素</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="137"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="188"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="190"/>
         <source>Fix Height (px)</source>
         <translation type="unfinished">高度像素</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="144"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="189"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="191"/>
         <source>Fix Width (%)</source>
         <translation type="unfinished">宽度占比</translation>
     </message>
     <message>
         <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="151"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="190"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="192"/>
         <source>Fix Height (%)</source>
         <translation type="unfinished">高度占比</translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="170"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="191"/>
-        <source>Manual Scale</source>
-        <translation type="unfinished">手动缩放</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="183"/>
-        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="212"/>
-        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="192"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="176"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="205"/>
+        <location filename="../src/gui/controll-bar-area/scale-setting.ui" line="218"/>
         <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="193"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="194"/>
+        <location filename="../src/gui/controll-bar-area/gen.scale-setting.ui.h" line="195"/>
         <source>0%</source>
         <translation type="unfinished"></translation>
     </message>

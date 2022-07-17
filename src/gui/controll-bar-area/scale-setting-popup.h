@@ -30,6 +30,8 @@ private:
 
     void updateScale(float scale);
 
+    void setScaleByPercent(int percent);
+
 private:
     Controller &controller_;
 

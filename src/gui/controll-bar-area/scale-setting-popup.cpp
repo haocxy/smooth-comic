@@ -27,12 +27,14 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     shadow->setOffset(0, 0);
     setGraphicsEffect(shadow);
 
-
     connect(&controller_, &Controller::sigScaleRangeUpdated, this,
         &ScaleSettingPopup::updateScaleRange);
 
     connect(&controller_, &Controller::sigScaleUpdated, this,
         &ScaleSettingPopup::updateScale);
+
+    connect(ui_->scaleSlider, &QSlider::valueChanged, this,
+        &ScaleSettingPopup::setScaleByPercent);
 
     bindScaleModeButtons();
 
@@ -93,7 +95,16 @@ void ScaleSettingPopup::updateScale(float scale)
 {
     const int percent = std::round(scale * 100);
 
-    ui_->scaleSlider->setValue(percent);
+    ui_->scaleSlider->setSliderPosition(percent);
+
+    ui_->labelCurrScale->setText(percentToText(percent));
+}
+
+void ScaleSettingPopup::setScaleByPercent(int percent)
+{
+    qDebug() << "ScaleSettingPopup::setScaleByPercent(" << percent << ")";
+    const float scale = float(percent) / 100.0f;
+    emit controller_.cmdSetScale(scale);
 }
 
 }

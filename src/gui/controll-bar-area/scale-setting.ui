@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>390</height>
+    <width>568</width>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -165,13 +165,6 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Manual Scale</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="scaleMinValue">
         <property name="minimumSize">
          <size>
@@ -210,6 +203,22 @@
         </property>
         <property name="text">
          <string>0%</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelCurrScale">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>0%</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>

@@ -51,6 +51,8 @@ public:
 
     void setScaleMode(ScaleMode scaleMode);
 
+    void setScale(float scale);
+
     bool isPageMovable() const;
 
     void movePage(int dx, int dy);
@@ -115,6 +117,10 @@ private:
     QSize sceneSize_;
 
     ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
+
+    float minScale_{ 0 };
+
+    float maxScale_{ 0 };
 
     // 主页面锚点在显示区域的比例坐标，仅由外部逻辑使用
     QPointF primaryPageRatioPos_{ 0, 0 };
