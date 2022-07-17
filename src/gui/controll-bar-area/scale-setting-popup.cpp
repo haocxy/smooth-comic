@@ -5,7 +5,11 @@
 #include <QButtonGroup>
 #include <QGraphicsDropShadowEffect>
 
+#include "gui-util/controll-button.h"
+
 #include "controller/controller.h"
+
+#include "controll-bar-icons.h"
 
 #include "gen.scale-setting.ui.h"
 
@@ -19,6 +23,22 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     ui_ = new Ui::ScaleSettingPopup;
     ui_->setupUi(this);
 
+    controllAreaLayout_ = new QHBoxLayout(ui_->ControllArea);
+    ui_->ControllArea->setLayout(controllAreaLayout_);
+
+    namespace i = ControllBarIcons;
+
+    controllAreaLayout_->addStretch();
+
+    btnZoomOut_ = new ControllButton(i::ZoomOut, this);
+    controllAreaLayout_->addWidget(btnZoomOut_);
+    connect(btnZoomOut_, &QPushButton::clicked, &controller_, &Controller::cmdZoomOut);
+
+    btnZoomIn_ = new ControllButton(i::ZoomIn, this);
+    controllAreaLayout_->addWidget(btnZoomIn_);
+    connect(btnZoomIn_, &QPushButton::clicked, &controller_, &Controller::cmdZoomIn);
+
+    controllAreaLayout_->addStretch();
 
     const int shadowRadius = 20;
 
@@ -26,15 +46,6 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
     shadow->setBlurRadius(shadowRadius);
     shadow->setOffset(0, 0);
     setGraphicsEffect(shadow);
-
-    connect(&controller_, &Controller::sigScaleRangeUpdated, this,
-        &ScaleSettingPopup::updateScaleRange);
-
-    connect(&controller_, &Controller::sigScaleUpdated, this,
-        &ScaleSettingPopup::updateScale);
-
-    connect(ui_->scaleSlider, &QSlider::valueChanged, this,
-        &ScaleSettingPopup::setScaleByPercent);
 
     bindScaleModeButtons();
 
@@ -77,33 +88,6 @@ void ScaleSettingPopup::bindScaleModeButtons()
     bind(ui_->radioFixWidthPx, e::FixWidthByPixel);
 
     bind(ui_->radioFixHeightPx, e::FixHeightByPixel);
-}
-
-void ScaleSettingPopup::updateScaleRange(float minScale, float maxScale)
-{
-    const int minPercent = std::ceil(minScale * 100);
-    const int maxPercent = std::floor(maxScale * 100);
-
-    ui_->scaleSlider->setMinimum(minPercent);
-    ui_->scaleSlider->setMaximum(maxPercent);
-
-    ui_->scaleMinValue->setText(percentToText(minPercent));
-    ui_->scaleMaxValue->setText(percentToText(maxPercent));
-}
-
-void ScaleSettingPopup::updateScale(float scale)
-{
-    const int percent = std::round(scale * 100);
-
-    ui_->scaleSlider->setSliderPosition(percent);
-
-    ui_->labelCurrScale->setText(percentToText(percent));
-}
-
-void ScaleSettingPopup::setScaleByPercent(int percent)
-{
-    const float scale = float(percent) / 100.0f;
-    emit controller_.cmdSetScale(scale);
 }
 
 }

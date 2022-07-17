@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QFrame>
+#include <QPointer>
+#include <QBoxLayout>
 
 #include "gui-util/popup-layer/popup-layer-widget.h"
 
@@ -15,6 +17,8 @@ namespace myapp {
 
 class Controller;
 
+class ControllButton;
+
 
 class ScaleSettingPopup : public PopupLayerWidget {
     Q_OBJECT
@@ -26,16 +30,16 @@ public:
 private:
     void bindScaleModeButtons();
 
-    void updateScaleRange(float minScale, float maxScale);
-
-    void updateScale(float scale);
-
-    void setScaleByPercent(int percent);
-
 private:
     Controller &controller_;
 
     DeclarePtr<Ui::ScaleSettingPopup> ui_;
+
+    QPointer<QHBoxLayout> controllAreaLayout_;
+
+    QPointer<ControllButton> btnZoomOut_;
+
+    QPointer<ControllButton> btnZoomIn_;
 };
 
 }

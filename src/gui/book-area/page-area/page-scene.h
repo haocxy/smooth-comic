@@ -53,6 +53,10 @@ public:
 
     void setScale(float scale);
 
+    void zoomIn();
+
+    void zoomOut();
+
     bool isPageMovable() const;
 
     void movePage(int dx, int dy);

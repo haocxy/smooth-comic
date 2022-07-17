@@ -9,6 +9,10 @@ enum class FontIconEnum : char16_t {
 
     More = 0xe712,
 
+    Zoom = 0xe71e,
+
+    ZoomOut = 0xe71f,
+
     Refresh = 0xe72c,
 
     ChevronLeft = 0xe76b,

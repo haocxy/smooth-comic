@@ -18,4 +18,8 @@ extern const FontIcon Scale;
 
 extern const FontIcon GlobalMenu;
 
+extern const FontIcon ZoomOut;
+
+extern const FontIcon ZoomIn;
+
 }

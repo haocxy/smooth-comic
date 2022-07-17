@@ -51,7 +51,9 @@ signals:
 
     void cmdSetScaleMode(ScaleMode mode);
 
-    void cmdSetScale(float scale);
+    void cmdZoomIn();
+
+    void cmdZoomOut();
 
     void sigScaleRangeUpdated(float min, float max);
 

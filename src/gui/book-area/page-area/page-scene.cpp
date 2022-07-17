@@ -21,7 +21,9 @@ PageScene::PageScene(Controller &controller, PageNum primaryPage, QObject *paren
 
     connect(&controller_, &Controller::cmdSetScaleMode, this, &PageScene::setScaleMode);
 
-    connect(&controller_, &Controller::cmdSetScale, this, &PageScene::setScale);
+    connect(&controller_, &Controller::cmdZoomIn, this, &PageScene::zoomIn);
+
+    connect(&controller_, &Controller::cmdZoomOut, this, &PageScene::zoomOut);
 }
 
 PageScene::~PageScene()
@@ -232,6 +234,20 @@ void PageScene::setScale(float scale)
             emit controller_.sigScaleUpdated(boundedScale);
             emit cmdUpdate();
         }
+    }
+}
+
+void PageScene::zoomIn()
+{
+    if (primaryPage_) {
+        setScale(primaryPage_->scale() + 0.1f);
+    }
+}
+
+void PageScene::zoomOut()
+{
+    if (primaryPage_) {
+        setScale(primaryPage_->scale() - 0.1f);
     }
 }
 
