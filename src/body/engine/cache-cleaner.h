@@ -21,6 +21,8 @@ private:
 
     void cleanCache();
 
+    void cleanBookCache();
+
     class Logger : public logger::Logger {
     public:
         Logger() {

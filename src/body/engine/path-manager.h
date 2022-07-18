@@ -15,6 +15,10 @@ public:
 
     fs::path packedStyleDir() const;
 
+    fs::path bookCacheDir() const;
+
+    bool isCacheFile(const fs::path &path) const;
+
 private:
     fs::path cacheDir_;
 };

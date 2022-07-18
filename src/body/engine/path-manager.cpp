@@ -11,7 +11,14 @@ namespace myapp {
 
 using logger::gLogger;
 
-static const std::u32string kDbFileExt{ U"" };
+static const std::u32string kCacheFileExt{ U".sMo-OtH-_CaC_hE" };
+
+namespace DirName {
+
+static const std::u32string Styles = U"styles";
+static const std::u32string Book = U"book";
+
+}
 
 static fs::path selectDefaultBaseCacheDir()
 {
@@ -38,12 +45,12 @@ PathManager::PathManager()
 
 fs::path PathManager::mkBookCacheDbFilePath(const fs::path &archiveFile) const
 {
-    return cacheDir_ / "book" / (FsUtil::encodePathToName(archiveFile) + U".db" + kDbFileExt);
+    return cacheDir_ / DirName::Book / (FsUtil::encodePathToName(archiveFile) + kCacheFileExt);
 }
 
 fs::path PathManager::packedStyleDir() const
 {
-    const std::string styleDirName = "styles";
+    const std::u32string styleDirName = DirName::Styles;
 
     const fs::path exeDir = SystemUtil::exePath().parent_path();
 
@@ -74,6 +81,16 @@ fs::path PathManager::packedStyleDir() const
     }
 
     throw std::logic_error("PathManager::packedStyleDir() cannot find style dir");
+}
+
+fs::path PathManager::bookCacheDir() const
+{
+    return cacheDir_ / DirName::Book;
+}
+
+bool PathManager::isCacheFile(const fs::path &path) const
+{
+    return path.generic_u32string().ends_with(kCacheFileExt);
 }
 
 }
