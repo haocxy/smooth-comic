@@ -27,7 +27,7 @@ void CacheCleaner::loop()
         if (stopped_) {
             break;
         }
-        sleeper_.sleep(std::chrono::seconds(10));
+        sleeper_.sleep(std::chrono::seconds(60));
     }
 }
 
