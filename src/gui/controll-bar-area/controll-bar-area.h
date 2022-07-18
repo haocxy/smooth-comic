@@ -60,6 +60,7 @@ private:
     QPointer<ControllItem> ctrSwitchLeft_;
     QPointer<ControllItem> ctrSwitchRight_;
     QPointer<ControllItem> ctrScale_;
+    QPointer<ControllItem> ctrReadSetting_;
 
     // right
     QPointer<QWidget> rightArea_;

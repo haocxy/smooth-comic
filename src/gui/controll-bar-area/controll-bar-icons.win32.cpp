@@ -25,4 +25,6 @@ const FontIcon ZoomOut{ fam, FontIconEnum::ZoomOut };
 
 const FontIcon ZoomIn{ fam, FontIconEnum::ZoomIn };
 
+const FontIcon ReadSetting{ fam, FontIconEnum::ReadingMode };
+
 }

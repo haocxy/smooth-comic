@@ -15,6 +15,8 @@ enum class FontIconEnum : char16_t {
 
     Refresh = 0xe72c,
 
+    ReadingMode = 0xe736,
+
     ChevronLeft = 0xe76b,
     SwitchLeft = ChevronLeft,
 

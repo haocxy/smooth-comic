@@ -22,4 +22,6 @@ extern const FontIcon ZoomOut;
 
 extern const FontIcon ZoomIn;
 
+extern const FontIcon ReadSetting;
+
 }

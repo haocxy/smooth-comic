@@ -138,17 +138,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="65"/>
+        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="64"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="70"/>
+        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="68"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="75"/>
+        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="72"/>
+        <source>ReadSetting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/controll-bar-area/controll-bar-area.cpp" line="76"/>
         <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>

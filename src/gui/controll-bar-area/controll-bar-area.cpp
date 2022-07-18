@@ -69,6 +69,9 @@ ControllBarArea::ControllBarArea(Controller &controller, PopupLayer &popupLayer,
     centerLayout_->addWidget(ctrScale_);
     bind(ctrScale_, &ControllBarArea::toggleScaleSetting);
 
+    ctrReadSetting_ = new ControllItem(i::ReadSetting, tr("ReadSetting"), this);
+    centerLayout_->addWidget(ctrReadSetting_);
+
 
     ctrGlobalMenu_ = new ControllItem(i::GlobalMenu, tr("Menu"), this);
     rightLayout_->addWidget(ctrGlobalMenu_);
