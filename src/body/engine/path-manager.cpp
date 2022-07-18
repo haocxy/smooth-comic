@@ -11,7 +11,7 @@ namespace myapp {
 
 using logger::gLogger;
 
-static const std::u32string kCacheFileExt{ U".sMo-OtH-_CaC_hE" };
+static const std::u32string kCacheFileExt{ U".sMo-OtH-_C-oMi-C--CaC_hE" };
 
 namespace DirName {
 
