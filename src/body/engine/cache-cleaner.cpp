@@ -90,7 +90,7 @@ void CacheCleaner::cleanBookCache()
     const uintmax_t KB = 1024;
     const uintmax_t MB = 1024 * KB;
 
-    const uintmax_t limit = 150 * MB;
+    const uintmax_t limit = 1024 * MB;
 
     for (const Item &item : items) {
         if (sum <= limit) {
@@ -100,7 +100,6 @@ void CacheCleaner::cleanBookCache()
         fs::remove(item.path, err);
         if (!err) {
             sum -= item.fileSize;
-            logger_.d << "cache removed: " << item.path;
         }
     }
 }
