@@ -3,6 +3,7 @@
 #include <set>
 #include <map>
 #include <mutex>
+#include <chrono>
 #include <shared_mutex>
 #include <queue>
 #include <thread>
@@ -430,3 +431,27 @@ using PrioritySingleThreadStrand = BasicSingleThreadStrand<
         PriorityQueue<std::function<void()>, PriorityType>
     >
 >;
+
+
+class Sleeper {
+public:
+    Sleeper() {}
+
+    template <typename Rep, typename Period>
+    void sleep(const std::chrono::duration<Rep, Period> &interval) {
+        Lock lock(mtx_);
+        cv_.wait_for(lock, interval);
+    }
+
+    void wakeup() {
+        Lock lock(mtx_);
+        cv_.notify_one();
+    }
+
+private:
+    using Mtx = std::mutex;
+    using Lock = std::unique_lock<Mtx>;
+
+    Mtx mtx_;
+    std::condition_variable cv_;
+};

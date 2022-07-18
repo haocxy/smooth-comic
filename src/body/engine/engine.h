@@ -9,6 +9,8 @@ class AsyncDeleter;
 
 class PathManager;
 
+class CacheCleaner;
+
 
 class Engine {
 public:
@@ -24,9 +26,14 @@ public:
         return *pathManager_;
     }
 
+    CacheCleaner &cacheCleaner() {
+        return *cacheCleaner_;
+    }
+
 private:
     DeclarePtr<AsyncDeleter> asyncDeleter_;
     DeclarePtr<PathManager> pathManager_;
+    DeclarePtr<CacheCleaner> cacheCleaner_;
 };
 
 }
