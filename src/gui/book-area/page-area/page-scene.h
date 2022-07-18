@@ -22,6 +22,8 @@
 #include "controller/scale-mode.h"
 #include "controller/switch-direction.h"
 
+#include "page-direction.h"
+
 
 class QPainter;
 
@@ -126,6 +128,8 @@ private:
     DeclarePtr<PageSprite> primaryPage_;
 
     QSize sceneSize_;
+
+    PageDirection pageDir_{ PageDirection::Up };
 
     ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
 

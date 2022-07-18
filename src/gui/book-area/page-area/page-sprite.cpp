@@ -93,7 +93,7 @@ float PageSprite::calcMaxScale(const QSize &areaSize) const
 
 void PageSprite::adjustAreaSize(const QSize &areaSize)
 {
-    setScale(calcScaleForAdjustAreaSize(rawImg_.size(), areaSize));
+    setScale(calcScaleForAdjustAreaSize(rotatedSize_, areaSize));
 }
 
 void PageSprite::adjustAreaWidth(int areaWidth)
@@ -113,30 +113,6 @@ void PageSprite::adjustAreaHeight(int areaHeight)
 void PageSprite::rotateTo(PageDirection direction)
 {
     dir_ = direction;
-
-    rotatedSize_ = calcRotatedSize(rawImg_.size(), dir_);
-
-    dirty_ = true;
-}
-
-void PageSprite::rotateByOneStep()
-{
-    switch (dir_) {
-    case PageDirection::Up:
-        dir_ = PageDirection::Right;
-        break;
-    case PageDirection::Right:
-        dir_ = PageDirection::Down;
-        break;
-    case PageDirection::Down:
-        dir_ = PageDirection::Left;
-        break;
-    case PageDirection::Left:
-        dir_ = PageDirection::Up;
-        break;
-    default:
-        break;
-    }
 
     rotatedSize_ = calcRotatedSize(rawImg_.size(), dir_);
 

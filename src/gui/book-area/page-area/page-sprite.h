@@ -42,8 +42,6 @@ public:
 
     void rotateTo(PageDirection direction);
 
-    void rotateByOneStep();
-
     float scale() const {
         return scale_;
     }

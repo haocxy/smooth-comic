@@ -408,7 +408,7 @@ void PageScene::updateSceneSize(const QSize &sceneSize)
 void PageScene::rotatePagesByOneStep()
 {
     if (primaryPage_) {
-        primaryPage_->rotateByOneStep();
+        pageDir_ = nextOf(pageDir_);
         layoutPage(*primaryPage_);
     }
 }
@@ -466,6 +466,9 @@ void PageScene::layoutPages()
 void PageScene::layoutPage(PageSprite &sprite)
 {
     const float oldScale = sprite.scale();
+
+    // 调整页面方向
+    sprite.rotateTo(pageDir_);
 
     // 调整页面尺寸
     adjustPageSize(sprite);
