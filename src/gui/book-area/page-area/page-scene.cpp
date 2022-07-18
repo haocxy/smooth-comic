@@ -339,6 +339,7 @@ void PageScene::jumpTo(PageNum pageNum)
         h.apply([this, &pageNum, &img] {
             strandEntry_.exec([this, pageNum, img] {
                 setPrimaryPage(new PageSprite(pageNum, img));
+                updateScaleRange();
                 layoutPages();
                 loadingPage_ = std::nullopt;
             });
