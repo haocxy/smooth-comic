@@ -47,29 +47,27 @@ ControllBarArea::ControllBarArea(Controller &controller, PopupLayer &popupLayer,
 
     ctrToggleThumbArea_ = new ControllItem(i::ToggleThumbArea, tr("Thumb Area"), this);
     leftLayout_->addWidget(ctrToggleThumbArea_);
-    connect(ctrToggleThumbArea_, &ControllItem::clicked, &controller_, &Controller::cmdToggleThumbArea);
+    bind(ctrToggleThumbArea_, &Controller::cmdToggleThumbArea);
 
     ctrOpen_ = new ControllItem(i::OpenComic, tr("Open"), this);
     centerLayout_->addWidget(ctrOpen_);
-    connect(ctrOpen_, &ControllItem::clicked, &controller_, &Controller::cmdOpenComic);
+    bind(ctrOpen_, &Controller::cmdOpenComic);
 
     ctrRotate_ = new ControllItem(i::Rotate, tr("Rotate"), this);
     centerLayout_->addWidget(ctrRotate_);
-    connect(ctrRotate_, &ControllItem::clicked, &controller_, &Controller::cmdRotatePageByOneStep);
+    bind(ctrRotate_, &Controller::cmdRotatePageByOneStep);
 
     ctrSwitchLeft_ = new ControllItem(i::SwitchLeft, tr("Left"), this);
     centerLayout_->addWidget(ctrSwitchLeft_);
-    connect(ctrSwitchLeft_, &ControllItem::clicked, &controller_,
-        std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Left));
+    bind(ctrSwitchLeft_, &Controller::cmdSwitchPage, SwitchDirection::Left);
 
     ctrSwitchRight_ = new ControllItem(i::SwitchRight, tr("Right"), this);
     centerLayout_->addWidget(ctrSwitchRight_);
-    connect(ctrSwitchRight_, &ControllItem::clicked, &controller_,
-        std::bind(&Controller::cmdSwitchPage, &controller_, SwitchDirection::Right));
+    bind(ctrSwitchRight_, &Controller::cmdSwitchPage, SwitchDirection::Right);
 
     ctrScale_ = new ControllItem(i::Scale, tr("Scale"), this);
     centerLayout_->addWidget(ctrScale_);
-    connect(ctrScale_, &ControllItem::clicked, this, &ControllBarArea::toggleScaleSetting);
+    bind(ctrScale_, &ControllBarArea::toggleScaleSetting);
 
 
     ctrGlobalMenu_ = new ControllItem(i::GlobalMenu, tr("Menu"), this);
@@ -93,6 +91,10 @@ bool ControllBarArea::isWindowMoveAreaContainsLocalPos(const QPoint &localPos) c
 void ControllBarArea::toggleScaleSetting()
 {
     scaleSettingPopup_->setPopupVisible(!scaleSettingPopup_->isPopupVisible());
+}
+
+void ControllBarArea::bind(ControllItem *controllItem, void(Controller:: *memFun)()) {
+    connect(controllItem, &ControllItem::clicked, &controller_, memFun);
 }
 
 }

@@ -4,14 +4,14 @@
 #include <QPointer>
 #include <QBoxLayout>
 
+#include "controll-item.h"
+
 
 namespace myapp {
 
 class Controller;
 
 class PopupLayer;
-
-class ControllItem;
 
 class ScaleSettingPopup;
 
@@ -27,6 +27,18 @@ public:
 
 private:
     void toggleScaleSetting();
+
+    void bind(ControllItem *controllItem, void(Controller:: *memFun)());
+
+    template <typename Arg>
+    void bind(ControllItem *controllItem, void(Controller:: *memFun)(Arg), Arg arg) {
+        connect(controllItem, &ControllItem::clicked, &controller_,
+            std::bind(memFun, &controller_, arg));
+    }
+
+    void bind(ControllItem *controllItem, void(ControllBarArea:: *memFun)()) {
+        connect(controllItem, &ControllItem::clicked, this, memFun);
+    }
 
 private:
     Controller &controller_;
