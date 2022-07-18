@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+
 #include <optional>
 
 #include <QObject>
@@ -11,13 +12,15 @@
 #include "core/declare_ptr.h"
 #include "core/obj-handle.h"
 
+#include "util/sigconns.h"
+
 #include "book/page-num.h"
+#include "book/page-info.h"
 
 #include "gui/gui-util/qtobj-strand-entry.h"
 
 #include "controller/scale-mode.h"
-
-#include "page-sprite.h"
+#include "controller/switch-direction.h"
 
 
 class QPainter;
@@ -27,17 +30,17 @@ namespace myapp {
 
 class Controller;
 
+class PageSprite;
+
 
 class PageScene : public QObject {
     Q_OBJECT
 public:
-    explicit PageScene(Controller &controller, PageNum primaryPage, QObject *parent = nullptr);
+    explicit PageScene(Controller &controller, QObject *parent = nullptr);
 
     virtual ~PageScene();
 
     void draw(QPainter &painter) const;
-
-    PageNum primaryPageSeq() const;
 
     void updateSceneSize(const QSize &sceneSize);
 
@@ -61,12 +64,22 @@ public:
 
     void movePage(int dx, int dy);
 
+    void jumpTo(PageNum pageNum);
+
+    void jumpNext();
+
+    void jumpPrev();
+
+    void jumpBy(SwitchDirection direction);
+
 signals:
     void cmdUpdate();
 
-    void sigPrimaryPagePrepared();
-
 private:
+    void reset();
+
+    void pageLoaded(const PageInfo &page);
+
     void updateScaleRange();
 
     void layoutPages();
@@ -80,8 +93,6 @@ private:
     bool shouldRecalcRatioHeight() const;
 
     void setPrimaryPage(DeclarePtr<PageSprite> &&sprite);
-
-    void preparePrimaryPage(PageNum seqNum);
 
     void onBecomePrimaryScene();
 
@@ -110,11 +121,15 @@ private:
 private:
     QtObjStrandEntry strandEntry_;
 
+    SigConns sigConns_;
+
     Controller &controller_;
 
-    bool isPrimaryScene_{ false };
+    std::map<PageNum, PageInfo> loadedPages_;
 
-    PageNum primaryPageSeq_{ 0 };
+    std::optional<PageNum> loadingPage_;
+
+    bool isPrimaryScene_{ false };
 
     DeclarePtr<PageSprite> primaryPage_;
 

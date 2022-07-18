@@ -16,7 +16,7 @@ class Book;
 
 class Controller;
 
-class PageDirector;
+class PageScene;
 
 
 class PageArea : public QWidget {
@@ -27,7 +27,7 @@ public:
     virtual ~PageArea();
 
 private:
-    DeclarePtr<PageDirector> director_;
+    DeclarePtr<PageScene> scene_;
     QPointer<QStackedLayout> layout_;
     QPointer<PageControllLayer> controllLayer_;
     QPointer<PageSwitcher> switcher_;

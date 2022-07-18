@@ -22,7 +22,7 @@ namespace myapp {
 
 class Controller;
 
-class PageDirector;
+class PageScene;
 
 
 // 页面切换器
@@ -31,7 +31,7 @@ class PageDirector;
 class PageSwitcher : public QWidget {
     Q_OBJECT
 public:
-    explicit PageSwitcher(Controller &controller, PageDirector &director, QWidget *parent = nullptr);
+    explicit PageSwitcher(Controller &controller, PageScene &scene, QWidget *parent = nullptr);
 
     virtual ~PageSwitcher();
 
@@ -45,7 +45,7 @@ private:
 private:
     Controller &controller_;
 
-    PageDirector &director_;
+    PageScene &scene_;
 
     QtObjStrandEntry strandEntry_;
 

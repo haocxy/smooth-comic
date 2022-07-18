@@ -5,15 +5,15 @@
 
 #include "controller/controller.h"
 
-#include "page-director.h"
+#include "page-scene.h"
 
 
 namespace myapp {
 
-PageControllLayer::PageControllLayer(Controller &controller, PageDirector &director, QWidget *parent)
+PageControllLayer::PageControllLayer(Controller &controller, PageScene &scene, QWidget *parent)
     : QWidget(parent)
     , controller_(controller)
-    , director_(director)
+    , scene_(scene)
 {
     QSizePolicy sp{ sizePolicy() };
     sp.setHorizontalStretch(QSizePolicy::Policy::Expanding);
@@ -51,7 +51,7 @@ void PageControllLayer::paintEvent(QPaintEvent *e)
 
 void PageControllLayer::enterEvent(QEnterEvent *e)
 {
-    isPageMovable_ = director_.isPageMovable();
+    isPageMovable_ = scene_.isPageMovable();
 
     if (isPageMovable_) {
         setCursor(Qt::CursorShape::OpenHandCursor);
@@ -96,7 +96,7 @@ void PageControllLayer::mouseMoveEvent(QMouseEvent *e)
         moveStart_ = moveEnd;
 
         const QPoint moveDelta = moveEnd - moveStart;
-        director_.movePage(moveDelta.x(), moveDelta.y());
+        scene_.movePage(moveDelta.x(), moveDelta.y());
     }
 }
 

@@ -8,37 +8,52 @@
 
 #include "controller/controller.h"
 
+#include "page-sprite.h"
+
 
 namespace myapp {
 
-PageScene::PageScene(Controller &controller, PageNum primaryPage, QObject *parent)
+PageScene::PageScene(Controller &controller, QObject *parent)
     : QObject(parent)
     , controller_(controller)
-    , primaryPageSeq_(primaryPage)
     , handle_(*this)
 {
-    preparePrimaryPage(primaryPageSeq_);
+    sigConns_ += controller_.book().sigBookClosed.connect([this, h = handle_.weak()](const fs::path &archiveFile) {
+        h.apply([this] {
+            strandEntry_.exec([this] {
+                reset();
+                });
+            });
+    });
 
-    connect(&controller_, &Controller::cmdSetScaleMode, this, &PageScene::setScaleMode);
+    sigConns_ += controller_.book().sigPageLoaded.connect([this, h = handle_.weak()](const PageInfo &page) {
+        h.apply([this, &page] {
+            strandEntry_.exec([this, page] {
+                pageLoaded(page);
+                });
+            });
+    });
 
-    connect(&controller_, &Controller::cmdZoomIn, this, &PageScene::zoomIn);
+    using c = Controller;
 
-    connect(&controller_, &Controller::cmdZoomOut, this, &PageScene::zoomOut);
+    using s = PageScene;
+
+    connect(&controller_, &c::cmdJumpToPage, this, &s::jumpTo);
+
+    connect(&controller_, &c::cmdSwitchPage, this, &s::jumpBy);
+
+    connect(&controller_, &c::cmdRotatePageByOneStep, this,
+        &s::rotatePagesByOneStep);
+
+    connect(&controller_, &c::cmdSetScaleMode, this, &s::setScaleMode);
+
+    connect(&controller_, &c::cmdZoomIn, this, &s::zoomIn);
+
+    connect(&controller_, &c::cmdZoomOut, this, &s::zoomOut);
 }
 
 PageScene::~PageScene()
 {
-}
-
-void PageScene::preparePrimaryPage(PageNum seqNum)
-{
-    controller_.book().loadPageImg(seqNum, [this, seqNum, h = handle_.weak()](const QPixmap &img) {
-        h.apply([this, &seqNum, &img] {
-            strandEntry_.exec([this, seqNum, img] {
-                setPrimaryPage(new PageSprite(seqNum, img));
-            });
-        });
-    });
 }
 
 void PageScene::onBecomePrimaryScene()
@@ -306,6 +321,65 @@ void PageScene::movePage(int dx, int dy)
     }
 }
 
+void PageScene::jumpTo(PageNum pageNum)
+{
+    if (!loadedPages_.contains(pageNum)) {
+        return;
+    }
+
+    // 如果有正在加载的页面，则不响应跳转
+    // 直到加载完成并切换为主页面，才可以跳转
+    if (loadingPage_) {
+        return;
+    }
+
+    loadingPage_ = pageNum;
+
+    controller_.book().loadPageImg(pageNum, [this, pageNum, h = handle_.weak()](const QPixmap &img) {
+        h.apply([this, &pageNum, &img] {
+            strandEntry_.exec([this, pageNum, img] {
+                setPrimaryPage(new PageSprite(pageNum, img));
+                layoutPages();
+                loadingPage_ = std::nullopt;
+            });
+        });
+    });
+}
+
+void PageScene::jumpNext()
+{
+    if (primaryPage_) {
+        jumpTo(primaryPage_->pageSeq() + 1);
+    }
+}
+
+void PageScene::jumpPrev()
+{
+    if (primaryPage_) {
+        jumpTo(primaryPage_->pageSeq() - 1);
+    }
+}
+
+void PageScene::jumpBy(SwitchDirection direction)
+{
+    switch (direction) {
+    case SwitchDirection::Left:
+        jumpNext();
+        break;
+    case SwitchDirection::Right:
+        jumpPrev();
+        break;
+    case SwitchDirection::Up:
+        jumpPrev();
+        break;
+    case SwitchDirection::Down:
+        jumpNext();
+        break;
+    default:
+        break;
+    }
+}
+
 void PageScene::draw(QPainter &painter) const
 {
     PainterSaver saver(painter);
@@ -317,16 +391,9 @@ void PageScene::draw(QPainter &painter) const
     }
 }
 
-PageNum PageScene::primaryPageSeq() const
-{
-    return primaryPageSeq_;
-}
-
 void PageScene::setPrimaryPage(DeclarePtr<PageSprite> &&sprite)
 {
     primaryPage_ = std::move(sprite);
-
-    emit sigPrimaryPagePrepared();
 
     emit cmdUpdate();
 }
@@ -367,6 +434,24 @@ void PageScene::setIsPrimaryScene(bool isPrimaryScene)
 ScaleMode PageScene::scaleMode() const
 {
     return scaleMode_;
+}
+
+void PageScene::reset()
+{
+    loadedPages_.clear();
+
+    // TODO
+}
+
+void PageScene::pageLoaded(const PageInfo &page)
+{
+    loadedPages_[page.seqNum] = page;
+
+    // TODO 改成由 Book 对象用一个专用的信号通知初始页
+
+    if (0 == page.seqNum) {
+        jumpTo(0);
+    }
 }
 
 void PageScene::updateScaleRange()

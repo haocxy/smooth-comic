@@ -11,13 +11,13 @@ namespace myapp {
 
 class Controller;
 
-class PageDirector;
+class PageScene;
 
 
 class PageControllLayer : public QWidget {
     Q_OBJECT
 public:
-    explicit PageControllLayer(Controller &controller, PageDirector &director, QWidget *parent = nullptr);
+    explicit PageControllLayer(Controller &controller, PageScene &scene, QWidget *parent = nullptr);
 
     virtual ~PageControllLayer();
 
@@ -102,7 +102,7 @@ protected:
 private:
     Controller &controller_;
 
-    PageDirector &director_;
+    PageScene &scene_;
 
     AreaConfig areaConfig_;
 

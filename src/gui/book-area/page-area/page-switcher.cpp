@@ -9,7 +9,7 @@
 
 #include "controller/controller.h"
 
-#include "page-director.h"
+#include "page-scene.h"
 
 
 namespace myapp {
@@ -20,13 +20,13 @@ static DebugOption<bool> dopLog("log.need.page-switcher", true,
 using logger::gLogger;
 
 
-PageSwitcher::PageSwitcher(Controller &controller, PageDirector &director, QWidget *parent)
+PageSwitcher::PageSwitcher(Controller &controller, PageScene &scene, QWidget *parent)
     : QWidget(parent)
     , controller_(controller)
-    , director_(director)
+    , scene_(scene)
     , handle_(*this)
 {
-    connect(&director_, &PageDirector::cmdUpdate, this, [this] {
+    connect(&scene_, &PageScene::cmdUpdate, this, [this] {
         update();
     });
 }
@@ -38,13 +38,13 @@ PageSwitcher::~PageSwitcher()
 
 void PageSwitcher::resizeEvent(QResizeEvent *e)
 {
-    director_.updateShowSize(size());
+    scene_.updateSceneSize(size());
 }
 
 void PageSwitcher::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
-    director_.draw(painter);
+    scene_.draw(painter);
 }
 
 }
