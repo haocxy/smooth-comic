@@ -33,6 +33,12 @@ private:
 
     void updateCurPercent(float scale);
 
+    bool hasAutoScaleRadioChecked() const;
+
+    void updateZoomButtonsEnabled();
+
+    void setZoomButtonsEnabled(bool enabled);
+
 private:
     Controller &controller_;
 

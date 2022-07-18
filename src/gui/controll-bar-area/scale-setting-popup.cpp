@@ -56,7 +56,11 @@ ScaleSettingPopup::ScaleSettingPopup(Controller &controller, PopupLayer &popupLa
 
     connect(&controller_, &Controller::sigScaleUpdated, this, &ScaleSettingPopup::updateCurPercent);
 
+
+    // 最后选择以确保需要的事件已经绑定
     ui_->radioScaleBySize->setChecked(true);
+
+    updateZoomButtonsEnabled();
 }
 
 ScaleSettingPopup::~ScaleSettingPopup()
@@ -72,7 +76,7 @@ void ScaleSettingPopup::bindScaleModeButtons()
 {
     QButtonGroup *group = new QButtonGroup(this);
 
-    auto bind = [this, group](QRadioButton *button, ScaleMode mode) {
+    auto bindMode = [this, group](QRadioButton *button, ScaleMode mode) {
         group->addButton(button);
         connect(button, &QRadioButton::clicked, &controller_,
             std::bind(&Controller::cmdSetScaleMode, &controller_, mode));
@@ -80,27 +84,81 @@ void ScaleSettingPopup::bindScaleModeButtons()
 
     using e = ScaleMode;
 
-    bind(ui_->radioRawSize, e::RawSize);
+    bindMode(ui_->radioRawSize, e::RawSize);
 
-    bind(ui_->radioScaleBySize, e::AutoFitAreaSize);
+    bindMode(ui_->radioScaleBySize, e::AutoFitAreaSize);
 
-    bind(ui_->radioScaleByWidth, e::AutoFitAreaWidth);
+    bindMode(ui_->radioScaleByWidth, e::AutoFitAreaWidth);
 
-    bind(ui_->radioScaleByHeight, e::AutoFitAreaHeight);
+    bindMode(ui_->radioScaleByHeight, e::AutoFitAreaHeight);
 
-    bind(ui_->radioFixWidthRatio, e::FixWidthByRatio);
+    bindMode(ui_->radioFixWidthRatio, e::FixWidthByRatio);
 
-    bind(ui_->radioFixHeightRatio, e::FixHeightByRatio);
+    bindMode(ui_->radioFixHeightRatio, e::FixHeightByRatio);
 
-    bind(ui_->radioFixWidthPx, e::FixWidthByPixel);
+    bindMode(ui_->radioFixWidthPx, e::FixWidthByPixel);
 
-    bind(ui_->radioFixHeightPx, e::FixHeightByPixel);
+    bindMode(ui_->radioFixHeightPx, e::FixHeightByPixel);
+
+
+    auto bindZoomEnabled = [this](QRadioButton *button) {
+        connect(button, &QRadioButton::clicked, this,
+            &ScaleSettingPopup::updateZoomButtonsEnabled);
+    };
+
+    bindZoomEnabled(ui_->radioRawSize);
+
+    bindZoomEnabled(ui_->radioScaleBySize);
+
+    bindZoomEnabled(ui_->radioScaleByWidth);
+
+    bindZoomEnabled(ui_->radioScaleByHeight);
+
+    bindZoomEnabled(ui_->radioFixWidthRatio);
+
+    bindZoomEnabled(ui_->radioFixHeightRatio);
+
+    bindZoomEnabled(ui_->radioFixWidthPx);
+
+    bindZoomEnabled(ui_->radioFixHeightPx);
 }
 
 void ScaleSettingPopup::updateCurPercent(float scale)
 {
     const int percent = std::round(scale * 100.0f);
     labelCurPercent_->setText(percentToText(percent));
+}
+
+bool ScaleSettingPopup::hasAutoScaleRadioChecked() const
+{
+    if (ui_->radioRawSize->isChecked()) {
+        return true;
+    }
+
+    if (ui_->radioScaleBySize->isChecked()) {
+        return true;
+    }
+
+    if (ui_->radioScaleByWidth->isChecked()) {
+        return true;
+    }
+
+    if (ui_->radioScaleByHeight->isChecked()) {
+        return true;
+    }
+
+    return false;
+}
+
+void ScaleSettingPopup::updateZoomButtonsEnabled()
+{
+    setZoomButtonsEnabled(!hasAutoScaleRadioChecked());
+}
+
+void ScaleSettingPopup::setZoomButtonsEnabled(bool enabled)
+{
+    btnZoomOut_->setEnabled(enabled);
+    btnZoomIn_->setEnabled(enabled);
 }
 
 }
