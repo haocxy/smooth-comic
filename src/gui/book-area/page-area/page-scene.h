@@ -46,10 +46,6 @@ public:
 
     void rotatePagesByOneStep();
 
-    bool isPrimaryScene() const;
-
-    void setIsPrimaryScene(bool isPrimaryScene);
-
     ScaleMode scaleMode() const;
 
     void setScaleMode(ScaleMode scaleMode);
@@ -94,8 +90,6 @@ private:
 
     void setPrimaryPage(DeclarePtr<PageSprite> &&sprite);
 
-    void onBecomePrimaryScene();
-
     enum class MoveLock {
         NoLock, LockHorizontal, LocakVertical,
     };
@@ -128,8 +122,6 @@ private:
     std::map<PageNum, PageInfo> loadedPages_;
 
     std::optional<PageNum> loadingPage_;
-
-    bool isPrimaryScene_{ false };
 
     DeclarePtr<PageSprite> primaryPage_;
 

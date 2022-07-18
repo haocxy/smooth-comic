@@ -56,11 +56,6 @@ PageScene::~PageScene()
 {
 }
 
-void PageScene::onBecomePrimaryScene()
-{
-    assert(primaryPage_);
-}
-
 PageScene::MoveLock PageScene::determineMoveLock() const
 {
     using Lock = PageScene::MoveLock;
@@ -415,22 +410,6 @@ void PageScene::rotatePagesByOneStep()
     if (primaryPage_) {
         primaryPage_->rotateByOneStep();
         layoutPage(*primaryPage_);
-    }
-}
-
-bool PageScene::isPrimaryScene() const
-{
-    return isPrimaryScene_;
-}
-
-void PageScene::setIsPrimaryScene(bool isPrimaryScene)
-{
-    if (isPrimaryScene_ != isPrimaryScene) {
-        isPrimaryScene_ = isPrimaryScene;
-
-        if (isPrimaryScene_ && primaryPage_) {
-            onBecomePrimaryScene();
-        }
     }
 }
 
