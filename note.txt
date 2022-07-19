@@ -1,2 +1,3 @@
-cmake .. -DCMAKE_TOOLCHAIN_FILE=D:\asdk\ndk\25.0.8775105\build\cmake\android.toolchain.cmake -DANDROID_NDK=D:\asdk\ndk\25.0.8775105 -DCMAKE_GENERATOR=Ninja
+cmake .. -DCMAKE_TOOLCHAIN_FILE=D:\asdk\ndk\25.0.8775105\build\cmake\android.toolchain.cmake -DCMAKE_GENERATOR=Ninja -DCMAKE_C_FLAGS=-ID:\tmp\repo\libarchive\libarchive-3.6.1\contrib\android\include -DENABLE_TEST=OFF -DCMAKE_INSTALL_PREFIX=D:\tmp\install\libarchive
 
+ninja libarchive/install
