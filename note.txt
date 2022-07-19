@@ -1,0 +1,2 @@
+cmake .. -DCMAKE_TOOLCHAIN_FILE=D:\asdk\ndk\25.0.8775105\build\cmake\android.toolchain.cmake -DANDROID_NDK=D:\asdk\ndk\25.0.8775105 -DCMAKE_GENERATOR=Ninja
+
