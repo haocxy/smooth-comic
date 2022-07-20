@@ -28,6 +28,39 @@ const std::string &currentThreadName();
 
 }
 
+class jthread {
+public:
+    jthread() {}
+
+    jthread(std::function<void()> &&body)
+        : thread_(std::move(body)) {}
+
+    jthread(jthread &&other) noexcept
+        : thread_(std::move(other.thread_)) {}
+
+    jthread &operator=(jthread &&other) noexcept {
+        thread_ = std::move(other.thread_);
+        return *this;
+    }
+
+    ~jthread() {
+        if (thread_.joinable()) {
+            thread_.join();
+        }
+    }
+
+    bool joinable() const {
+        return thread_.joinable();
+    }
+
+    void join() {
+        thread_.join();
+    }
+
+private:
+    std::thread thread_;
+};
+
 template <typename T>
 class FifoQueue {
 public:

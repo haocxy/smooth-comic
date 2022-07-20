@@ -25,7 +25,7 @@ private:
     const fs::path archiveFile_;
     const std::set<u32str> loadedEntries_;
     std::atomic_bool stopped_{ false };
-    std::jthread thread_;
+    jthread thread_;
 };
 
 }

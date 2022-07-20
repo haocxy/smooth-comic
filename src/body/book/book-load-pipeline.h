@@ -73,7 +73,7 @@ private:
         std::atomic_bool &stopped_;
         BlockQueue<PageData> &dataQueue_;
         BlockQueue<PageRawImg> &rawImgQueue_;
-        std::jthread thread_;
+        jthread thread_;
     };
 
     // 页面缩放器
@@ -97,7 +97,7 @@ private:
         std::atomic_bool &stopped_;
         BlockQueue<PageRawImg> &rawImgQueue_;
         BlockQueue<PageScaledImg> &scaledImgQueue_;
-        std::jthread thread_;
+        jthread thread_;
     };
 
     // 页面编码器
@@ -116,7 +116,7 @@ private:
         std::atomic_bool &stopped_;
         BlockQueue<PageScaledImg> &scaledImgQueue_;
         Signal<CbPageLoaded> &sigPageLoaded_;
-        std::jthread thread_;
+        jthread thread_;
     };
 
 private:

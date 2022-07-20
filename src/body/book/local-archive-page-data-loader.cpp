@@ -19,7 +19,7 @@ LocalArchivePageDataLoader::~LocalArchivePageDataLoader()
 
 void LocalArchivePageDataLoader::start()
 {
-    thread_ = std::jthread([this] { threadBody(); });
+    thread_ = jthread([this] { threadBody(); });
 }
 
 void LocalArchivePageDataLoader::threadBody()

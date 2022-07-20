@@ -44,7 +44,7 @@ private:
 
     Sleeper sleeper_;
 
-    std::jthread thread_;
+    jthread thread_;
 };
 
 }
