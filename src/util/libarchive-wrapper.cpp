@@ -12,9 +12,9 @@
 
 namespace {
 
-class ArchiveErr : public std::exception {
+class ArchiveErr : public std::logic_error {
 public:
-    ArchiveErr(const std::string &funcName, std::optional<int> err = std::nullopt) : std::exception(mkErrMsg(funcName, err).c_str()) {}
+    ArchiveErr(const std::string &funcName, std::optional<int> err = std::nullopt) : std::logic_error(mkErrMsg(funcName, err)) {}
     virtual ~ArchiveErr() {}
 
 private:
