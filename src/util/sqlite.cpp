@@ -362,7 +362,7 @@ void Statement::getValue(int col, std::u32string &to)
 {
     u8str u8str;
     getValue(col, u8str);
-    to = u8str;
+    to = static_cast<std::u32string>(u8str);
 }
 
 void Statement::getValue(int col, fs::path &to)
