@@ -11,9 +11,9 @@ ControllButton::ControllButton(const FontIcon &icon, QWidget *parent)
     : QPushButton(QString(QChar(icon.code())))
 {
     setFlat(true);
-    setFont(QFont(icon.fontFamily(), 20));
+    setFont(QFont(icon.fontFamily(), 24));
 
-    constexpr int margin = 4;
+    constexpr int margin = 2;
     margins_.setTop(margin);
     margins_.setBottom(margin);
     margins_.setLeft(margin);

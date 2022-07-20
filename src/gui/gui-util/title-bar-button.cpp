@@ -89,7 +89,7 @@ void TitleBarButton::init()
     margins_.setLeft(20);
     margins_.setRight(20);
 
-    setFont(QFont(FontConfig::UiFontFamily, 8));
+    setFont(QFont(FontConfig::UiFontFamily, 12));
 }
 
 }

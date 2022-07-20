@@ -129,7 +129,7 @@ int body_entry(int argc, char *argv[])
     QDir::addSearchPath("style", engine.pathManager().packedStyleDir());
     const QString cssPath = "style:default.css";
 
-    QFontDatabase::addApplicationFont(QFile("style:Segoe Fluent Icons.ttf").fileName());
+    QFontDatabase::addApplicationFont(QFile("style:MaterialIcons-Regular.ttf").fileName());
 
     qApp->setStyleSheet(contentOf(cssPath));
 

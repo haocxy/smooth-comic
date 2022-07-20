@@ -2,6 +2,6 @@
 
 namespace myapp::FontConfig {
 
-static const char *const UiFontFamily = "Segoe Fluent Icons";
+static const char *const UiFontFamily = "Material Icons";
 
 }
