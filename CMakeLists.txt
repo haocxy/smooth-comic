@@ -34,6 +34,13 @@ if(myAppUseDebugConfig)
     set(prepareScriptConfigArg debug)
 endif()
 
+option(PREPARE_DIR "")
+if(PREPARE_DIR)
+    set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/${PREPARE_DIR})
+endif()
+
+message(STATUS "prepareDir: ${prepareDir}")
+
 # 自己实现的 CMake 工具
 include(CMake/find_source_files.cmake)
 include(CMake/git_tools.cmake)
