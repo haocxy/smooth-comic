@@ -8,10 +8,9 @@
 #include <QFontDatabase>
 #include <QTranslator>
 
-#include <boost/program_options.hpp>
-
 #include "core/logger.h"
 #include "core/thread.h"
+#include "core/system.h"
 #include "core/debug-option/option-center.h"
 
 #include "engine/engine.h"
@@ -19,8 +18,6 @@
 
 #include "gui/register-qt-meta-types.h"
 #include "gui/app-window.h"
-
-#include "cmd-option.h"
 
 
 class QtResourceSystemIniter {
@@ -89,32 +86,34 @@ int body_entry(int argc, char *argv[])
     gLogger.d << "body_entry() after init logger";
 
 
-    // parse command line
-    CmdOption cmdOption(argc, argv);
-    if (cmdOption.hasError()) {
-        std::cerr << "Cannot parse command line because:" << cmdOption.errMsg() << std::endl;
-        cmdOption.showHelp(std::cerr);
-        return 1;
-    }
+    //// parse command line
+    //CmdOption cmdOption(argc, argv);
+    //if (cmdOption.hasError()) {
+    //    std::cerr << "Cannot parse command line because:" << cmdOption.errMsg() << std::endl;
+    //    cmdOption.showHelp(std::cerr);
+    //    return 1;
+    //}
 
-    if (cmdOption.needHelp()) {
-        cmdOption.showHelp(std::cout);
-        return 0;
-    }
+    //if (cmdOption.needHelp()) {
+    //    cmdOption.showHelp(std::cout);
+    //    return 0;
+    //}
 
-    if (cmdOption.needListDebugOptions()) {
-        listDebugOptions(std::cout);
-        return 0;
-    }
+    //if (cmdOption.needListDebugOptions()) {
+    //    listDebugOptions(std::cout);
+    //    return 0;
+    //}
 
     gLogger.d << "body_entry() after parse command line";
 
 
     // init debug options
-    initDebugOptions(cmdOption.debugOptions());
+    //initDebugOptions(cmdOption.debugOptions());
 
 
     gLogger.d << "body_entry() after init debug options";
+
+    logger::gLogger.d << "userHome ===> : " << SystemUtil::userHome();
 
     QApplication app(argc, argv);
 

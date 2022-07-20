@@ -18,6 +18,11 @@ if(${myAppUseDebugConfig})
 endif()
 
 
+add_definitions(-DBOOST_DLL_USE_STD_FS)
+
+
+
+
 include_directories(.)
 
 # 模块功能：和业务无关的很常用的逻辑，例如字符串处理等

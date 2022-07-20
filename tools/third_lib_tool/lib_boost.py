@@ -10,11 +10,7 @@ from third_lib_tool.util.compress_util import smart_unpack, smart_extract
 BOOST_LIB_NAME: str = 'boost_1_78_0'
 
 REQUIRED_BOOST_MODULES = [
-    'thread',
-    'filesystem',
-    'iostreams',
-    'serialization',
-    'program_options'
+    'headers'
 ]
 
 
