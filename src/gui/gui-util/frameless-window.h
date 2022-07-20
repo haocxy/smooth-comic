@@ -4,5 +4,9 @@
 #if defined(WIN32)
 #include "frameless-window.win32.h"
 #else
-#error "FramelessWindow unimplemented on current platform"
+#include "default-frameless-window.h"
+
+namespace myapp {
+using FramelessWindow = DefaultFramelessWindow;
+}
 #endif
