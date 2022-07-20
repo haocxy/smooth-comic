@@ -5,7 +5,7 @@
 #include "core/fs.h"
 #include "core/thread.h"
 
-#include "util/signal.h"
+#include "util/signal.hpp"
 #include "util/sigconns.h"
 
 #include "page-data-loader.h"

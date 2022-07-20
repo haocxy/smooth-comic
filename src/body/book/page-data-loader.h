@@ -5,7 +5,7 @@
 #include "core/basetype.h"
 #include "core/thread.h"
 
-#include "util/signal.h"
+#include "util/signal.hpp"
 
 #include "page-data.h"
 #include "book-error.h"

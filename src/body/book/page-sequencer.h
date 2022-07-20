@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/signal.h"
+#include "util/signal.hpp"
 
 #include "page-info.h"
 

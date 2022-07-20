@@ -5,7 +5,7 @@
 #include "core/basetype.h"
 #include "core/declare_ptr.h"
 
-#include "util/signal.h"
+#include "util/signal.hpp"
 #include "util/sigconns.h"
 
 #include "engine/engine.h"
