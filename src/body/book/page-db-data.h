@@ -14,8 +14,8 @@ public:
     u32str name;
     i32 rawWidth{};
     i32 rawHeight{};
-    scc::buff rawImg;
-    scc::buff scaledImg;
+    Buff rawImg;
+    Buff scaledImg;
 };
 
 }

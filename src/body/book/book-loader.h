@@ -1,7 +1,6 @@
 #pragma once
 
 #include <atomic>
-#include <memory_resource>
 
 #include "core/basetype.h"
 #include "core/thread.h"
