@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <stdexcept>
 
 #include "core/fs.h"
 #include "core/basetype.h"
@@ -50,10 +51,10 @@ public:
 
     bool has(const u8view &key) const;
 
-    class BadPropKey : public std::exception {
+    class BadPropKey : public std::logic_error {
     public:
         BadPropKey(const u8view &key)
-            : std::exception("prop key not exist") {}
+            : std::logic_error("prop key not exist") {}
 
         virtual ~BadPropKey() {}
     };
@@ -97,7 +98,7 @@ public:
     bool get(const u8view &key, std::chrono::time_point<ClockT> &time) const
     {
         using Timepoint = std::chrono::time_point<ClockT>;
-        using Duration = Timepoint::duration;
+        using Duration = typename Timepoint::duration;
         typename Duration::rep count = 0;
         if (get(key, count)) {
             time = Timepoint(Duration(count));

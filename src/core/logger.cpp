@@ -134,30 +134,31 @@ static bool shouldFlush(logger::Level level) {
 }
 
 static std::string makeContent(logger::Level level, const std::string &content) {
-    std::timespec ts;
-    std::memset(&ts, 0, sizeof(ts));
-    if (TIME_UTC != std::timespec_get(&ts, TIME_UTC)) {
-        std::ostringstream ss;
-        ss << "std::timespec_get() error: " << std::error_code(errno, std::generic_category()).message();
-        throw std::runtime_error(ss.str());
-    }
-    std::tm tm;
-    std::memset(&tm, 0, sizeof(tm));
-    safeLocalTime(tm, ts.tv_sec);
+    // TODO
+    //std::timespec ts;
+    //std::memset(&ts, 0, sizeof(ts));
+    //if (TIME_UTC != std::timespec_get(&ts, TIME_UTC)) {
+    //    std::ostringstream ss;
+    //    ss << "std::timespec_get() error: " << std::error_code(errno, std::generic_category()).message();
+    //    throw std::runtime_error(ss.str());
+    //}
+    //std::tm tm;
+    //std::memset(&tm, 0, sizeof(tm));
+    //safeLocalTime(tm, ts.tv_sec);
     std::ostringstream buffer;
     buffer << logger::tostr(level) << '|';
-    const int64_t h = tm.tm_hour;
-    const int64_t m = tm.tm_min;
-    const int64_t s = tm.tm_sec;
-    const int64_t ms = ts.tv_nsec / 1'000'000;
-    buffer << std::setw(2) << std::setfill('0') << h;
-    buffer << ':';
-    buffer << std::setw(2) << std::setfill('0') << m;
-    buffer << ':';
-    buffer << std::setw(2) << std::setfill('0') << s;
-    buffer << '.';
-    buffer << std::setw(3) << std::setfill('0') << ms;
-    buffer << '|';
+    //const int64_t h = tm.tm_hour;
+    //const int64_t m = tm.tm_min;
+    //const int64_t s = tm.tm_sec;
+    //const int64_t ms = ts.tv_nsec / 1'000'000;
+    //buffer << std::setw(2) << std::setfill('0') << h;
+    //buffer << ':';
+    //buffer << std::setw(2) << std::setfill('0') << m;
+    //buffer << ':';
+    //buffer << std::setw(2) << std::setfill('0') << s;
+    //buffer << '.';
+    //buffer << std::setw(3) << std::setfill('0') << ms;
+    //buffer << '|';
     buffer << "t:" << ThreadUtil::currentThreadName();
     buffer << "(" << ThreadUtil::currentThreadShortId() << ")";
     buffer << '|';
