@@ -7,7 +7,6 @@
 
 #include "util/sigconns.h"
 #include "util/signal.hpp"
-#include "util/memory.h"
 
 #include "book-load-pipeline.h"
 
