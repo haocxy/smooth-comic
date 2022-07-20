@@ -53,7 +53,7 @@ void CacheCleaner::cleanBookCache()
             , lastWriteTime(fs::last_write_time(path))
             , fileSize(fs::file_size(path)) {}
 
-        bool operator<(const Item &item) {
+        bool operator<(const Item &item) const {
             return lastWriteTime < item.lastWriteTime;
         }
         
