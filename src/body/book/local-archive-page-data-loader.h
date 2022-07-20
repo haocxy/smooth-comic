@@ -10,8 +10,6 @@ namespace myapp {
 
 class LocalArchivePageDataLoader : public PageDataLoader {
 public:
-    using Allocator = std::pmr::polymorphic_allocator<std::byte>;
-
     LocalArchivePageDataLoader(const fs::path &archiveFile, const std::set<u32str> &loadedEntries);
 
     ~LocalArchivePageDataLoader();
