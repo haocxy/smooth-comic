@@ -42,7 +42,7 @@ private:
             return;
         }
 
-        throw std::out_of_range(std::format("RandomAccessArchive::checkIndex({})", index));
+        throw std::out_of_range("RandomAccessArchive::checkIndex(...)");
     }
 
 private:

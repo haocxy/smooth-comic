@@ -53,7 +53,7 @@ RandomAccessArchive::Entry RandomAccessArchive::entryAt(i32 index)
 
         return entry;
     } else {
-        throw std::runtime_error(std::format("RandomAccessArchive::entryDataAt({}) failed", index));
+        throw std::runtime_error("RandomAccessArchive::entryDataAt(...) failed");
     }
 }
 
@@ -70,12 +70,12 @@ void RandomAccessArchive::seekCurEntryTo(i32 index)
         if (archive_->nextEntry()) {
             archive_->skipContent();
         } else {
-            throw std::runtime_error(std::format("RandomAccessArchive::seekCurEntryTo({}) failed, curEntry_ = {}", index, curEntry_));
+            throw std::runtime_error("RandomAccessArchive::seekCurEntryTo(...) failed");
         }
     }
 
     if (index != curEntry_) {
-        throw std::logic_error(std::format("RandomAccessArchive::seekCurEntryTo({}) failed, curEntry_ = {}", index, curEntry_));
+        throw std::logic_error("RandomAccessArchive::seekCurEntryTo(...) failed");
     }
 }
 

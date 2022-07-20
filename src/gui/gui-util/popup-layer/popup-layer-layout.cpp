@@ -1,5 +1,7 @@
 #include "popup-layer-layout.h"
 
+#include <sstream>
+
 #include <QLayoutItem>
 #include <QWidget>
 #include <QMargins>
@@ -137,11 +139,10 @@ QRect PopupLayerLayout::calcGeometry(const QRect &rect, const PopupLayerWidget &
             throw std::logic_error("PopupLayerLayout: bad pinType");
         }
     } else {
-        throw std::logic_error(
-            std::format("PopupLayerLayout: pinType unspecified for {}",
-                popup.metaObject()->className()
-            )
-        );
+        std::ostringstream ss;
+        ss << "PopupLayerLayout: pinType unspecified for "
+            << popup.metaObject()->className();
+        throw std::logic_error(ss.str());
     }
 }
 

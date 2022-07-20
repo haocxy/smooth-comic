@@ -53,8 +53,7 @@ public:
     class BadPropKey : public std::exception {
     public:
         BadPropKey(const u8view &key)
-            : std::exception(std::format("prop key [{}] not exist",
-                static_cast<std::string>(u8str(key))).c_str()) {}
+            : std::exception("prop key not exist") {}
 
         virtual ~BadPropKey() {}
     };

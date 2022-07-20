@@ -7,6 +7,7 @@
 #include <stdexcept>
 
 #include "core/fs.h"
+#include "core/strutil.h"
 #include "option-source.h"
 
 
@@ -73,7 +74,7 @@ public:
 
     void addOption(const std::string &name, std::string &&type, AfterLoadCallback &&callback, std::string &&desc) {
         if (options_.contains(name)) {
-            throw std::logic_error(std::format("OptionCenter::addOption(...) option name [{}] already used", name));
+            throw std::logic_error("OptionCenter::addOption(...) option name already used");
         }
         options_[name] = OptionInfo(std::move(type), std::move(callback), std::move(desc));
     }

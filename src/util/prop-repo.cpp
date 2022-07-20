@@ -1,6 +1,6 @@
 #include "prop-repo.h"
 
-#include <format>
+#include <sstream>
 
 
 namespace myapp
@@ -8,17 +8,26 @@ namespace myapp
 
 static std::string mkCreateTableSql(const std::string &repo)
 {
-    return std::format("create table if not exists {} (key text primary key, val text not null);", repo);
+    std::ostringstream ss;
+    ss << "create table if not exists " << repo << " ";
+    ss << "(key text primary key, val text not null);";
+    return ss.str();
 }
 
 static std::string mkSelectSql(const std::string &repo)
 {
-    return std::format("select val from {} where key = ?;", repo);
+    std::ostringstream ss;
+    ss << "select val from " << repo << " ";
+    ss << "where key = ?;";
+    return ss.str();
 }
 
 static std::string mkInsertOrReplaceSql(const std::string &repo)
 {
-    return std::format("insert or replace into {} values (?,?);", repo);
+    std::ostringstream ss;
+    ss << "insert or replace into " << repo << " ";
+    ss << "values (?,?);";
+    return ss.str();
 }
 
 PropRepo::PropRepo()
