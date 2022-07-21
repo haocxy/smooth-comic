@@ -4,6 +4,12 @@ set(appName smooth-comic)
 
 project(${appName})
 
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE BOTH)
+
+
+
 set(myAppUseDebugConfig FALSE)
 
 get_filename_component(buildDirName ${CMAKE_BINARY_DIR} NAME)
@@ -34,10 +40,11 @@ if(myAppUseDebugConfig)
     set(prepareScriptConfigArg debug)
 endif()
 
-option(PREPARE_DIR "")
-if(PREPARE_DIR)
-    set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/${PREPARE_DIR})
+if(ANDROID)
+    message("=====> for ANDROID")
+    set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/android)
 endif()
+
 
 message(STATUS "prepareDir: ${prepareDir}")
 
@@ -63,6 +70,8 @@ execute_process(
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/zlib)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/liblzma)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/libarchive)
+
+
 
 
 

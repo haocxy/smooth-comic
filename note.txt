@@ -7,5 +7,5 @@ ninja libarchive/install
 
 SmoothComic:
 
-cmake .. -DCMAKE_TOOLCHAIN_FILE=D:\asdk\ndk\25.0.8775105\build\cmake\android.toolchain.cmake -DCMAKE_GENERATOR=Ninja -DCMAKE_C_FLAGS=-ID:\tmp\repo\libarchive\libarchive-3.6.1\contrib\android\include -DANDROID_PLATFORM=23 -DANDROID_ABI=armeabi-v7a -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=BOTH -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=BOTH -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=BOTH -DCMAKE_PREFIX_PATH=D:\Qt\6.3.1\android_armv7 -DPREPARE_DIR=android
+cmake .. -DCMAKE_TOOLCHAIN_FILE=D:\asdk\ndk\25.0.8775105\build\cmake\android.toolchain.cmake -DANDROID_PLATFORM=23 -DANDROID_ABI=armeabi-v7a -G Ninja
 
