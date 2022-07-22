@@ -3,6 +3,7 @@
 #include <cstring>
 #include <condition_variable>
 
+#include <QDebug>
 #include <QPixmap>
 
 #include "core/fs.h"
@@ -22,9 +23,12 @@ Book::Book(Engine &engine)
     : SingleThreadStrand("Book")
     , engine_(engine)
 {
+    qDebug() << "Book::Book() begin";
     exec([this] {
+        qDebug() << "Book::Book() lambda begin";
         actor_ = std::make_unique<Actor>(*this);
-    });
+        qDebug() << "Book::Book() lambda end";
+        });
 }
 
 Book::~Book()

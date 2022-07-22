@@ -1,5 +1,7 @@
 #include "cache-cleaner.h"
 
+#include <QDebug>
+
 #include <algorithm>
 
 #include "engine.h"
@@ -30,7 +32,8 @@ void CacheCleaner::loop()
         if (stopped_) {
             break;
         }
-        sleeper_.sleep(std::chrono::seconds(60));
+        qDebug() << "before sleep()";
+        sleeper_.sleep(std::chrono::seconds(3));
     }
 }
 
@@ -43,8 +46,14 @@ void CacheCleaner::cleanCache()
 
 void CacheCleaner::cleanBookCache()
 {
+    qDebug() << "cleanBookCache";
+
     const fs::path dir = engine_.pathManager().bookCacheDir();
     logger_.d << "cleanBookCache() dir: " << dir;
+
+    if (!fs::exists(dir)) {
+        return;
+    }
 
     struct Item {
     public:

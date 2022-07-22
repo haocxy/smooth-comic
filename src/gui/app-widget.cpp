@@ -23,6 +23,8 @@ AppWidget::AppWidget(Engine &engine, QWidget *parent)
 {
     controller_ = new Controller(engine, this);
 
+    qDebug() << "after new Controller";
+
     resize(1000, 800);
     setMinimumSize(800, 600);
 

@@ -123,6 +123,26 @@ execute_process(
 
 add_subdirectory(src)
 
+if(ANDROID)
+    set(ANDROID_EXTRA_LIBS
+        ${prepareDir}/install/liblzma/lib/liblzma.so
+    )
+    
+    qt_android_generate_deployment_settings(smooth-comic)
+    qt_android_add_apk_target(smooth-comic)
+
+    set_target_properties(
+        ${appName}_make_apk
+        PROPERTIES
+            # QT_ANDROID_EXTRA_PLUGINS "plugins/platforms/libplugins_platforms_qtforandroid_armeabi-v7a.so"
+            QT_ANDROID_EXTRA_LIBS ${prepareDir}/install/liblzma/lib/liblzma.so
+    )
+
+
+
+    qt_finalize_target(${appName})
+endif()
+
 set_target_properties(
     ${appName}
     PROPERTIES

@@ -18,6 +18,9 @@ AppWindow::AppWindow(Engine &engine, QWidget *parent)
     : FramelessWindow(parent)
 {
     appWidget_ = new AppWidget(engine, this);
+
+    qDebug() << "after new AppWidget()";
+
     setCentralWidget(appWidget_);
 
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
@@ -30,6 +33,8 @@ AppWindow::AppWindow(Engine &engine, QWidget *parent)
 
 TitleBarButton *AppWindow::windowMaxButton()
 {
+    qDebug() << __FUNCTION__;
+
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
         return bar->windowMaxButton();
     } else {
@@ -39,6 +44,7 @@ TitleBarButton *AppWindow::windowMaxButton()
 
 bool AppWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 {
+    qDebug() << __FUNCTION__;
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
         TitleBarButton *btn = bar->windowMaxButton();
         return btn->rect().contains(btn->mapFromGlobal(gpos));
@@ -49,17 +55,24 @@ bool AppWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const
 
 bool AppWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
 {
+    qDebug() << __FUNCTION__;
     return appWidget_->isWindowMoveAreaContainsGlobalPos(gpos);
 }
 
 void AppWindow::changeEvent(QEvent *e)
 {
+    qDebug() << __FUNCTION__;
     FramelessWindow::changeEvent(e);
+
+    qDebug() << __FUNCTION__ << " after FramelessWindow::changeEvent";
 
     switch (e->type()) {
     case QEvent::Type::WindowStateChange:
+        qDebug() << __FUNCTION__ << " before if";
         if (QWindowStateChangeEvent *stateChangeEvent = dynamic_cast<QWindowStateChangeEvent *>(e)) {
+            qDebug() << __FUNCTION__ << " before call";
             onWindowStateChanged(stateChangeEvent->oldState(), windowState());
+            qDebug() << __FUNCTION__ << " after call";
         }
         break;
     default:
@@ -69,6 +82,8 @@ void AppWindow::changeEvent(QEvent *e)
 
 void AppWindow::toggleWindowFullScreenAction()
 {
+    qDebug() << __FUNCTION__;
+
     using s = Qt::WindowState;
 
     const Qt::WindowStates states = windowState();
@@ -84,6 +99,7 @@ void AppWindow::toggleWindowFullScreenAction()
 
 void AppWindow::toggleWindowMaxAction()
 {
+    qDebug() << __FUNCTION__;
     using s = Qt::WindowState;
 
     const Qt::WindowStates states = windowState();
@@ -99,6 +115,7 @@ void AppWindow::toggleWindowMaxAction()
 
 void AppWindow::switchWindowStateTo(Qt::WindowState newState)
 {
+    qDebug() << __FUNCTION__;
     switch (newState) {
     case Qt::WindowState::WindowFullScreen:
         showFullScreen();
@@ -119,6 +136,7 @@ void AppWindow::switchWindowStateTo(Qt::WindowState newState)
 
 void AppWindow::onWindowStateChanged(Qt::WindowStates oldStates, Qt::WindowStates newStates)
 {
+    qDebug() << __FUNCTION__;
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
         using s = Qt::WindowState;
         using f = FontIconEnum;
@@ -132,6 +150,8 @@ void AppWindow::onWindowStateChanged(Qt::WindowStates oldStates, Qt::WindowState
             bar->windowFullScreenButton()->setFontIcon(f::WindowFullScreen);
             bar->windowMaxButton()->setFontIcon(f::WindowMaximize);
         }
+        qDebug() << __FUNCTION__ << "b";
+
     }
 }
 

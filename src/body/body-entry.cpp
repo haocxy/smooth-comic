@@ -126,25 +126,52 @@ int body_entry(int argc, char *argv[])
 
     Engine engine;
 
-    QDir::addSearchPath("style", engine.pathManager().packedStyleDir());
-    const QString cssPath = "style:default.css";
+    const QString cssPath = ":/styles/default.css";
 
-    QFontDatabase::addApplicationFont(QFile("style:MaterialIcons-Regular.ttf").fileName());
+    QFile fontFile(":/styles/MaterialIcons-Regular.ttf");
+    fontFile.open(QIODevice::ReadOnly);
+    QByteArray fontData = fontFile.readAll();
+
+    qDebug() << "fontData size: " << fontData.size();
+
+    QFontDatabase::addApplicationFontFromData(fontData);
+
+    qDebug() << "after addApplicationFontFromData";
 
     qApp->setStyleSheet(contentOf(cssPath));
 
-    QFileSystemWatcher cssFileWatcher;
-    cssFileWatcher.addPath(cssPath);
-    QObject::connect(&cssFileWatcher, &QFileSystemWatcher::fileChanged, &cssFileWatcher, [cssPath](const QString &filePath) {
-        if (filePath == cssPath) {
-            qApp->setStyleSheet(contentOf(filePath));
-        }
-    });
+    qDebug() << "after setStyleSheet";
+
+    //QFileSystemWatcher cssFileWatcher;
+    //cssFileWatcher.addPath(cssPath);
+    //QObject::connect(&cssFileWatcher, &QFileSystemWatcher::fileChanged, &cssFileWatcher, [cssPath](const QString &filePath) {
+    //    if (filePath == cssPath) {
+    //        qApp->setStyleSheet(contentOf(filePath));
+    //    }
+    //});
 
     AppWindow w(engine);
-    w.show();
 
-    return QApplication::exec();
+    qDebug() << "after AppWindow::AppWindow()";
+
+    try {
+        w.show();
+    } catch (const std::exception &e) {
+        qDebug() << "w.show() exception: " << e.what();
+        return 1;
+    } catch (...) {
+        qDebug() << "w.show() unknown exception";
+        return 1;
+    }
+
+    qDebug() << "w.show()";
+
+    try {
+        return QApplication::exec();
+    } catch (const std::exception &e) {
+        qDebug() << "QApplication::exec() exeception: " << e.what();
+        return 1;
+    }
 }
 
 }

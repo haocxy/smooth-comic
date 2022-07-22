@@ -1,5 +1,9 @@
 #include "path-manager.h"
 
+#include <QDebug>
+#include <QSysInfo>
+#include <QStandardPaths>
+
 #include "core/system.h"
 #include "core/logger.h"
 #include "util/fs-util.h"
@@ -22,6 +26,10 @@ static const std::u32string Book = U"book";
 
 static fs::path selectDefaultBaseCacheDir()
 {
+    if (QSysInfo::productType() == "android") {
+        return QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdU32String();
+    }
+
     if (!SystemType::IsWindows) {
         return SystemUtil::userHome();
     }
@@ -35,7 +43,9 @@ static fs::path selectDefaultBaseCacheDir()
 
 static fs::path selectDefaultCacheDir()
 {
-    return selectDefaultBaseCacheDir() / ".smooth-comic-cache";
+    const fs::path base = selectDefaultBaseCacheDir();
+    qDebug() << "selectDefaultBaseCacheDir: " << QString::fromStdU32String(base.generic_u32string());
+    return base / ".smooth-comic-cache";
 }
 
 PathManager::PathManager()

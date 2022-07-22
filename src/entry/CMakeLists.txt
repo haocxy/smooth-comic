@@ -8,8 +8,8 @@ list(APPEND deps ${appName}-loader)
 
 
 # 所有平台都有的默认程序入口
-add_executable(${appName} ${src_files})
-target_link_libraries(${appName} ${deps})
+qt_add_executable(${appName} MANUAL_FINALIZATION ${src_files})
+target_link_libraries(${appName} PRIVATE ${deps})
 
 # 如果是windows平台，则把默认入口设置为GUI方式启动
 if(MSVC)

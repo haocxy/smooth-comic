@@ -8,9 +8,9 @@
 namespace myapp {
 
 Engine::Engine() {
-    asyncDeleter_ = new AsyncDeleter;
+    //asyncDeleter_ = new AsyncDeleter;
     pathManager_ = new PathManager;
-    cacheCleaner_ = new CacheCleaner(*this);
+    //cacheCleaner_ = new CacheCleaner(*this);
 }
 
 }

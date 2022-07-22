@@ -102,7 +102,7 @@
 <context>
     <name>myapp::AppWidget</name>
     <message>
-        <location filename="../src/gui/app-widget.cpp" line="112"/>
+        <location filename="../src/gui/app-widget.cpp" line="114"/>
         <source>Open Comic</source>
         <translation type="unfinished"></translation>
     </message>
