@@ -1,5 +1,6 @@
 #include "libarchive-wrapper.h"
 
+#include <QDebug>
 #include <QString>
 
 #include <optional>
@@ -56,6 +57,7 @@ public:
 
     void open(const fs::path &file) {
         close();
+        qDebug() << "Archive::open " << QString::fromStdU32String(file.generic_u32string());
         archive_ = ::archive_read_new();
         if (!archive_) {
             throw ArchiveErr("archive_read_new");
@@ -64,7 +66,8 @@ public:
         ::archive_read_support_filter_all(archive_);
         ::archive_read_support_format_all(archive_);
 
-        int r = ::archive_read_open_filename(archive_, file.generic_string().c_str(), 10240);
+        int r = ::archive_read_open_filename(archive_, (const char *) file.generic_u8string().c_str(), 10240);
+        qDebug() << "Archive::open r: " << r;
         if (r != ARCHIVE_OK) {
             throw ArchiveErr("archive_read_open_filename", r);
         }
@@ -125,6 +128,7 @@ private:
 Archive::Archive()
     : impl_(new ArchiveImpl)
 {
+    qDebug() << "Archive::Archive()";
 }
 
 Archive::Archive(const fs::path &file)

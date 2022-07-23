@@ -151,6 +151,7 @@ void myapp::Book::Actor::reload()
 void Book::Actor::open(const fs::path &archiveFile, ShouldForceReload shouldForceReload)
 {
     if (!fs::is_regular_file(archiveFile)) {
+        qDebug() << "Book::Actor::open not regular file: " << QString::fromStdU32String(archiveFile.generic_u32string());
         return;
     }
 
@@ -159,6 +160,8 @@ void Book::Actor::open(const fs::path &archiveFile, ShouldForceReload shouldForc
     asyncDeleteBookCache();
 
     currentSessionId_ = sessionIdGen_.next();
+
+    qDebug() << "before new BookCache";
 
     cache_ = new BookCache(
         currentSessionId_,

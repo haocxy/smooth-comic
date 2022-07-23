@@ -32,8 +32,7 @@ void CacheCleaner::loop()
         if (stopped_) {
             break;
         }
-        qDebug() << "before sleep()";
-        sleeper_.sleep(std::chrono::seconds(3));
+        sleeper_.sleep(std::chrono::seconds(60));
     }
 }
 

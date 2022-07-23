@@ -78,7 +78,7 @@ list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/libarchive)
 # 查找第三方库
 set(libQt Qt6)
 find_package(${libQt} REQUIRED COMPONENTS Core Widgets)
-find_package(LibArchive REQUIRED)
+# find_package(LibArchive REQUIRED)
 
 # VS专用全局设置
 if(MSVC)
@@ -121,6 +121,10 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
+add_subdirectory(third EXCLUDE_FROM_ALL)
+
+include_directories(third/libarchive-3.6.1/libarchive)
+
 add_subdirectory(src)
 
 if(ANDROID)
@@ -137,8 +141,6 @@ if(ANDROID)
             # QT_ANDROID_EXTRA_PLUGINS "plugins/platforms/libplugins_platforms_qtforandroid_armeabi-v7a.so"
             QT_ANDROID_EXTRA_LIBS ${prepareDir}/install/liblzma/lib/liblzma.so
     )
-
-
 
     qt_finalize_target(${appName})
 endif()
