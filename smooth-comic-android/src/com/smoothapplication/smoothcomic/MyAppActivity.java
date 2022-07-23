@@ -10,11 +10,14 @@ import androidx.core.app.ActivityCompat;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MyAppActivity extends QtActivity {
 
-    private final static String TAG = "smooth-comic";
+    private final static String TAG = "smooth-comic-MyAppActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,15 @@ public class MyAppActivity extends QtActivity {
         Log.d(TAG, "MyAppActivity::onCreate after QtActivity::onCreate");
 
         requestMyAppPremissions();
+
+        File f = new File("/storage/emulated/0/BaiduNetdisk/a.zip");
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            Log.d(TAG, "MyAppActivity::onCreate after new FileInputStream" + f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void requestMyAppPremissions() {
@@ -41,6 +53,8 @@ public class MyAppActivity extends QtActivity {
         for (String perm : permissions) {
             if (ActivityCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
                 notHavePerms.add(perm);
+            } else {
+                Log.d(TAG, "permission " + perm + " granted");
             }
         }
 
