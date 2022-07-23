@@ -42,3 +42,4 @@
 /src/**/asset.*.cpp
 
 /trans/*.qm
+/third/
