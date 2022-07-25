@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22.0 FATAL_ERROR)
 
 set(appName smooth-comic)
 
@@ -41,7 +41,8 @@ if(myAppUseDebugConfig)
 endif()
 
 if(ANDROID)
-    message("=====> for ANDROID")
+    message("=====> for ANDROID: ANDROID_SDK_ROOT: ${ANDROID_SDK_ROOT}")
+    message("=====> for ANDROID: ANDROID_ABI: ${ANDROID_ABI}")
     set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/android)
 endif()
 
@@ -128,24 +129,6 @@ include_directories(
 )
 
 add_subdirectory(src)
-
-if(ANDROID)
-    set(ANDROID_EXTRA_LIBS
-        ${prepareDir}/install/liblzma/lib/liblzma.so
-    )
-    
-    qt_android_generate_deployment_settings(smooth-comic)
-    qt_android_add_apk_target(smooth-comic)
-
-    set_target_properties(
-        ${appName}_make_apk
-        PROPERTIES
-            # QT_ANDROID_EXTRA_PLUGINS "plugins/platforms/libplugins_platforms_qtforandroid_armeabi-v7a.so"
-            QT_ANDROID_EXTRA_LIBS ${prepareDir}/install/liblzma/lib/liblzma.so
-    )
-
-    qt_finalize_target(${appName})
-endif()
 
 set_target_properties(
     ${appName}

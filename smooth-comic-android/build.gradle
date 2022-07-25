@@ -51,7 +51,7 @@ android {
             resources.srcDirs = ['resources']
             renderscript.srcDirs = ['src']
             assets.srcDirs = ['assets']
-            jniLibs.srcDirs = ['libs']
+//            jniLibs.srcDirs = ['libs']
        }
     }
 
@@ -79,10 +79,23 @@ android {
         targetSdkVersion qtTargetSdkVersion
         ndk.abiFilters = qtTargetAbiList.split(",")
         externalNativeBuild {
+            Properties localProps = new Properties()
+            try (DataInputStream stream = project.rootProject.file('local.properties').newDataInputStream()) {
+                localProps.load(stream)
+            }
+
             cmake {
                 cppFlags ''
+                arguments "-DANDROID_SDK_ROOT=${localProps.getProperty('sdk.dir')}"
             }
         }
     }
 
+    externalNativeBuild {
+        cmake {
+            path file('../CMakeLists.txt')
+            version '3.22.1'
+            buildStagingDirectory './build-cmake'
+        }
+    }
 }
