@@ -79,7 +79,7 @@ list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/libarchive)
 # 查找第三方库
 set(libQt Qt6)
 find_package(${libQt} REQUIRED COMPONENTS Core Widgets)
-# find_package(LibArchive REQUIRED)
+find_package(LibArchive REQUIRED)
 
 # VS专用全局设置
 if(MSVC)
