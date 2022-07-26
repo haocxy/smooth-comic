@@ -9,7 +9,7 @@ add_library(${appName}-util STATIC ${src_files})
 
 target_link_libraries(${appName}-util
     ${appName}-core
-    archive_static
+    LibArchive::LibArchive
     ${libQt}::Core
     ${libQt}::Gui
 )

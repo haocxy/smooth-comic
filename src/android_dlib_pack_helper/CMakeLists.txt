@@ -1,9 +1,11 @@
-findSourceFiles(src_files)
-
-qt_add_executable(android-dlib-pack-helper ${src_files})
-
-
 if(ANDROID)
+
+    findSourceFiles(src_files)
+
+    qt_add_executable(android-dlib-pack-helper ${src_files})
+
+
+
     add_library(stdcpp-shared SHARED IMPORTED)
     find_library(stdcpp-shared-libpath c++_shared)
     set_target_properties(stdcpp-shared PROPERTIES

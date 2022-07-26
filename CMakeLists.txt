@@ -122,11 +122,11 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-add_subdirectory(third EXCLUDE_FROM_ALL)
+# add_subdirectory(third EXCLUDE_FROM_ALL)
 
-include_directories(
-    third/libarchive-3.6.1/libarchive
-)
+# include_directories(
+#     third/libarchive-3.6.1/libarchive
+# )
 
 add_subdirectory(src)
 
