@@ -11,7 +11,20 @@ if(ANDROID)
     set_target_properties(stdcpp-shared PROPERTIES
         IMPORTED_LOCATION ${stdcpp-shared-libpath})
     target_link_libraries(android-dlib-pack-helper PRIVATE stdcpp-shared)
-    message(STATUS "for ANDROID: stdcpp-shared found: ${stdcpp-shared-libpath}")
+    if(NOT stdcpp-shared-libpath)
+        message(FATAL_ERROR "for ANDROID: Cannot find [c++_shared]")
+    endif()
+    message("for ANDROID: stdcpp-shared found: ${stdcpp-shared-libpath}")
+
+    add_library(myapp-liblzma SHARED IMPORTED)
+    find_library(myapp-liblzma-libpath lzma)
+    set_target_properties(myapp-liblzma PROPERTIES
+        IMPORTED_LOCATION ${myapp-liblzma-libpath})
+    target_link_libraries(android-dlib-pack-helper PRIVATE myapp-liblzma)
+    if(NOT myapp-liblzma-libpath)
+        message(FATAL_ERROR "for ANDROID: Cannot find [lzma]")
+    endif()
+    message("for ANDROID: myapp-liblzma found: ${myapp-liblzma-libpath}")
 
     function(addQtPluginDepForAndroid plugin_type_dir_name plugin_name)
         find_file(pathOfLib "libplugins_${plugin_type_dir_name}_${plugin_name}_${ANDROID_ABI}.so"
