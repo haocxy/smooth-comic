@@ -87,6 +87,7 @@ android {
             cmake {
                 cppFlags ''
                 arguments "-DANDROID_SDK_ROOT=${localProps.getProperty('sdk.dir')}"
+                targets "smooth-comic", "android-dlib-pack-helper"
             }
         }
     }

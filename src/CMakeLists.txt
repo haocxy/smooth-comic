@@ -61,3 +61,6 @@ add_subdirectory(loader)
 
 # 模块功能：提供程序入口，即提供可执行文件
 add_subdirectory(entry)
+
+# 配合Android的构建工具，把需要动态加载的DLL都挂在这个项目下
+add_subdirectory(android_dlib_pack_helper)
