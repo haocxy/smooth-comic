@@ -81,7 +81,11 @@ def prepare(context: BuildContext, config: BuildConfig):
     if not context.need_build(lib_name):
         return
 
+    extract_dir = context.get_extract_dir(lib_name)
+    if extract_dir.exists():
+        return
+
     smart_extract(
         archive=context.find_newest_in_repo('boost/boost_?_?_?.7z', is_multi_volumn=True),
-        dest_dir=context.get_extract_dir(lib_name)
+        dest_dir=extract_dir
     )
