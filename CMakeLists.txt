@@ -41,9 +41,15 @@ if(myAppUseDebugConfig)
 endif()
 
 if(ANDROID)
+    message("=====> for ANDROID: CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
     message("=====> for ANDROID: ANDROID_SDK_ROOT: ${ANDROID_SDK_ROOT}")
     message("=====> for ANDROID: ANDROID_ABI: ${ANDROID_ABI}")
-    set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/android)
+    message("=====> for ANDROID: ANDROID_PLATFORM: ${ANDROID_PLATFORM}")
+    message("=====> for ANDROID: ANDROID_NATIVE_API_LEVEL: ${ANDROID_NATIVE_API_LEVEL}")
+    message("=====> for ANDROID: CMAKE_COMMAND: ${CMAKE_COMMAND}")
+    message("=====> for ANDROID: CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
+    message("=====> for ANDROID: CMAKE_MAKE_PROGRAM: ${CMAKE_MAKE_PROGRAM}")
+    set(prepareDir ${CMAKE_SOURCE_DIR}/prepare/android__${ANDROID_NATIVE_API_LEVEL}__${ANDROID_ABI}__${CMAKE_BUILD_TYPE})
 endif()
 
 
@@ -62,17 +68,35 @@ find_package(Python3 REQUIRED)
 message(STATUS "Python3 Executable: [${Python3_EXECUTABLE}]")
 
 message(STATUS "Preparing third libs")
-execute_process(
-    COMMAND ${Python3_EXECUTABLE} tools/prepare.py -s ${CMAKE_SOURCE_DIR} -p ${prepareDir} -r ${CMAKE_SOURCE_DIR}/prepare/repo -c ${prepareScriptConfigArg}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
+if(ANDROID)
+    execute_process(
+        COMMAND ${Python3_EXECUTABLE} tools/prepare.py
+            --cmake_command ${CMAKE_COMMAND}
+            --cmake_generator ${CMAKE_GENERATOR}
+            --cmake_make_program ${CMAKE_MAKE_PROGRAM}
+            -s ${CMAKE_SOURCE_DIR}
+            -p ${prepareDir}
+            -r ${CMAKE_SOURCE_DIR}/prepare/repo
+            -c ${prepareScriptConfigArg}
+            --cmake_toolchain_file ${CMAKE_TOOLCHAIN_FILE}
+            --is_for_android true
+            --android_abi ${ANDROID_ABI}
+            --android_platform ${ANDROID_NATIVE_API_LEVEL}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+else()
+    execute_process(
+        COMMAND ${Python3_EXECUTABLE} tools/prepare.py --cmake_command ${CMAKE_COMMAND} -s ${CMAKE_SOURCE_DIR} -p ${prepareDir} -r ${CMAKE_SOURCE_DIR}/prepare/repo -c ${prepareScriptConfigArg}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+endif()
 
 # 设置第三方库搜索路径
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/zlib)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/liblzma)
 list(APPEND CMAKE_PREFIX_PATH ${prepareDir}/install/libarchive)
 
-
+include_directories(${prepareDir}/source/boost/)
 
 
 

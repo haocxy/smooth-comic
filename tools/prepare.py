@@ -27,6 +27,13 @@ def main():
     parser.add_argument('-p', '--prepare_dir', help='Output directory for prepared libs')
     parser.add_argument('-r', '--repo_dir', help='Directory of repo in which can find libs')
     parser.add_argument('-c', '--config', choices=['debug', 'release'])
+    parser.add_argument('--cmake_command')
+    parser.add_argument('--cmake_generator')
+    parser.add_argument('--cmake_make_program')
+    parser.add_argument('--cmake_toolchain_file')
+    parser.add_argument('--is_for_android', type=bool, default=False)
+    parser.add_argument('--android_abi')
+    parser.add_argument('--android_platform')
     args = parser.parse_args()
 
     print(f'args: {args}', flush=True)
@@ -38,10 +45,17 @@ def main():
     repo_thirdlibs.download(clone_dir=thirdlib_repo_dir)
 
     build_config = BuildConfig()
+    build_config.cmakeCommand = args.cmake_command
+    build_config.cmakeGenerator = args.cmake_generator
+    build_config.cmakeMakeProgram = args.cmake_make_program
     build_config.runtime.linkType = LinkType.Dynamic
     build_config.runtime.useDebug = False
     build_config.lib.linkType = LinkType.Dynamic
     build_config.lib.useDebug = (args.config == 'debug')
+    build_config.lib.cmakeToolchainFile = args.cmake_toolchain_file
+    build_config.lib.isForAndroid = args.is_for_android
+    build_config.lib.androidAbi = args.android_abi
+    build_config.lib.androidPlatform = args.android_platform
 
     build_context = BuildContext(
         base_repo_dir=thirdlib_repo_dir,

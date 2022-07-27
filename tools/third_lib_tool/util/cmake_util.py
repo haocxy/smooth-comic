@@ -34,8 +34,31 @@ def cmake_build_and_install(
     if not build_dir.exists():
         os.makedirs(build_dir)
 
+    cmake_exe: str = 'cmake'
+    if build_config.cmakeCommand is not None:
+        cmake_exe = build_config.cmakeCommand
+
     generate_cmd: str = ''
-    generate_cmd += f'cmake -S {source_dir} -B {build_dir}'
+    generate_cmd += f'{cmake_exe} -S {source_dir} -B {build_dir}'
+
+    if build_config.cmakeGenerator is not None:
+        generate_cmd += f' -DCMAKE_GENERATOR={build_config.cmakeGenerator}'
+
+    if build_config.cmakeMakeProgram is not None:
+        generate_cmd += f' -DCMAKE_MAKE_PROGRAM={build_config.cmakeMakeProgram}'
+
+    generate_cmd += ' -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=BOTH'
+    generate_cmd += ' -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=BOTH'
+    generate_cmd += ' -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=BOTH'
+
+    if build_config.lib.cmakeToolchainFile is not None:
+        generate_cmd += f' -DCMAKE_TOOLCHAIN_FILE={build_config.lib.cmakeToolchainFile}'
+
+    if build_config.lib.isForAndroid:
+        if build_config.lib.androidAbi is not None:
+            generate_cmd += f' -DANDROID_ABI={build_config.lib.androidAbi}'
+        if build_config.lib.androidPlatform is not None:
+            generate_cmd += f' -DANDROID_PLATFORM={build_config.lib.androidPlatform}'
 
     generate_cmd += f' -DCMAKE_BUILD_TYPE='
     if build_config.lib.useDebug:
@@ -58,7 +81,7 @@ def cmake_build_and_install(
     job_count: int = max(1, os.cpu_count() - 1)
 
     build_and_install_cmd: str = ''
-    build_and_install_cmd += f'cmake --build {build_dir}'
+    build_and_install_cmd += f'{cmake_exe} --build {build_dir}'
     build_and_install_cmd += f' -t install --config '
     if build_config.lib.useDebug:
         build_and_install_cmd += 'Debug'

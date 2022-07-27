@@ -47,12 +47,30 @@ def build_and_install_win(source_dir: Path, install_dir: Path, config: BuildConf
     os.chdir(old_dir)
 
 
-def build_and_install(source_dir: Path, install_dir: Path, config: BuildConfig):
-    if sys.platform == 'win32':
+def build_and_install_android(context: BuildContext, install_dir: Path, config: BuildConfig):
+    smart_extract(
+        archive=context.find_newest_in_repo(f'xz/xz-?.?.?-android-{config.lib.androidAbi}.tar.gz'),
+        dest_dir=install_dir
+    )
+
+
+def build_and_install(context: BuildContext, install_dir: Path, config: BuildConfig, lib_name: str):
+    if config.lib.isForAndroid:
+        build_and_install_android(
+            context=context,
+            install_dir=install_dir,
+            config=config
+        )
+    elif sys.platform == 'win32':
+        source_dir = smart_extract(
+            archive=context.find_newest_in_repo('xz/xz-?.?.?.tar.gz'),
+            dest_dir=context.get_extract_dir(f'{lib_name}/xz.tmp2')
+        )
         build_and_install_win(
             source_dir=source_dir,
             install_dir=install_dir,
-            config=config)
+            config=config
+        )
     else:
         raise Exception('Unimplemented logic')
 
@@ -62,13 +80,9 @@ def prepare(context: BuildContext, config: BuildConfig):
     if not context.need_build(lib_name):
         return
 
-    source_dir = smart_extract(
-        archive=context.find_newest_in_repo('xz/xz-?.?.?.tar.gz'),
-        dest_dir=context.get_extract_dir(f'{lib_name}/xz.tmp2')
-    )
-
     build_and_install(
-        source_dir=source_dir,
+        context=context,
         install_dir=context.get_install_dir(lib_name),
-        config=config
+        config=config,
+        lib_name=lib_name
     )

@@ -22,7 +22,7 @@ def prepare(context: BuildContext, config: BuildConfig):
         return
 
     source_dir = smart_extract(
-        archive=context.find_newest_in_repo('zlib/zlib-?.tar.gz'),
+        archive=context.find_newest_in_repo('zlib/zlib-?.?.?.tar.gz'),
         dest_dir=context.get_extract_dir(lib_name)
     )
 

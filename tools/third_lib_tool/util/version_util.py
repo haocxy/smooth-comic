@@ -106,6 +106,8 @@ def find_newest_lib(directory: Path, name_template: str, is_multi_volumn: bool =
         if is_multi_volumn:
             name = try_find_multi_volumn_part(str(name))
         libver: LibVersion = get_lib_version_by_name_template(pat, str(name))
+        if libver is None:
+            continue
         if newest_libver is None or libver.newer_than(newest_libver):
             newest_libver = libver
             newest_file = str(name)
