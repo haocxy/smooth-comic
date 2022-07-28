@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <!-- DO NOT EDIT THIS: This file is populated automatically by the deployment tool. -->
 
     <array name="bundled_libs">
         
@@ -11,10 +10,15 @@
         <item>armeabi-v7a;Qt6Core_armeabi-v7a</item>
         <item>armeabi-v7a;Qt6Gui_armeabi-v7a</item>
         <item>armeabi-v7a;Qt6Widgets_armeabi-v7a</item>
+        <item>arm64-v8a;c++_shared</item>
+        <item>arm64-v8a;Qt6Core_arm64-v8a</item>
+        <item>arm64-v8a;Qt6Gui_arm64-v8a</item>
+        <item>arm64-v8a;Qt6Widgets_arm64-v8a</item>
     </array>
 
     <array name="load_local_libs">
         <item>armeabi-v7a;libplugins_platforms_qtforandroid_armeabi-v7a.so</item>
+        <item>arm64-v8a;libplugins_platforms_qtforandroid_arm64-v8a.so</item>
     </array>
 
     <string name="static_init_classes"></string>
