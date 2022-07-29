@@ -102,7 +102,7 @@ include_directories(${prepareDir}/source/boost/)
 
 # 查找第三方库
 set(libQt Qt6)
-find_package(${libQt} REQUIRED COMPONENTS Core Widgets)
+find_package(${libQt} REQUIRED COMPONENTS Core Widgets Qml Quick)
 find_package(LibArchive REQUIRED)
 
 # VS专用全局设置

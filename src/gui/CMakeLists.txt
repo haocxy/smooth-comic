@@ -23,9 +23,12 @@ include_directories(${CMAKE_SOURCE_DIR}/src/body)
 
 findSourceFiles(src_files)
 
-add_library(${appName}-gui STATIC ${src_files} ${CMAKE_SOURCE_DIR}/resources.qrc)
+add_library(${appName}-gui STATIC ${src_files} ${CMAKE_SOURCE_DIR}/resources.qrc qml.qrc)
 
 target_link_libraries(${appName}-gui
     ${appName}-util
     ${libQt}::Widgets
+    ${libQt}::Qml
+    ${libQt}::Quick
 )
+

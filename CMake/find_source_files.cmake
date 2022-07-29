@@ -47,3 +47,9 @@ function(findSourceFiles output_files)
     source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/.." FILES ${result})
     set(${output_files} ${result} PARENT_SCOPE)
 endfunction()
+
+
+function(findFilesByExt output_files ext_name)
+    file(GLOB_RECURSE files ${CMAKE_CURRENT_SOURCE_DIR}/*.${ext_name})
+    set(output_files ${files} PARENT_SCOPE)
+endfunction()

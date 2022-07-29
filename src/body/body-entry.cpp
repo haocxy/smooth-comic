@@ -7,6 +7,8 @@
 #include <QFileSystemWatcher>
 #include <QFontDatabase>
 #include <QTranslator>
+#include <QQmlApplicationEngine>
+#include <QQuickView>
 
 #include "core/logger.h"
 #include "core/thread.h"
@@ -24,10 +26,12 @@ class QtResourceSystemIniter {
 public:
     QtResourceSystemIniter() {
         Q_INIT_RESOURCE(resources);
+        Q_INIT_RESOURCE(qml);
     }
 
     ~QtResourceSystemIniter() {
         Q_CLEANUP_RESOURCE(resources);
+        Q_CLEANUP_RESOURCE(qml);
     }
 };
 
@@ -123,6 +127,14 @@ int body_entry(int argc, char *argv[])
     if (translator.load(QLocale(), "trans", ".", ":/trans")) {
         QCoreApplication::installTranslator(&translator);
     }
+
+    QQuickView quickView;
+    quickView.setSource(QUrl(":/MainWindow.qml"));
+    quickView.setVisible(true);
+
+    QFile qmlFile(":/MainWindow.qml");
+    qmlFile.open(QIODevice::ReadOnly);
+    qDebug() << "qmlFile: " << QString::fromUtf8(qmlFile.readAll());
 
     Engine engine;
 
