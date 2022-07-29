@@ -133,10 +133,8 @@ int body_entry(int argc, char *argv[])
         QCoreApplication::installTranslator(&translator);
     }
 
-
-    QQuickView quickView;
-    quickView.setSource(QUrl(":/MainWindow.qml"));
-    quickView.setVisible(true);
+    QQmlApplicationEngine qmlAppEngine;
+    qmlAppEngine.load(QUrl("qrc:/MainWindow.qml"));
 
     Engine engine;
 
@@ -156,36 +154,11 @@ int body_entry(int argc, char *argv[])
 
     qDebug() << "after setStyleSheet";
 
-    //QFileSystemWatcher cssFileWatcher;
-    //cssFileWatcher.addPath(cssPath);
-    //QObject::connect(&cssFileWatcher, &QFileSystemWatcher::fileChanged, &cssFileWatcher, [cssPath](const QString &filePath) {
-    //    if (filePath == cssPath) {
-    //        qApp->setStyleSheet(contentOf(filePath));
-    //    }
-    //});
-
     AppWindow w(engine);
 
-    qDebug() << "after AppWindow::AppWindow()";
+    //w.show();
 
-    try {
-        w.show();
-    } catch (const std::exception &e) {
-        qDebug() << "w.show() exception: " << e.what();
-        return 1;
-    } catch (...) {
-        qDebug() << "w.show() unknown exception";
-        return 1;
-    }
-
-    qDebug() << "w.show()";
-
-    try {
-        return QApplication::exec();
-    } catch (const std::exception &e) {
-        qDebug() << "QApplication::exec() exeception: " << e.what();
-        return 1;
-    }
+    return QApplication::exec();
 }
 
 }
