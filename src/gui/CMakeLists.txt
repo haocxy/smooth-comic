@@ -30,5 +30,6 @@ target_link_libraries(${appName}-gui
     ${libQt}::Widgets
     ${libQt}::Qml
     ${libQt}::Quick
+    ${libQt}::QuickWidgets
 )
 

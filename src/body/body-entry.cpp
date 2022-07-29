@@ -121,6 +121,11 @@ int body_entry(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    if (SystemType::IsWindows) {
+        // 解决在Windows平台调整窗口大小时窗口内容出现黑色底色的问题
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::GraphicsApi::OpenGL);
+    }
+
     registerQtMetaTypes();
 
     QTranslator translator;
@@ -128,13 +133,10 @@ int body_entry(int argc, char *argv[])
         QCoreApplication::installTranslator(&translator);
     }
 
+
     QQuickView quickView;
     quickView.setSource(QUrl(":/MainWindow.qml"));
     quickView.setVisible(true);
-
-    QFile qmlFile(":/MainWindow.qml");
-    qmlFile.open(QIODevice::ReadOnly);
-    qDebug() << "qmlFile: " << QString::fromUtf8(qmlFile.readAll());
 
     Engine engine;
 
