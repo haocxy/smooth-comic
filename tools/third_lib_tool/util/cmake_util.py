@@ -23,6 +23,13 @@ def mk_cmake_prefix_path_str(cmake_prefix_path: Optional[list[str]]) -> str:
     return result
 
 
+def objlist_to_strlist(objlist: list) -> list[str]:
+    result: list[str] = []
+    for item in objlist:
+        result.append(str(item))
+    return result
+
+
 def cmake_build_and_install(
         source_dir: Path,
         build_dir: Path,
@@ -73,8 +80,9 @@ def cmake_build_and_install(
     if not empty_str(other_params):
         generate_args += [f'{other_params}']
 
-    print(f'CMake Configure CMD: {generate_args}', flush=True)
-    subprocess.run(generate_args)
+    generate_str_args = objlist_to_strlist(generate_args)
+    print(f'CMake Configure CMD: {generate_str_args}', flush=True)
+    subprocess.run(generate_str_args)
 
     job_count: int = max(1, os.cpu_count() - 1)
 
@@ -84,6 +92,8 @@ def cmake_build_and_install(
 
     build_and_install_args += ['-j', job_count]
 
+    build_and_install_str_args = objlist_to_strlist(build_and_install_args)
+
     for i in range(install_retry_times):
-        print(f'CMake Install CMD: {build_and_install_args}', flush=True)
-        subprocess.run(build_and_install_args)
+        print(f'CMake Install CMD: {build_and_install_str_args}', flush=True)
+        subprocess.run(build_and_install_str_args)
