@@ -1,4 +1,5 @@
 import os
+import subprocess
 from pathlib import Path
 from typing import Optional
 
@@ -38,58 +39,51 @@ def cmake_build_and_install(
     if build_config.cmakeCommand is not None:
         cmake_exe = build_config.cmakeCommand
 
-    generate_cmd: str = ''
-    generate_cmd += f'{cmake_exe} -S {source_dir} -B {build_dir}'
+    generate_args: list[str] = []
+
+    generate_args += [cmake_exe, '-S', source_dir, '-B', build_dir]
 
     if build_config.cmakeGenerator is not None:
-        generate_cmd += f' -DCMAKE_GENERATOR={build_config.cmakeGenerator}'
+        generate_args += [f'-DCMAKE_GENERATOR={build_config.cmakeGenerator}']
 
     if build_config.cmakeMakeProgram is not None:
-        generate_cmd += f' -DCMAKE_MAKE_PROGRAM={build_config.cmakeMakeProgram}'
+        generate_args += [f'-DCMAKE_MAKE_PROGRAM={build_config.cmakeMakeProgram}']
 
-    generate_cmd += ' -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=BOTH'
-    generate_cmd += ' -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=BOTH'
-    generate_cmd += ' -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=BOTH'
+    generate_args += ['-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=BOTH']
+    generate_args += ['-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=BOTH']
+    generate_args += ['-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=BOTH']
 
     if build_config.lib.cmakeToolchainFile is not None:
-        generate_cmd += f' -DCMAKE_TOOLCHAIN_FILE={build_config.lib.cmakeToolchainFile}'
+        generate_args += [f'-DCMAKE_TOOLCHAIN_FILE={build_config.lib.cmakeToolchainFile}']
 
     if build_config.lib.isForAndroid:
         if build_config.lib.androidAbi is not None:
-            generate_cmd += f' -DANDROID_ABI={build_config.lib.androidAbi}'
+            generate_args += [f'-DANDROID_ABI={build_config.lib.androidAbi}']
         if build_config.lib.androidPlatform is not None:
-            generate_cmd += f' -DANDROID_PLATFORM={build_config.lib.androidPlatform}'
+            generate_args += [f'-DANDROID_PLATFORM={build_config.lib.androidPlatform}']
 
-    generate_cmd += f' -DCMAKE_BUILD_TYPE='
-    if build_config.lib.useDebug:
-        generate_cmd += 'Debug'
-    else:
-        generate_cmd += 'Release'
+    generate_args += [f'-DCMAKE_BUILD_TYPE={"Debug" if build_config.lib.useDebug else "Release"}']
 
-    generate_cmd += f' -DCMAKE_INSTALL_PREFIX={install_dir}'
+    generate_args += [f'-DCMAKE_INSTALL_PREFIX={install_dir}']
 
     cmake_prefix_path_str: str = mk_cmake_prefix_path_str(cmake_prefix_path)
     if not empty_str(cmake_prefix_path_str):
-        generate_cmd += f' -DCMAKE_PREFIX_PATH={cmake_prefix_path_str}'
+        generate_args += [f'-DCMAKE_PREFIX_PATH={cmake_prefix_path_str}']
 
     if not empty_str(other_params):
-        generate_cmd += f' {other_params}'
+        generate_args += [f'{other_params}']
 
-    print(f'Executing CMD: {generate_cmd}', flush=True)
-    os.system(generate_cmd)
+    print(f'CMake Configure CMD: {generate_args}', flush=True)
+    subprocess.run(generate_args)
 
     job_count: int = max(1, os.cpu_count() - 1)
 
-    build_and_install_cmd: str = ''
-    build_and_install_cmd += f'{cmake_exe} --build {build_dir}'
-    build_and_install_cmd += f' -t install --config '
-    if build_config.lib.useDebug:
-        build_and_install_cmd += 'Debug'
-    else:
-        build_and_install_cmd += 'Release'
+    build_and_install_args: list[str] = []
+    build_and_install_args += [cmake_exe, '--build', build_dir, '-t', 'install', '--config']
+    build_and_install_args += ['Debug' if build_config.lib.useDebug else 'Release']
 
-    build_and_install_cmd += f' -j {job_count}'
+    build_and_install_args += ['-j', job_count]
 
     for i in range(install_retry_times):
-        print(f'Executing CMD: {build_and_install_cmd}', flush=True)
-        os.system(build_and_install_cmd)
+        print(f'CMake Install CMD: {build_and_install_args}', flush=True)
+        subprocess.run(build_and_install_args)
