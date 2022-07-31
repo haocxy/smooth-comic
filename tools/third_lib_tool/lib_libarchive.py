@@ -20,10 +20,11 @@ def prepare(context: BuildContext, config: BuildConfig):
     cmake_build_dir: Path = source_dir / cmake_build_dir_name
     cmake_install_dir: Path = context.get_install_dir(lib_name)
 
-    other_params = '-DENABLE_WERROR=OFF'
+    other_params: list[str] = []
+    other_params += ['-DENABLE_WERROR=OFF']
 
     if config.lib.isForAndroid:
-        other_params += f' -DCMAKE_C_FLAGS=-I{source_dir}/contrib/android/include'
+        other_params += [f'-DCMAKE_C_FLAGS=-I{source_dir}/contrib/android/include']
 
     cmake_build_and_install(
         source_dir=source_dir,

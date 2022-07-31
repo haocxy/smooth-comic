@@ -35,7 +35,7 @@ def cmake_build_and_install(
         build_dir: Path,
         install_dir: Path,
         build_config: BuildConfig,
-        other_params: str = '',
+        other_params: Optional[list[str]] = None,
         install_retry_times: int = 1,
         cmake_prefix_path: Optional[list[str]] = None):
 
@@ -77,8 +77,8 @@ def cmake_build_and_install(
     if not empty_str(cmake_prefix_path_str):
         generate_args += [f'-DCMAKE_PREFIX_PATH={cmake_prefix_path_str}']
 
-    if not empty_str(other_params):
-        generate_args += [f'{other_params}']
+    if other_params is not None:
+        generate_args += other_params
 
     generate_str_args = objlist_to_strlist(generate_args)
     print(f'CMake Configure CMD: {generate_str_args}', flush=True)
