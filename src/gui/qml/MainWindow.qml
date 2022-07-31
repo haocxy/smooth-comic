@@ -1,7 +1,9 @@
 import QtQuick
+import QtQuick.Controls
 
 
-Window{
+ApplicationWindow{
+    id: window
     visible: true
     width: 800
     height: 600
@@ -12,4 +14,6 @@ Window{
         width: 100
         color: "blue"
     }
+
+
 }

@@ -9,16 +9,47 @@
         <item>armeabi-v7a;c++_shared</item>
         <item>armeabi-v7a;Qt6Core_armeabi-v7a</item>
         <item>armeabi-v7a;Qt6Gui_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6Network_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6OpenGL_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6QmlModels_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6QmlWorkerScript_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6Qml_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6QuickControls2_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6QuickWidgets_armeabi-v7a</item>
+        <item>armeabi-v7a;Qt6Quick_armeabi-v7a</item>
         <item>armeabi-v7a;Qt6Widgets_armeabi-v7a</item>
+
         <item>arm64-v8a;c++_shared</item>
         <item>arm64-v8a;Qt6Core_arm64-v8a</item>
         <item>arm64-v8a;Qt6Gui_arm64-v8a</item>
+        <item>arm64-v8a;Qt6Network_arm64-v8a</item>
+        <item>arm64-v8a;Qt6OpenGL_arm64-v8a</item>
+        <item>arm64-v8a;Qt6QmlModels_arm64-v8a</item>
+        <item>arm64-v8a;Qt6QmlWorkerScript_arm64-v8a</item>
+        <item>arm64-v8a;Qt6Qml_arm64-v8a</item>
+        <item>arm64-v8a;Qt6QuickControls2_arm64-v8a</item>
+        <item>arm64-v8a;Qt6QuickWidgets_arm64-v8a</item>
+        <item>arm64-v8a;Qt6Quick_arm64-v8a</item>
         <item>arm64-v8a;Qt6Widgets_arm64-v8a</item>
     </array>
 
     <array name="load_local_libs">
         <item>armeabi-v7a;libplugins_platforms_qtforandroid_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_qtquick2plugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_Controls_qtquickcontrols2plugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_Controls_Basic_qtquickcontrols2basicstyleplugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_Templates_qtquicktemplates2plugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_Window_quickwindowplugin_armeabi-v7a.so</item>
+
+
         <item>arm64-v8a;libplugins_platforms_qtforandroid_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_qtquick2plugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_Controls_qtquickcontrols2plugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_Controls_Basic_qtquickcontrols2basicstyleplugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_Templates_qtquicktemplates2plugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_Window_quickwindowplugin_arm64-v8a.so</item>
     </array>
 
     <string name="static_init_classes"></string>

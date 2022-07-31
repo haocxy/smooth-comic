@@ -154,7 +154,7 @@ int body_entry(int argc, char *argv[])
 
     qDebug() << "after setStyleSheet";
 
-    AppWindow w(engine);
+    //AppWindow w(engine);
 
     //w.show();
 

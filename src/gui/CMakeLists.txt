@@ -30,6 +30,10 @@ target_link_libraries(${appName}-gui
     ${libQt}::Widgets
     ${libQt}::Qml
     ${libQt}::Quick
+    ${libQt}::QuickControls2
+    ${libQt}::QuickControls2Impl
+    ${libQt}::QmlWorkerScript
     ${libQt}::QuickWidgets
+    ${libQt}::QuickTemplates2
 )
 
