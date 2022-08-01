@@ -45,6 +45,7 @@
         <item>armeabi-v7a;libqml_QtQuick_Templates_qtquicktemplates2plugin_armeabi-v7a.so</item>
         <item>armeabi-v7a;libqml_QtQuick_Window_quickwindowplugin_armeabi-v7a.so</item>
         <item>armeabi-v7a;libqml_QtQuick_Layouts_qquicklayoutsplugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_Qt_labs_platform_qtlabsplatformplugin_armeabi-v7a.so</item>
 
         <item>arm64-v8a;libplugins_platforms_qtforandroid_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_qtquick2plugin_arm64-v8a.so</item>
@@ -55,6 +56,7 @@
         <item>arm64-v8a;libqml_QtQuick_Templates_qtquicktemplates2plugin_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_Window_quickwindowplugin_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_Layouts_qquicklayoutsplugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_Qt_labs_platform_qtlabsplatformplugin_arm64-v8a.so</item>
     </array>
 
     <string name="static_init_classes"></string>

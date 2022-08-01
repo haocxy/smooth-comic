@@ -85,5 +85,6 @@ if(ANDROID)
     addQmlPluginDepForAndroid(QtQuick/Templates QtQuick_Templates_qtquicktemplates2plugin)
     addQmlPluginDepForAndroid(QtQuick/Window QtQuick_Window_quickwindowplugin)
     addQmlPluginDepForAndroid(QtQuick/Layouts QtQuick_Layouts_qquicklayoutsplugin)
+    addQmlPluginDepForAndroid(Qt/labs/platform Qt_labs_platform_qtlabsplatformplugin)
 
 endif()
