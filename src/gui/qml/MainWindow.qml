@@ -16,6 +16,7 @@ Window{
     }
 
     ControlArea {
+        isLandscape: window.width >= window.height
         width: isLandscape ? span : parent.width
         height: isLandscape ? parent.height : span
         x: isLandscape ? parent.width - span : 0
