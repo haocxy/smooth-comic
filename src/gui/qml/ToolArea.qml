@@ -6,6 +6,6 @@ Rectangle {
     color: "blue"
 
     ToolAreaButton {
-
+        text: "\ue2c8"
     }
 }

@@ -121,6 +121,14 @@ int body_entry(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    QFile fontFile(":/styles/MaterialIcons-Regular.ttf");
+    fontFile.open(QIODevice::ReadOnly);
+    QByteArray fontData = fontFile.readAll();
+
+    qDebug() << "fontData size: " << fontData.size();
+
+    QFontDatabase::addApplicationFontFromData(fontData);
+
     if (SystemType::IsWindows) {
         // 解决在Windows平台调整窗口大小时窗口内容出现黑色底色的问题
         QQuickWindow::setGraphicsApi(QSGRendererInterface::GraphicsApi::OpenGL);
@@ -140,13 +148,7 @@ int body_entry(int argc, char *argv[])
 
     const QString cssPath = ":/styles/default.css";
 
-    QFile fontFile(":/styles/MaterialIcons-Regular.ttf");
-    fontFile.open(QIODevice::ReadOnly);
-    QByteArray fontData = fontFile.readAll();
 
-    qDebug() << "fontData size: " << fontData.size();
-
-    QFontDatabase::addApplicationFontFromData(fontData);
 
     qDebug() << "after addApplicationFontFromData";
 
