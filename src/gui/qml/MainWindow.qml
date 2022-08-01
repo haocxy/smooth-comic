@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 
-ApplicationWindow{
+Window{
     id: window
     visible: true
     width: 800
