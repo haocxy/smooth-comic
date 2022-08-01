@@ -3,5 +3,7 @@
         <file>MainWindow.qml</file>
         <file>ControlArea.qml</file>
         <file>ControlButton.qml</file>
+        <file>BookChoosePage.qml</file>
+        <file>BookReadPage.qml</file>
     </qresource>
 </RCC>
