@@ -3,9 +3,9 @@ import QtQuick.Controls
 
 
 Rectangle {
-    color: "blue"
+    color: "#c8c8c8"
 
-    ToolAreaButton {
+    ControlButton {
         text: "\ue2c8"
     }
 }

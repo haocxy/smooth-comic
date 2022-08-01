@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>MainWindow.qml</file>
-        <file>ToolArea.qml</file>
-        <file>ToolAreaButton.qml</file>
+        <file>ControlArea.qml</file>
+        <file>ControlButton.qml</file>
     </qresource>
 </RCC>

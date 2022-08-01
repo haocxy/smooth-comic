@@ -15,7 +15,7 @@ Window{
         color: "blue"
     }
 
-    ToolArea {
+    ControlArea {
         width: window.width
         height: 100
         y: window.height - height
