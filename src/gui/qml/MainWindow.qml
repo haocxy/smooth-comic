@@ -16,8 +16,9 @@ Window{
     }
 
     ControlArea {
-        width: window.width
-        height: 100
-        y: window.height - height
+        width: isLandscape ? span : parent.width
+        height: isLandscape ? parent.height : span
+        x: isLandscape ? parent.width - span : 0
+        y: isLandscape ? 0 : parent.height - span
     }
 }
