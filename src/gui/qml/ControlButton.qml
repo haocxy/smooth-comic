@@ -4,11 +4,13 @@ import QtQuick.Layouts
 
 Button {
     property string buttonText
+    property int span: 40
     flat: true
-    width: 80
-    height: 80
+    width: span
+    height: span
     Layout.preferredWidth: width
     Layout.preferredHeight: height
+    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
     Text {
         anchors.centerIn: parent
         horizontalAlignment: Text.AlignHCenter

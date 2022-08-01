@@ -4,7 +4,7 @@ import QtQuick.Layouts
 
 
 Rectangle {
-    property int span: 100
+    property int span: 80
     property bool isLandscape: false
 
     color: "#c8c8c8"
