@@ -81,6 +81,7 @@ if(ANDROID)
     addQmlPluginDepForAndroid(QtQuick/Controls QtQuick_Controls_qtquickcontrols2plugin)
     addQmlPluginDepForAndroid(QtQuick/Controls/Basic QtQuick_Controls_Basic_qtquickcontrols2basicstyleplugin)
     addQmlPluginDepForAndroid(QtQuick/Controls/Material QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin)
+    addQmlPluginDepForAndroid(QtQuick/Controls/Material/impl QtQuick_Controls_Material_impl_qtquickcontrols2materialstyleimplplugin)
     addQmlPluginDepForAndroid(QtQuick/Templates QtQuick_Templates_qtquicktemplates2plugin)
     addQmlPluginDepForAndroid(QtQuick/Window QtQuick_Window_quickwindowplugin)
 

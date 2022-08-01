@@ -39,6 +39,7 @@
         <item>armeabi-v7a;libqml_QtQuick_Controls_qtquickcontrols2plugin_armeabi-v7a.so</item>
         <item>armeabi-v7a;libqml_QtQuick_Controls_Basic_qtquickcontrols2basicstyleplugin_armeabi-v7a.so</item>
         <item>armeabi-v7a;libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_armeabi-v7a.so</item>
+        <item>armeabi-v7a;libqml_QtQuick_Controls_Material_impl_qtquickcontrols2materialstyleimplplugin_armeabi-v7a.so</item>
         <item>armeabi-v7a;libqml_QtQuick_Templates_qtquicktemplates2plugin_armeabi-v7a.so</item>
         <item>armeabi-v7a;libqml_QtQuick_Window_quickwindowplugin_armeabi-v7a.so</item>
 
@@ -48,6 +49,7 @@
         <item>arm64-v8a;libqml_QtQuick_Controls_qtquickcontrols2plugin_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_Controls_Basic_qtquickcontrols2basicstyleplugin_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_arm64-v8a.so</item>
+        <item>arm64-v8a;libqml_QtQuick_Controls_Material_impl_qtquickcontrols2materialstyleimplplugin_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_Templates_qtquicktemplates2plugin_arm64-v8a.so</item>
         <item>arm64-v8a;libqml_QtQuick_Window_quickwindowplugin_arm64-v8a.so</item>
     </array>
