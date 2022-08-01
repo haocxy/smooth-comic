@@ -15,11 +15,13 @@ Rectangle {
         flow: parent.isLandscape ? GridLayout.TopToBottom : GridLayout.LeftToRight
 
         ControlButton {
+            // open
             buttonText: "\ue2c8"
             onClicked: fileDialog.open()
         }
 
         ControlButton {
+            // rotate
             buttonText: "\ue41a"
         }
     }
