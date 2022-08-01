@@ -15,5 +15,9 @@ Window{
         color: "blue"
     }
 
-
+    ToolArea {
+        width: window.width
+        height: 100
+        y: window.height - height
+    }
 }
