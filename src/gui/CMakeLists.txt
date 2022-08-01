@@ -35,5 +35,6 @@ target_link_libraries(${appName}-gui
     ${libQt}::QmlWorkerScript
     ${libQt}::QuickWidgets
     ${libQt}::QuickTemplates2
+    ${libQt}::QuickLayouts
 )
 

@@ -106,6 +106,7 @@ find_package(${libQt} REQUIRED COMPONENTS
     Core Widgets QuickWidgets
     Qml Quick QuickControls2 QuickControls2Impl QmlWorkerScript
     QuickTemplates2
+    QuickLayouts
 )
 find_package(LibArchive REQUIRED)
 

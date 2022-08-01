@@ -1,11 +1,14 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Button {
     property string buttonText
     flat: true
     width: 80
     height: 80
+    Layout.preferredWidth: width
+    Layout.preferredHeight: height
     Text {
         anchors.centerIn: parent
         horizontalAlignment: Text.AlignHCenter
