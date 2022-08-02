@@ -11,6 +11,8 @@ public:
     explicit GuiEngine(QObject *parent = nullptr);
 
     virtual ~GuiEngine();
+
+    Q_INVOKABLE void testCallFromQML(const QString &msg);
 };
 
 }

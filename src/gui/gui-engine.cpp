@@ -16,4 +16,9 @@ GuiEngine::~GuiEngine()
     qDebug() << "GuiEngine::~GuiEngine()";
 }
 
+void GuiEngine::testCallFromQML(const QString &msg)
+{
+    qDebug() << "GuiEngine::testCallFromQML: =====> " << msg;
+}
+
 }

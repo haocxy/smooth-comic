@@ -23,6 +23,7 @@ Rectangle {
         ControlButton {
             // rotate
             buttonText: "\ue41a"
+            onClicked: guiEngine.testCallFromQML("Hello, I am in QML")
         }
     }
 

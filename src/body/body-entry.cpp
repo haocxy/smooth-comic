@@ -9,6 +9,7 @@
 #include <QTranslator>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QQmlContext>
 
 #include "core/logger.h"
 #include "core/thread.h"
@@ -20,6 +21,8 @@
 
 #include "gui/register-qt-meta-types.h"
 #include "gui/app-window.h"
+
+#include "gui/gui-engine.h"
 
 
 class QtResourceSystemIniter {
@@ -141,7 +144,10 @@ int body_entry(int argc, char *argv[])
         QCoreApplication::installTranslator(&translator);
     }
 
+    GuiEngine guiEngine;
+
     QQmlApplicationEngine qmlAppEngine;
+    qmlAppEngine.rootContext()->setContextProperty("guiEngine", &guiEngine);
     qmlAppEngine.load(QUrl("qrc:/MainWindow.qml"));
 
     Engine engine;
