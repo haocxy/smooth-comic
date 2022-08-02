@@ -23,5 +23,6 @@ Rectangle {
 
     Book {
         id: book
+        guiEngine: $engine
     }
 }

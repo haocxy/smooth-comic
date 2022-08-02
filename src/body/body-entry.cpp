@@ -16,7 +16,6 @@
 #include "core/system.h"
 #include "core/debug-option/option-center.h"
 
-#include "engine/engine.h"
 #include "engine/path-manager.h"
 
 #include "gui/register-qt-meta-types.h"
@@ -147,10 +146,8 @@ int body_entry(int argc, char *argv[])
     GuiEngine guiEngine;
 
     QQmlApplicationEngine qmlAppEngine;
-    qmlAppEngine.rootContext()->setContextProperty("guiEngine", &guiEngine);
+    qmlAppEngine.rootContext()->setContextProperty("$engine", &guiEngine);
     qmlAppEngine.load(QUrl("qrc:/MainWindow.qml"));
-
-    Engine engine;
 
     const QString cssPath = ":/styles/default.css";
 
