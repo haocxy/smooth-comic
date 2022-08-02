@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import myapp
+
 
 Rectangle {
 
@@ -17,5 +19,9 @@ Rectangle {
         height: isLandscape ? parent.height : span
         x: isLandscape ? parent.width - span : 0
         y: isLandscape ? 0 : parent.height - span
+    }
+
+    Book {
+        id: book
     }
 }
