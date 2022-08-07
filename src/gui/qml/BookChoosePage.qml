@@ -1,43 +1,61 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import Qt.labs.platform
 
 import myapp
 
 Rectangle {
 
+    id: idRoot
+
     FileTree {
-        id: fileTree
+        id: idFileTree
     }
 
-    Rectangle {
+    ColumnLayout {
         width: parent.width
-        height: guiTextCurrDir.contentHeight + 16
-        color: "#c8c8c8"
+        height: parent.width
 
-        Row {
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: guiTextCurrDir.contentHeight + 32
+            Layout.alignment: Qt.AlignVCenter
+            id: idDirArea
+            width: parent.width
+            color: "#c8c8c8"
+            z: 1
 
-            anchors.verticalCenter: parent.verticalCenter
-            padding: parent.height / 2
-            spacing: parent.height / 2
+            Row {
 
-            Text {
-                id: guiTextCurrDir
-                text: fileTree.currDir
-                wrapMode: Text.WordWrap
+                anchors.verticalCenter: parent.verticalCenter
+                padding: parent.height / 2
+                spacing: parent.height / 2
+
+                Text {
+                    id: guiTextCurrDir
+                    text: idFileTree.currDir
+                    wrapMode: Text.WordWrap
+                }
             }
+        }
 
+        ListView {
+            Layout.fillHeight: true
+            width: idRoot.width
+            model: idFileTree.entries
+
+            delegate: Rectangle {
+                id: idEntry
+                width: idRoot.width
+                height: idFileName.contentHeight + 32
+                required property string name
+
+                Text {
+                    id: idFileName
+                    text: parent.name
+                }
+            }
         }
     }
-
-    Button {
-        anchors.centerIn: parent
-        text: "Open File"
-        onClicked: fileDialog.open()
-    }
-
-    FileDialog {
-        id: fileDialog
-    }
 }
-
