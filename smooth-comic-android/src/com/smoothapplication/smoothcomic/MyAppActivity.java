@@ -3,6 +3,7 @@ package com.smoothapplication.smoothcomic;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -83,7 +84,12 @@ public class MyAppActivity extends QtActivity {
             return;
         }
 
-        Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+        final Uri packageUri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
+
+        final Intent intent = new Intent(
+                Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                packageUri);
+
         startActivity(intent);
     }
 }
