@@ -7,7 +7,27 @@ import myapp
 Rectangle {
 
     FileTree {
+        id: fileTree
+    }
 
+    Rectangle {
+        width: parent.width
+        height: guiTextCurrDir.contentHeight + 16
+        color: "#c8c8c8"
+
+        Row {
+
+            anchors.verticalCenter: parent.verticalCenter
+            padding: parent.height / 2
+            spacing: parent.height / 2
+
+            Text {
+                id: guiTextCurrDir
+                text: fileTree.currDir
+                wrapMode: Text.WordWrap
+            }
+
+        }
     }
 
     Button {
