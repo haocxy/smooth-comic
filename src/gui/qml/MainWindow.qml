@@ -10,8 +10,16 @@ Window{
 
     StackView {
         id: stack
-        initialItem: bookReadPage
+        initialItem: bookChoosePage
         anchors.fill: parent
+    }
+
+    Component {
+        id: bookChoosePage
+        BookChoosePage {
+            width: window.width
+            height: window.height
+        }
     }
 
     Component {
