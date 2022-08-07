@@ -4,7 +4,6 @@
 #include <QApplication>
 #include <QDir>
 #include <QFile>
-#include <QFileSystemWatcher>
 #include <QFontDatabase>
 #include <QTranslator>
 #include <QQmlApplicationEngine>
@@ -123,15 +122,15 @@ int body_entry(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    qDebug() << "default open file dir: " << QString::fromStdU32String(SystemUtil::defaultOpenFileDir().generic_u32string());
+
     QFile fontFile(":/styles/MaterialIcons-Regular.ttf");
     fontFile.open(QIODevice::ReadOnly);
     QByteArray fontData = fontFile.readAll();
-
     qDebug() << "fontData size: " << fontData.size();
-
     QFontDatabase::addApplicationFontFromData(fontData);
 
-    if (SystemType::IsWindows) {
+    if (SystemUtil::platformType == PlatformType::Windows) {
         // 解决在Windows平台调整窗口大小时窗口内容出现黑色底色的问题
         QQuickWindow::setGraphicsApi(QSGRendererInterface::GraphicsApi::OpenGL);
     }

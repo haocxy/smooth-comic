@@ -8,6 +8,10 @@
 
 #include <QDir>
 
+#ifdef ANDROID
+#include <QJniObject>
+#endif
+
 
 #if defined(WIN32)
 #include <Windows.h>
@@ -93,6 +97,26 @@ static void fontsInDirForWindows(const fs::path &dir, std::vector<fs::path> &fon
 fs::path exePath()
 {
     return fs::absolute(boost::dll::program_location().generic_wstring());
+}
+
+fs::path defaultOpenFileDir()
+{
+    if constexpr (platformType == PlatformType::Windows) {
+        return userHome();
+    }
+
+#ifdef ANDROID
+    if constexpr (platformType == PlatformType::Android) {
+        QJniObject externalBaseDir = QJniObject::callStaticObjectMethod(
+            "com/smoothapplication/smoothcomic/MyAppUtil",
+            "getExternalBaseDir",
+            "()Ljava/lang/String;");
+
+        return fs::absolute(externalBaseDir.toString().toStdU32String());
+    }
+#endif
+
+    throw std::logic_error("System::defaultOpenFileDir: unsupported platform");
 }
 
 }

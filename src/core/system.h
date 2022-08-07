@@ -7,22 +7,22 @@
 #include "basetype.h"
 
 
-namespace SystemType
-{
-
-#ifdef WIN32
-constexpr bool IsWindows = true;
-#else
-constexpr bool IsWindows = false;
-#endif
-
-// 确保 IsWindows 是编译期的常量
-static_assert(IsWindows || !IsWindows);
-
-}
+enum class PlatformType {
+    Unknown,
+    Windows,
+    Android,
+};
 
 namespace SystemUtil
 {
+
+#if defined(WIN32)
+constexpr PlatformType platformType = PlatformType::Windows;
+#elif defined(ANDROID)
+constexpr PlatformType platformType = PlatformType::Android;
+#else
+constexpr PlatformType platformType = PlatformType::Unknown;
+#endif
 
 i32 pageSize();
 
@@ -31,5 +31,7 @@ i32 processorCount();
 fs::path userHome();
 
 fs::path exePath();
+
+fs::path defaultOpenFileDir();
 
 }

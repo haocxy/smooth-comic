@@ -26,11 +26,11 @@ static const std::u32string Book = U"book";
 
 static fs::path selectDefaultBaseCacheDir()
 {
-    if (QSysInfo::productType() == "android") {
+    if (SystemUtil::platformType == PlatformType::Android) {
         return QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdU32String();
     }
 
-    if (!SystemType::IsWindows) {
+    if (SystemUtil::platformType != PlatformType::Windows) {
         return SystemUtil::userHome();
     }
 
