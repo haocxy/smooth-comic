@@ -15,7 +15,7 @@ Rectangle {
 
     ColumnLayout {
         width: parent.width
-        height: parent.width
+        height: parent.height
 
         Rectangle {
             Layout.fillWidth: true
