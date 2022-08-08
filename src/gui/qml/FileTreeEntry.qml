@@ -6,6 +6,10 @@ Rectangle {
     required property string name
     implicitHeight: idFileName.contentHeight + 32
 
+    border {
+        color: "#c8c8c8"
+        width: 1
+    }
 
     Text {
         id: idFileName

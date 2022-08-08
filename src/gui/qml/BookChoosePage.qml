@@ -40,16 +40,24 @@ Rectangle {
             }
         }
 
-        GridView {
-            id: idGridLayout
-            property int goodWidth: 100
-            Layout.fillHeight: true
+        Flickable {
             implicitWidth: idWindow.width
-            cellWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / goodWidth))
+            Layout.fillHeight: true
+            contentWidth: idGridLayout.width
+            contentHeight: idGridLayout.height
+            GridLayout {
+                id: idGridLayout
+                property int goodWidth: 100
+                implicitWidth: idWindow.width
+                columns: Math.max(1, Math.floor(idWindow.width / idGridLayout.goodWidth) - 1)
 
-            model: idFileTree.entries
-            delegate: FileTreeEntry {
-                implicitWidth: idGridLayout.cellWidth
+                Repeater {
+                    model: idFileTree.entries
+                    delegate: FileTreeEntry {
+                        Layout.alignment: Qt.AlignTop
+                        implicitWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / idGridLayout.goodWidth))
+                    }
+                }
             }
         }
     }
