@@ -42,7 +42,7 @@ Rectangle {
 
         GridView {
             id: idGridLayout
-            property int goodWidth: 200
+            property int goodWidth: 100
             Layout.fillHeight: true
             implicitWidth: idWindow.width
             cellWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / goodWidth))
