@@ -49,7 +49,9 @@ Rectangle {
                 id: idGridLayout
                 property int goodWidth: 100
                 implicitWidth: idWindow.width
-                columns: Math.max(1, Math.floor(idWindow.width / idGridLayout.goodWidth) - 1)
+                columns: Math.max(1, Math.floor(idWindow.width / idGridLayout.goodWidth))
+                rowSpacing: 0
+                columnSpacing: 0
 
                 Repeater {
                     model: idFileTree.entries
