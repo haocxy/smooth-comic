@@ -17,6 +17,6 @@ Rectangle {
         width: parent.width * 0.8
         height: contentHeight
         text: parent.name
-        wrapMode: Text.WrapAnywhere
+        wrapMode: Text.Wrap
     }
 }
