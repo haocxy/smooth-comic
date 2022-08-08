@@ -45,7 +45,7 @@ Rectangle {
             property int goodWidth: 200
             Layout.fillHeight: true
             implicitWidth: idWindow.width
-            cellWidth: Math.min(idWindow.width, Math.max(goodWidth, idWindow.width / 4))
+            cellWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / goodWidth))
 
             model: idFileTree.entries
             delegate: FileTreeEntry {
