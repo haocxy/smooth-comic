@@ -7,7 +7,7 @@ import myapp
 
 Rectangle {
 
-    id: idRoot
+    id: idWindow
 
     FileTree {
         id: idFileTree
@@ -40,12 +40,16 @@ Rectangle {
             }
         }
 
-        ListView {
+        GridView {
+            id: idGridLayout
+            property int goodWidth: 200
             Layout.fillHeight: true
-            width: idRoot.width
-            model: idFileTree.entries
+            implicitWidth: idWindow.width
+            cellWidth: Math.min(idWindow.width, Math.max(goodWidth, idWindow.width / 4))
 
-            delegate: FileTreeEntry {}
+            model: idFileTree.entries
+            delegate: FileTreeEntry {
+            }
         }
     }
 }
