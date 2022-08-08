@@ -45,17 +45,7 @@ Rectangle {
             width: idRoot.width
             model: idFileTree.entries
 
-            delegate: Rectangle {
-                id: idEntry
-                width: idRoot.width
-                height: idFileName.contentHeight + 32
-                required property string name
-
-                Text {
-                    id: idFileName
-                    text: parent.name
-                }
-            }
+            delegate: FileTreeEntry {}
         }
     }
 }
