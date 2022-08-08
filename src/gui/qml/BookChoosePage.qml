@@ -49,6 +49,7 @@ Rectangle {
 
             model: idFileTree.entries
             delegate: FileTreeEntry {
+                implicitWidth: idGridLayout.cellWidth
             }
         }
     }
