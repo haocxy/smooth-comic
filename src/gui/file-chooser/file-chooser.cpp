@@ -42,7 +42,8 @@ void FileChooser::updateEntries()
     }
 
     for (QString name : QDir(currDir_).entryList(QDir::NoFilter, QDir::SortFlag::Name)) {
-        entries_.push_back(new FileChooserEntry(fs::absolute(currDir_ / name.toStdU32String())));
+        const fs::path path = fs::absolute(currDir_ / name.toStdU32String());
+        entries_.push_back(new FileChooserEntry(name, path));
     }
 
     emit entriesChanged();

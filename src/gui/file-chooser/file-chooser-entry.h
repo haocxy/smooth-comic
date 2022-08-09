@@ -17,7 +17,7 @@ class FileChooserEntry : public QObject {
 public:
     explicit FileChooserEntry(QObject *parent = nullptr);
 
-    explicit FileChooserEntry(const fs::path &path, QObject *parent = nullptr);
+    explicit FileChooserEntry(const QString &name, const fs::path &path, QObject *parent = nullptr);
 
     virtual ~FileChooserEntry();
 
