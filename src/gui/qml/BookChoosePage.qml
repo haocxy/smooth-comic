@@ -32,10 +32,9 @@ Rectangle {
                 padding: parent.height / 2
                 spacing: parent.height / 2
 
-                Text {
+                TextField {
                     id: guiTextCurrDir
                     text: idFileChooser.currDir
-                    wrapMode: Text.WordWrap
                 }
             }
         }
