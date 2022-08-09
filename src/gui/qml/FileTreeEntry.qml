@@ -4,6 +4,8 @@ import QtQuick.Controls
 Rectangle {
     id: idEntry
     required property string name
+    required property string path
+    required property var fileChooser
     implicitHeight: idFileName.contentHeight + 32
 
     Rectangle {
@@ -25,5 +27,8 @@ Rectangle {
             wrapMode: Text.Wrap
         }
 
+        MouseArea {
+            anchors.fill: parent
+        }
     }
 }

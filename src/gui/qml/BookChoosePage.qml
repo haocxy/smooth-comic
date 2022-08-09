@@ -56,6 +56,7 @@ Rectangle {
                 Repeater {
                     model: idFileChooser.entries
                     delegate: FileTreeEntry {
+                        fileChooser: idFileChooser
                         Layout.alignment: Qt.AlignTop
                         implicitWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / idGridLayout.goodWidth))
                     }
