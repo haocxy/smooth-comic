@@ -26,6 +26,9 @@ FileChooser::~FileChooser()
 void FileChooser::setCurrDir(const QString &dir)
 {
     const fs::path newDir{ fs::absolute(dir.toStdU32String()) };
+    if (!fs::is_directory(newDir)) {
+        return;
+    }
     if (currDir_ != newDir) {
         currDir_ = newDir;
         emit currDirChanged();
