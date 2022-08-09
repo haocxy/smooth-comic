@@ -53,6 +53,14 @@ Rectangle {
                             idFileChooser.currDir = text
                             focus = false
                         }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onPressed: e => {
+                                parent.readOnly = false
+                                e.accepted = false
+                            }
+                        }
                     }
                 }
 
@@ -85,6 +93,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onPressed: e => {
+                    idCurrDir.readOnly = true
                     idCurrDir.focus = false
                     e.accepted = false
                 }
