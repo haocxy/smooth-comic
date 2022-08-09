@@ -31,7 +31,7 @@ Rectangle {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 32
+                    Layout.preferredHeight: 36
                     Layout.margins: 8
 
                     color: idWindow.color
@@ -45,9 +45,11 @@ Rectangle {
                         leftPadding: 8
                         verticalAlignment: TextInput.AlignVCenter
                         text: idFileChooser.currDir
+                        focus: false
                         onEditingFinished: {
                             Qt.inputMethod.hide()
                             idFileChooser.currDir = text
+                            focus = false
                         }
                     }
                 }
