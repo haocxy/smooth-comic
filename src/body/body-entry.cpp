@@ -132,7 +132,7 @@ int body_entry(int argc, char *argv[])
 
     if (SystemUtil::platformType == PlatformType::Windows) {
         // 解决在Windows平台调整窗口大小时窗口内容出现黑色底色的问题
-        QQuickWindow::setGraphicsApi(QSGRendererInterface::GraphicsApi::OpenGL);
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::GraphicsApi::Software);
     }
 
     registerQtMetaTypes();
