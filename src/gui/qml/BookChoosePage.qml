@@ -79,6 +79,14 @@ Rectangle {
                     }
                 }
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onPressed: e => {
+                    idCurrDir.focus = false
+                    e.accepted = false
+                }
+            }
         }
     }
 }
