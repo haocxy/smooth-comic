@@ -1,4 +1,4 @@
-#include "file-tree-entry.h"
+#include "file-chooser-entry.h"
 
 
 namespace myapp {

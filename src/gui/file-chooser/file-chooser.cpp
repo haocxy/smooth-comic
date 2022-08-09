@@ -1,4 +1,4 @@
-#include "file-tree.h"
+#include "file-chooser.h"
 
 #include <QDebug>
 #include <QDir>

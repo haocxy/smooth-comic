@@ -4,7 +4,7 @@
 
 #include "gui-util/qtobj-strand-entry.h"
 #include "gui/book/gui-book.h"
-#include "gui/file-chooser/file-tree.h"
+#include "gui/file-chooser/file-chooser.h"
 
 
 namespace myapp {
