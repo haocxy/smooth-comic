@@ -29,9 +29,7 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: e => {
-                           fileChooser.currDir = path
-                       }
+            onClicked: fileChooser.currDir = path
         }
     }
 }
