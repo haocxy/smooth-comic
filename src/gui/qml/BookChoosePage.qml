@@ -45,6 +45,10 @@ Rectangle {
                         leftPadding: 8
                         verticalAlignment: TextInput.AlignVCenter
                         text: idFileChooser.currDir
+                        onEditingFinished: {
+                            Qt.inputMethod.hide()
+                            idFileChooser.currDir = text
+                        }
                     }
                 }
 
