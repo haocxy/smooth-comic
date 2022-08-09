@@ -42,6 +42,7 @@ Rectangle {
                     TextInput {
                         id: idCurrDir
                         anchors.fill: parent
+                        clip: true
                         leftPadding: 8
                         verticalAlignment: TextInput.AlignVCenter
                         text: idFileChooser.currDir
