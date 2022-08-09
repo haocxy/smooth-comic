@@ -14,28 +14,40 @@ Rectangle {
     }
 
     ColumnLayout {
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
 
         Rectangle {
             Layout.fillWidth: true
-            Layout.preferredHeight: guiTextCurrDir.contentHeight + 32
+            Layout.preferredHeight: guiTextCurrDir.contentHeight + 36
             Layout.alignment: Qt.AlignVCenter
             id: idDirArea
             width: parent.width
             color: "#c8c8c8"
             z: 1
 
-            Row {
+            RowLayout {
+                anchors.fill: parent
+                spacing: 8
 
-                anchors.verticalCenter: parent.verticalCenter
-                padding: parent.height / 2
-                spacing: parent.height / 2
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 32
+                    Layout.margins: 8
 
-                TextField {
-                    id: guiTextCurrDir
-                    text: idFileChooser.currDir
+                    color: idWindow.color
+                    width: parent.width * 0.6
+
+                    radius: 4
+
+                    TextInput {
+                        id: guiTextCurrDir
+                        anchors.fill: parent
+                        leftPadding: 8
+                        verticalAlignment: TextInput.AlignVCenter
+                        text: idFileChooser.currDir
+                    }
                 }
+
             }
         }
 
