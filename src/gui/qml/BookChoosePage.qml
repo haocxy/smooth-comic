@@ -34,7 +34,7 @@ Rectangle {
 
                 Text {
                     id: guiTextCurrDir
-                    text: idFileTree.currDir
+                    text: idFileChooser.currDir
                     wrapMode: Text.WordWrap
                 }
             }
