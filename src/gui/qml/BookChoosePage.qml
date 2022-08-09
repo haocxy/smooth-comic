@@ -15,6 +15,7 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
+        spacing: 0
 
         Rectangle {
             Layout.fillWidth: true
@@ -75,8 +76,8 @@ Rectangle {
             GridLayout {
                 id: idGridLayout
                 property int goodWidth: 100
-                implicitWidth: idWindow.width
-                columns: Math.max(1, Math.floor(idWindow.width / idGridLayout.goodWidth))
+                implicitWidth: idWindow.width - idScrollBar.width
+                columns: Math.max(1, Math.floor(idGridLayout.width / idGridLayout.goodWidth))
                 rowSpacing: 0
                 columnSpacing: 0
 
@@ -85,7 +86,7 @@ Rectangle {
                     delegate: FileTreeEntry {
                         fileChooser: idFileChooser
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / idGridLayout.goodWidth))
+                        implicitWidth: Math.min(idWindow.width, idGridLayout.width / Math.floor(idGridLayout.width / idGridLayout.goodWidth))
                     }
                 }
             }
@@ -97,6 +98,10 @@ Rectangle {
                     idCurrDir.focus = false
                     e.accepted = false
                 }
+            }
+
+            ScrollBar.vertical: ScrollBar {
+                id: idScrollBar
             }
         }
     }
