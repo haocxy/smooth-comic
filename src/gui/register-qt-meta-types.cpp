@@ -15,7 +15,7 @@ void myapp::registerQtMetaTypes()
 
     qmlRegisterType<GuiBook>("myapp", 1, 0, "Book");
 
-    qmlRegisterType<FileTree>("myapp", 1, 0, "FileTree");
+    qmlRegisterType<FileChooser>("myapp", 1, 0, "FileChooser");
 }
 
 }

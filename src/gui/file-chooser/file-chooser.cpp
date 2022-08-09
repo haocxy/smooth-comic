@@ -8,22 +8,22 @@
 
 namespace myapp {
 
-FileTree::FileTree(QObject *parent)
+FileChooser::FileChooser(QObject *parent)
     : QObject(parent)
 {
-    qDebug() << "FileTree::FileTree()";
+    qDebug() << "FileChooser::FileChooser()";
 
     setCurrDir(QString::fromStdU32String(
         SystemUtil::defaultOpenFileDir().generic_u32string()
     ));
 }
 
-FileTree::~FileTree()
+FileChooser::~FileChooser()
 {
-    qDebug() << "FileTree::~FileTree()";
+    qDebug() << "FileChooser::~FileChooser()";
 }
 
-void FileTree::setCurrDir(const QString &dir)
+void FileChooser::setCurrDir(const QString &dir)
 {
     const fs::path newDir{ fs::absolute(dir.toStdU32String()) };
     if (currDir_ != newDir) {
@@ -33,7 +33,7 @@ void FileTree::setCurrDir(const QString &dir)
     }
 }
 
-void FileTree::updateEntries()
+void FileChooser::updateEntries()
 {
     entries_.clear();
 
@@ -42,11 +42,11 @@ void FileTree::updateEntries()
     }
 
     //for (const fs::directory_entry &e : fs::directory_iterator(currDir_)) {
-    //    entries_.push_back(new FileTreeEntry(e.path().filename()));
+    //    entries_.push_back(new FileChooserEntry(e.path().filename()));
     //}
 
     for (QString name : QDir(currDir_).entryList(QDir::NoFilter, QDir::SortFlag::Name)) {
-        entries_.push_back(new FileTreeEntry(name));
+        entries_.push_back(new FileChooserEntry(name));
     }
 
     emit entriesChanged();

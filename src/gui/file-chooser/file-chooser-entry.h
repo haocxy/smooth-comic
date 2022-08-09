@@ -5,16 +5,16 @@
 
 namespace myapp {
 
-class FileTreeEntry : public QObject {
+class FileChooserEntry : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 public:
-    explicit FileTreeEntry(QObject *parent = nullptr);
+    explicit FileChooserEntry(QObject *parent = nullptr);
 
-    explicit FileTreeEntry(const QString &name, QObject *parent = nullptr);
+    explicit FileChooserEntry(const QString &name, QObject *parent = nullptr);
 
-    virtual ~FileTreeEntry();
+    virtual ~FileChooserEntry();
 
     const QString &name() const {
         return name_;

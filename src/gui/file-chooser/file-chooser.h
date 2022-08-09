@@ -15,16 +15,16 @@
 
 namespace myapp {
 
-class FileTree : public QObject {
+class FileChooser : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QString currDir READ currDir WRITE setCurrDir NOTIFY currDirChanged)
 
-    Q_PROPERTY(QQmlListProperty<FileTreeEntry> entries READ entries NOTIFY entriesChanged)
+    Q_PROPERTY(QQmlListProperty<FileChooserEntry> entries READ entries NOTIFY entriesChanged)
 public:
-    explicit FileTree(QObject *parent = nullptr);
+    explicit FileChooser(QObject *parent = nullptr);
 
-    virtual ~FileTree();
+    virtual ~FileChooser();
 
     QString currDir() const {
         return QString::fromStdU32String(currDir_.generic_u32string());
@@ -32,8 +32,8 @@ public:
 
     void setCurrDir(const QString &dir);
 
-    QQmlListProperty<FileTreeEntry> entries() {
-        return QQmlListProperty<FileTreeEntry>(this, nullptr, &FileTree::entryCount, &FileTree::entry);
+    QQmlListProperty<FileChooserEntry> entries() {
+        return QQmlListProperty<FileChooserEntry>(this, nullptr, &FileChooser::entryCount, &FileChooser::entry);
     }
 
 signals:
@@ -44,18 +44,18 @@ signals:
 private:
     void updateEntries();
 
-    static qsizetype entryCount(QQmlListProperty<FileTreeEntry> *list) {
-        return reinterpret_cast<FileTree *>(list->object)->entries_.size();
+    static qsizetype entryCount(QQmlListProperty<FileChooserEntry> *list) {
+        return reinterpret_cast<FileChooser *>(list->object)->entries_.size();
     }
 
-    static FileTreeEntry *entry(QQmlListProperty<FileTreeEntry> *list, qsizetype i) {
-        return reinterpret_cast<FileTree *>(list->object)->entries_[i].get();
+    static FileChooserEntry *entry(QQmlListProperty<FileChooserEntry> *list, qsizetype i) {
+        return reinterpret_cast<FileChooser *>(list->object)->entries_[i].get();
     }
 
 private:
     fs::path currDir_;
 
-    std::vector<uptr<FileTreeEntry>> entries_;
+    std::vector<uptr<FileChooserEntry>> entries_;
 };
 
 }

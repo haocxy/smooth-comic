@@ -3,18 +3,18 @@
 
 namespace myapp {
 
-FileTreeEntry::FileTreeEntry(QObject *parent)
+FileChooserEntry::FileChooserEntry(QObject *parent)
     : QObject(parent)
 {
 }
 
-FileTreeEntry::FileTreeEntry(const QString &name, QObject *parent)
+FileChooserEntry::FileChooserEntry(const QString &name, QObject *parent)
     : QObject(parent)
     , name_(name)
 {
 }
 
-FileTreeEntry::~FileTreeEntry()
+FileChooserEntry::~FileChooserEntry()
 {
 
 }

@@ -9,8 +9,8 @@ Rectangle {
 
     id: idWindow
 
-    FileTree {
-        id: idFileTree
+    FileChooser {
+        id: idFileChooser
     }
 
     ColumnLayout {
@@ -54,7 +54,7 @@ Rectangle {
                 columnSpacing: 0
 
                 Repeater {
-                    model: idFileTree.entries
+                    model: idFileChooser.entries
                     delegate: FileTreeEntry {
                         Layout.alignment: Qt.AlignTop
                         implicitWidth: Math.min(idWindow.width, idWindow.width / Math.floor(idWindow.width / idGridLayout.goodWidth))
