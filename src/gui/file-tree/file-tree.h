@@ -9,6 +9,7 @@
 #include <QQmlListProperty>
 
 #include "core/basetype.h"
+#include "core/fs.h"
 #include "file-tree-entry.h"
 
 
@@ -25,8 +26,8 @@ public:
 
     virtual ~FileTree();
 
-    const QString &currDir() const {
-        return currDir_;
+    QString currDir() const {
+        return QString::fromStdU32String(currDir_.generic_u32string());
     }
 
     void setCurrDir(const QString &dir);
@@ -52,7 +53,7 @@ private:
     }
 
 private:
-    QString currDir_;
+    fs::path currDir_;
 
     std::vector<uptr<FileTreeEntry>> entries_;
 };

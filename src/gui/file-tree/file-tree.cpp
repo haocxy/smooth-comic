@@ -25,8 +25,9 @@ FileTree::~FileTree()
 
 void FileTree::setCurrDir(const QString &dir)
 {
-    if (currDir_ != dir) {
-        currDir_ = QString::fromStdU32String(fs::absolute(dir.toStdU32String()).generic_u32string());
+    const fs::path newDir{ fs::absolute(dir.toStdU32String()) };
+    if (currDir_ != newDir) {
+        currDir_ = newDir;
         emit currDirChanged();
         updateEntries();
     }
@@ -36,8 +37,16 @@ void FileTree::updateEntries()
 {
     entries_.clear();
 
+    if (!fs::is_directory(currDir_)) {
+        return;
+    }
+
+    //for (const fs::directory_entry &e : fs::directory_iterator(currDir_)) {
+    //    entries_.push_back(new FileTreeEntry(e.path().filename()));
+    //}
+
     for (QString name : QDir(currDir_).entryList(QDir::NoFilter, QDir::SortFlag::Name)) {
-        entries_.push_back(std::make_unique<FileTreeEntry>(name));
+        entries_.push_back(new FileTreeEntry(name));
     }
 
     emit entriesChanged();

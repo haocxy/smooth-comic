@@ -30,7 +30,50 @@ using cstr = const char *;
 using str = std::string;
 
 template <typename T>
-using uptr = std::unique_ptr<T>;
+class uptr : public std::unique_ptr<T> {
+public:
+    uptr() {}
+
+    template <typename U>
+    uptr(const uptr<U> &other) = delete;
+
+    template <typename U>
+    uptr(uptr<U> &&other) noexcept
+        : std::unique_ptr<T>(std::move(other)) {}
+
+    uptr(nullptr_t) {}
+
+    template <typename U>
+    uptr(U *&&p) : std::unique_ptr<T>(p) {
+        p = nullptr;
+    }
+
+    template <typename U>
+    uptr(std::unique_ptr<U> &&other)
+        : std::unique_ptr<T>(std::move(other)) {}
+
+    virtual ~uptr() {}
+
+    template <typename U>
+    uptr &operator=(const uptr<U> &other) = delete;
+
+    template <typename U>
+    uptr &operator=(uptr<U> &&other) noexcept {
+        std::unique_ptr<T>::operator=(std::move(other));
+        return *this;
+    }
+
+    template <typename U>
+    uptr &operator=(std::unique_ptr<U> &&other) noexcept {
+        std::unique_ptr<T>::operator=(std::move(other));
+        return *this;
+    }
+
+    uptr &operator=(nullptr_t p) {
+        std::unique_ptr<T>::operator=(p);
+        return *this;
+    }
+};
 
 template <typename T>
 using sptr = std::shared_ptr<T>;

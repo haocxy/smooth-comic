@@ -24,7 +24,7 @@ void PopupLayerLayout::addItem(QLayoutItem *item)
 {
     QWidget *widget = item->widget();
     if (widget && dynamic_cast<PopupLayerWidget *>(widget)) {
-        items_.push_back(uptr<QLayoutItem>(item));
+        items_.push_back(std::move(item));
     } else {
         throw std::logic_error("PopupLayerLayout can only add PopupLayerWidget");
     }
