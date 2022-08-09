@@ -18,7 +18,7 @@ Rectangle {
 
         Rectangle {
             Layout.fillWidth: true
-            Layout.preferredHeight: guiTextCurrDir.contentHeight + 36
+            Layout.preferredHeight: idCurrDir.contentHeight + 36
             Layout.alignment: Qt.AlignVCenter
             id: idDirArea
             width: parent.width
@@ -34,13 +34,13 @@ Rectangle {
                     Layout.preferredHeight: 36
                     Layout.margins: 8
 
-                    color: idWindow.color
+                    color: idCurrDir.focus ? idWindow.color : "#f5f5f5"
                     width: parent.width * 0.6
 
                     radius: 4
 
                     TextInput {
-                        id: guiTextCurrDir
+                        id: idCurrDir
                         anchors.fill: parent
                         leftPadding: 8
                         verticalAlignment: TextInput.AlignVCenter
