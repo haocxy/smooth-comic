@@ -24,48 +24,7 @@ Flickable {
 
     Loader {
         id: idFiles
-        // 根据是否是窗口化平台，选择布局方式
-        // 对于窗口化平台，因为窗口宽度随时可变，所以固定元素宽度，以保证调整窗口大小的过程中的视觉舒适
-        // 对于非窗口化平台，因为窗口宽度只会在调整屏幕方向时改变，所以尽可能占满宽度
         sourceComponent: idCompFilesByGridLayout
-    }
-
-    Component {
-        id: idCompFilesByFlow
-        Column {
-            anchors.fill: parent
-            Flow {
-                id: idDirsByFlow
-                property int goodWidth: 100
-                width: idWindow.width - idScrollBar.width
-
-                Repeater {
-                    model: idRoot.fileChooser.dirs
-                    delegate: FileTreeEntry {
-                        fileChooser: idRoot.fileChooser
-                        Layout.alignment: Qt.AlignTop
-                        width: Math.min(idWindow.width - idScrollBar.width,
-                                        idDirsByFlow.goodWidth)
-                    }
-                }
-            }
-
-            Flow {
-                id: idFilesByFlow
-                property int goodWidth: 100
-                width: idWindow.width - idScrollBar.width
-
-                Repeater {
-                    model: idRoot.fileChooser.files
-                    delegate: FileTreeEntry {
-                        fileChooser: idRoot.fileChooser
-                        Layout.alignment: Qt.AlignTop
-                        width: Math.min(idWindow.width - idScrollBar.width,
-                                        idFilesByFlow.goodWidth)
-                    }
-                }
-            }
-        }
     }
 
     Component {
