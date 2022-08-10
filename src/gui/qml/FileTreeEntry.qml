@@ -14,6 +14,7 @@ Rectangle {
         height: parent.height - 4
         anchors.centerIn: parent
         color: isDir ? "#c6f3f2" : parent.color
+        radius: 4
 
         border {
             color: "#c8c8c8"
