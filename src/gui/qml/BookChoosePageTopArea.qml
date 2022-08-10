@@ -3,10 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
-    Layout.fillWidth: true
-    Layout.preferredHeight: idCurrDir.contentHeight + 36
-    Layout.alignment: Qt.AlignVCenter
-    width: parent.width
+    property int goodHeight: idCurrDir.contentHeight + 36
     color: "#c8c8c8"
     z: 1
 

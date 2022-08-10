@@ -6,8 +6,6 @@ import Qt.labs.platform
 Flickable {
     required property var fileChooser
 
-    implicitWidth: idWindow.width
-    Layout.fillHeight: true
     contentWidth: idFiles.width
     contentHeight: idFiles.height
     flickableDirection: Flickable.VerticalFlick
