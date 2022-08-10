@@ -23,17 +23,37 @@ Flickable {
 
     Component {
         id: idCompFilesByFlow
-        Flow {
-            id: idFilesByFlow
-            property int goodWidth: 100
-            width: idWindow.width - idScrollBar.width
+        Column {
+            anchors.fill: parent
+            Flow {
+                id: idDirsByFlow
+                property int goodWidth: 100
+                width: idWindow.width - idScrollBar.width
 
-            Repeater {
-                model: idRoot.fileChooser.files
-                delegate: FileTreeEntry {
-                    fileChooser: idRoot.fileChooser
-                    Layout.alignment: Qt.AlignTop
-                    width: Math.min(idWindow.width - idScrollBar.width, idFilesByFlow.goodWidth)
+                Repeater {
+                    model: idRoot.fileChooser.dirs
+                    delegate: FileTreeEntry {
+                        fileChooser: idRoot.fileChooser
+                        Layout.alignment: Qt.AlignTop
+                        width: Math.min(idWindow.width - idScrollBar.width,
+                                        idDirsByFlow.goodWidth)
+                    }
+                }
+            }
+
+            Flow {
+                id: idFilesByFlow
+                property int goodWidth: 100
+                width: idWindow.width - idScrollBar.width
+
+                Repeater {
+                    model: idRoot.fileChooser.files
+                    delegate: FileTreeEntry {
+                        fileChooser: idRoot.fileChooser
+                        Layout.alignment: Qt.AlignTop
+                        width: Math.min(idWindow.width - idScrollBar.width,
+                                        idFilesByFlow.goodWidth)
+                    }
                 }
             }
         }
@@ -41,20 +61,48 @@ Flickable {
 
     Component {
         id: idCompFilesByGridLayout
-        GridLayout {
-            id: idGridLayout
-            property int goodWidth: 150
-            implicitWidth: idWindow.width - idScrollBar.width
-            columns: Math.max(1, Math.floor(idGridLayout.width / idGridLayout.goodWidth))
-            rowSpacing: 0
-            columnSpacing: 0
+        Column {
+            GridLayout {
+                id: idDirsByGridLayout
+                property int goodWidth: 150
+                implicitWidth: idWindow.width - idScrollBar.width
+                columns: Math.max(1, Math.floor(
+                                      idDirsByGridLayout.width / idDirsByGridLayout.goodWidth))
+                rowSpacing: 0
+                columnSpacing: 0
 
-            Repeater {
-                model: idRoot.fileChooser.files
-                delegate: FileTreeEntry {
-                    fileChooser: idRoot.fileChooser
-                    Layout.alignment: Qt.AlignTop
-                    implicitWidth: Math.min(idWindow.width, idGridLayout.width / Math.floor(idGridLayout.width / idGridLayout.goodWidth))
+                Repeater {
+                    model: idRoot.fileChooser.dirs
+                    delegate: FileTreeEntry {
+                        fileChooser: idRoot.fileChooser
+                        Layout.alignment: Qt.AlignTop
+                        implicitWidth: Math.min(
+                                           idWindow.width,
+                                           idDirsByGridLayout.width / Math.floor(
+                                               idDirsByGridLayout.width / idDirsByGridLayout.goodWidth))
+                    }
+                }
+            }
+
+            GridLayout {
+                id: idFilesByGridLayout
+                property int goodWidth: 150
+                implicitWidth: idWindow.width - idScrollBar.width
+                columns: Math.max(1, Math.floor(
+                                      idFilesByGridLayout.width / idFilesByGridLayout.goodWidth))
+                rowSpacing: 0
+                columnSpacing: 0
+
+                Repeater {
+                    model: idRoot.fileChooser.files
+                    delegate: FileTreeEntry {
+                        fileChooser: idRoot.fileChooser
+                        Layout.alignment: Qt.AlignTop
+                        implicitWidth: Math.min(
+                                           idWindow.width,
+                                           idFilesByGridLayout.width / Math.floor(
+                                               idFilesByGridLayout.width / idFilesByGridLayout.goodWidth))
+                    }
                 }
             }
         }
