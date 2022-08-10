@@ -13,6 +13,11 @@ Flickable {
     z: 1
     clip: true
 
+    function entryWidth(areaWidth, goodWidth) {
+        return Math.min(idWindow.width, areaWidth / Math.floor(areaWidth / goodWidth))
+    }
+
+
     Loader {
         id: idFiles
         // 根据是否是窗口化平台，选择布局方式
@@ -62,6 +67,8 @@ Flickable {
     Component {
         id: idCompFilesByGridLayout
         Column {
+
+
             GridLayout {
                 id: idDirsByGridLayout
                 property int goodWidth: 150
@@ -77,10 +84,7 @@ Flickable {
                         fileChooser: idRoot.fileChooser
                         Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: Math.min(
-                                           idWindow.width,
-                                           idDirsByGridLayout.width / Math.floor(
-                                               idDirsByGridLayout.width / idDirsByGridLayout.goodWidth))
+                        implicitWidth: idRoot.entryWidth(idDirsByGridLayout.width, idDirsByGridLayout.goodWidth)
                     }
                 }
             }
@@ -100,10 +104,7 @@ Flickable {
                         fileChooser: idRoot.fileChooser
                         Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: Math.min(
-                                           idWindow.width,
-                                           idFilesByGridLayout.width / Math.floor(
-                                               idFilesByGridLayout.width / idFilesByGridLayout.goodWidth))
+                        implicitWidth: idRoot.entryWidth(idFilesByGridLayout.width, idFilesByGridLayout.goodWidth)
                     }
                 }
             }
