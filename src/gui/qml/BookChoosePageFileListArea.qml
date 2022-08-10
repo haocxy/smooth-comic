@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Qt.labs.platform
 
 Flickable {
+    id: idRoot
     required property var fileChooser
 
     contentWidth: idFiles.width
@@ -28,9 +29,9 @@ Flickable {
             width: idWindow.width - idScrollBar.width
 
             Repeater {
-                model: fileChooser.entries
+                model: idRoot.fileChooser.entries
                 delegate: FileTreeEntry {
-                    fileChooser: idFileChooser
+                    fileChooser: idRoot.fileChooser
                     Layout.alignment: Qt.AlignTop
                     width: Math.min(idWindow.width - idScrollBar.width, idFilesByFlow.goodWidth)
                 }
@@ -49,9 +50,9 @@ Flickable {
             columnSpacing: 0
 
             Repeater {
-                model: idFileChooser.entries
+                model: idRoot.fileChooser.entries
                 delegate: FileTreeEntry {
-                    fileChooser: idFileChooser
+                    fileChooser: idRoot.fileChooser
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: Math.min(idWindow.width, idGridLayout.width / Math.floor(idGridLayout.width / idGridLayout.goodWidth))
                 }
