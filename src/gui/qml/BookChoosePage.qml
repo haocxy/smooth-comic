@@ -73,6 +73,7 @@ Rectangle {
             Layout.fillHeight: true
             contentWidth: idFiles.width
             contentHeight: idFiles.height
+            flickableDirection: Flickable.VerticalFlick
             z: 1
             clip: true
 
