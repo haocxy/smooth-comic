@@ -43,7 +43,7 @@ Flickable {
         id: idCompFilesByGridLayout
         GridLayout {
             id: idGridLayout
-            property int goodWidth: 100
+            property int goodWidth: 150
             implicitWidth: idWindow.width - idScrollBar.width
             columns: Math.max(1, Math.floor(idGridLayout.width / idGridLayout.goodWidth))
             rowSpacing: 0
