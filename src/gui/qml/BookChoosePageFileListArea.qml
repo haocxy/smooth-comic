@@ -6,9 +6,8 @@ import Qt.labs.platform
 Flickable {
     id: idRoot
     required property var fileChooser
-
-    contentWidth: idFiles.width
-    contentHeight: idFiles.height
+    contentWidth: idEntryList.width
+    contentHeight: idEntryList.height
     flickableDirection: Flickable.VerticalFlick
     z: 1
     clip: true
@@ -21,74 +20,67 @@ Flickable {
         }
     }
 
+    Column {
 
-    Loader {
-        id: idFiles
-        sourceComponent: idCompFilesByGridLayout
-    }
+        id: idEntryList
 
-    Component {
-        id: idCompFilesByGridLayout
-        Column {
+        QtObject {
+            id: helper
+            property int goodEntryWidth: 150
+            property int areaWidth: calcAreaWidth()
+            property int entryWidth: idRoot.entryWidth(areaWidth, goodEntryWidth)
+            property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
 
-            QtObject {
-                id: helper
-                property int goodEntryWidth: 150
-                property int areaWidth: calcAreaWidth()
-                property int entryWidth: idRoot.entryWidth(areaWidth, goodEntryWidth)
-                property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
-
-                function calcAreaWidth() {
-                    if ($engine.isWindowed) {
-                        var cols = Math.floor((idWindow.width - idScrollBar.width) / goodEntryWidth)
-                        return goodEntryWidth * cols
-                    } else {
-                        return idWindow.width - idScrollBar.width
-                    }
+            function calcAreaWidth() {
+                if ($engine.isWindowed) {
+                    var cols = Math.floor((idWindow.width - idScrollBar.width) / goodEntryWidth)
+                    return goodEntryWidth * cols
+                } else {
+                    return idWindow.width - idScrollBar.width
                 }
             }
+        }
 
-            GridLayout {
-                id: idDirsByGridLayout
+        GridLayout {
+            id: idDirsByGridLayout
 
-                implicitWidth: helper.areaWidth
+            implicitWidth: helper.areaWidth
 
-                columns: helper.columnCount
+            columns: helper.columnCount
 
-                rowSpacing: 0
+            rowSpacing: 0
 
-                columnSpacing: 0
+            columnSpacing: 0
 
-                Repeater {
-                    model: idRoot.fileChooser.dirs
-                    delegate: FileTreeEntry {
-                        fileChooser: idRoot.fileChooser
-                        Layout.fillHeight: true
-                        Layout.alignment: Qt.AlignTop
-                        implicitWidth: helper.entryWidth
-                    }
+            Repeater {
+                model: idRoot.fileChooser.dirs
+                delegate: FileTreeEntry {
+                    fileChooser: idRoot.fileChooser
+                    Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignTop
+                    implicitWidth: helper.entryWidth
                 }
             }
+        }
 
-            GridLayout {
-                id: idFilesByGridLayout
+        GridLayout {
+            id: idFilesByGridLayout
 
-                implicitWidth: helper.areaWidth
+            implicitWidth: helper.areaWidth
 
-                columns: helper.columnCount
+            columns: helper.columnCount
 
-                rowSpacing: 0
+            rowSpacing: 0
 
-                columnSpacing: 0
+            columnSpacing: 0
 
-                Repeater {
-                    model: idRoot.fileChooser.files
-                    delegate: FileTreeEntry {
-                        fileChooser: idRoot.fileChooser
-                        Layout.fillHeight: true
-                        Layout.alignment: Qt.AlignTop
-                        implicitWidth: helper.entryWidth
-                    }
+            Repeater {
+                model: idRoot.fileChooser.files
+                delegate: FileTreeEntry {
+                    fileChooser: idRoot.fileChooser
+                    Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignTop
+                    implicitWidth: helper.entryWidth
                 }
             }
         }
