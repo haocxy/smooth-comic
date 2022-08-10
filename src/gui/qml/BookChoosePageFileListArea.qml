@@ -72,19 +72,20 @@ Flickable {
         id: idCompFilesByGridLayout
         Column {
 
+            QtObject {
+                id: helper
+                property int goodEntryWidth: 150
+                property int areaWidth: idWindow.width - idScrollBar.width
+                property int entryWidth: idRoot.entryWidth(areaWidth, goodEntryWidth)
+                property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
+            }
 
             GridLayout {
                 id: idDirsByGridLayout
 
-                property int goodWidth: 150
+                implicitWidth: helper.areaWidth
 
-                property int goodAreaWidth: idWindow.width - idScrollBar.width
-
-                property int entryWidth: idRoot.entryWidth(goodAreaWidth, goodWidth)
-
-                implicitWidth: goodAreaWidth
-
-                columns: Math.max(1, Math.floor(goodAreaWidth / entryWidth))
+                columns: helper.columnCount
 
                 rowSpacing: 0
 
@@ -96,7 +97,7 @@ Flickable {
                         fileChooser: idRoot.fileChooser
                         Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: idDirsByGridLayout.entryWidth
+                        implicitWidth: helper.entryWidth
                     }
                 }
             }
@@ -104,15 +105,9 @@ Flickable {
             GridLayout {
                 id: idFilesByGridLayout
 
-                property int goodWidth: 150
+                implicitWidth: helper.areaWidth
 
-                property int goodAreaWidth: idWindow.width - idScrollBar.width
-
-                property int entryWidth: idRoot.entryWidth(goodAreaWidth, goodWidth)
-
-                implicitWidth: goodAreaWidth
-
-                columns: Math.max(1, Math.floor(goodAreaWidth / entryWidth))
+                columns: helper.columnCount
 
                 rowSpacing: 0
 
@@ -124,7 +119,7 @@ Flickable {
                         fileChooser: idRoot.fileChooser
                         Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: idFilesByGridLayout.entryWidth
+                        implicitWidth: helper.entryWidth
                     }
                 }
             }
