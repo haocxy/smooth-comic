@@ -73,6 +73,8 @@ Rectangle {
             Layout.fillHeight: true
             contentWidth: idGridLayout.width
             contentHeight: idGridLayout.height
+            z: 1
+            clip: true
             GridLayout {
                 id: idGridLayout
                 property int goodWidth: 100

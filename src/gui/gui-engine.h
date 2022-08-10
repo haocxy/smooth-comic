@@ -13,7 +13,7 @@ class Engine;
 class GuiEngine : public QObject {
     Q_OBJECT
 
-    Q_PROPERTY(bool isWindowed READ isWindowed)
+    Q_PROPERTY(bool isWindowed READ isWindowed NOTIFY isWindowedChanged)
 public:
     explicit GuiEngine(QObject *parent = nullptr);
 
@@ -26,6 +26,9 @@ public:
     bool isWindowed() const {
         return isWindowed_;
     }
+
+signals:
+    void isWindowedChanged();
 
 private:
     DeclarePtr<Engine> engine_;
