@@ -7,7 +7,7 @@ Rectangle {
     required property string path
     required property bool isDir
     required property var fileChooser
-    implicitHeight: idFileName.contentHeight + 32
+    implicitHeight: idFileName.contentHeight + 20
 
     Rectangle {
         width: parent.width - 4
@@ -23,9 +23,8 @@ Rectangle {
 
         Text {
             id: idFileName
-            anchors.centerIn: parent
-            width: parent.width * 0.8
-            height: contentHeight
+            anchors.fill: parent
+            padding: 8
             text: idEntry.name
             wrapMode: Text.Wrap
         }

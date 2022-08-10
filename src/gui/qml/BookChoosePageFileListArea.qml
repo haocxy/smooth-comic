@@ -75,6 +75,7 @@ Flickable {
                     model: idRoot.fileChooser.dirs
                     delegate: FileTreeEntry {
                         fileChooser: idRoot.fileChooser
+                        Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
                         implicitWidth: Math.min(
                                            idWindow.width,
@@ -97,6 +98,7 @@ Flickable {
                     model: idRoot.fileChooser.files
                     delegate: FileTreeEntry {
                         fileChooser: idRoot.fileChooser
+                        Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
                         implicitWidth: Math.min(
                                            idWindow.width,
