@@ -102,6 +102,7 @@ Rectangle {
 
             ScrollBar.vertical: ScrollBar {
                 id: idScrollBar
+                policy: $engine.isWindowed ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
             }
         }
     }
