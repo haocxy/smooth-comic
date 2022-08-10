@@ -4,7 +4,8 @@
         <file>ControlArea.qml</file>
         <file>ControlButton.qml</file>
         <file>BookChoosePage.qml</file>
-        <file>BookReadPage.qml</file>
+		<file>BookChoosePageTopArea.qml</file>
+		<file>BookReadPage.qml</file>
         <file>FileTreeEntry.qml</file>
     </qresource>
 </RCC>
