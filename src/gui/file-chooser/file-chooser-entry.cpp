@@ -14,6 +14,10 @@ FileChooserEntry::FileChooserEntry(const QString &name, const fs::path &path, QO
     name_ = name;
 
     path_ = QString::fromStdU32String(path.generic_u32string());
+
+    const fs::file_status st = fs::status(path);
+
+    type_ = st.type();
 }
 
 FileChooserEntry::~FileChooserEntry()

@@ -14,6 +14,8 @@ class FileChooserEntry : public QObject {
 
     Q_PROPERTY(QString path READ path WRITE setPath NOTIFY pathChanged)
 
+    Q_PROPERTY(bool isDir READ isDir NOTIFY isDirChanged)
+
 public:
     explicit FileChooserEntry(QObject *parent = nullptr);
 
@@ -43,14 +45,21 @@ public:
         }
     }
 
+    bool isDir() const {
+        return type_ == fs::file_type::directory;
+    }
+
 signals:
     void nameChanged();
 
     void pathChanged();
 
+    void isDirChanged();
+
 private:
     QString name_;
     QString path_;
+    fs::file_type type_{};
 };
 
 }
