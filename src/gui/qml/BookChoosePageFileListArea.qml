@@ -14,7 +14,11 @@ Flickable {
     clip: true
 
     function entryWidth(areaWidth, goodWidth) {
-        return Math.min(idWindow.width, areaWidth / Math.floor(areaWidth / goodWidth))
+        if ($engine.isWindowed) {
+            return Math.min(idWindow.width, goodWidth)
+        } else {
+            return Math.min(idWindow.width, areaWidth / Math.floor(areaWidth / goodWidth))
+        }
     }
 
 
@@ -71,11 +75,19 @@ Flickable {
 
             GridLayout {
                 id: idDirsByGridLayout
+
                 property int goodWidth: 150
-                implicitWidth: idWindow.width - idScrollBar.width
-                columns: Math.max(1, Math.floor(
-                                      idDirsByGridLayout.width / idDirsByGridLayout.goodWidth))
+
+                property int goodAreaWidth: idWindow.width - idScrollBar.width
+
+                property int entryWidth: idRoot.entryWidth(goodAreaWidth, goodWidth)
+
+                implicitWidth: goodAreaWidth
+
+                columns: Math.max(1, Math.floor(goodAreaWidth / entryWidth))
+
                 rowSpacing: 0
+
                 columnSpacing: 0
 
                 Repeater {
@@ -84,18 +96,26 @@ Flickable {
                         fileChooser: idRoot.fileChooser
                         Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: idRoot.entryWidth(idDirsByGridLayout.width, idDirsByGridLayout.goodWidth)
+                        implicitWidth: idDirsByGridLayout.entryWidth
                     }
                 }
             }
 
             GridLayout {
                 id: idFilesByGridLayout
+
                 property int goodWidth: 150
-                implicitWidth: idWindow.width - idScrollBar.width
-                columns: Math.max(1, Math.floor(
-                                      idFilesByGridLayout.width / idFilesByGridLayout.goodWidth))
+
+                property int goodAreaWidth: idWindow.width - idScrollBar.width
+
+                property int entryWidth: idRoot.entryWidth(goodAreaWidth, goodWidth)
+
+                implicitWidth: goodAreaWidth
+
+                columns: Math.max(1, Math.floor(goodAreaWidth / entryWidth))
+
                 rowSpacing: 0
+
                 columnSpacing: 0
 
                 Repeater {
@@ -104,7 +124,7 @@ Flickable {
                         fileChooser: idRoot.fileChooser
                         Layout.fillHeight: true
                         Layout.alignment: Qt.AlignTop
-                        implicitWidth: idRoot.entryWidth(idFilesByGridLayout.width, idFilesByGridLayout.goodWidth)
+                        implicitWidth: idFilesByGridLayout.entryWidth
                     }
                 }
             }
