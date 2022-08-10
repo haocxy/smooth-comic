@@ -27,7 +27,7 @@ Flickable {
         // 根据是否是窗口化平台，选择布局方式
         // 对于窗口化平台，因为窗口宽度随时可变，所以固定元素宽度，以保证调整窗口大小的过程中的视觉舒适
         // 对于非窗口化平台，因为窗口宽度只会在调整屏幕方向时改变，所以尽可能占满宽度
-        sourceComponent: $engine.isWindowed ? idCompFilesByFlow : idCompFilesByGridLayout
+        sourceComponent: idCompFilesByGridLayout
     }
 
     Component {
@@ -75,9 +75,18 @@ Flickable {
             QtObject {
                 id: helper
                 property int goodEntryWidth: 150
-                property int areaWidth: idWindow.width - idScrollBar.width
+                property int areaWidth: calcAreaWidth()
                 property int entryWidth: idRoot.entryWidth(areaWidth, goodEntryWidth)
                 property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
+
+                function calcAreaWidth() {
+                    if ($engine.isWindowed) {
+                        var cols = Math.floor((idWindow.width - idScrollBar.width) / goodEntryWidth)
+                        return goodEntryWidth * cols
+                    } else {
+                        return idWindow.width - idScrollBar.width
+                    }
+                }
             }
 
             GridLayout {
