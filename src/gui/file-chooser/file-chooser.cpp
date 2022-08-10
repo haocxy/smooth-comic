@@ -38,7 +38,8 @@ void FileChooser::setCurrDir(const QString &dir)
 
 void FileChooser::updateEntries()
 {
-    entries_.clear();
+    dirs_.clear();
+    files_.clear();
 
     if (!fs::is_directory(currDir_)) {
         return;
@@ -46,10 +47,16 @@ void FileChooser::updateEntries()
 
     for (QString name : QDir(currDir_).entryList(QDir::NoFilter, QDir::SortFlag::Name)) {
         const fs::path path = fs::absolute(currDir_ / name.toStdU32String());
-        entries_.push_back(new FileChooserEntry(name, path));
+        uptr<FileChooserEntry> entry = new FileChooserEntry(name, path);
+        if (fs::is_directory(path)) {
+            dirs_.push_back(std::move(entry));
+        } else {
+            files_.push_back(std::move(entry));
+        }
     }
 
-    emit entriesChanged();
+    emit dirsChanged();
+    emit filesChanged();
 }
 
 }

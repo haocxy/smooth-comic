@@ -29,7 +29,7 @@ Flickable {
             width: idWindow.width - idScrollBar.width
 
             Repeater {
-                model: idRoot.fileChooser.entries
+                model: idRoot.fileChooser.files
                 delegate: FileTreeEntry {
                     fileChooser: idRoot.fileChooser
                     Layout.alignment: Qt.AlignTop
@@ -50,7 +50,7 @@ Flickable {
             columnSpacing: 0
 
             Repeater {
-                model: idRoot.fileChooser.entries
+                model: idRoot.fileChooser.files
                 delegate: FileTreeEntry {
                     fileChooser: idRoot.fileChooser
                     Layout.alignment: Qt.AlignTop
