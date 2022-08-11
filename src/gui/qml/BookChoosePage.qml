@@ -30,15 +30,4 @@ Rectangle {
             Layout.fillHeight: true
         }
     }
-
-    MouseArea {
-        anchors.fill: parent
-        onPressed: e => {
-            var gpos = mapToGlobal(e.x, e.y)
-            if (!idTopArea.contains(idTopArea.mapFromGlobal(gpos.x, gpos.y))) {
-                idTopArea.removeFocus()
-            }
-            e.accepted = false
-        }
-    }
 }

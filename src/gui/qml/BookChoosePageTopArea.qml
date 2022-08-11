@@ -65,7 +65,8 @@ Rectangle {
                     anchors.fill: parent
                     onPressed: e => {
                                    parent.readOnly = false
-                                   e.accepted = false
+                                   window.openInputMethod(idCurrDir)
+                                   e.accepted = true
                                }
                 }
             }
