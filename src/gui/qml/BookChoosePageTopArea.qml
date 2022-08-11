@@ -23,6 +23,15 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: Qt.inputMethod
+        function onVisibleChanged() {
+            if (!target.visible) {
+                removeFocus()
+            }
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 8
