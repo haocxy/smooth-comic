@@ -28,14 +28,17 @@ Rectangle {
             fileChooser: idFileChooser
             implicitWidth: idWindow.width
             Layout.fillHeight: true
+        }
+    }
 
-            MouseArea {
-                anchors.fill: parent
-                onPressed: e => {
-                    idTopArea.removeFocus()
-                    e.accepted = false
-                }
+    MouseArea {
+        anchors.fill: parent
+        onPressed: e => {
+            var gpos = mapToGlobal(e.x, e.y)
+            if (!idTopArea.contains(idTopArea.mapFromGlobal(gpos.x, gpos.y))) {
+                idTopArea.removeFocus()
             }
+            e.accepted = false
         }
     }
 }

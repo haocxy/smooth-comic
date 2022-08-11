@@ -12,6 +12,17 @@ Rectangle {
         idCurrDir.focus = false
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onPressed: e => {
+            var gpos = mapToGlobal(e.x, e.y)
+            if (!idCurrDir.contains(idCurrDir.mapFromGlobal(gpos.x, gpos.y))) {
+                removeFocus()
+            }
+            e.accepted = false
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 8
