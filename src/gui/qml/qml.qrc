@@ -7,8 +7,9 @@
 
 		<file>FileChooser/qmldir</file>
 		<file>FileChooser/FileChooserArea.qml</file>
-		<file>FileChooser/TopArea.qml</file>
+		<file>FileChooser/AddrBarArea.qml</file>
 		<file>FileChooser/FileListArea.qml</file>
 		<file>FileChooser/FsEntry.qml</file>
+		<file>FileChooser/MyToolButton.qml</file>
 	</qresource>
 </RCC>

@@ -3,8 +3,10 @@
 
 namespace myapp {
 
-FileChooserStackInfo::FileChooserStackInfo(QObject *parent)
+FileChooserStackInfo::FileChooserStackInfo(const fs::path &dir, qreal contentY, QObject *parent)
     : QObject(parent)
+    , dir_(dir)
+    , contentY_(contentY)
 {
 }
 

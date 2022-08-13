@@ -7,6 +7,7 @@ Rectangle {
     required property string path
     required property bool isDir
     required property var fileChooser
+    required property Flickable fileListFlickable
     implicitHeight: idFileName.contentHeight + idFileName.padding + 14
 
     Rectangle {
@@ -31,7 +32,11 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: fileChooser.currDir = path
+            onClicked: {
+                if (idEntry.isDir) {
+                    fileChooser.openDir(idEntry.path, fileListFlickable.contentY)
+                }
+            }
         }
     }
 }

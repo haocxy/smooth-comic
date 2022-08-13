@@ -17,11 +17,28 @@ Rectangle {
         anchors.fill: parent
         spacing: 0
 
-        TopArea {
-            id: idTopArea
-            Layout.fillWidth: true
-            Layout.preferredHeight: goodHeight
-            Layout.alignment: Qt.AlignVCenter
+        ToolBar {
+            implicitWidth: parent.width
+            implicitHeight: 48
+            background: Rectangle {
+                anchors.fill: parent
+                color: "#c8c8c8"
+            }
+
+            RowLayout {
+                anchors.fill: parent
+                MyToolButton {
+                    id: idBackBtn
+                    text: "\ue5c4"
+                    onClicked: {
+                        idFileChooser.goBack()
+                    }
+                }
+                AddrBarArea {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: idBackBtn.height
+                }
+            }
         }
 
         FileListArea {

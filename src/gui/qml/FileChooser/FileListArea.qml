@@ -20,6 +20,13 @@ Flickable {
         }
     }
 
+    Connections {
+        target: fileChooser
+        function onSigRestoreContentY(restoredContentY) {
+            idRoot.contentY = restoredContentY
+        }
+    }
+
     Column {
 
         id: idEntryList
@@ -56,6 +63,7 @@ Flickable {
                 model: idRoot.fileChooser.dirs
                 delegate: FsEntry {
                     fileChooser: idRoot.fileChooser
+                    fileListFlickable: idRoot
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: helper.entryWidth
@@ -78,6 +86,7 @@ Flickable {
                 model: idRoot.fileChooser.files
                 delegate: FsEntry {
                     fileChooser: idRoot.fileChooser
+                    fileListFlickable: idRoot
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: helper.entryWidth

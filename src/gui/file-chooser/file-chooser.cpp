@@ -26,14 +26,55 @@ FileChooser::~FileChooser()
 void FileChooser::setCurrDir(const QString &dir)
 {
     const fs::path newDir{ fs::absolute(dir.toStdU32String()) };
-    if (!fs::is_directory(newDir)) {
+    setCurrDir(newDir);
+}
+
+void FileChooser::setCurrDir(const fs::path &dir)
+{
+    if (!fs::is_directory(dir)) {
         return;
     }
-    if (currDir_ != newDir) {
-        currDir_ = newDir;
+    if (currDir_ != dir) {
+        currDir_ = dir;
         emit currDirChanged();
         updateEntries();
     }
+}
+
+void FileChooser::setHistoryStackLimit(int limit)
+{
+    if (historyStackLimit_ != limit) {
+        historyStackLimit_ = limit;
+        removeTooOldHistories();
+        emit historyStackLimitChanged();
+    }
+}
+
+void FileChooser::openDir(const QString &path, qreal currContentY)
+{
+    const fs::path p{ path.toStdU32String() };
+    if (!fs::is_directory(p)) {
+        return;
+    }
+
+    historyStack_.push_back(new FileChooserStackInfo(currDir_, currContentY));
+    removeTooOldHistories();
+
+    setCurrDir(path);
+}
+
+void FileChooser::goBack()
+{
+    if (historyStack_.empty()) {
+        return;
+    }
+
+    uptr<FileChooserStackInfo> info = std::move(historyStack_.front());
+    historyStack_.pop_front();
+
+    setCurrDir(info->dir());
+
+    emit sigRestoreContentY(info->contentY());
 }
 
 void FileChooser::updateEntries()
