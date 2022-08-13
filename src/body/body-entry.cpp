@@ -145,8 +145,9 @@ int body_entry(int argc, char *argv[])
     GuiEngine guiEngine;
 
     QQmlApplicationEngine qmlAppEngine;
+    qmlAppEngine.addImportPath("qrc:/qml");
     qmlAppEngine.rootContext()->setContextProperty("$engine", &guiEngine);
-    qmlAppEngine.load(QUrl("qrc:/MainWindow.qml"));
+    qmlAppEngine.load(QUrl("qrc:/qml/myapp/MainWindow.qml"));
 
     const QString cssPath = ":/styles/default.css";
 

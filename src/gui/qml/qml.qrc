@@ -1,12 +1,14 @@
 <RCC>
-	<qresource prefix="/">
+	<qresource prefix="/qml/myapp">
 		<file>MainWindow.qml</file>
 		<file>ControlArea.qml</file>
 		<file>ControlButton.qml</file>
-		<file>BookChoosePage.qml</file>
-		<file>BookChoosePageTopArea.qml</file>
-		<file>BookChoosePageFileListArea.qml</file>
 		<file>BookReadPage.qml</file>
-		<file>FileTreeEntry.qml</file>
+
+		<file>FileChooser/qmldir</file>
+		<file>FileChooser/BookChoosePage.qml</file>
+		<file>FileChooser/BookChoosePageTopArea.qml</file>
+		<file>FileChooser/BookChoosePageFileListArea.qml</file>
+		<file>FileChooser/FileTreeEntry.qml</file>
 	</qresource>
 </RCC>

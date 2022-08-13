@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import myapp.FileChooser
+
 
 Window{
     id: window
