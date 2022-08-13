@@ -52,6 +52,8 @@ void FileChooser::setHistoryStackLimit(int limit)
 
 void FileChooser::openDir(const QString &path, qreal currContentY)
 {
+    qDebug() << "openDir: " << path << ", currContentY: " << currContentY;
+
     const fs::path p{ path.toStdU32String() };
     if (!fs::is_directory(p)) {
         return;
@@ -69,8 +71,8 @@ void FileChooser::goBack()
         return;
     }
 
-    uptr<FileChooserStackInfo> info = std::move(historyStack_.front());
-    historyStack_.pop_front();
+    uptr<FileChooserStackInfo> info = std::move(historyStack_.back());
+    historyStack_.pop_back();
 
     setCurrDir(info->dir());
 
