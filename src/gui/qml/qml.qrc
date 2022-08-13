@@ -6,7 +6,7 @@
 		<file>BookReadPage.qml</file>
 
 		<file>FileChooser/qmldir</file>
-		<file>FileChooser/BookChoosePage.qml</file>
+		<file>FileChooser/FileChooserArea.qml</file>
 		<file>FileChooser/TopArea.qml</file>
 		<file>FileChooser/FileListArea.qml</file>
 		<file>FileChooser/FsEntry.qml</file>

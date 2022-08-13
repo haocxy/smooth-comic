@@ -30,7 +30,7 @@ Window{
 
     Component {
         id: bookChoosePage
-        BookChoosePage {
+        FileChooserArea {
             width: window.width
             height: idStack.height
         }
