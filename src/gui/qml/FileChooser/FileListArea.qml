@@ -54,7 +54,7 @@ Flickable {
 
             Repeater {
                 model: idRoot.fileChooser.dirs
-                delegate: FileTreeEntry {
+                delegate: FsEntry {
                     fileChooser: idRoot.fileChooser
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
@@ -76,7 +76,7 @@ Flickable {
 
             Repeater {
                 model: idRoot.fileChooser.files
-                delegate: FileTreeEntry {
+                delegate: FsEntry {
                     fileChooser: idRoot.fileChooser
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop

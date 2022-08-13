@@ -17,14 +17,14 @@ Rectangle {
         anchors.fill: parent
         spacing: 0
 
-        BookChoosePageTopArea {
+        TopArea {
             id: idTopArea
             Layout.fillWidth: true
             Layout.preferredHeight: goodHeight
             Layout.alignment: Qt.AlignVCenter
         }
 
-        BookChoosePageFileListArea {
+        FileListArea {
             fileChooser: idFileChooser
             implicitWidth: idWindow.width
             Layout.fillHeight: true

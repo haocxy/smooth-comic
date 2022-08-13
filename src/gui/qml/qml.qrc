@@ -7,8 +7,8 @@
 
 		<file>FileChooser/qmldir</file>
 		<file>FileChooser/BookChoosePage.qml</file>
-		<file>FileChooser/BookChoosePageTopArea.qml</file>
-		<file>FileChooser/BookChoosePageFileListArea.qml</file>
-		<file>FileChooser/FileTreeEntry.qml</file>
+		<file>FileChooser/TopArea.qml</file>
+		<file>FileChooser/FileListArea.qml</file>
+		<file>FileChooser/FsEntry.qml</file>
 	</qresource>
 </RCC>
