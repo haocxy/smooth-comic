@@ -38,8 +38,10 @@ Rectangle {
                     }
                 }
                 AddrBarArea {
+                    id: idAddrBarArea
+                    Layout.margins: 12
                     Layout.fillWidth: true
-                    Layout.preferredHeight: idBackBtn.height
+                    Layout.fillHeight: true
                 }
             }
         }
@@ -49,5 +51,13 @@ Rectangle {
             implicitWidth: idWindow.width
             Layout.fillHeight: true
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onPressed: e => {
+                       idAddrBarArea.removeFocus()
+                       e.accepted = false
+                   }
     }
 }

@@ -32,7 +32,7 @@ Rectangle {
 
     color: idCurrDir.focus ? idWindow.color : "#f5f5f5"
 
-    radius: 4
+    radius: 8
 
     TextInput {
         id: idCurrDir
