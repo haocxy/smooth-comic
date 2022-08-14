@@ -28,7 +28,10 @@ Rectangle {
             RowLayout {
                 anchors.fill: parent
                 MyToolButton {
-                    Layout.margins: 12
+                    Layout.topMargin: 12
+                    Layout.bottomMargin: 12
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
                     Layout.fillHeight: true
                     Layout.preferredWidth: height
                     id: idBackBtn
@@ -39,7 +42,10 @@ Rectangle {
                 }
                 AddrBarArea {
                     id: idAddrBarArea
-                    Layout.margins: 12
+                    Layout.topMargin: 12
+                    Layout.bottomMargin: 12
+                    Layout.leftMargin: 0
+                    Layout.rightMargin: 8
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
