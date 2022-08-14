@@ -52,6 +52,22 @@ Rectangle {
             }
         }
 
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 16
+            opacity: 0.5
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#ABABAB"
+                }
+                GradientStop {
+                    position: 0.5
+                    color: "white"
+                }
+            }
+        }
+
         FileListArea {
             fileChooser: idFileChooser
             implicitWidth: idWindow.width
