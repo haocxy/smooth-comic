@@ -8,12 +8,15 @@ namespace myapp {
 FileChooserStackFrame::FileChooserStackFrame(const fs::path &dir, QObject *parent)
     : QObject(parent)
     , dir_(dir)
+    , path_(QString::fromStdU32String(dir_.generic_u32string()))
+    , name_(QString::fromStdU32String(dir_.filename().generic_u32string()))
 {
+    updateEntries();
 }
 
 FileChooserStackFrame::~FileChooserStackFrame()
 {
-
+    int n = 0;
 }
 
 void FileChooserStackFrame::updateEntries()

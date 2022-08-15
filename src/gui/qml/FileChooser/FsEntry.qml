@@ -6,9 +6,9 @@ Rectangle {
     required property string name
     required property string path
     required property bool isDir
-    required property var fileChooser
-    required property Flickable fileListFlickable
     implicitHeight: idFileName.contentHeight + idFileName.padding + 14
+
+    signal clicked(string path)
 
     Rectangle {
         width: parent.width - 4
@@ -34,7 +34,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 if (idEntry.isDir) {
-                    fileChooser.openDir(idEntry.path, fileListFlickable.contentY)
+                    idEntry.clicked(idEntry.path)
                 }
             }
         }

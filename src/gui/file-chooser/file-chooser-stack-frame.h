@@ -16,6 +16,10 @@ namespace myapp {
 class FileChooserStackFrame : public QObject {
     Q_OBJECT
 
+    Q_PROPERTY(QString path READ path NOTIFY pathChanged)
+
+    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+
     Q_PROPERTY(QQmlListProperty<FileChooserEntry> dirs READ dirs NOTIFY dirsChanged)
 
     Q_PROPERTY(QQmlListProperty<FileChooserEntry> files READ files NOTIFY filesChanged)
@@ -29,6 +33,14 @@ public:
         return dir_;
     }
 
+    const QString &path() const {
+        return path_;
+    }
+
+    const QString &name() const {
+        return name_;
+    }
+
     QQmlListProperty<FileChooserEntry> dirs() {
         return QQmlListProperty<FileChooserEntry>(
             this, nullptr, &FileChooserStackFrame::dirCount, &FileChooserStackFrame::dirAt);
@@ -40,6 +52,10 @@ public:
     }
 
 signals:
+    void pathChanged();
+
+    void nameChanged();
+
     void dirsChanged();
 
     void filesChanged();
@@ -64,7 +80,9 @@ private:
     void updateEntries();
 
 private:
-    fs::path dir_;
+    const fs::path dir_;
+    const QString path_;
+    const QString name_;
     std::vector<uptr<FileChooserEntry>> dirs_;
     std::vector<uptr<FileChooserEntry>> files_;
 };

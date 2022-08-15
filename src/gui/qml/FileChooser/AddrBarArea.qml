@@ -3,6 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
+    id: idRoot
+    property string dir
 
     function removeFocus() {
         idCurrDir.readOnly = true
@@ -41,11 +43,11 @@ Rectangle {
         leftPadding: 8
         rightPadding: 8
         verticalAlignment: TextInput.AlignVCenter
-        text: idFileChooser.currDir
+        text: idRoot.dir
         focus: false
         onEditingFinished: {
             Qt.inputMethod.hide()
-            idFileChooser.currDir = text
+            idRoot.dir = text
             focus = false
         }
 

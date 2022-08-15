@@ -35,6 +35,14 @@ public:
             this, nullptr, &FileChooserStack::frameCount, &FileChooserStack::frameAt);
     }
 
+    void push(const fs::path &dir);
+
+    void pop();
+
+    size_t frameCount() const {
+        return frames_.size();
+    }
+
 signals:
     void dirChanged();
 
@@ -49,13 +57,19 @@ private:
         return reinterpret_cast<FileChooserStack *>(list->object)->frames_[i].get();
     }
 
-    void removeTooOldHistories() {
+    enum class ShouldEmit {
+        Yes, No
+    };
+
+    void removeTooOldHistories(ShouldEmit shouldEmit = ShouldEmit::Yes) {
         bool changed = false;
         while (frames_.size() > limit_) {
             frames_.pop_front();
             changed = true;
         }
-        emit framesChanged();
+        if (shouldEmit == ShouldEmit::Yes) {
+            emit framesChanged();
+        }
     }
 
 private:

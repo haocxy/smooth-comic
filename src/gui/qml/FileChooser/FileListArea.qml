@@ -5,25 +5,22 @@ import Qt.labs.platform
 
 Flickable {
     id: idRoot
-    required property var fileChooser
+    required property var frame
     contentWidth: idEntryList.width
     contentHeight: idEntryList.height
     flickableDirection: Flickable.VerticalFlick
     z: 1
     clip: true
 
+    signal shouldOpenDir(string path)
+
+    signal shouldOpenFile(string path)
+
     function entryWidth(areaWidth, goodWidth) {
         if ($engine.isWindowed) {
             return Math.min(idWindow.width, goodWidth)
         } else {
             return Math.min(idWindow.width, areaWidth / Math.floor(areaWidth / goodWidth))
-        }
-    }
-
-    Connections {
-        target: fileChooser
-        function onSigRestoreContentY(restoredContentY) {
-            idRoot.contentY = restoredContentY
         }
     }
 
@@ -60,13 +57,12 @@ Flickable {
             columnSpacing: 0
 
             Repeater {
-                model: idRoot.fileChooser.dirs
+                model: idRoot.frame.dirs
                 delegate: FsEntry {
-                    fileChooser: idRoot.fileChooser
-                    fileListFlickable: idRoot
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: helper.entryWidth
+                    onClicked: p => idRoot.shouldOpenDir(p)
                 }
             }
         }
@@ -83,13 +79,12 @@ Flickable {
             columnSpacing: 0
 
             Repeater {
-                model: idRoot.fileChooser.files
+                model: idRoot.frame.files
                 delegate: FsEntry {
-                    fileChooser: idRoot.fileChooser
-                    fileListFlickable: idRoot
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: helper.entryWidth
+                    onClicked: p => idRoot.shouldOpenFile(p)
                 }
             }
         }

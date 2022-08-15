@@ -20,15 +20,20 @@ FileChooser::~FileChooser()
 
 void FileChooser::openInitDir()
 {
-
+    const fs::path initDir = SystemUtil::defaultOpenFileDir();
+    stack_.push(initDir);
 }
 
 void FileChooser::openDir(const QString &path)
 {
+    stack_.push(fs::absolute(path.toStdU32String()));
 }
 
 void FileChooser::goBack()
 {
+    if (stack_.frameCount() > 1) {
+        stack_.pop();
+    }
 }
 
 }
