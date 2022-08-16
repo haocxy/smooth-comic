@@ -55,7 +55,6 @@ Rectangle {
     }
 
     function openDir(path) {
-        console.log("openDir: ", path)
         idFileChooser.openDir(path)
     }
 
