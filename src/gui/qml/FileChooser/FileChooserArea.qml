@@ -46,6 +46,7 @@ Rectangle {
             }
         }
 
+        // 注意，前面的pop逻辑只处理了长度相同的部分，这里还需要处理长度不同的部分
         cutStackViewTo(idDirStack, frameCount)
     }
 
