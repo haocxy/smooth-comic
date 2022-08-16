@@ -13,33 +13,40 @@ Rectangle {
         id: idFileChooser
     }
 
+    function cutStackViewTo(stackView, size) {
+        if (size > 0) {
+            while (stackView.depth > size) {
+                // 根据文档，pop函数只有在深度大于1时有效
+                stackView.pop()
+            }
+        } else {
+            stackView.clear()
+        }
+    }
+
     function updateFrames() {
         var frames = idFileChooser.stack.frames
         var frameCount = frames.length
 
         // 如果公共长度部分的栈帧存在不同，则说明有过老的栈帧被清除，应该把StackView中不同的部分弹出
+        var sameCount = 0
         var commonCount = Math.min(frameCount, idDirStack.depth)
-        for (var i = 0; i < commonCount; ++i) {
-            if (frames[i].name !== idDirStack.get(i, StackView.DontLoad).name) {
+        for (; sameCount < commonCount; ++sameCount) {
+            if (frames[sameCount].path !== idDirStack.get(sameCount, StackView.DontLoad).frame.path) {
                 // 此时i为相同部分的长度，需要把后面的栈帧弹出
-                while (i + 1 < idDirStack.depth) {
-                    idDirStack.pop()
-                }
+                cutStackViewTo(idDirStack, sameCount)
                 break
             }
         }
 
         // 添加新增的栈帧
-        for (var frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
+        for (var frameIndex = sameCount; frameIndex < frameCount; ++frameIndex) {
             if (frameIndex > idDirStack.last) {
                 idDirStack.push(idCompFileListArea.createObject(idDirStack, {frame: frames[frameIndex]}))
             }
         }
 
-        // 删除已经被弹出的栈帧
-        while (frameCount < idDirStack.depth) {
-            idDirStack.pop()
-        }
+        cutStackViewTo(idDirStack, frameCount)
     }
 
     function openDir(path) {
