@@ -48,9 +48,14 @@ Rectangle {
 
         // 注意，前面的pop逻辑只处理了长度相同的部分，这里还需要处理长度不同的部分
         cutStackViewTo(idDirStack, frameCount)
+
+        if (idDirStack.depth > 0) {
+            idAddrBarArea.setDir(idDirStack.currentItem.frame.path)
+        }
     }
 
     function openDir(path) {
+        console.log("openDir: ", path)
         idFileChooser.openDir(path)
     }
 
@@ -98,6 +103,7 @@ Rectangle {
                     Layout.rightMargin: 8
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    onShouldOpenDir: p => openDir(p)
                 }
             }
         }

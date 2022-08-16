@@ -4,7 +4,12 @@ import QtQuick.Layouts
 
 Rectangle {
     id: idRoot
-    property string dir
+
+    function setDir(dir) {
+        idCurrDir.text = dir
+    }
+
+    signal shouldOpenDir(string dir)
 
     function removeFocus() {
         idCurrDir.readOnly = true
@@ -43,11 +48,14 @@ Rectangle {
         leftPadding: 8
         rightPadding: 8
         verticalAlignment: TextInput.AlignVCenter
-        text: idRoot.dir
         focus: false
+        property string lastFinished: ""
         onEditingFinished: {
             Qt.inputMethod.hide()
-            idRoot.dir = text
+            if (text !== lastFinished) {
+                shouldOpenDir(text)
+            }
+            lastFinished = text
             focus = false
         }
 
