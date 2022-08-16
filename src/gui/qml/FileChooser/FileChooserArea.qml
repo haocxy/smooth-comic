@@ -58,7 +58,21 @@ Rectangle {
         idFileChooser.openDir(path)
     }
 
-    Component.onCompleted: idFileChooser.openInitDir()
+    Component.onCompleted: {
+
+        // 窗口化平台关闭目录栈的进出动画
+        if ($engine.isWindowed) {
+            idDirStack.popEnter = null
+            idDirStack.popExit = null
+            idDirStack.pushEnter = null
+            idDirStack.pushExit = null
+            idDirStack.replaceEnter = null
+            idDirStack.replaceExit = null
+        }
+
+        // 打开初始化目录里
+        idFileChooser.openInitDir()
+    }
 
     Connections {
         target: idFileChooser.stack
