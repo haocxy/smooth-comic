@@ -34,8 +34,6 @@ Flickable {
             property int entryWidth: entryGapPairWidth - entryGap
             property int columnCount: Math.max(1, Math.floor((areaWidth + entryGap) / entryGapPairWidth))
 
-            onEntryGapPairWidthChanged: console.log("qmllog: entryGapPairWidth: ", entryGapPairWidth)
-
             function calcEntryGapPairWidth() {
                 var vRootWidth = idRoot.width + entryGap
                 if ($engine.isWindowed) {
@@ -47,14 +45,6 @@ Flickable {
                 }
             }
 
-//            function calcEntryWidth() {
-//                if ($engine.isWindowed) {
-//                    return Math.min(idRoot.width, goodEntryWidth)
-//                } else {
-//                    return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodEntryWidth))
-//                }
-//            }
-
             function calcAreaWidth() {
                 var usable = idRoot.width
                         - idScrollBar.width
@@ -62,16 +52,10 @@ Flickable {
                         - idEntryList.rightPadding
 
                 if ($engine.isWindowed) {
-                    console.log("ca usable, ", usable)
                     var vUsable = usable + entryGap
-                    console.log("ca vUsable, ", vUsable)
                     var vGoodEntryWidth = goodEntryWidth + entryGap
-                    console.log("ca vGoodEnryWidth, ", vGoodEntryWidth)
                     var cols = Math.floor(vUsable / vGoodEntryWidth)
-                    console.log("ca cols, ", cols)
                     var areaWidth = vGoodEntryWidth * cols - entryGap
-                    console.log("ca areaWidth, ", areaWidth)
-                    console.log("----------------")
                     return areaWidth
                 } else {
                     return usable
