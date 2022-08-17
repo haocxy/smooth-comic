@@ -1,15 +1,15 @@
 <RCC>
-	<qresource prefix="/qml/myapp">
-		<file>MainWindow.qml</file>
-		<file>ControlArea.qml</file>
-		<file>ControlButton.qml</file>
-		<file>BookReadPage.qml</file>
-
-		<file>FileChooser/qmldir</file>
-		<file>FileChooser/FileChooserArea.qml</file>
-		<file>FileChooser/AddrBarArea.qml</file>
-		<file>FileChooser/FileListArea.qml</file>
-		<file>FileChooser/FsEntry.qml</file>
-		<file>FileChooser/MyToolButton.qml</file>
-	</qresource>
+    <qresource prefix="/qml/myapp">
+        <file>MainWindow.qml</file>
+        <file>ControlArea.qml</file>
+        <file>ControlButton.qml</file>
+        <file>BookReadPage.qml</file>
+        <file>FileChooser/qmldir</file>
+        <file>FileChooser/FileChooserArea.qml</file>
+        <file>FileChooser/AddrBarArea.qml</file>
+        <file>FileChooser/FileListArea.qml</file>
+        <file>FileChooser/FsEntry.qml</file>
+        <file>FileChooser/MyToolButton.qml</file>
+        <file>FileChooser/FileListViewType.qml</file>
+    </qresource>
 </RCC>
