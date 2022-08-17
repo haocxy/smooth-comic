@@ -20,9 +20,9 @@ Flickable {
 
     function entryWidth(areaWidth, goodWidth) {
         if ($engine.isWindowed) {
-            return Math.min(idWindow.width, goodWidth)
+            return Math.min(idRoot.width, goodWidth)
         } else {
-            return Math.min(idWindow.width, areaWidth / Math.floor(areaWidth / goodWidth))
+            return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodWidth))
         }
     }
 
@@ -30,7 +30,10 @@ Flickable {
 
         id: idEntryList
 
-        padding: entryGap
+        topPadding: entryGap
+        bottomPadding: entryGap
+        leftPadding: $engine.isWindowed ? entryGap : idScrollBar.width
+        rightPadding: $engine.isWindowed ? entryGap : 0
 
         QtObject {
             id: helper
@@ -40,11 +43,16 @@ Flickable {
             property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
 
             function calcAreaWidth() {
+                var usable = idRoot.width
+                        - idScrollBar.width
+                        - idEntryList.leftPadding
+                        - idEntryList.rightPadding
+
                 if ($engine.isWindowed) {
-                    var cols = Math.floor((idRoot.width - idScrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding) / goodEntryWidth)
+                    var cols = Math.floor(usable / goodEntryWidth)
                     return goodEntryWidth * cols
                 } else {
-                    return idRoot.width - idScrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding
+                    return usable
                 }
             }
         }
@@ -97,5 +105,6 @@ Flickable {
     ScrollBar.vertical: ScrollBar {
         id: idScrollBar
         policy: $engine.isWindowed ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+        width: $engine.isWindowed ? 16 : entryGap
     }
 }
