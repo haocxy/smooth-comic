@@ -30,16 +30,30 @@ Flickable {
             id: helper
             property int goodEntryWidth: 150
             property int areaWidth: calcAreaWidth()
-            property int entryWidth: calcEntryWidth()
-            property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
+            property int entryGapPairWidth: calcEntryGapPairWidth()
+            property int entryWidth: entryGapPairWidth - entryGap
+            property int columnCount: Math.max(1, Math.floor((areaWidth + entryGap) / entryGapPairWidth))
 
-            function calcEntryWidth() {
+            onEntryGapPairWidthChanged: console.log("qmllog: entryGapPairWidth: ", entryGapPairWidth)
+
+            function calcEntryGapPairWidth() {
+                var vRootWidth = idRoot.width + entryGap
                 if ($engine.isWindowed) {
-                    return Math.min(idRoot.width, goodEntryWidth)
+                    return Math.min(vRootWidth, goodEntryWidth + entryGap)
                 } else {
-                    return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodEntryWidth))
+                    var vAreaWidth = areaWidth + entryGap
+                    var vGoodEntryWidth = goodEntryWidth + entryGap
+                    return Math.min(vRootWidth, vAreaWidth / Math.floor(vAreaWidth / vGoodEntryWidth))
                 }
             }
+
+//            function calcEntryWidth() {
+//                if ($engine.isWindowed) {
+//                    return Math.min(idRoot.width, goodEntryWidth)
+//                } else {
+//                    return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodEntryWidth))
+//                }
+//            }
 
             function calcAreaWidth() {
                 var usable = idRoot.width
@@ -48,8 +62,17 @@ Flickable {
                         - idEntryList.rightPadding
 
                 if ($engine.isWindowed) {
-                    var cols = Math.floor(usable / goodEntryWidth)
-                    return goodEntryWidth * cols
+                    console.log("ca usable, ", usable)
+                    var vUsable = usable + entryGap
+                    console.log("ca vUsable, ", vUsable)
+                    var vGoodEntryWidth = goodEntryWidth + entryGap
+                    console.log("ca vGoodEnryWidth, ", vGoodEntryWidth)
+                    var cols = Math.floor(vUsable / vGoodEntryWidth)
+                    console.log("ca cols, ", cols)
+                    var areaWidth = vGoodEntryWidth * cols - entryGap
+                    console.log("ca areaWidth, ", areaWidth)
+                    console.log("----------------")
+                    return areaWidth
                 } else {
                     return usable
                 }
@@ -63,9 +86,9 @@ Flickable {
 
             columns: helper.columnCount
 
-            rowSpacing: 0
+            rowSpacing: entryGap
 
-            columnSpacing: 0
+            columnSpacing: entryGap
 
             Repeater {
                 model: idRoot.frame.dirs
@@ -85,9 +108,9 @@ Flickable {
 
             columns: helper.columnCount
 
-            rowSpacing: 0
+            rowSpacing: entryGap
 
-            columnSpacing: 0
+            columnSpacing: entryGap
 
             Repeater {
                 model: idRoot.frame.files
