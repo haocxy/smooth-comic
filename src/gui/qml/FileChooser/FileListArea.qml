@@ -85,6 +85,11 @@ Flickable {
             }
         }
 
+        Rectangle {
+            width: entryGap
+            height: entryGap
+        }
+
         GridLayout {
             id: idFilesByGridLayout
 
