@@ -17,6 +17,8 @@ Flickable {
 
     signal shouldOpenFile(string path)
 
+    Component.onDestruction: console.log("qmllog: FileListArea destruct: ", this)
+
     Column {
 
         id: idEntryList
@@ -75,7 +77,7 @@ Flickable {
             columnSpacing: entryGap
 
             Repeater {
-                model: idRoot.frame.dirs
+                model: frame ? frame.dirs : null
                 delegate: FsEntry {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
@@ -102,7 +104,7 @@ Flickable {
             columnSpacing: entryGap
 
             Repeater {
-                model: idRoot.frame.files
+                model: frame ? frame.files : null
                 delegate: FsEntry {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop

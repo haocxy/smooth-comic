@@ -32,7 +32,9 @@ Rectangle {
         var sameCount = 0
         var commonCount = Math.min(frameCount, idDirStack.depth)
         for (; sameCount < commonCount; ++sameCount) {
-            if (frames[sameCount].path !== idDirStack.get(sameCount, StackView.DontLoad).frame.path) {
+            var fileListArea = idDirStack.get(sameCount, StackView.DontLoad)
+            // 在C++中删除了frame后，QML会通过类似于QPointer的机制同步到这一情况，使FileListArea的frame为空
+            if (!fileListArea.frame || frames[sameCount].path !== fileListArea.frame.path) {
                 // 此时i为相同部分的长度，需要把后面的栈帧弹出
                 cutStackViewTo(idDirStack, sameCount)
                 break
@@ -42,7 +44,7 @@ Rectangle {
         // 添加新增的栈帧
         for (var frameIndex = sameCount; frameIndex < frameCount; ++frameIndex) {
             if (frameIndex > idDirStack.last) {
-                idDirStack.push(idCompFileListArea.createObject(idDirStack, {frame: frames[frameIndex]}))
+                idDirStack.push(idCompFileListArea, {frame: frames[frameIndex]})
             }
         }
 
