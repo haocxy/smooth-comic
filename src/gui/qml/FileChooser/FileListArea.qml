@@ -6,6 +6,7 @@ import Qt.labs.platform
 Flickable {
     id: idRoot
     required property var frame
+    property int entryGap: 8
     property int viewType: EntryStyle.eIcon
     contentWidth: idEntryList.width
     contentHeight: idEntryList.height
@@ -29,6 +30,8 @@ Flickable {
 
         id: idEntryList
 
+        padding: entryGap
+
         QtObject {
             id: helper
             property int goodEntryWidth: 150
@@ -38,10 +41,10 @@ Flickable {
 
             function calcAreaWidth() {
                 if ($engine.isWindowed) {
-                    var cols = Math.floor((idWindow.width - idScrollBar.width) / goodEntryWidth)
+                    var cols = Math.floor((idRoot.width - idScrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding) / goodEntryWidth)
                     return goodEntryWidth * cols
                 } else {
-                    return idWindow.width - idScrollBar.width
+                    return idRoot.width - idScrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding
                 }
             }
         }
