@@ -43,6 +43,14 @@ public:
         return frames_.size();
     }
 
+    FileChooserStackFrame *topFrame() {
+        if (!frames_.empty()) {
+            return frames_.back().get();
+        } else {
+            return nullptr;
+        }
+    }
+
 signals:
     void dirChanged();
 

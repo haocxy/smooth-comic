@@ -26,7 +26,15 @@ void FileChooser::openInitDir()
 
 void FileChooser::openDir(const QString &path)
 {
-    stack_.push(fs::absolute(path.toStdU32String()));
+    const fs::path p{ fs::absolute(path.toStdU32String()) };
+
+    if (FileChooserStackFrame *topFrame = stack_.topFrame()) {
+        if (topFrame->dir() == p) {
+            return;
+        }
+    }
+
+    stack_.push(p);
 }
 
 void FileChooser::goBack()
