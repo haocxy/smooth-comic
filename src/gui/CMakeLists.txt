@@ -23,7 +23,15 @@ include_directories(${CMAKE_SOURCE_DIR}/src/body)
 
 findSourceFiles(src_files)
 
-add_library(${appName}-gui STATIC ${src_files} ${CMAKE_SOURCE_DIR}/resources.qrc qml/qml.qrc)
+set(qrcFiles "")
+list(APPEND qrcFiles ${CMAKE_SOURCE_DIR}/resources.qrc)
+list(APPEND qrcFiles ${CMAKE_SOURCE_DIR}/asset/icon/icon.qrc)
+list(APPEND qrcFiles qml/qml.qrc)
+
+add_library(${appName}-gui STATIC
+    ${src_files}
+    ${qrcFiles}    
+)
 
 target_link_libraries(${appName}-gui
     ${appName}-util
