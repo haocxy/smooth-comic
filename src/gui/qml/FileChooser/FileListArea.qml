@@ -11,8 +11,7 @@ Flickable {
     contentWidth: idEntryList.width
     contentHeight: idEntryList.height
     flickableDirection: Flickable.VerticalFlick
-    z: 1
-    clip: true
+    z: -100
 
     signal shouldOpenDir(string path)
 

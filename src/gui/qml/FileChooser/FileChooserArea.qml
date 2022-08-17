@@ -86,6 +86,7 @@ Rectangle {
         spacing: 0
 
         ToolBar {
+            z: 100
             implicitWidth: parent.width
             implicitHeight: 64
             background: Rectangle {
