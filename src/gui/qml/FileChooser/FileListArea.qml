@@ -17,14 +17,6 @@ Flickable {
 
     signal shouldOpenFile(string path)
 
-    function entryWidth(areaWidth, goodWidth) {
-        if ($engine.isWindowed) {
-            return Math.min(idRoot.width, goodWidth)
-        } else {
-            return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodWidth))
-        }
-    }
-
     Column {
 
         id: idEntryList
@@ -38,8 +30,16 @@ Flickable {
             id: helper
             property int goodEntryWidth: 150
             property int areaWidth: calcAreaWidth()
-            property int entryWidth: idRoot.entryWidth(areaWidth, goodEntryWidth)
+            property int entryWidth: calcEntryWidth(areaWidth, goodEntryWidth)
             property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
+
+            function calcEntryWidth(areaWidth, goodWidth) {
+                if ($engine.isWindowed) {
+                    return Math.min(idRoot.width, goodWidth)
+                } else {
+                    return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodWidth))
+                }
+            }
 
             function calcAreaWidth() {
                 var usable = idRoot.width
