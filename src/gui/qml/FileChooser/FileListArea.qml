@@ -6,7 +6,7 @@ import Qt.labs.platform
 Flickable {
     id: idRoot
     required property var frame
-    property int viewType: FileListViewType.eIcon
+    property int viewType: EntryStyle.eIcon
     contentWidth: idEntryList.width
     contentHeight: idEntryList.height
     flickableDirection: Flickable.VerticalFlick

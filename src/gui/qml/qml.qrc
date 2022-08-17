@@ -10,6 +10,6 @@
         <file>FileChooser/FileListArea.qml</file>
         <file>FileChooser/FsEntry.qml</file>
         <file>FileChooser/MyToolButton.qml</file>
-        <file>FileChooser/FileListViewType.qml</file>
+        <file>FileChooser/EntryStyle.qml</file>
     </qresource>
 </RCC>
