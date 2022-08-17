@@ -17,8 +17,6 @@ Flickable {
 
     signal shouldOpenFile(string path)
 
-    Component.onDestruction: console.log("qmllog: FileListArea destruct: ", this)
-
     Column {
 
         id: idEntryList
