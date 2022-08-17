@@ -30,14 +30,14 @@ Flickable {
             id: helper
             property int goodEntryWidth: 150
             property int areaWidth: calcAreaWidth()
-            property int entryWidth: calcEntryWidth(areaWidth, goodEntryWidth)
+            property int entryWidth: calcEntryWidth()
             property int columnCount: Math.max(1, Math.floor(areaWidth / entryWidth))
 
-            function calcEntryWidth(areaWidth, goodWidth) {
+            function calcEntryWidth() {
                 if ($engine.isWindowed) {
-                    return Math.min(idRoot.width, goodWidth)
+                    return Math.min(idRoot.width, goodEntryWidth)
                 } else {
-                    return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodWidth))
+                    return Math.min(idRoot.width, areaWidth / Math.floor(areaWidth / goodEntryWidth))
                 }
             }
 
