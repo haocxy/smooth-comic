@@ -81,7 +81,7 @@ private:
     }
 
 private:
-    int limit_{ 3 };
+    int limit_{ 32 };
     std::deque<uptr<FileChooserStackFrame>> frames_;
 };
 
