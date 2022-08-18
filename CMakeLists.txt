@@ -134,7 +134,7 @@ include_directories(${prepareDir}/source/boost/)
 # 查找第三方库
 set(libQt Qt6)
 find_package(${libQt} REQUIRED COMPONENTS
-    Core Widgets QuickWidgets
+    Core Widgets QuickWidgets Svg
     Qml Quick QuickControls2 QuickControls2Impl QmlWorkerScript
     QuickTemplates2
     QuickLayouts

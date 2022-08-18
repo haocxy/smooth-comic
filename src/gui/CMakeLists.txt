@@ -36,6 +36,7 @@ add_library(${appName}-gui STATIC
 target_link_libraries(${appName}-gui
     ${appName}-util
     ${libQt}::Widgets
+    ${libQt}::Svg
     ${libQt}::Qml
     ${libQt}::Quick
     ${libQt}::QuickControls2

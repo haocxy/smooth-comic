@@ -52,7 +52,8 @@ Item {
                     Layout.fillHeight: true
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "/icon/folder.png"
+                    source: "/icon/folder.svg"
+                    asynchronous: true
                     sourceSize.width: width
                     sourceSize.height: height
                     fillMode: Image.PreserveAspectFit

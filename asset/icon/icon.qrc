@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/icon">
         <file>folder.png</file>
+        <file>folder.svg</file>
     </qresource>
 </RCC>
