@@ -31,7 +31,7 @@ Flickable {
 
         QtObject {
             id: helper
-            property int goodEntryWidth: 300
+            property int goodEntryWidth: 200
             property int areaWidth: calcAreaWidth()
             property int entryGapPairWidth: calcEntryGapPairWidth()
             property int entryWidth: entryGapPairWidth - entryGap
