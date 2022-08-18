@@ -41,6 +41,10 @@ public:
 
     void setCurrDir(const fs::path &dir);
 
+    Q_INVOKABLE int entryCount() const {
+        return dirs_.size() + files_.size();
+    }
+
     QQmlListProperty<FileChooserEntry> dirs() {
         return QQmlListProperty<FileChooserEntry>(
             this, nullptr, &FileChooser::dirCount, &FileChooser::dirAt);
@@ -70,7 +74,7 @@ signals:
 
     void historyStackLimitChanged();
 
-    void sigRestoreContentY(qreal contentY);
+    void sigStartRestoreContentY(qreal contentY);
 
 private:
     void updateEntries();

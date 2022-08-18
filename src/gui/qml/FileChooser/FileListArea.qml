@@ -6,6 +6,7 @@ import Qt.labs.platform
 Flickable {
     id: idRoot
     required property var fileChooser
+    property int entryUiItemCount: idDirsByGridLayout.children.length + idFilesByGridLayout.children.length - 2
     property int entryGap: 8
     property int viewType: EntryStyle.eIcon
     contentWidth: idEntryList.width

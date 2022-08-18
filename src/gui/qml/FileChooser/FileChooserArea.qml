@@ -14,7 +14,30 @@ Rectangle {
     }
 
     function openDir(path) {
-        idFileChooser.openDir(path, 0)
+        idFileChooser.openDir(path, idEntryListArea.contentY)
+    }
+
+    property bool isRestoringContentY: false
+    property real restoredContentY: 0
+
+    Connections {
+        target: idFileChooser
+        function onSigStartRestoreContentY(contentY) {
+            isRestoringContentY = true
+            restoredContentY = contentY
+        }
+    }
+
+    Connections {
+        target: idEntryListArea
+        function onContentHeightChanged() {
+            if (isRestoringContentY) {
+                if (idEntryListArea.entryUiItemCount === idFileChooser.entryCount()) {
+                    idEntryListArea.contentY = restoredContentY
+                    isRestoringContentY = false
+                }
+            }
+        }
     }
 
     ColumnLayout {
@@ -60,6 +83,7 @@ Rectangle {
         }
 
         FileListArea {
+            id: idEntryListArea
             fileChooser: idFileChooser
             implicitWidth: idWindow.width
             Layout.fillHeight: true

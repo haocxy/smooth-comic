@@ -72,9 +72,19 @@ void FileChooser::goBack()
     uptr<FileChooserStackInfo> info = std::move(historyStack_.front());
     historyStack_.pop_front();
 
-    setCurrDir(info->dir());
+    // step 1: 清除当前的项
+    dirs_.clear();
+    emit dirsChanged();
 
-    emit sigRestoreContentY(info->contentY());
+    files_.clear();
+    emit filesChanged();
+
+    // step 2: 通知QML层开始恢复contentY属性
+    // 注意这个信号的时序，必须晚于清除entry，且早于切换目录
+    emit sigStartRestoreContentY(info->contentY());
+
+    // step 3: 切换目录
+    setCurrDir(info->dir());
 }
 
 void FileChooser::updateEntries()
