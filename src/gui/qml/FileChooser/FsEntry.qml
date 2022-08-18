@@ -34,7 +34,7 @@ Item {
         Rectangle {
             property int iconWidth: 64
             property int iconHeight: 72
-            implicitHeight: Math.max(iconHeight + 8, idFileName.contentHeight + idFileName.padding + 16)
+            implicitHeight: Math.max(iconHeight + 24, idFileName.contentHeight + 32)
             color: "white"
             radius: 4
 
@@ -48,10 +48,14 @@ Item {
                 anchors.fill: parent
 
                 Image {
+                    Layout.topMargin: 16
+                    Layout.bottomMargin: 16
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
                     Layout.preferredWidth: iconWidth
                     Layout.fillHeight: true
                     horizontalAlignment: Image.AlignHCenter
-                    verticalAlignment: Image.AlignVCenter
+                    verticalAlignment: Image.AlignTop
                     source: isDir ? "/icon/folder" : "/icon/file-unknown"
                     asynchronous: true
                     sourceSize.width: width
@@ -60,10 +64,14 @@ Item {
                 }
 
                 Text {
+                    Layout.topMargin: 16
+                    Layout.bottomMargin: 16
+                    Layout.leftMargin: 0
+                    Layout.rightMargin: 8
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     id: idFileName
-                    padding: 16
+                    padding: 0
                     antialiasing: true
                     text: idEntry.name
                     wrapMode: Text.Wrap
