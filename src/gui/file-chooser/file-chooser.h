@@ -107,7 +107,7 @@ private:
     std::vector<uptr<FileChooserEntry>> dirs_;
     std::vector<uptr<FileChooserEntry>> files_;
 
-    int historyStackLimit_{ 20 };
+    int historyStackLimit_{ 2 };
     std::deque<uptr<FileChooserStackInfo>> historyStack_;
 };
 
