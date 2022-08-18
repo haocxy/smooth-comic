@@ -22,6 +22,7 @@
 #include "gui/app-window.h"
 
 #include "gui/gui-engine.h"
+#include "gui/app-main-quick-window.h"
 
 
 class QtResourceSystemIniter {
@@ -147,11 +148,7 @@ int body_entry(int argc, char *argv[])
 
     GuiEngine guiEngine;
 
-    QQuickView qmlWindow;
-    qmlWindow.setResizeMode(QQuickView::SizeRootObjectToView);
-    qmlWindow.engine()->addImportPath("qrc:/qml");
-    qmlWindow.engine()->rootContext()->setContextProperty("$engine", &guiEngine);
-    qmlWindow.setSource(QUrl("qrc:/qml/myapp/MainWindow.qml"));
+    AppMainQuickWindow qmlWindow(guiEngine);
     qmlWindow.show();
 
 
