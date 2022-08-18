@@ -32,9 +32,9 @@ Item {
     Component {
         id: idCompCardStyledEntry
         Rectangle {
-            property int iconWidth: 100
-            property int iconHeight: 100
-            implicitHeight: Math.max(iconHeight + 16, idFileName.contentHeight + idFileName.padding + 16)
+            property int iconWidth: 64
+            property int iconHeight: 72
+            implicitHeight: Math.max(iconHeight + 8, idFileName.contentHeight + idFileName.padding + 16)
             color: "white"
             radius: 4
 
