@@ -38,17 +38,12 @@ void CacheCleaner::loop()
 
 void CacheCleaner::cleanCache()
 {
-    logger_.d << "cleanCache()";
-
     cleanBookCache();
 }
 
 void CacheCleaner::cleanBookCache()
 {
-    qDebug() << "cleanBookCache";
-
     const fs::path dir = engine_.pathManager().bookCacheDir();
-    logger_.d << "cleanBookCache() dir: " << dir;
 
     if (!fs::exists(dir)) {
         return;
