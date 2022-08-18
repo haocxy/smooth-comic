@@ -14,6 +14,9 @@ public:
 
     virtual ~AppMainQuickWindow();
 
+protected:
+    virtual void keyReleaseEvent(QKeyEvent *e) override;
+
 private:
     GuiEngine &guiEngine_;
 };

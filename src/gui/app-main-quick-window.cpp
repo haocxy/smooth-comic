@@ -1,5 +1,7 @@
 #include "app-main-quick-window.h"
 
+#include <QCoreApplication>
+#include <QKeyEvent>
 #include <QQmlEngine>
 #include <QQmlContext>
 
@@ -12,6 +14,8 @@ AppMainQuickWindow::AppMainQuickWindow(GuiEngine &guiEngine, QWindow *parent)
     : QQuickView(parent)
     , guiEngine_(guiEngine)
 {
+    QObject::connect(engine(), &QQmlEngine::quit, QCoreApplication::instance(), &QCoreApplication::quit);
+
     setResizeMode(QQuickView::SizeRootObjectToView);
     engine()->addImportPath("qrc:/qml");
     engine()->rootContext()->setContextProperty("$engine", &guiEngine_);
@@ -20,6 +24,15 @@ AppMainQuickWindow::AppMainQuickWindow(GuiEngine &guiEngine, QWindow *parent)
 
 AppMainQuickWindow::~AppMainQuickWindow()
 {
+}
+
+void AppMainQuickWindow::keyReleaseEvent(QKeyEvent *e)
+{
+    if (e->key() != Qt::Key_Back) {
+        QQuickView::keyReleaseEvent(e);
+    } else {
+        emit guiEngine_.keyBackReleased();
+    }
 }
 
 }

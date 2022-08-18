@@ -43,6 +43,19 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: $engine
+        function onKeyBackReleased() {
+            console.log("qmllog: idFileChooser.canGoBack: ", idFileChooser.canGoBack)
+            if (idFileChooser.canGoBack) {
+                idFileChooser.goBack()
+            } else {
+                // TODO 不要直接在这里quit，而是由外层逻辑层层上报后在合适的模块中执行推出程序
+                Qt.quit()
+            }
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0

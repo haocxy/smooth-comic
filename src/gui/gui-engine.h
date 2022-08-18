@@ -30,6 +30,8 @@ public:
 signals:
     void isWindowedChanged();
 
+    void keyBackReleased();
+
 private:
     DeclarePtr<Engine> engine_;
 

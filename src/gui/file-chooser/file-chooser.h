@@ -22,6 +22,8 @@ class FileChooser : public QObject {
 
         Q_PROPERTY(QString currDir READ currDir WRITE setCurrDir NOTIFY currDirChanged)
 
+        Q_PROPERTY(bool canGoBack READ canGoBack NOTIFY canGoBackChanged)
+
         Q_PROPERTY(QQmlListProperty<FileChooserEntry> dirs READ dirs NOTIFY dirsChanged)
 
         Q_PROPERTY(QQmlListProperty<FileChooserEntry> files READ files NOTIFY filesChanged)
@@ -43,6 +45,10 @@ public:
 
     Q_INVOKABLE int entryCount() const {
         return dirs_.size() + files_.size();
+    }
+
+    bool canGoBack() const {
+        return !historyStack_.empty();
     }
 
     QQmlListProperty<FileChooserEntry> dirs() {
@@ -67,6 +73,8 @@ public:
 
 signals:
     void currDirChanged();
+
+    void canGoBackChanged();
 
     void dirsChanged();
 
@@ -96,8 +104,13 @@ private:
     }
 
     void removeTooOldHistories() {
+        const bool oldCanGoBack = !historyStack_.empty();
         while (historyStack_.size() > historyStackLimit_) {
             historyStack_.pop_front();
+        }
+        const bool newCanGoBack = !historyStack_.empty();
+        if (oldCanGoBack != newCanGoBack) {
+            emit canGoBackChanged();
         }
     }
 
