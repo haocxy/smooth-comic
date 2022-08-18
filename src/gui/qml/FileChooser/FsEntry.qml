@@ -1,5 +1,7 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
+
 
 Item {
     id: idEntry
@@ -18,11 +20,22 @@ Item {
         height: idEntry.height
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            if (idEntry.isDir) {
+                idEntry.clicked(idEntry.path)
+            }
+        }
+    }
+
     Component {
         id: idCompCardStyledEntry
         Rectangle {
-            implicitHeight: idFileName.contentHeight + idFileName.padding + 12
-            color: isDir ? "#c6f3f2" : "white"
+            property int iconWidth: 100
+            property int iconHeight: 100
+            implicitHeight: Math.max(iconHeight + 16, idFileName.contentHeight + idFileName.padding + 16)
+            color: "white"
             radius: 4
 
             border {
@@ -30,21 +43,32 @@ Item {
                 width: 1
             }
 
-            Text {
-                id: idFileName
-                anchors.fill: parent
-                padding: 10
-                text: idEntry.name
-                wrapMode: Text.Wrap
-            }
+            RowLayout {
 
-            MouseArea {
                 anchors.fill: parent
-                onClicked: {
-                    if (idEntry.isDir) {
-                        idEntry.clicked(idEntry.path)
-                    }
+
+                Image {
+                    Layout.preferredWidth: iconWidth
+                    Layout.fillHeight: true
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "/icon/folder.png"
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    fillMode: Image.PreserveAspectFit
                 }
+
+                Text {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    id: idFileName
+                    padding: 16
+                    antialiasing: true
+                    text: idEntry.name
+                    wrapMode: Text.Wrap
+                    font.pixelSize: 18
+                }
+
             }
         }
     }

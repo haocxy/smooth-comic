@@ -28,11 +28,13 @@ public:
     QtResourceSystemIniter() {
         Q_INIT_RESOURCE(resources);
         Q_INIT_RESOURCE(qml);
+        Q_INIT_RESOURCE(icon);
     }
 
     ~QtResourceSystemIniter() {
         Q_CLEANUP_RESOURCE(resources);
         Q_CLEANUP_RESOURCE(qml);
+        Q_CLEANUP_RESOURCE(icon);
     }
 };
 
