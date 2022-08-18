@@ -1,6 +1,7 @@
 #include "file-chooser.h"
 
 #include <QDebug>
+#include <QDir>
 
 #include "core/system.h"
 
@@ -11,6 +12,10 @@ FileChooser::FileChooser(QObject *parent)
     : QObject(parent)
 {
     qDebug() << "FileChooser::FileChooser()";
+
+    setCurrDir(QString::fromStdU32String(
+        SystemUtil::defaultOpenFileDir().generic_u32string()
+    ));
 }
 
 FileChooser::~FileChooser()
@@ -18,30 +23,81 @@ FileChooser::~FileChooser()
     qDebug() << "FileChooser::~FileChooser()";
 }
 
-void FileChooser::openInitDir()
+void FileChooser::setCurrDir(const QString &dir)
 {
-    const fs::path initDir = SystemUtil::defaultOpenFileDir();
-    stack_.push(initDir);
+    const fs::path newDir{ fs::absolute(dir.toStdU32String()) };
+    setCurrDir(newDir);
 }
 
-void FileChooser::openDir(const QString &path)
+void FileChooser::setCurrDir(const fs::path &dir)
 {
-    const fs::path p{ fs::absolute(path.toStdU32String()) };
+    if (!fs::is_directory(dir)) {
+        return;
+    }
+    if (currDir_ != dir) {
+        currDir_ = dir;
+        emit currDirChanged();
+        updateEntries();
+    }
+}
 
-    if (FileChooserStackFrame *topFrame = stack_.topFrame()) {
-        if (topFrame->dir() == p) {
-            return;
-        }
+void FileChooser::setHistoryStackLimit(int limit)
+{
+    if (historyStackLimit_ != limit) {
+        historyStackLimit_ = limit;
+        removeTooOldHistories();
+        emit historyStackLimitChanged();
+    }
+}
+
+void FileChooser::openDir(const QString &path, qreal currContentY)
+{
+    const fs::path p{ path.toStdU32String() };
+    if (!fs::is_directory(p)) {
+        return;
     }
 
-    stack_.push(p);
+    historyStack_.push_back(new FileChooserStackInfo(currDir_, currContentY));
+    removeTooOldHistories();
+
+    setCurrDir(path);
 }
 
 void FileChooser::goBack()
 {
-    if (stack_.frameCount() > 1) {
-        stack_.pop();
+    if (historyStack_.empty()) {
+        return;
     }
+
+    uptr<FileChooserStackInfo> info = std::move(historyStack_.front());
+    historyStack_.pop_front();
+
+    setCurrDir(info->dir());
+
+    emit sigRestoreContentY(info->contentY());
+}
+
+void FileChooser::updateEntries()
+{
+    dirs_.clear();
+    files_.clear();
+
+    if (!fs::is_directory(currDir_)) {
+        return;
+    }
+
+    for (QString name : QDir(currDir_).entryList(QDir::NoFilter, QDir::SortFlag::Name)) {
+        const fs::path path = fs::absolute(currDir_ / name.toStdU32String());
+        uptr<FileChooserEntry> entry = new FileChooserEntry(name, path);
+        if (fs::is_directory(path)) {
+            dirs_.push_back(std::move(entry));
+        } else {
+            files_.push_back(std::move(entry));
+        }
+    }
+
+    emit dirsChanged();
+    emit filesChanged();
 }
 
 }
