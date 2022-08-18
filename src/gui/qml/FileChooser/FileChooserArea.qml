@@ -15,6 +15,7 @@ Rectangle {
 
     function openDir(path) {
         idFileChooser.openDir(path, idEntryListArea.contentY)
+        idEntryListArea.contentY = 0
     }
 
     property bool isRestoringContentY: false

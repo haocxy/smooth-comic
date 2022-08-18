@@ -69,8 +69,8 @@ void FileChooser::goBack()
         return;
     }
 
-    uptr<FileChooserStackInfo> info = std::move(historyStack_.front());
-    historyStack_.pop_front();
+    uptr<FileChooserStackInfo> info = std::move(historyStack_.back());
+    historyStack_.pop_back();
 
     // step 1: 清除当前的项
     dirs_.clear();
