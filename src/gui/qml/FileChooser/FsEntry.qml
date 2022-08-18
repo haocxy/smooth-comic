@@ -52,7 +52,7 @@ Item {
                     Layout.fillHeight: true
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "/icon/folder.svg"
+                    source: isDir ? "/icon/folder" : "/icon/file-unknown"
                     asynchronous: true
                     sourceSize.width: width
                     sourceSize.height: height

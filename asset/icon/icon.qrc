@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/icon">
-        <file>folder.png</file>
-        <file>folder.svg</file>
+        <file alias="folder">folder.svg</file>
+        <file alias="file-unknown">file-unknown.svg</file>
     </qresource>
 </RCC>
