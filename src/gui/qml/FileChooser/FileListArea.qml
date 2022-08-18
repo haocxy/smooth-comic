@@ -9,9 +9,11 @@ Flickable {
     property int entryUiItemCount: idDirsByGridLayout.children.length + idFilesByGridLayout.children.length - 2
     property int entryGap: 8
     property int viewType: EntryStyle.eIcon
+
     contentWidth: idEntryList.width
     contentHeight: idEntryList.height
     flickableDirection: Flickable.VerticalFlick
+
     z: -100
 
     signal shouldOpenDir(string path)
