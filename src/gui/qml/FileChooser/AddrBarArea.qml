@@ -5,9 +5,7 @@ import QtQuick.Layouts
 Rectangle {
     id: idRoot
 
-    function setDir(dir) {
-        idCurrDir.text = dir
-    }
+    property string dir
 
     signal shouldOpenDir(string dir)
 
@@ -45,6 +43,7 @@ Rectangle {
         id: idCurrDir
         anchors.fill: parent
         clip: true
+        text: dir
         leftPadding: 8
         rightPadding: 8
         verticalAlignment: TextInput.AlignVCenter

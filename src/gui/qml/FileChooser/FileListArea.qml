@@ -5,7 +5,7 @@ import Qt.labs.platform
 
 Flickable {
     id: idRoot
-    required property var frame
+    required property var fileChooser
     property int entryGap: 8
     property int viewType: EntryStyle.eIcon
     contentWidth: idEntryList.width
@@ -75,7 +75,7 @@ Flickable {
             columnSpacing: entryGap
 
             Repeater {
-                model: frame ? frame.dirs : null
+                model: fileChooser.dirs
                 delegate: FsEntry {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
@@ -102,7 +102,7 @@ Flickable {
             columnSpacing: entryGap
 
             Repeater {
-                model: frame ? frame.files : null
+                model: fileChooser.files
                 delegate: FsEntry {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop

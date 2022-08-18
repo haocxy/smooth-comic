@@ -13,74 +13,8 @@ Rectangle {
         id: idFileChooser
     }
 
-    function cutStackViewTo(stackView, size) {
-        if (size > 0) {
-            while (stackView.depth > size) {
-                // 根据文档，pop函数只有在深度大于1时有效
-                stackView.pop()
-            }
-        } else {
-            stackView.clear()
-        }
-    }
-
-    function updateFrames() {
-        var frames = idFileChooser.stack.frames
-        var frameCount = frames.length
-
-        // 如果公共长度部分的栈帧存在不同，则说明有过老的栈帧被清除，应该把StackView中不同的部分弹出
-        var sameCount = 0
-        var commonCount = Math.min(frameCount, idDirStack.depth)
-        for (; sameCount < commonCount; ++sameCount) {
-            var fileListArea = idDirStack.get(sameCount, StackView.DontLoad)
-            // 在C++中删除了frame后，QML会通过类似于QPointer的机制同步到这一情况，使FileListArea的frame为空
-            if (!fileListArea.frame || frames[sameCount].path !== fileListArea.frame.path) {
-                // 此时i为相同部分的长度，需要把后面的栈帧弹出
-                cutStackViewTo(idDirStack, sameCount)
-                break
-            }
-        }
-
-        // 添加新增的栈帧
-        for (var frameIndex = sameCount; frameIndex < frameCount; ++frameIndex) {
-            if (frameIndex > idDirStack.last) {
-                idDirStack.push(idCompFileListArea, {frame: frames[frameIndex]})
-            }
-        }
-
-        // 注意，前面的pop逻辑只处理了长度相同的部分，这里还需要处理长度不同的部分
-        cutStackViewTo(idDirStack, frameCount)
-
-        if (idDirStack.depth > 0) {
-            idAddrBarArea.setDir(idDirStack.currentItem.frame.path)
-        }
-    }
-
     function openDir(path) {
-        idFileChooser.openDir(path)
-    }
-
-    Component.onCompleted: {
-
-        // 窗口化平台关闭目录栈的进出动画
-        if ($engine.isWindowed) {
-            idDirStack.popEnter = null
-            idDirStack.popExit = null
-            idDirStack.pushEnter = null
-            idDirStack.pushExit = null
-            idDirStack.replaceEnter = null
-            idDirStack.replaceExit = null
-        }
-
-        // 打开初始化目录里
-        idFileChooser.openInitDir()
-    }
-
-    Connections {
-        target: idFileChooser.stack
-        function onFramesChanged() {
-            updateFrames()
-        }
+        idFileChooser.openDir(path, 0)
     }
 
     ColumnLayout {
@@ -119,25 +53,17 @@ Rectangle {
                     Layout.rightMargin: 8
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    dir: idFileChooser.currDir
                     onShouldOpenDir: p => openDir(p)
                 }
             }
         }
 
-        StackView {
-            id: idDirStack
-            property int last: depth - 1
-            Layout.fillWidth: true
+        FileListArea {
+            fileChooser: idFileChooser
+            implicitWidth: idWindow.width
             Layout.fillHeight: true
-        }
-
-        Component {
-            id: idCompFileListArea
-            FileListArea {
-                implicitWidth: idWindow.width
-                Layout.fillHeight: true
-                onShouldOpenDir: p => idWindow.openDir(p)
-            }
+            onShouldOpenDir: p => idWindow.openDir(p)
         }
     }
 
