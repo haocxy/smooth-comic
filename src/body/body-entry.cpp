@@ -8,6 +8,7 @@
 #include <QTranslator>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QQuickWindow>
 #include <QQmlContext>
 
 #include "core/logger.h"
@@ -146,10 +147,13 @@ int body_entry(int argc, char *argv[])
 
     GuiEngine guiEngine;
 
-    QQmlApplicationEngine qmlAppEngine;
-    qmlAppEngine.addImportPath("qrc:/qml");
-    qmlAppEngine.rootContext()->setContextProperty("$engine", &guiEngine);
-    qmlAppEngine.load(QUrl("qrc:/qml/myapp/MainWindow.qml"));
+    QQuickView qmlWindow;
+    qmlWindow.setResizeMode(QQuickView::SizeRootObjectToView);
+    qmlWindow.engine()->addImportPath("qrc:/qml");
+    qmlWindow.engine()->rootContext()->setContextProperty("$engine", &guiEngine);
+    qmlWindow.setSource(QUrl("qrc:/qml/myapp/MainWindow.qml"));
+    qmlWindow.show();
+
 
     const QString cssPath = ":/styles/default.css";
 

@@ -4,7 +4,7 @@ import QtQuick.Controls
 import myapp.FileChooser
 
 
-Window{
+Item{
     id: window
     visible: true
     width: 800
