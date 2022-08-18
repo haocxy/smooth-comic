@@ -67,7 +67,7 @@ Item {
                     Layout.topMargin: 16
                     Layout.bottomMargin: 16
                     Layout.leftMargin: 0
-                    Layout.rightMargin: 8
+                    Layout.rightMargin: 16
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     id: idFileName
