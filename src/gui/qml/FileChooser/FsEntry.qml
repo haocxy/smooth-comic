@@ -7,20 +7,21 @@ Item {
     required property string path
     required property bool isDir
     property int entryStyle: EntryStyle.eCard
-    implicitHeight: idLoader.height
+    implicitHeight: idLoader.implicitHeight
 
     signal clicked(string path)
 
     Loader {
         id: idLoader
         sourceComponent: idCompCardStyledEntry
+        width: idEntry.width
+        height: idEntry.height
     }
 
     Component {
         id: idCompCardStyledEntry
         Rectangle {
-            width: idEntry.width
-            height: idFileName.contentHeight + idFileName.padding + 12
+            implicitHeight: idFileName.contentHeight + idFileName.padding + 12
             color: isDir ? "#c6f3f2" : "white"
             radius: 4
 
