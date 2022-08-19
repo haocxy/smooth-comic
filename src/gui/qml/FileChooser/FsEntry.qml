@@ -56,7 +56,7 @@ Item {
                     Layout.fillHeight: true
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignTop
-                    source: isDir ? "/icon/folder" : "/icon/file-unknown"
+                    source: isDir ? "/icon/folder" : "/icon/file"
                     asynchronous: true
                     sourceSize.width: width * Screen.devicePixelRatio
                     sourceSize.height: height * Screen.devicePixelRatio
