@@ -20,15 +20,13 @@ namespace myapp {
 class FileChooser : public QObject {
     Q_OBJECT
 
-        Q_PROPERTY(QString currDir READ currDir WRITE setCurrDir NOTIFY currDirChanged)
+    Q_PROPERTY(QString currDir READ currDir WRITE setCurrDir NOTIFY currDirChanged)
 
-        Q_PROPERTY(bool canGoBack READ canGoBack NOTIFY canGoBackChanged)
+    Q_PROPERTY(bool canGoBack READ canGoBack NOTIFY canGoBackChanged)
 
-        Q_PROPERTY(QQmlListProperty<FileChooserEntry> dirs READ dirs NOTIFY dirsChanged)
+    Q_PROPERTY(QQmlListProperty<FileChooserEntry> entries READ entries NOTIFY entriesChanged)
 
-        Q_PROPERTY(QQmlListProperty<FileChooserEntry> files READ files NOTIFY filesChanged)
-
-        Q_PROPERTY(int historyStackLimit READ historyStackLimit WRITE setHistoryStackLimit NOTIFY historyStackLimitChanged)
+    Q_PROPERTY(int historyStackLimit READ historyStackLimit WRITE setHistoryStackLimit NOTIFY historyStackLimitChanged)
 
 public:
     explicit FileChooser(QObject *parent = nullptr);
@@ -44,21 +42,16 @@ public:
     void setCurrDir(const fs::path &dir);
 
     Q_INVOKABLE int entryCount() const {
-        return dirs_.size() + files_.size();
+        return entries_.size();
     }
 
     bool canGoBack() const {
         return !historyStack_.empty();
     }
 
-    QQmlListProperty<FileChooserEntry> dirs() {
+    QQmlListProperty<FileChooserEntry> entries() {
         return QQmlListProperty<FileChooserEntry>(
-            this, nullptr, &FileChooser::dirCount, &FileChooser::dirAt);
-    }
-
-    QQmlListProperty<FileChooserEntry> files() {
-        return QQmlListProperty<FileChooserEntry>(
-            this, nullptr, &FileChooser::fileCount, &FileChooser::fileAt);
+            this, nullptr, &FileChooser::entryCount, &FileChooser::entryAt);
     }
 
     int historyStackLimit() const {
@@ -76,9 +69,7 @@ signals:
 
     void canGoBackChanged();
 
-    void dirsChanged();
-
-    void filesChanged();
+    void entriesChanged();
 
     void historyStackLimitChanged();
 
@@ -87,20 +78,12 @@ signals:
 private:
     void updateEntries();
 
-    static qsizetype dirCount(QQmlListProperty<FileChooserEntry> *list) {
-        return reinterpret_cast<FileChooser *>(list->object)->dirs_.size();
+    static qsizetype entryCount(QQmlListProperty<FileChooserEntry> *list) {
+        return reinterpret_cast<FileChooser *>(list->object)->entries_.size();
     }
 
-    static FileChooserEntry *dirAt(QQmlListProperty<FileChooserEntry> *list, qsizetype i) {
-        return reinterpret_cast<FileChooser *>(list->object)->dirs_[i].get();
-    }
-
-    static qsizetype fileCount(QQmlListProperty<FileChooserEntry> *list) {
-        return reinterpret_cast<FileChooser *>(list->object)->files_.size();
-    }
-
-    static FileChooserEntry *fileAt(QQmlListProperty<FileChooserEntry> *list, qsizetype i) {
-        return reinterpret_cast<FileChooser *>(list->object)->files_[i].get();
+    static FileChooserEntry *entryAt(QQmlListProperty<FileChooserEntry> *list, qsizetype i) {
+        return reinterpret_cast<FileChooser *>(list->object)->entries_[i].get();
     }
 
     void removeTooOldHistories() {
@@ -117,8 +100,7 @@ private:
 private:
     fs::path currDir_;
 
-    std::vector<uptr<FileChooserEntry>> dirs_;
-    std::vector<uptr<FileChooserEntry>> files_;
+    std::vector<uptr<FileChooserEntry>> entries_;
 
     int historyStackLimit_{ 100 };
     std::deque<uptr<FileChooserStackInfo>> historyStack_;

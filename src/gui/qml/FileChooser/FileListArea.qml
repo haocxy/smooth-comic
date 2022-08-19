@@ -6,7 +6,7 @@ import Qt.labs.platform
 Flickable {
     id: idRoot
     required property var fileChooser
-    property int entryUiItemCount: idDirsByGridLayout.children.length + idFilesByGridLayout.children.length - 2
+    property int entryUiItemCount: idEntries.children.length - 1
     property int entryGap: 8
     property int viewType: EntryStyle.eIcon
 
@@ -67,7 +67,7 @@ Flickable {
         }
 
         GridLayout {
-            id: idDirsByGridLayout
+            id: idEntries
 
             implicitWidth: helper.areaWidth
 
@@ -78,39 +78,13 @@ Flickable {
             columnSpacing: entryGap
 
             Repeater {
-                model: fileChooser.dirs
+                model: fileChooser.entries
                 delegate: FsEntry {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: helper.entryWidth
-                    onClicked: p => idRoot.shouldOpenDir(p)
-                }
-            }
-        }
-
-        Rectangle {
-            width: entryGap
-            height: entryGap
-        }
-
-        GridLayout {
-            id: idFilesByGridLayout
-
-            implicitWidth: helper.areaWidth
-
-            columns: helper.columnCount
-
-            rowSpacing: entryGap
-
-            columnSpacing: entryGap
-
-            Repeater {
-                model: fileChooser.files
-                delegate: FsEntry {
-                    Layout.fillHeight: true
-                    Layout.alignment: Qt.AlignTop
-                    implicitWidth: helper.entryWidth
-                    onClicked: p => idRoot.shouldOpenFile(p)
+                    onShouldOpenDir: p => idRoot.shouldOpenDir(p)
+                    onShouldOpenFile: p => idRoot.shouldOpenFile(p)
                 }
             }
         }

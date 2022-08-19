@@ -11,7 +11,9 @@ Item {
     property int entryStyle: EntryStyle.eCard
     implicitHeight: idLoader.implicitHeight
 
-    signal clicked(string path)
+    signal shouldOpenDir(string path)
+
+    signal shouldOpenFile(string path)
 
     Loader {
         id: idLoader
@@ -24,7 +26,9 @@ Item {
         anchors.fill: parent
         onClicked: {
             if (idEntry.isDir) {
-                idEntry.clicked(idEntry.path)
+                idEntry.shouldOpenDir(idEntry.path)
+            } else {
+                idEntry.shouldOpenFile(idEntry.path)
             }
         }
     }

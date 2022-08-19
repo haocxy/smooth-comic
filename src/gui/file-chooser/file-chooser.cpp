@@ -76,12 +76,9 @@ void FileChooser::goBack()
         emit canGoBackChanged();
     }
 
-    // step 1: 清除当前的项
-    dirs_.clear();
-    emit dirsChanged();
-
-    files_.clear();
-    emit filesChanged();
+    // step 1: 清除当前的项;
+    entries_.clear();
+    emit entriesChanged();
 
     // step 2: 通知QML层开始恢复contentY属性
     // 注意这个信号的时序，必须晚于清除entry，且早于切换目录
@@ -93,8 +90,7 @@ void FileChooser::goBack()
 
 void FileChooser::updateEntries()
 {
-    dirs_.clear();
-    files_.clear();
+    entries_.clear();
 
     if (!fs::is_directory(currDir_)) {
         return;
@@ -103,15 +99,10 @@ void FileChooser::updateEntries()
     for (QString name : QDir(currDir_).entryList(QDir::NoFilter, QDir::SortFlag::Name)) {
         const fs::path path = fs::absolute(currDir_ / name.toStdU32String());
         uptr<FileChooserEntry> entry = new FileChooserEntry(name, path);
-        if (fs::is_directory(path)) {
-            dirs_.push_back(std::move(entry));
-        } else {
-            files_.push_back(std::move(entry));
-        }
+        entries_.push_back(std::move(entry));
     }
 
-    emit dirsChanged();
-    emit filesChanged();
+    emit entriesChanged();
 }
 
 }
