@@ -32,10 +32,13 @@ Flickable {
         QtObject {
             id: helper
             property int goodEntryWidth: $engine.isWindowed ? 300 : 200
+            property int usableWidth: idRoot.width - idScrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding
             property int areaWidth: calcAreaWidth()
             property int entryGapPairWidth: calcEntryGapPairWidth()
-            property int entryWidth: entryGapPairWidth - entryGap
             property int columnCount: Math.max(1, Math.floor((areaWidth + entryGap) / entryGapPairWidth))
+            property int entryWidth: columnCount > 1 ? entryGapPairWidth - entryGap : usableWidth
+
+            onColumnCountChanged: console.log("qmllog: columnCount: ", columnCount)
 
             function calcEntryGapPairWidth() {
                 var vRootWidth = idRoot.width + entryGap
@@ -49,19 +52,14 @@ Flickable {
             }
 
             function calcAreaWidth() {
-                var usable = idRoot.width
-                        - idScrollBar.width
-                        - idEntryList.leftPadding
-                        - idEntryList.rightPadding
-
                 if ($engine.isWindowed) {
-                    var vUsable = usable + entryGap
+                    var vUsable = usableWidth + entryGap
                     var vGoodEntryWidth = goodEntryWidth + entryGap
                     var cols = Math.floor(vUsable / vGoodEntryWidth)
                     var areaWidth = vGoodEntryWidth * cols - entryGap
                     return areaWidth
                 } else {
-                    return usable
+                    return usableWidth
                 }
             }
         }
