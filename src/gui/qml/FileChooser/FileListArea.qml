@@ -38,8 +38,6 @@ Flickable {
             property int columnCount: Math.max(1, Math.floor((areaWidth + entryGap) / entryGapPairWidth))
             property int entryWidth: columnCount > 1 ? entryGapPairWidth - entryGap : usableWidth
 
-            onColumnCountChanged: console.log("qmllog: columnCount: ", columnCount)
-
             function calcEntryGapPairWidth() {
                 var vRootWidth = idRoot.width + entryGap
                 if ($engine.isWindowed) {

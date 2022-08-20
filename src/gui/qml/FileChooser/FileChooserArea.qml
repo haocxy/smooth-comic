@@ -46,7 +46,6 @@ Rectangle {
     Connections {
         target: $engine
         function onKeyBackReleased() {
-            console.log("qmllog: idFileChooser.canGoBack: ", idFileChooser.canGoBack)
             if (idFileChooser.canGoBack) {
                 idFileChooser.goBack()
             } else {
