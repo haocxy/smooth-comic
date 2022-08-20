@@ -10,9 +10,20 @@ Item{
     width: 800
     height: 600
 
+    function globalBack() {
+        if (idSceneStack.depth > 1) {
+            idSceneStack.pop()
+        } else {
+            Qt.quit()
+        }
+    }
+
+    Component.onCompleted: {
+        idSceneStack.push(idCompBookChooseScene)
+    }
+
     StackView {
-        id: idStack
-        initialItem: bookChoosePage
+        id: idSceneStack
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: idStrech.top
@@ -29,18 +40,18 @@ Item{
     }
 
     Component {
-        id: bookChoosePage
+        id: idCompBookChooseScene
         FileChooserArea {
             width: window.width
-            height: idStack.height
+            height: idSceneStack.height
         }
     }
 
     Component {
-        id: bookReadPage
+        id: idCompBookReadScene
         BookReadPage {
             width: window.width
-            height: idStack.height
+            height: idSceneStack.height
         }
     }
 
