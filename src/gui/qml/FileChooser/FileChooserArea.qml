@@ -15,6 +15,15 @@ Rectangle {
         id: idFileChooser
     }
 
+    function localGoBack() {
+        if (idFileChooser.canGoBack) {
+            idFileChooser.goBack()
+            return true
+        } else {
+            return false
+        }
+    }
+
     function openDir(path) {
         idFileChooser.openDir(path, idEntryListArea.contentY)
         idEntryListArea.contentY = 0
@@ -43,17 +52,6 @@ Rectangle {
                     idEntryListArea.contentY = restoredContentY
                     isRestoringContentY = false
                 }
-            }
-        }
-    }
-
-    Connections {
-        target: $engine
-        function onKeyBackReleased() {
-            if (idFileChooser.canGoBack) {
-                idFileChooser.goBack()
-            } else {
-                window.globalBack()
             }
         }
     }
