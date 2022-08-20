@@ -162,7 +162,7 @@ int body_entry(int argc, char *argv[])
 
     qDebug() << "after setStyleSheet";
 
-    //AppWindow w(engine);
+    //AppWindow w(guiEngine);
 
     //w.show();
 

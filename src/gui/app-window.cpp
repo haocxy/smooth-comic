@@ -14,7 +14,7 @@ namespace myapp {
 
 using logger::gLogger;
 
-AppWindow::AppWindow(Engine &engine, QWidget *parent)
+AppWindow::AppWindow(GuiEngine &engine, QWidget *parent)
     : FramelessWindow(parent)
 {
     appWidget_ = new AppWidget(engine, this);

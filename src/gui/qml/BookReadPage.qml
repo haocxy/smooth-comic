@@ -6,23 +6,33 @@ import myapp
 
 Rectangle {
 
-    Rectangle{
-        anchors.centerIn: parent
-        height: 100
-        width: 100
-        color: "blue"
+    required property string comicPath
+
+
+
+//    Rectangle{
+//        anchors.centerIn: parent
+//        height: 100
+//        width: 100
+//        color: "blue"
+//    }
+
+    PageReader {
+        anchors.fill: parent
+        controller: idController
     }
 
-    ControlArea {
-        isLandscape: window.width >= window.height
-        width: isLandscape ? span : parent.width
-        height: isLandscape ? parent.height : span
-        x: isLandscape ? parent.width - span : 0
-        y: isLandscape ? 0 : parent.height - span
-    }
+//    ControlArea {
+//        isLandscape: window.width >= window.height
+//        width: isLandscape ? span : parent.width
+//        height: isLandscape ? parent.height : span
+//        x: isLandscape ? parent.width - span : 0
+//        y: isLandscape ? 0 : parent.height - span
+//    }
 
-    Book {
-        id: book
+    Controller {
+        id: idController
         guiEngine: $engine
+        filePath: comicPath
     }
 }

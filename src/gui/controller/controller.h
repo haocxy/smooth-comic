@@ -1,8 +1,14 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 
 #include "core/declare_ptr.h"
+#include "core/obj-handle.h"
+#include "util/sigconns.h"
+#include "gui-util/qtobj-strand-entry.h"
+
+#include "gui/gui-engine.h"
 
 #include "book/page-num.h"
 
@@ -25,16 +31,34 @@ class Book;
 // 不要在 非展示性 的 GUI 模块间直接互相使用功能，而是通过控制器解除不同模块的耦合
 class Controller : public QObject {
     Q_OBJECT
+
+    Q_PROPERTY(GuiEngine *guiEngine READ guiEngine WRITE setGuiEngine NOTIFY guiEngineChanged)
+
+    Q_PROPERTY(QString filePath READ filePath WRITE setFilePath NOTIFY filePathChanged)
 public:
-    explicit Controller(Engine &engine, QObject *parent = nullptr);
+    explicit Controller(QObject *parent = nullptr);
+
+    explicit Controller(GuiEngine &engine, QObject *parent = nullptr);
 
     virtual ~Controller();
+
+    GuiEngine *guiEngine() {
+        return guiEngine_;
+    }
+
+    void setGuiEngine(GuiEngine *guiEngine);
 
     Book &book() {
         return *book_;
     }
 
     void reloadComic();
+
+    QString filePath() const {
+        return filePath_;
+    }
+
+    void setFilePath(const QString &path);
 
 signals:
     void cmdToggleThumbArea();
@@ -59,8 +83,18 @@ signals:
 
     void sigScaleUpdated(float scale);
 
+    void guiEngineChanged();
+
+    void filePathChanged();
+
 private:
+    QPointer<GuiEngine> guiEngine_;
     DeclarePtr<Book> book_;
+    QString filePath_;
+    SigConns sigConns_;
+    QtObjStrandEntry strandEntry_;
+
+    StrongHandle<Controller> handle_;
 };
 
 }

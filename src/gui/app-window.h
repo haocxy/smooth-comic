@@ -7,14 +7,14 @@
 
 namespace myapp {
 
-class Engine;
+class GuiEngine;
 
 class AppWidget;
 
 class AppWindow : public FramelessWindow {
     Q_OBJECT
 public:
-    explicit AppWindow(Engine &engine, QWidget *parent = nullptr);
+    explicit AppWindow(GuiEngine &engine, QWidget *parent = nullptr);
 
 protected:
     virtual TitleBarButton *windowMaxButton() override;

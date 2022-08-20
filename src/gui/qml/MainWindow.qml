@@ -18,6 +18,10 @@ Item{
         }
     }
 
+    function openFile(path) {
+        idSceneStack.push(idCompBookReadScene, {comicPath: path})
+    }
+
     Component.onCompleted: {
         idSceneStack.push(idCompBookChooseScene)
     }

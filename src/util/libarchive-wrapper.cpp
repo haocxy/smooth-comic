@@ -10,6 +10,8 @@
 #include <archive.h>
 #include <archive_entry.h>
 
+#include "core/system.h"
+
 
 namespace {
 
@@ -55,6 +57,17 @@ public:
         }
     }
 
+    int archiveReadOpen(const fs::path &f) {
+        switch (SystemUtil::platformType) {
+        case PlatformType::Windows:
+            return ::archive_read_open_filename(archive_, (const char *)f.generic_string().c_str(), 10240);
+        case PlatformType::Android:
+            return ::archive_read_open_filename(archive_, (const char *)f.generic_u8string().c_str(), 10240);
+        default:
+            throw std::logic_error("unsupported platform for archive_read_open_filename");
+        }
+    }
+
     void open(const fs::path &file) {
         close();
         qDebug() << "Archive::open " << QString::fromStdU32String(file.generic_u32string());
@@ -66,7 +79,7 @@ public:
         ::archive_read_support_filter_all(archive_);
         ::archive_read_support_format_all(archive_);
 
-        int r = ::archive_read_open_filename(archive_, (const char *) file.generic_u8string().c_str(), 10240);
+        int r = archiveReadOpen(file);
         qDebug() << "Archive::open r: " << r;
         if (r != ARCHIVE_OK) {
             throw ArchiveErr("archive_read_open_filename", r);

@@ -20,6 +20,10 @@ Rectangle {
         idEntryListArea.contentY = 0
     }
 
+    function openFile(path) {
+        window.openFile(path)
+    }
+
     property bool isRestoringContentY: false
     property real restoredContentY: 0
 
@@ -102,6 +106,7 @@ Rectangle {
             implicitWidth: idWindow.width
             Layout.fillHeight: true
             onShouldOpenDir: p => idWindow.openDir(p)
+            onShouldOpenFile: p => idWindow.openFile(p)
         }
     }
 

@@ -17,7 +17,7 @@
 
 namespace myapp {
 
-AppWidget::AppWidget(Engine &engine, QWidget *parent)
+AppWidget::AppWidget(GuiEngine &engine, QWidget *parent)
     : QWidget(parent)
     , engine_(engine)
 {

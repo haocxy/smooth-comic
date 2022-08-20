@@ -10,7 +10,7 @@
 
 namespace myapp {
 
-class Engine;
+class GuiEngine;
 
 class PopupLayer;
 
@@ -27,7 +27,7 @@ class ControllBarArea;
 class AppWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit AppWidget(Engine &engine, QWidget *parent = nullptr);
+    explicit AppWidget(GuiEngine &engine, QWidget *parent = nullptr);
 
     virtual ~AppWidget();
 
@@ -50,7 +50,7 @@ private:
     void fileOpenAction();
 
 private: // non-UI Components
-    Engine &engine_;
+    GuiEngine &engine_;
     QPointer<Controller> controller_;
 
 private: // UI Components
