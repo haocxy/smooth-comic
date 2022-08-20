@@ -1,5 +1,7 @@
 #include "book-load-pipeline.h"
 
+#include <QDebug>
+
 #include "util/img-util.h"
 #include "core/debug-option.h"
 
@@ -95,6 +97,12 @@ void BookLoadPipeline::PageDecoder::handle(PageData &&pageData)
         reinterpret_cast<const uchar *>(pageData.data.data()),
         static_cast<int>(pageData.data.size())
     );
+
+    qDebug() << "qmllog: handle pageData: " << QString::fromStdU32String(pageData.name);
+
+    if (img.isNull()) {
+        qDebug() << "qmllog: cannot loadFromData: " << QString::fromStdU32String(pageData.name);
+    }
 
     PageRawImg pageImg;
     pageImg.seqNum = pageData.seqNum;

@@ -1,5 +1,7 @@
 #include "local-archive-page-data-loader.h"
 
+#include <QDebug>
+
 #include "util/libarchive-wrapper.h"
 
 
@@ -47,6 +49,7 @@ void LocalArchivePageDataLoader::threadBody()
         sptr<PageData> pageData = std::make_shared<PageData>();
         pageData->seqNum = seqNum++;
         pageData->name = archive.path();
+        qDebug() << "qmllog: archive item: " << QString::fromStdU32String(pageData->name);
         if (loadedEntries_.contains(pageData->name)) {
             archive.skipContent();
         } else {

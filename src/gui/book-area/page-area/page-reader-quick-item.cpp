@@ -1,5 +1,6 @@
 #include "page-reader-quick-item.h"
 
+#include <QApplication>
 
 
 #include "page-scene.h"
@@ -44,7 +45,7 @@ void PageReaderQuickItem::setController(Controller *controller)
 void PageReaderQuickItem::updateSceneSize()
 {
     if (scene_) {
-        const QSizeF s = this->size();
+        const QSizeF s = this->size() * qApp->devicePixelRatio();
         scene_->updateSceneSize(QSize(s.width(), s.height()));
     }
 }
