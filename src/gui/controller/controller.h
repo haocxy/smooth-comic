@@ -42,9 +42,23 @@ public:
 
     virtual ~Controller();
 
+    Q_INVOKABLE void switchUpPage() {
+        emit cmdSwitchPage(SwitchDirection::Up);
+    }
+
+    Q_INVOKABLE void switchDownPage() {
+        emit cmdSwitchPage(SwitchDirection::Down);
+    }
+
     Q_INVOKABLE void switchLeftPage() {
         emit cmdSwitchPage(SwitchDirection::Left);
     }
+
+    Q_INVOKABLE void switchRightPage() {
+        emit cmdSwitchPage(SwitchDirection::Right);
+    }
+
+
 
     GuiEngine *guiEngine() {
         return guiEngine_;

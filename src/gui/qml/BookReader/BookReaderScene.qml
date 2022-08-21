@@ -13,18 +13,20 @@ Rectangle {
         controller: idController
     }
 
-    Rectangle {
-        width: parent.width * 0.2
+    ControlArea {
+        width: parent.width * 0.4
         height: parent.height * 0.8
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        color: "blue"
-        opacity: 0.5
+        onTriggered: idController.switchLeftPage()
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            onPressed: idController.switchLeftPage()
-        }
+    ControlArea {
+        width: parent.width * 0.4
+        height: parent.height * 0.8
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        onTriggered: idController.switchRightPage()
     }
 
     Controller {

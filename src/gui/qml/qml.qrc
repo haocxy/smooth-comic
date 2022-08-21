@@ -10,5 +10,6 @@
         <file>BookReader/BookReaderScene.qml</file>
         <file>BookReader/qmldir</file>
         <file>FileChooser/FileChooserScene.qml</file>
+        <file>BookReader/ControlArea.qml</file>
     </qresource>
 </RCC>
