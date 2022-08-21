@@ -65,7 +65,7 @@ Item{
 
     Component {
         id: idCompBookChooseScene
-        FileChooserArea {
+        FileChooserScene {
             width: window.width
             height: idSceneStack.height
         }
