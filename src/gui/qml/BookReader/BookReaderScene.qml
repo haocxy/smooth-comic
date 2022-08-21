@@ -18,7 +18,7 @@ Rectangle {
         height: parent.height * 0.8
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        onTriggered: idController.switchLeftPage()
+        onClicked: idController.switchLeftPage()
     }
 
     ControlArea {
@@ -26,7 +26,7 @@ Rectangle {
         height: parent.height * 0.8
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        onTriggered: idController.switchRightPage()
+        onClicked: idController.switchRightPage()
     }
 
     Controller {

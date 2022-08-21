@@ -1,14 +1,15 @@
 import QtQuick
 
 Rectangle {
+    id: idRoot
     property bool showArea: false
     color: "blue"
     opacity: showArea ? 0.5 : 0
 
-    signal triggered
+    signal clicked
 
     MouseArea {
         anchors.fill: parent
-        onReleased: triggered()
+        onClicked: idRoot.clicked()
     }
 }
