@@ -64,6 +64,10 @@ public:
 
     void movePage(int dx, int dy);
 
+    void translateBy(qreal dx, qreal dy) {
+        movePage(static_cast<int>(std::round(dx)), static_cast<int>(std::round(dy)));
+    }
+
     void jumpTo(PageNum pageNum);
 
     void jumpNext();

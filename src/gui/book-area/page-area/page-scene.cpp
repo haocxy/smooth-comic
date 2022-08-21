@@ -53,6 +53,8 @@ PageScene::PageScene(Controller &controller, QObject *parent)
     connect(&controller_, &c::cmdZoomOut, this, &s::zoomOut);
 
     connect(&controller_, &c::cmdRelativelyScale, this, &s::relativelyScale);
+
+    connect(&controller_, &c::cmdTranslateBy, this, &s::translateBy);
 }
 
 PageScene::~PageScene()

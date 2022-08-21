@@ -62,6 +62,10 @@ public:
         emit cmdRelativelyScale(relativeScale);
     }
 
+    Q_INVOKABLE void translateBy(qreal dx, qreal dy) {
+        emit cmdTranslateBy(dx, dy);
+    }
+
     GuiEngine *guiEngine() {
         return guiEngine_;
     }
@@ -101,6 +105,8 @@ signals:
     void cmdZoomIn();
 
     void cmdZoomOut();
+
+    void cmdTranslateBy(qreal dx, qreal dy);
 
     void sigScaleRangeUpdated(float min, float max);
 

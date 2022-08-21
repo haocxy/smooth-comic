@@ -87,20 +87,38 @@ Rectangle {
         id: idPinchArea
         property real currScale: 1
         anchors.fill: parent
-        onPinchStarted: console.log("qmllog: pinchStarted")
+
         onPinchUpdated: e => {
                             if (e.previousScale !== 0) {
                                 idController.relativelyScale(e.scale / e.previousScale)
                             }
                         }
-        onPinchFinished: e => {
-            console.log("qmllog: pinchFinished")
-        }
+
         MouseArea {
+            id: idMouseArea
             anchors.fill: parent
             onClicked: e => {
-                            idClickControlls.controll(mapToGlobal(e.x, e.y))
+                            if (!idMouseArea.moved) {
+                                idClickControlls.controll(mapToGlobal(e.x, e.y))
+                            }
                         }
+            property real prevX: 0
+            property real prevY: 0
+            property bool moved: false
+            onPressed: e => {
+                           idMouseArea.prevX = e.x
+                           idMouseArea.prevY = e.y
+                           idMouseArea.moved = false
+                       }
+
+            onPositionChanged: e => {
+                                   var dx = (e.x - prevX) * Screen.devicePixelRatio
+                                   var dy = (e.y - prevY) * Screen.devicePixelRatio
+                                   idController.translateBy(dx, dy)
+                                   idMouseArea.prevX = e.x
+                                   idMouseArea.prevY = e.y
+                                   idMouseArea.moved = true
+                               }
         }
 
     }
