@@ -1,5 +1,6 @@
 #include "page-scene.h"
 
+#include <QDebug>
 #include <QPainter>
 
 #include "book/book.h"
@@ -50,6 +51,8 @@ PageScene::PageScene(Controller &controller, QObject *parent)
     connect(&controller_, &c::cmdZoomIn, this, &s::zoomIn);
 
     connect(&controller_, &c::cmdZoomOut, this, &s::zoomOut);
+
+    connect(&controller_, &c::cmdRelativelyScale, this, &s::relativelyScale);
 }
 
 PageScene::~PageScene()
@@ -244,6 +247,13 @@ void PageScene::setScale(float scale)
             emit controller_.sigScaleUpdated(boundedScale);
             emit cmdUpdate();
         }
+    }
+}
+
+void PageScene::relativelyScale(qreal relativeScale)
+{
+    if (primaryPage_) {
+        setScale(primaryPage_->scale() * relativeScale);
     }
 }
 

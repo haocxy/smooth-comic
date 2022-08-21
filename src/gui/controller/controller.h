@@ -58,7 +58,9 @@ public:
         emit cmdSwitchPage(SwitchDirection::Right);
     }
 
-
+    Q_INVOKABLE void relativelyScale(qreal relativeScale) {
+        emit cmdRelativelyScale(relativeScale);
+    }
 
     GuiEngine *guiEngine() {
         return guiEngine_;
@@ -92,6 +94,9 @@ signals:
     void cmdToggleScaleSettingPopup();
 
     void cmdSetScaleMode(ScaleMode mode);
+
+    // 相对缩放：相对于当前缩放进行缩放
+    void cmdRelativelyScale(qreal relativeScale);
 
     void cmdZoomIn();
 

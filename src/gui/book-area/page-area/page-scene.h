@@ -54,6 +54,8 @@ public:
 
     void setScale(float scale);
 
+    void relativelyScale(qreal relativeScale);
+
     void zoomIn();
 
     void zoomOut();
