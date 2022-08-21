@@ -42,6 +42,10 @@ public:
 
     virtual ~Controller();
 
+    Q_INVOKABLE void switchLeftPage() {
+        emit cmdSwitchPage(SwitchDirection::Left);
+    }
+
     GuiEngine *guiEngine() {
         return guiEngine_;
     }

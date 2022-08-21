@@ -22,6 +22,20 @@ Rectangle {
         controller: idController
     }
 
+    Rectangle {
+        width: parent.width * 0.2
+        height: parent.height * 0.8
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        color: "blue"
+        opacity: 0.5
+
+        MouseArea {
+            anchors.fill: parent
+            onPressed: idController.switchLeftPage()
+        }
+    }
+
 //    ControlArea {
 //        isLandscape: window.width >= window.height
 //        width: isLandscape ? span : parent.width

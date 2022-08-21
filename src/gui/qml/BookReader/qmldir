@@ -1,0 +1,2 @@
+module myapp.BookReader
+BookReaderScene 1.0 BookReaderScene.qml

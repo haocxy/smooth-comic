@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import myapp.FileChooser
+import myapp.BookReader
 
 
 Item{
@@ -72,7 +73,7 @@ Item{
 
     Component {
         id: idCompBookReadScene
-        BookReadPage {
+        BookReaderScene {
             width: window.width
             height: idSceneStack.height
         }
