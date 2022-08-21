@@ -42,6 +42,7 @@ void LocalArchivePageDataLoader::threadBody()
     PageNum seqNum = 0;
 
     while (!stopped_ && archive.nextEntry()) {
+        qDebug() << "qmllog: archive.nextEntry, seqNum: " << seqNum << ", pageCount: " << pageCount;
         if (!archive.isRegularFile()) {
             continue;
         }

@@ -88,23 +88,51 @@ public:
 
     bool nextEntry() {
         if (finished_) {
+            qDebug() << "nextEntry.finished";
             return false;
         }
+
         int r = ::archive_read_next_header(archive_, &curEntry_);
-        if (r != ARCHIVE_OK) {
-            finished_ = true;
-            curEntry_ = nullptr;
-            return false;
+        if (r == ARCHIVE_OK || r == ARCHIVE_WARN) {
+            if (r == ARCHIVE_WARN) {
+                qDebug() << "Archive::nextEntry warn from archive_read_next_header: "
+                    << ::archive_error_string(archive_);
+            }
+            return true;
         }
-        return true;
+
+        finished_ = true;
+        curEntry_ = nullptr;
+        return false;
     }
 
     u32str path() const {
-        const wchar_t *wcharstr = ::archive_entry_pathname_w(curEntry_);
-        if (wcharstr) {
-            return QString::fromWCharArray(wcharstr).toStdU32String();
-        } else {
-            return u32str();
+        switch (SystemUtil::platformType) {
+        case PlatformType::Windows:
+        {
+            const wchar_t *wcharstr = ::archive_entry_pathname_w(curEntry_);
+            if (wcharstr) {
+                return QString::fromWCharArray(wcharstr).toStdU32String();
+            } else {
+                return u32str();
+            }
+            break;
+        }
+        case PlatformType::Android:
+        {
+            // TODO android平台无法取到路径
+            const char *str = ::archive_entry_pathname(curEntry_);
+            if (str) {
+                return QString::fromUtf8(str).toStdU32String();
+            } else {
+                return u32str();
+            }
+            break;
+        }
+        default:
+        {
+            throw std::logic_error("Archive::path unimplemented for current platform");
+        }
         }
     }
 
