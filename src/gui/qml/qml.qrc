@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/qml/myapp">
         <file>MainWindow.qml</file>
-        <file>ControlArea.qml</file>
-        <file>ControlButton.qml</file>
         <file>FileChooser/qmldir</file>
         <file>FileChooser/AddrBarArea.qml</file>
         <file>FileChooser/FileListArea.qml</file>
