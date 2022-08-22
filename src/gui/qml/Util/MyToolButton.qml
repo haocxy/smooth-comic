@@ -10,7 +10,7 @@ Rectangle {
     signal clicked
 
     // 外部的整个矩形实际是边框，为了确保边框的内外都是有弧度的，通过两层矩形实现
-    color: idMouseArea.containsMouse ? "#33B3FF" : GlobalStyle.titleBarColor
+    color: idMouseArea.containsMouse ? GlobalStyle.titleBarColor.lighter(1.3) : GlobalStyle.titleBarColor
     radius: 8
     antialiasing: true
 

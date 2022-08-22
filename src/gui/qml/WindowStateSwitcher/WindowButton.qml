@@ -12,7 +12,7 @@ Rectangle {
 
     property bool mouseOver: mouseOverByFramelessWindow || idMouseArea.containsMouse
 
-    color: mouseOver ? "#33B3FF" : GlobalStyle.titleBarColor
+    color: mouseOver ? GlobalStyle.titleBarColor.lighter(1.3) : GlobalStyle.titleBarColor
 
     Text {
         anchors.centerIn: parent
