@@ -69,7 +69,7 @@ Rectangle {
             implicitHeight: GlobalStyle.titleBarHeight
             background: Rectangle {
                 anchors.fill: parent
-                color: "#c8c8c8"
+                color: GlobalStyle.titleBarColor
             }
 
             RowLayout {
