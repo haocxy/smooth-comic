@@ -3,6 +3,7 @@
 #include <QQmlEngine>
 
 class QKeyEvent;
+class QQuickItem;
 
 
 namespace myapp {
@@ -22,6 +23,8 @@ public:
         view.setResizeMode(ViewType::SizeRootObjectToView);
         view.setSource(firstQmlFile());
     }
+
+    static void updateWindowState(QQuickItem *window, Qt::WindowStates states);
 
 private:
     QUrl firstQmlFile() const;

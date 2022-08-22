@@ -10,6 +10,10 @@ Item{
     visible: true
     width: 800
     height: 600
+    property bool isMin: false
+    property bool isMax: false
+    property bool isFullScreen: false
+
 
     function openFile(path) {
         idSceneStack.push(idCompBookReadScene, {comicPath: path})

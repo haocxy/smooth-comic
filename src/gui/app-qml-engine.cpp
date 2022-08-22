@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <QQmlContext>
 #include <QKeyEvent>
+#include <QQuickItem>
 
 #include "gui-engine.h"
 
@@ -27,6 +28,13 @@ bool AppQmlEngine::handleKeyRelease(QKeyEvent *e)
         emit guiEngine_.keyBackReleased();
         return true;
     }
+}
+
+void AppQmlEngine::updateWindowState(QQuickItem *window, Qt::WindowStates states)
+{
+    window->setProperty("isMin", states.testFlag(Qt::WindowMaximized));
+    window->setProperty("isMax", states.testFlag(Qt::WindowMinimized));
+    window->setProperty("isFullScreen", states.testFlag(Qt::WindowFullScreen));
 }
 
 QUrl AppQmlEngine::firstQmlFile() const

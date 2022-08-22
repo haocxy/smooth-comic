@@ -11,6 +11,8 @@ AppQuickWidget::AppQuickWidget(AppQmlEngine &appQmlEngine, QWidget *parent)
     , appQmlEngine_(appQmlEngine)
 {
     appQmlEngine_.initView(*this);
+
+    updateWindowState();
 }
 
 AppQuickWidget::~AppQuickWidget()
@@ -24,6 +26,27 @@ void AppQuickWidget::keyReleaseEvent(QKeyEvent *e)
     } else {
         AppQuickWidget::keyReleaseEvent(e);
     }
+}
+
+void AppQuickWidget::changeEvent(QEvent *e)
+{
+    QQuickWidget::changeEvent(e);
+
+    switch (e->type()) {
+    case QEvent::Type::WindowStateChange:
+        updateWindowState();
+        break;
+    default:
+        break;
+    }
+}
+
+void AppQuickWidget::updateWindowState()
+{
+    Qt::WindowStates states = windowState();
+    QQuickItem *window = rootObject();
+
+    AppQmlEngine::updateWindowState(window, states);
 }
 
 }

@@ -17,6 +17,11 @@ public:
 protected:
     virtual void keyReleaseEvent(QKeyEvent *e) override;
 
+    virtual void changeEvent(QEvent *e) override;
+
+private:
+    void updateWindowState();
+
 private:
     AppQmlEngine &appQmlEngine_;
 };
