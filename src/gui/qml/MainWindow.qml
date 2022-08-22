@@ -4,7 +4,8 @@ import QtQuick.Layouts
 
 import myapp.FileChooser
 import myapp.BookReader
-
+import myapp.WindowStateSwitcher
+import myapp.Global
 
 Item{
     id: window
@@ -55,6 +56,24 @@ Item{
         anchors.right: parent.right
         anchors.bottom: idStrech.top
         height: parent.height - idStrech.height
+        spacing: 0
+
+        Rectangle {
+            visible: $engine.isWindowed
+            z: 100
+            implicitWidth: parent.width
+            implicitHeight: GlobalStyle.titleBarHeight
+            color: GlobalStyle.titleBarColor
+            RowLayout {
+                anchors.fill: parent
+                WindowStateSwitcher {
+                    Layout.alignment: Qt.AlignRight
+                    btnHMargin: 8
+                    btnVMargin: 0
+                }
+            }
+        }
+
 
         StackView {
             Layout.fillWidth: true

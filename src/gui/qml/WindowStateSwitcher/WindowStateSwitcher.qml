@@ -5,12 +5,15 @@ import myapp.Util
 
 RowLayout {
 
+    property int btnHMargin: 8
+    property int btnVMargin: 12
+
     MyToolButton {
         // full screen
-        Layout.topMargin: 12
-        Layout.bottomMargin: 12
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
+        Layout.topMargin: btnVMargin
+        Layout.bottomMargin: btnVMargin
+        Layout.leftMargin: btnHMargin
+        Layout.rightMargin: btnHMargin
         Layout.fillHeight: true
         Layout.preferredWidth: height
         text: window.isFullScreen ? "\uf1cf" : "\uf1ce"
@@ -25,10 +28,10 @@ RowLayout {
 
     MyToolButton {
         // min
-        Layout.topMargin: 12
-        Layout.bottomMargin: 12
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
+        Layout.topMargin: btnVMargin
+        Layout.bottomMargin: btnVMargin
+        Layout.leftMargin: btnHMargin
+        Layout.rightMargin: btnHMargin
         Layout.fillHeight: true
         Layout.preferredWidth: height
         visible: $engine.isWindowed
@@ -38,10 +41,10 @@ RowLayout {
 
     MyToolButton {
         // max
-        Layout.topMargin: 12
-        Layout.bottomMargin: 12
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
+        Layout.topMargin: btnVMargin
+        Layout.bottomMargin: btnVMargin
+        Layout.leftMargin: btnHMargin
+        Layout.rightMargin: btnHMargin
         Layout.fillHeight: true
         Layout.preferredWidth: height
         visible: $engine.isWindowed
@@ -57,10 +60,10 @@ RowLayout {
 
     MyToolButton {
         // close
-        Layout.topMargin: 12
-        Layout.bottomMargin: 12
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
+        Layout.topMargin: btnVMargin
+        Layout.bottomMargin: btnVMargin
+        Layout.leftMargin: btnHMargin
+        Layout.rightMargin: btnHMargin
         Layout.fillHeight: true
         Layout.preferredWidth: height
         visible: $engine.isWindowed

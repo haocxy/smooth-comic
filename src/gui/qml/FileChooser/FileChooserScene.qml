@@ -6,7 +6,6 @@ import Qt.labs.platform
 import myapp
 import myapp.Global
 import myapp.Util
-import myapp.WindowStateSwitcher
 
 Rectangle {
 
@@ -66,7 +65,7 @@ Rectangle {
         ToolBar {
             z: 100
             implicitWidth: parent.width
-            implicitHeight: GlobalStyle.titleBarHeight
+            implicitHeight: GlobalStyle.topBarHeight
             background: Rectangle {
                 anchors.fill: parent
                 color: GlobalStyle.titleBarColor
@@ -97,9 +96,6 @@ Rectangle {
                     Layout.fillHeight: true
                     dir: idFileChooser.currDir
                     onShouldOpenDir: p => openDir(p)
-                }
-                WindowStateSwitcher {
-                    visible: $engine.isWindowed
                 }
             }
         }
