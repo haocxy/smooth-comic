@@ -68,12 +68,9 @@ Item{
                 anchors.fill: parent
                 WindowStateSwitcher {
                     Layout.alignment: Qt.AlignRight
-                    btnHMargin: 8
-                    btnVMargin: 0
                 }
             }
         }
-
 
         StackView {
             Layout.fillWidth: true

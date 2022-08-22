@@ -16,5 +16,6 @@
         <file>WindowStateSwitcher/WindowStateSwitcher.qml</file>
         <file>Util/MyToolButton.qml</file>
         <file>Util/qmldir</file>
+        <file>WindowStateSwitcher/WindowButton.qml</file>
     </qresource>
 </RCC>
