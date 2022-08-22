@@ -112,21 +112,11 @@ void AppWidget::fileOpenAction()
     const fs::path home = SystemUtil::userHome();
     const QString defaultDir = QString::fromStdU32String(home.generic_u32string());
     const QString filePath = QFileDialog::getOpenFileName(this, tr("Open Comic"), "/");
-
-    qDebug() << __FUNCTION__ << "filePath: " << filePath;
+    const fs::path p{ filePath.toStdU32String() };
 
     QFile f(filePath);
-    QFileInfo fi(f);
-    if (f.exists()) {
-#define MLOG(code) qDebug() << __FUNCTION__ << #code << code;
-        MLOG(fi.absolutePath());
-        MLOG(fi.size());
-        MLOG(QString::fromStdU32String(fi.filesystemAbsoluteFilePath().generic_u32string()));
-        MLOG(QUrl(filePath).path());
-        
-        controller_->book().open(U"/storage/emulated/0/BaiduNetdisk/a.zip");
-    } else {
-        qDebug() << __FUNCTION__ << "exist ? no";
+    if (fs::exists(p)) {
+        controller_->book().open(p);
     }
 }
 
