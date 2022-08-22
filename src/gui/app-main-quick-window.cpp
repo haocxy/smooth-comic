@@ -5,21 +5,16 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 
-#include "gui-engine.h"
+#include "app-qml-engine.h"
 
 
 namespace myapp {
 
-AppMainQuickWindow::AppMainQuickWindow(GuiEngine &guiEngine, QWindow *parent)
-    : QQuickView(parent)
-    , guiEngine_(guiEngine)
+AppMainQuickWindow::AppMainQuickWindow(AppQmlEngine &appQmlEngine, QWindow *parent)
+    : QQuickView(&appQmlEngine, parent)
+    , appQmlEngine_(appQmlEngine)
 {
-    QObject::connect(engine(), &QQmlEngine::quit, QCoreApplication::instance(), &QCoreApplication::quit);
-
-    setResizeMode(QQuickView::SizeRootObjectToView);
-    engine()->addImportPath("qrc:/qml");
-    engine()->rootContext()->setContextProperty("$engine", &guiEngine_);
-    setSource(QUrl("qrc:/qml/myapp/MainWindow.qml"));
+    appQmlEngine_.initView(*this);
 }
 
 AppMainQuickWindow::~AppMainQuickWindow()
@@ -28,10 +23,10 @@ AppMainQuickWindow::~AppMainQuickWindow()
 
 void AppMainQuickWindow::keyReleaseEvent(QKeyEvent *e)
 {
-    if (e->key() != Qt::Key_Back) {
-        QQuickView::keyReleaseEvent(e);
+    if (appQmlEngine_.handleKeyRelease(e)) {
+        return;
     } else {
-        emit guiEngine_.keyBackReleased();
+        QQuickView::keyReleaseEvent(e);
     }
 }
 

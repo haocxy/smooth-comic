@@ -22,6 +22,7 @@
 #include "gui/app-window.h"
 
 #include "gui/gui-engine.h"
+#include "gui/app-qml-engine.h"
 #include "gui/app-main-quick-window.h"
 
 
@@ -147,8 +148,8 @@ int body_entry(int argc, char *argv[])
     }
 
     GuiEngine guiEngine;
-
-    AppMainQuickWindow qmlWindow(guiEngine);
+    AppQmlEngine appQmlEngine(guiEngine);
+    AppMainQuickWindow qmlWindow(appQmlEngine);
     qmlWindow.show();
 
 
