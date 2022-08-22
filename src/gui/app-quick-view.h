@@ -7,12 +7,12 @@ namespace myapp {
 
 class AppQmlEngine;
 
-class AppMainQuickWindow : public QQuickView {
+class AppQuickView : public QQuickView {
     Q_OBJECT
 public:
-    explicit AppMainQuickWindow(AppQmlEngine &appQmlEngine, QWindow *parent = nullptr);
+    explicit AppQuickView(AppQmlEngine &appQmlEngine, QWindow *parent = nullptr);
 
-    virtual ~AppMainQuickWindow();
+    virtual ~AppQuickView();
 
 protected:
     virtual void keyReleaseEvent(QKeyEvent *e) override;

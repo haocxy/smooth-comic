@@ -149,8 +149,8 @@ int body_entry(int argc, char *argv[])
 
     GuiEngine guiEngine;
     AppQmlEngine appQmlEngine(guiEngine);
-    AppMainQuickWindow qmlWindow(appQmlEngine);
-    qmlWindow.show();
+    AppQuickView appQuickView(appQmlEngine);
+    appQuickView.show();
 
 
     const QString cssPath = ":/styles/default.css";

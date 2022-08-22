@@ -10,18 +10,18 @@
 
 namespace myapp {
 
-AppMainQuickWindow::AppMainQuickWindow(AppQmlEngine &appQmlEngine, QWindow *parent)
+AppQuickView::AppQuickView(AppQmlEngine &appQmlEngine, QWindow *parent)
     : QQuickView(&appQmlEngine, parent)
     , appQmlEngine_(appQmlEngine)
 {
     appQmlEngine_.initView(*this);
 }
 
-AppMainQuickWindow::~AppMainQuickWindow()
+AppQuickView::~AppQuickView()
 {
 }
 
-void AppMainQuickWindow::keyReleaseEvent(QKeyEvent *e)
+void AppQuickView::keyReleaseEvent(QKeyEvent *e)
 {
     if (appQmlEngine_.handleKeyRelease(e)) {
         return;
