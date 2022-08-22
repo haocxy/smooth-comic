@@ -163,10 +163,11 @@ int body_entry(int argc, char *argv[])
 
     qDebug() << "after setStyleSheet";
 
-    if (false) {
-        AppWindow w(guiEngine);
-        w.resize(800, 600);
-        w.show();
+    uptr<AppWindow> w;
+    if (true) {
+        w = new AppWindow(guiEngine);
+        w->resize(800, 600);
+        w->show();
     }
 
     return QApplication::exec();

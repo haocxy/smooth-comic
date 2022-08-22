@@ -73,6 +73,13 @@ public:
         std::unique_ptr<T>::operator=(p);
         return *this;
     }
+
+    template <typename U>
+    uptr &operator=(U *&&p) {
+        std::unique_ptr<T>::operator=(std::unique_ptr<U>(p));
+        p = nullptr;
+        return *this;
+    }
 };
 
 template <typename T>

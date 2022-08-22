@@ -20,10 +20,17 @@ public:
 
 protected:
 
-    // 窗口的 窗口最大化按钮
-    // 若窗口没有 窗口最大化按钮 则返回 nullptr
-    virtual TitleBarButton *windowMaxButton() {
-        return nullptr;
+    // 是否有 窗口的 窗口最大化按钮
+    virtual bool hasWindowMaxButton() const {
+        return false;
+    }
+
+    // 设置窗口的窗口最大化按钮的hover状态
+    virtual void setWindowMaxButtonHover(bool hover) {
+    }
+
+    // 窗口最大化按钮被点击
+    virtual void onWindowMaxButtonClicked() {
     }
 
     // 判断 窗口最大化按钮 是否包含指定的坐标

@@ -17,7 +17,11 @@ public:
     explicit AppWindow(GuiEngine &engine, QWidget *parent = nullptr);
 
 protected:
-    virtual TitleBarButton *windowMaxButton() override;
+    virtual bool hasWindowMaxButton() const override;
+
+    virtual void setWindowMaxButtonHover(bool hover) override;
+
+    virtual void onWindowMaxButtonClicked() override;
 
     virtual bool isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) const override;
 

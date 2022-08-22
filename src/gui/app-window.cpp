@@ -31,12 +31,30 @@ AppWindow::AppWindow(GuiEngine &engine, QWidget *parent)
     }
 }
 
-TitleBarButton *AppWindow::windowMaxButton()
+bool AppWindow::hasWindowMaxButton() const
 {
     if (TitleBarArea *bar = appWidget_->titleBarArea()) {
         return bar->windowMaxButton();
     } else {
-        return nullptr;
+        return false;
+    }
+}
+
+void AppWindow::setWindowMaxButtonHover(bool hover)
+{
+    if (TitleBarArea *bar = appWidget_->titleBarArea()) {
+        if (TitleBarButton *btn = bar->windowMaxButton()) {
+            btn->setMouseOver(hover);
+        }
+    }
+}
+
+void AppWindow::onWindowMaxButtonClicked()
+{
+    if (TitleBarArea *bar = appWidget_->titleBarArea()) {
+        if (TitleBarButton *btn = bar->windowMaxButton()) {
+            emit btn->clicked();
+        }
     }
 }
 

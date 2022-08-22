@@ -215,8 +215,8 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCMOUSELEAVE(MSG &msg)
 
     gLogger.d.enableIf(*dopLogTrackMouseEvent) << "handle_WM_NCMOUSELEAVE";
 
-    if (TitleBarButton *b = windowMaxButton()) {
-        b->setMouseOver(false);
+    if (hasWindowMaxButton()) {
+        setWindowMaxButtonHover(false);
     }
 
     stopMouseTrack(hwnd);
@@ -239,10 +239,10 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCCALCSIZE(MSG &msg)
 
 FramelessWindow::Res FramelessWindow::handle_WM_NCLBUTTONDOWN(MSG &msg)
 {
-    if (TitleBarButton *btn = windowMaxButton()) {
+    if (hasWindowMaxButton()) {
         const QPoint gpos = globalPos(msg);
         if (isWindowMaxButtonContainsGlobalPos(gpos)) {
-            emit btn->clicked();
+            onWindowMaxButtonClicked();
             return 0;
         }
     }
@@ -251,7 +251,7 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCLBUTTONDOWN(MSG &msg)
 
 FramelessWindow::Res FramelessWindow::handle_WM_NCLBUTTONUP(MSG &msg)
 {
-    if (TitleBarButton *btn = windowMaxButton()) {
+    if (hasWindowMaxButton()) {
         const QPoint gpos = globalPos(msg);
         if (isWindowMaxButtonContainsGlobalPos(gpos)) {
             return 0;
@@ -279,8 +279,8 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
         if (y >= r.bottom - w) { // 左下
             return HTBOTTOMLEFT;
         } else if (y < r.top + resizeAreaTopHeight) { //左上
-            if (TitleBarButton *maxBtn = windowMaxButton()) {
-                maxBtn->setMouseOver(false);
+            if (hasWindowMaxButton()) {
+                setWindowMaxButtonHover(false);
             }
             return HTTOPLEFT;
         } else {
@@ -290,8 +290,8 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
         if (y >= r.bottom - w) { // 右下
             return HTBOTTOMRIGHT;
         } else if (y < r.top + resizeAreaTopHeight) { // 右上
-            if (TitleBarButton *maxBtn = windowMaxButton()) {
-                maxBtn->setMouseOver(false);
+            if (hasWindowMaxButton()) {
+                setWindowMaxButtonHover(false);
             }
             return HTTOPRIGHT;
         } else {
@@ -301,8 +301,8 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
         if (y >= r.bottom - w) { // 中下
             return HTBOTTOM;
         } else if (y < r.top + resizeAreaTopHeight) { // 中上
-            if (TitleBarButton *maxBtn = windowMaxButton()) {
-                maxBtn->setMouseOver(false);
+            if (hasWindowMaxButton()) {
+                setWindowMaxButtonHover(false);
             }
             return HTTOP;
         }
@@ -311,15 +311,15 @@ FramelessWindow::Res FramelessWindow::handle_WM_NCHITTEST(MSG &msg)
     const QPoint gpos = globalPos(msg);
 
     // 判断位置是否位于 窗口最大化按钮 区域
-    if (TitleBarButton *maxBtn = windowMaxButton()) {
+    if (hasWindowMaxButton()) {
         if (isWindowMaxButtonContainsGlobalPos(gpos)) {
-            maxBtn->setMouseOver(true);
+            setWindowMaxButtonHover(true);
             isWindowMaxButtonMouseOvered_ = true;
             startMouseTrack(hwnd);
             return HTMAXBUTTON;
         } else {
             if (isWindowMaxButtonMouseOvered_) {
-                maxBtn->setMouseOver(false);
+                setWindowMaxButtonHover(false);
                 isWindowMaxButtonMouseOvered_ = false;
                 stopMouseTrack(hwnd);
             }
