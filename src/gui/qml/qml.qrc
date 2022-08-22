@@ -13,5 +13,7 @@
         <file>BookReader/ControlArea.qml</file>
         <file>Global/GlobalStyle.qml</file>
         <file>Global/qmldir</file>
+        <file>WindowStateSwitcher/qmldir</file>
+        <file>WindowStateSwitcher/WindowStateSwitcher.qml</file>
     </qresource>
 </RCC>
