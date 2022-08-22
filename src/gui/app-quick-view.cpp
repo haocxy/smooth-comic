@@ -15,6 +15,8 @@ AppQuickView::AppQuickView(AppQmlEngine &appQmlEngine, QWindow *parent)
     : QQuickView(&appQmlEngine, parent)
     , appQmlEngine_(appQmlEngine)
 {
+    setMinimumSize(QSize(800, 600));
+
     appQmlEngine_.initView(*this);
 
     connect(this, &QWindow::windowStateChanged, this, [this] { updateWindowState(); });

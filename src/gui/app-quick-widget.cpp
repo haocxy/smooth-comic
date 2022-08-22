@@ -10,6 +10,8 @@ AppQuickWidget::AppQuickWidget(AppQmlEngine &appQmlEngine, QWidget *parent)
     : QQuickWidget(&appQmlEngine, parent)
     , appQmlEngine_(appQmlEngine)
 {
+    setMinimumSize(QSize(800, 600));
+
     appQmlEngine_.initView(*this);
 
     updateWindowState();

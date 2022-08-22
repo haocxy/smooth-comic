@@ -14,9 +14,6 @@ Item{
     property bool isMax: false
     property bool isFullScreen: false
 
-    onIsMaxChanged: console.log("qmllog: isMax: ", isMax)
-
-
     function openFile(path) {
         idSceneStack.push(idCompBookReadScene, {comicPath: path})
     }
