@@ -21,6 +21,7 @@ Rectangle {
             pixelSize: idRoot.height * 0.6
         }
         text: idRoot.text
+        color: GlobalStyle.iconColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
