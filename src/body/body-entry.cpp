@@ -150,9 +150,16 @@ int body_entry(int argc, char *argv[])
 
     GuiEngine guiEngine;
     AppQmlEngine appQmlEngine(guiEngine);
-    AppQuickWindow appQuickWindow(appQmlEngine);
-    appQuickWindow.show();
 
+    uptr<AppQuickWindow> appQuickWindow;
+    uptr<AppQuickView> appQuickView;
+    if (SystemUtil::isWindowedPlatform()) {
+        appQuickWindow = new AppQuickWindow(appQmlEngine);
+        appQuickWindow->show();
+    } else {
+        appQuickView = new AppQuickView(appQmlEngine);
+        appQuickView->show();
+    }
 
     const QString cssPath = ":/styles/default.css";
 

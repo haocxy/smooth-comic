@@ -119,4 +119,16 @@ fs::path defaultOpenFileDir()
     throw std::logic_error("System::defaultOpenFileDir: unsupported platform");
 }
 
+bool isWindowedPlatform()
+{
+    switch (platformType) {
+    case PlatformType::Windows:
+        return true;
+    case PlatformType::Android:
+        return false;
+    default:
+        return false;
+    }
+}
+
 }

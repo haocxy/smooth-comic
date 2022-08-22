@@ -34,4 +34,6 @@ fs::path exePath();
 
 fs::path defaultOpenFileDir();
 
+bool isWindowedPlatform();
+
 }

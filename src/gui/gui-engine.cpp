@@ -9,17 +9,6 @@
 
 namespace myapp {
 
-static bool isWindowedPlat() {
-    switch (SystemUtil::platformType) {
-    case PlatformType::Windows:
-        return true;
-    case PlatformType::Android:
-        return false;
-    default:
-        return false;
-    }
-}
-
 GuiEngine::GuiEngine(QObject *parent)
     : QObject(parent)
 {
@@ -27,7 +16,7 @@ GuiEngine::GuiEngine(QObject *parent)
 
     engine_ = new Engine;
 
-    isWindowed_ = isWindowedPlat();
+    isWindowed_ = SystemUtil::isWindowedPlatform();
 
     qDebug() << "GuiEngine::GuiEngine() end";
 }
