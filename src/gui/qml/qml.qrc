@@ -5,7 +5,6 @@
         <file>FileChooser/AddrBarArea.qml</file>
         <file>FileChooser/FileListArea.qml</file>
         <file>FileChooser/FsEntry.qml</file>
-        <file>FileChooser/MyToolButton.qml</file>
         <file>FileChooser/EntryStyle.qml</file>
         <file>BookReader/BookReaderScene.qml</file>
         <file>BookReader/qmldir</file>
@@ -15,5 +14,7 @@
         <file>Global/qmldir</file>
         <file>WindowStateSwitcher/qmldir</file>
         <file>WindowStateSwitcher/WindowStateSwitcher.qml</file>
+        <file>Util/MyToolButton.qml</file>
+        <file>Util/qmldir</file>
     </qresource>
 </RCC>

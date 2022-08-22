@@ -5,6 +5,7 @@ import Qt.labs.platform
 
 import myapp
 import myapp.Global
+import myapp.Util
 
 
 Rectangle {
