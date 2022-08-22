@@ -4,6 +4,8 @@ import QtQuick.Layouts
 import Qt.labs.platform
 
 import myapp
+import myapp.Global
+
 
 Rectangle {
 
@@ -63,7 +65,7 @@ Rectangle {
         ToolBar {
             z: 100
             implicitWidth: parent.width
-            implicitHeight: 64
+            implicitHeight: GlobalStyle.titleBarHeight
             background: Rectangle {
                 anchors.fill: parent
                 color: "#c8c8c8"

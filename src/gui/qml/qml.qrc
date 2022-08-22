@@ -11,5 +11,7 @@
         <file>BookReader/qmldir</file>
         <file>FileChooser/FileChooserScene.qml</file>
         <file>BookReader/ControlArea.qml</file>
+        <file>Global/GlobalStyle.qml</file>
+        <file>Global/qmldir</file>
     </qresource>
 </RCC>

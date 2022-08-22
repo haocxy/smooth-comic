@@ -1,0 +1,2 @@
+module myapp.Global
+singleton GlobalStyle 1.0 GlobalStyle.qml
