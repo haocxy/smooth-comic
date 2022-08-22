@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import myapp.FileChooser
 import myapp.BookReader
@@ -49,12 +50,17 @@ Item{
         idSceneStack.push(idCompBookChooseScene)
     }
 
-    StackView {
-        id: idSceneStack
+    ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: idStrech.top
         height: parent.height - idStrech.height
+
+        StackView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            id: idSceneStack
+        }
     }
 
     Rectangle {
