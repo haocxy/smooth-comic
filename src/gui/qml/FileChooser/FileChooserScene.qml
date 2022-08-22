@@ -99,7 +99,7 @@ Rectangle {
                     onShouldOpenDir: p => openDir(p)
                 }
                 WindowStateSwitcher {
-
+                    visible: $engine.isWindowed
                 }
             }
         }
