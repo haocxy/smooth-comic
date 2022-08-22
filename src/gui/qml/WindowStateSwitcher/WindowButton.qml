@@ -8,7 +8,11 @@ Rectangle {
     required property string text
     signal clicked
 
-    color: idMouseArea.containsMouse ? "#33B3FF" : GlobalStyle.titleBarColor
+    property bool mouseOverByFramelessWindow: false
+
+    property bool mouseOver: mouseOverByFramelessWindow || idMouseArea.containsMouse
+
+    color: mouseOver ? "#33B3FF" : GlobalStyle.titleBarColor
 
     Text {
         anchors.centerIn: parent

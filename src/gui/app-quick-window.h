@@ -2,19 +2,20 @@
 
 #include <QPointer>
 
+#include "core/declare_ptr.h"
 #include "gui-util/frameless-window.h"
 
 
 namespace myapp {
 
-class GuiEngine;
+class AppQmlEngine;
 
-class AppWidget;
+class AppQuickWidget;
 
-class AppWindow : public FramelessWindow {
+class AppQuickWindow : public FramelessWindow {
     Q_OBJECT
 public:
-    explicit AppWindow(GuiEngine &engine, QWidget *parent = nullptr);
+    explicit AppQuickWindow(AppQmlEngine &appQmlEngine, QWidget *parent = nullptr);
 
 protected:
     virtual bool hasWindowMaxButton() const override;
@@ -27,19 +28,16 @@ protected:
 
     virtual bool isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const override;
 
+    virtual void keyReleaseEvent(QKeyEvent *e) override;
+
     virtual void changeEvent(QEvent *e) override;
 
 private:
-    void toggleWindowFullScreenAction();
-
-    void toggleWindowMaxAction();
-
-    void switchWindowStateTo(Qt::WindowState newState);
-
-    void onWindowStateChanged(Qt::WindowStates oldStates, Qt::WindowStates newStates);
+    void updateWindowState();
 
 private:
-    QPointer<AppWidget> appWidget_;
+    AppQmlEngine &appQmlEngine_;
+    DeclarePtr<AppQuickWidget> appWidget_;
 };
 
 }

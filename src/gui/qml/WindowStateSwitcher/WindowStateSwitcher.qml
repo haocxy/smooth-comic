@@ -21,9 +21,9 @@ RowLayout {
         text: window.isFullScreen ? "\uf1cf" : "\uf1ce"
         onClicked: {
             if (window.isFullScreen) {
-                Window.window.showNormal()
+                $window.showNormal()
             } else {
-                Window.window.showFullScreen()
+                $window.showFullScreen()
             }
         }
     }
@@ -38,11 +38,12 @@ RowLayout {
         Layout.preferredWidth: height * heightFactor
         visible: $engine.isWindowed
         text: "\ue15b"
-        onClicked: Window.window.showMinimized()
+        onClicked: $window.showMinimized()
     }
 
     WindowButton {
         // max
+        objectName: "windowMaxButton"
         Layout.topMargin: btnVMargin
         Layout.bottomMargin: btnVMargin
         Layout.leftMargin: btnHMargin
@@ -53,9 +54,9 @@ RowLayout {
         text: window.isMax ? "\ue3e0" : "\ue835"
         onClicked: {
             if (window.isMax) {
-                Window.window.showNormal()
+                $window.showNormal()
             } else {
-                Window.window.showMaximized()
+                $window.showMaximized()
             }
         }
     }
@@ -70,6 +71,6 @@ RowLayout {
         Layout.preferredWidth: height * heightFactor
         visible: $engine.isWindowed
         text: "\ue5cd"
-        onClicked: Window.window.close()
+        onClicked: $window.close()
     }
 }

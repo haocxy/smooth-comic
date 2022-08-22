@@ -59,6 +59,7 @@ Item{
         spacing: 0
 
         Rectangle {
+            objectName: "windowTitleBar"
             visible: $engine.isWindowed
             z: 100
             implicitWidth: parent.width
@@ -67,6 +68,7 @@ Item{
             RowLayout {
                 anchors.fill: parent
                 WindowStateSwitcher {
+                    objectName: "windowStateSwitcher"
                     Layout.alignment: Qt.AlignRight
                 }
             }

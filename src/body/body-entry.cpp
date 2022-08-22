@@ -24,6 +24,7 @@
 #include "gui/gui-engine.h"
 #include "gui/app-qml-engine.h"
 #include "gui/app-quick-view.h"
+#include "gui/app-quick-window.h"
 
 
 class QtResourceSystemIniter {
@@ -149,8 +150,8 @@ int body_entry(int argc, char *argv[])
 
     GuiEngine guiEngine;
     AppQmlEngine appQmlEngine(guiEngine);
-    AppQuickView appQuickView(appQmlEngine);
-    appQuickView.show();
+    AppQuickWindow appQuickWindow(appQmlEngine);
+    appQuickWindow.show();
 
 
     const QString cssPath = ":/styles/default.css";
@@ -164,7 +165,7 @@ int body_entry(int argc, char *argv[])
     qDebug() << "after setStyleSheet";
 
     uptr<AppWindow> w;
-    if (true) {
+    if (false) {
         w = new AppWindow(guiEngine);
         w->resize(800, 600);
         w->show();
