@@ -6,7 +6,7 @@ import Qt.labs.platform
 import myapp
 import myapp.Global
 import myapp.Util
-
+import myapp.WindowStateSwitcher
 
 Rectangle {
 
@@ -98,22 +98,8 @@ Rectangle {
                     dir: idFileChooser.currDir
                     onShouldOpenDir: p => openDir(p)
                 }
-                MyToolButton {
-                    Layout.topMargin: 12
-                    Layout.bottomMargin: 12
-                    Layout.leftMargin: 8
-                    Layout.rightMargin: 8
-                    Layout.fillHeight: true
-                    Layout.preferredWidth: height
-                    id: idWindowFullScreen
-                    text: window.isFullScreen ? "\uf1cf" : "\uf1ce"
-                    onClicked: {
-                        if (window.isFullScreen) {
-                            Window.window.showNormal()
-                        } else {
-                            Window.window.showFullScreen()
-                        }
-                    }
+                WindowStateSwitcher {
+
                 }
             }
         }

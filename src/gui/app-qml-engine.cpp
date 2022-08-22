@@ -32,8 +32,8 @@ bool AppQmlEngine::handleKeyRelease(QKeyEvent *e)
 
 void AppQmlEngine::updateWindowState(QQuickItem *window, Qt::WindowStates states)
 {
-    window->setProperty("isMin", states.testFlag(Qt::WindowMaximized));
-    window->setProperty("isMax", states.testFlag(Qt::WindowMinimized));
+    window->setProperty("isMin", states.testFlag(Qt::WindowMinimized));
+    window->setProperty("isMax", states.testFlag(Qt::WindowMaximized));
     window->setProperty("isFullScreen", states.testFlag(Qt::WindowFullScreen));
 }
 
