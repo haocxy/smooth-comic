@@ -1,4 +1,4 @@
-#include "app-main-quick-window.h"
+#include "app-quick-view.h"
 
 #include <QCoreApplication>
 #include <QKeyEvent>

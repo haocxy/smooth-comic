@@ -23,7 +23,7 @@
 
 #include "gui/gui-engine.h"
 #include "gui/app-qml-engine.h"
-#include "gui/app-main-quick-window.h"
+#include "gui/app-quick-view.h"
 
 
 class QtResourceSystemIniter {
