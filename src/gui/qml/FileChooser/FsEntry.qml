@@ -40,7 +40,7 @@ Item {
             property int iconHeight: 72
             implicitHeight: Math.max(iconHeight + 24, idFileName.contentHeight + 32)
             color: "white"
-            radius: 4
+            radius: 8
 
             border {
                 color: "#c8c8c8"

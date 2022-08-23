@@ -11,8 +11,6 @@ Rectangle {
 
     id: idWindow
 
-    color: "#eeeeee"
-
     FileChooser {
         id: idFileChooser
     }
