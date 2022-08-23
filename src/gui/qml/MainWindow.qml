@@ -9,12 +9,24 @@ import myapp.Global
 
 Item{
     id: window
+    objectName: "window"
     visible: true
     width: 800
     height: 600
     property bool isMin: false
     property bool isMax: false
     property bool isFullScreen: false
+
+    function inWindowMoveArea(x: int, y: int) : bool {
+        var gpos = Qt.point(x, y)
+        if (idWindowTitleBar.contains(idWindowTitleBar.mapFromGlobal(gpos))) {
+            return idWindowTitleBar.inWindowMoveArea(gpos)
+        }
+        if (idSceneStack.currentItem && idSceneStack.currentItem.inWindowMoveArea) {
+            return idSceneStack.currentItem.inWindowMoveArea(gpos)
+        }
+        return false
+    }
 
     function openFile(path) {
         idSceneStack.push(idCompBookReadScene, {comicPath: path})
@@ -62,6 +74,7 @@ Item{
         spacing: 0
 
         Rectangle {
+            id: idWindowTitleBar
             objectName: "windowTitleBar"
             visible: $engine.isWindowed
             z: 100
@@ -71,9 +84,14 @@ Item{
             RowLayout {
                 anchors.fill: parent
                 WindowStateSwitcher {
+                    id: idWindowStateSwitcher
                     objectName: "windowStateSwitcher"
                     Layout.alignment: Qt.AlignRight
                 }
+            }
+
+            function inWindowMoveArea(gpos: point): bool {
+                return !idWindowStateSwitcher.contains(idWindowStateSwitcher.mapFromGlobal(gpos))
             }
         }
 

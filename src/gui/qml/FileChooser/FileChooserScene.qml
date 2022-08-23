@@ -24,6 +24,12 @@ Rectangle {
         }
     }
 
+    function inWindowMoveArea(gpos: point): bool {
+        if (idTopArea.contains(idTopArea.mapFromGlobal(gpos))) {
+            return idTopArea.inWindowMoveArea(gpos)
+        }
+    }
+
     function openDir(path) {
         idFileChooser.openDir(path, idEntryListArea.contentY)
         idEntryListArea.contentY = 0
@@ -61,6 +67,7 @@ Rectangle {
         spacing: 0
 
         ToolBar {
+            id: idTopArea
             z: 100
             implicitWidth: parent.width
             implicitHeight: GlobalStyle.topBarHeight
@@ -95,6 +102,13 @@ Rectangle {
                     dir: idFileChooser.currDir
                     onShouldOpenDir: p => openDir(p)
                 }
+            }
+
+            function inWindowMoveArea(gpos: point): bool {
+                var lpos = mapFromGlobal(gpos)
+                // 顶部栏的上面一部分和窗口连在一起，所以认为顶部栏的上面也可以用于移动窗口
+                // 如果不把这部分算做可用于移动窗口，体验不好
+                return lpos.y < idAddrBarArea.y
             }
         }
 

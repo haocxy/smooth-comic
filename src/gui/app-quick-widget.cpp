@@ -19,14 +19,10 @@ AppQuickWidget::AppQuickWidget(AppQmlEngine &appQmlEngine, QWidget &realWindow, 
 
     appQmlEngine_.initView(*this);
 
-    windowTitleBar_ = rootObject()->findChild<QQuickItem *>(
-        "windowTitleBar", Qt::FindChildrenRecursively);
+    windowItem_ = rootObject();
 
     windowMaxButton_ = rootObject()->findChild<QQuickItem *>(
         "windowMaxButton", Qt::FindChildrenRecursively);
-
-    windowStateSwitcher_ = rootObject()->findChild<QQuickItem *>(
-        "windowStateSwitcher", Qt::FindChildrenRecursively);
 }
 
 AppQuickWidget::~AppQuickWidget()

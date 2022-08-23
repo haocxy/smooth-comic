@@ -17,23 +17,18 @@ public:
 
     void updateWindowState(const Qt::WindowStates &states);
 
-    QQuickItem *windowTitleBar() {
-        return windowTitleBar_;
+    QQuickItem *windowItem() {
+        return windowItem_;
     }
 
     QQuickItem *windowMaxButton() {
         return windowMaxButton_;
     }
 
-    QQuickItem *windowStateSwitcher() {
-        return windowStateSwitcher_;
-    }
-
 private:
     AppQmlEngine &appQmlEngine_;
-    QPointer<QQuickItem> windowTitleBar_;
+    QPointer<QQuickItem> windowItem_;
     QPointer<QQuickItem> windowMaxButton_;
-    QPointer<QQuickItem> windowStateSwitcher_;
 };
 
 }

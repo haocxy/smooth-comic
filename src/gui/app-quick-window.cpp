@@ -52,22 +52,12 @@ bool AppQuickWindow::isWindowMaxButtonContainsGlobalPos(const QPoint &gpos) cons
 
 bool AppQuickWindow::isWindowMoveAreaContainsGlobalPos(const QPoint &gpos) const
 {
+    bool result = false;
 
-    if (QQuickItem *titleBar = appWidget_->windowTitleBar()) {
-        const QPointF gposF{ qreal(gpos.x()), qreal(gpos.y()) };
-        const QPointF lposF = titleBar->mapFromGlobal(gposF);
-        if (titleBar->contains(lposF)) {
-            if (QQuickItem *windowStateSwitcher = appWidget_->windowStateSwitcher()) {
-                if (windowStateSwitcher->contains(windowStateSwitcher->mapFromGlobal(gposF))) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return false;
+    QMetaObject::invokeMethod(appWidget_->windowItem(), "inWindowMoveArea",
+        Q_RETURN_ARG(bool, result), Q_ARG(int, gpos.x()), Q_ARG(int, gpos.y()));
+
+    return result;
 }
 
 void AppQuickWindow::keyReleaseEvent(QKeyEvent *e)

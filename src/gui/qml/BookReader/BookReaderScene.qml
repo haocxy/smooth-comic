@@ -18,6 +18,16 @@ Rectangle {
         }
     }
 
+    function inWindowMoveArea(gpos: point): bool {
+        if (idTopBar.contains(idTopBar.mapFromGlobal(gpos))) {
+            return idTopBar.inWindowMoveArea(gpos)
+        }
+        if (idBottomBar.contains(idBottomBar.mapFromGlobal(gpos))) {
+            return idBottomBar.inWindowMoveArea(gpos)
+        }
+        return false
+    }
+
     state: "controll"
 
     states: [
@@ -82,6 +92,7 @@ Rectangle {
         }
 
         RowLayout {
+            id: idTopBarLayout
             anchors.fill: parent
             MyToolButton {
                 Layout.topMargin: 12
@@ -95,6 +106,11 @@ Rectangle {
                     window.goBack()
                 }
             }
+        }
+
+        function inWindowMoveArea(gpos: point): bool {
+            var lpos = idTopBarLayout.mapFromGlobal(gpos)
+            return !idTopBarLayout.childAt(lpos.x, lpos.y)
         }
     }
 
@@ -120,6 +136,7 @@ Rectangle {
         }
 
         RowLayout {
+            id: idBottomBarLayout
             anchors.fill: parent
             MyToolButton {
                 Layout.topMargin: 12
@@ -133,6 +150,11 @@ Rectangle {
                     window.goBack()
                 }
             }
+        }
+
+        function inWindowMoveArea(gpos: point): bool {
+            var lpos = idBottomBarLayout.mapFromGlobal(gpos)
+            return !idBottomBarLayout.childAt(lpos.x, lpos.y)
         }
     }
 
