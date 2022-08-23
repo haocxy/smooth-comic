@@ -50,7 +50,7 @@ Rectangle {
         opacity: 0
 
         function controll(gpos) {
-            var lpos = mapToItem(this, gpos)
+            var lpos = mapFromGlobal(gpos)
             var item = childAt(lpos.x, lpos.y)
             if (!item) {
                 return
