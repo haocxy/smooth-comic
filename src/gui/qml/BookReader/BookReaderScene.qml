@@ -27,12 +27,28 @@ Rectangle {
                 target: idRoot
                 color: GlobalStyle.readerBgColor4ControllState
             }
+            PropertyChanges {
+                target: idTopBar
+                y: 0
+            }
+            PropertyChanges {
+                target: idBottomBar
+                y: idRoot.height - idBottomBar.height
+            }
         },
         State {
             name: "read"
             PropertyChanges {
                 target: idRoot
                 color: GlobalStyle.readerBgColor4ReadState
+            }
+            PropertyChanges {
+                target: idTopBar
+                y: -idTopBar.height
+            }
+            PropertyChanges {
+                target: idBottomBar
+                y: idRoot.height
             }
         }
     ]
