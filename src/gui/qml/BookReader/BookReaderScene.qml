@@ -1,12 +1,43 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import myapp
 import myapp.Global
+import myapp.Util
 
 Rectangle {
 
     required property string comicPath
+
+    ToolBar {
+        x: 0
+        y: 0
+        z: 100
+        implicitWidth: parent.width
+        implicitHeight: GlobalStyle.topBarHeight
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalStyle.titleBarColor
+        }
+
+        RowLayout {
+            anchors.fill: parent
+            MyToolButton {
+                Layout.topMargin: 12
+                Layout.bottomMargin: 12
+                Layout.leftMargin: 8
+                Layout.rightMargin: 8
+                Layout.fillHeight: true
+                Layout.preferredWidth: height
+                id: idBackBtn
+                text: "\ue5c4"
+                onClicked: {
+                    window.goBack()
+                }
+            }
+        }
+    }
 
     PageReader {
         anchors.fill: parent

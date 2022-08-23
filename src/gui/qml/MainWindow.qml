@@ -20,8 +20,7 @@ Item{
         idSceneStack.push(idCompBookReadScene, {comicPath: path})
     }
 
-    Connections {
-        target: $engine
+    function goBack() {
         function tryLocalGoBack() {
             if (!idSceneStack.currentItem) {
                 return false
@@ -31,19 +30,23 @@ Item{
             }
             return idSceneStack.currentItem.localGoBack()
         }
+        // 尝试局部返回，若执行了局部返回则不继续处理
+        if (tryLocalGoBack()) {
+            return
+        }
 
+        // 若没有执行局部返回则全局返回
+        if (idSceneStack.depth > 1) {
+            idSceneStack.pop()
+        } else {
+            Qt.quit()
+        }
+    }
+
+    Connections {
+        target: $engine
         function onKeyBackReleased() {
-            // 尝试局部返回，若执行了局部返回则不继续处理
-            if (tryLocalGoBack()) {
-                return
-            }
-
-            // 若没有执行局部返回则全局返回
-            if (idSceneStack.depth > 1) {
-                idSceneStack.pop()
-            } else {
-                Qt.quit()
-            }
+            window.goBack()
         }
     }
 

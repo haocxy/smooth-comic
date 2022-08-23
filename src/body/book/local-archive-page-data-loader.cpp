@@ -42,7 +42,6 @@ void LocalArchivePageDataLoader::threadBody()
     PageNum seqNum = 0;
 
     while (!stopped_ && archive.nextEntry()) {
-        qDebug() << "qmllog: archive.nextEntry, seqNum: " << seqNum << ", pageCount: " << pageCount;
         if (!archive.isRegularFile()) {
             continue;
         }
@@ -50,7 +49,6 @@ void LocalArchivePageDataLoader::threadBody()
         sptr<PageData> pageData = std::make_shared<PageData>();
         pageData->seqNum = seqNum++;
         pageData->name = archive.path();
-        qDebug() << "qmllog: archive item: " << QString::fromStdU32String(pageData->name);
         if (loadedEntries_.contains(pageData->name)) {
             archive.skipContent();
         } else {
