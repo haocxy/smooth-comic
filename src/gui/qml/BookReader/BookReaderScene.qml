@@ -10,6 +10,33 @@ Rectangle {
     id: idRoot
     required property string comicPath
 
+    function switchState() {
+        if (state == "controll") {
+            state = "read"
+        } else {
+            state = "controll"
+        }
+    }
+
+    state: "controll"
+
+    states: [
+        State {
+            name: "controll"
+            PropertyChanges {
+                target: idRoot
+                color: GlobalStyle.readerBgColor4ControllState
+            }
+        },
+        State {
+            name: "read"
+            PropertyChanges {
+                target: idRoot
+                color: GlobalStyle.readerBgColor4ReadState
+            }
+        }
+    ]
+
     ToolBar {
         id: idTopBar
         x: 0
@@ -85,6 +112,7 @@ Rectangle {
             var lpos = mapFromGlobal(gpos)
             var item = childAt(lpos.x, lpos.y)
             if (!item) {
+                switchState()
                 return
             }
             if (item.handle) {

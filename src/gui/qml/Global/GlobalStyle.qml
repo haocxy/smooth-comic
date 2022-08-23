@@ -8,4 +8,6 @@ QtObject {
     property int topBarHeight: 64
     property int bottomBarHeight: 64
     property color iconColor: "white"
+    property color readerBgColor4ControllState: "white"
+    property color readerBgColor4ReadState: "black"
 }
