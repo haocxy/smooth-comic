@@ -81,6 +81,17 @@ Item{
             Layout.fillWidth: true
             Layout.fillHeight: true
             id: idSceneStack
+
+            Component.onCompleted: {
+                if ($engine.isWindowed) {
+                    popEnter = null
+                    popExit = null
+                    pushEnter = null
+                    pushExit = null
+                    replaceEnter = null
+                    replaceExit = null
+                }
+            }
         }
     }
 
