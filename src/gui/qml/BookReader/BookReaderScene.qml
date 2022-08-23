@@ -53,6 +53,22 @@ Rectangle {
         }
     ]
 
+    transitions: [
+        Transition {
+            reversible: true
+            from: "controll"; to: "read"
+            ParallelAnimation {
+                ColorAnimation {
+                    property: "color"
+                }
+                NumberAnimation {
+                    property: "y"
+                    duration: 100
+                }
+            }
+        }
+    ]
+
     ToolBar {
         id: idTopBar
         x: 0
