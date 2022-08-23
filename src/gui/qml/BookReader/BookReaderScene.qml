@@ -105,8 +105,6 @@ Rectangle {
         width: idRoot.width
         height: idRoot.state === "read" ? idRoot.height : idRoot.height - idTopBar.height - idBottomBar.height
         controller: idController
-
-        onHeightChanged: console.log("qmllog PageReader height: ", height)
     }
 
     ToolBar {
