@@ -388,6 +388,8 @@ void PageScene::jumpBy(SwitchDirection direction)
 
 void PageScene::draw(QPainter &painter) const
 {
+    painter.setRenderHint(QPainter::RenderHint::SmoothPixmapTransform);
+
     PainterSaver saver(painter);
 
     painter.translate(sceneSize_.width() / 2, sceneSize_.height() / 2);
