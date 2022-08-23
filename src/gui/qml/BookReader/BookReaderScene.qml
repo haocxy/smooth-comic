@@ -63,7 +63,7 @@ Rectangle {
                 }
                 NumberAnimation {
                     property: "y"
-                    duration: 100
+//                    duration: 100
                 }
             }
         }
@@ -99,11 +99,14 @@ Rectangle {
     }
 
     PageReader {
-        anchors.left: idRoot.left
-        anchors.right: idRoot.right
-        anchors.top: idTopBar.bottom
-        anchors.bottom: idBottomBar.top
+        id: idPageReader
+        x: 0
+        y: idRoot.state === "read" ? 0 : idTopBar.height
+        width: idRoot.width
+        height: idRoot.state === "read" ? idRoot.height : idRoot.height - idTopBar.height - idBottomBar.height
         controller: idController
+
+        onHeightChanged: console.log("qmllog PageReader height: ", height)
     }
 
     ToolBar {
