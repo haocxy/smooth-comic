@@ -183,7 +183,7 @@ Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
                 iconHeight: GlobalStyle.bottomBarIconHeight
-                text: "\ue8b6"; onClicked: {}
+                text: "\ue8b6"; onClicked: idScaleMenu.visible = !idScaleMenu.visible
             }
             Item {
                 id: idBottomRightStrech
@@ -315,6 +315,8 @@ Rectangle {
     }
 
     ScaleMenu {
+        anchors.centerIn: parent
+        id: idScaleMenu
         controller: idController
     }
 
