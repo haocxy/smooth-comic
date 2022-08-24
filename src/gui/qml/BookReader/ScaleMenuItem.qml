@@ -15,7 +15,7 @@ Rectangle {
 
     RadioButton {
         id: button
-        anchors.fill: parent
+        anchors.verticalCenter: parent.verticalCenter
         ButtonGroup.group: group
         text: root.text
         checked: pageReader ? pageReader.scaleMode === scaleMode : false
