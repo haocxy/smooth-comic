@@ -2,9 +2,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import myapp
+
 Popup {
-    required property var controller
-    width: 300
+    required property var pageReader
+    width: 600
     height: 100
     modal: true
 
@@ -12,39 +14,48 @@ Popup {
         id: idButtonGroup
     }
 
-    ColumnLayout {
+    GridLayout {
         anchors.fill: parent
-        RowLayout {
-            Item {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-            RadioButton {
-                ButtonGroup.group: idButtonGroup
-                text: qsTr("Raw Size")
-            }
-            RadioButton {
-                ButtonGroup.group: idButtonGroup
-                text: qsTr("Adjust Size")
-            }
+        columns: 4
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Raw Size")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_RawSize
         }
-        RowLayout {
-            Item {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-            RadioButton {
-                ButtonGroup.group: idButtonGroup
-                text: qsTr("Raw Size")
-            }
-            RadioButton {
-                ButtonGroup.group: idButtonGroup
-                text: qsTr("Adjust Size")
-            }
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Adjust Size")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_AutoFitAreaSize
         }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Adjust Width")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_AutoFitAreaWidth
+        }
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Adjust Height")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_AutoFitAreaHeight
+        }
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Fix Width Ratio")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_FixWidthByRatio
+        }
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Fix Height Ratio")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_FixHeightByRatio
+        }
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Fix Width Pixel")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_FixWidthByPixel
+        }
+        RadioButton {
+            ButtonGroup.group: idButtonGroup
+            text: qsTr("Fix Height Pixel")
+            onClicked: pageReader.scaleMode = PageReader.ScaleMode_FixHeightByPixel
         }
     }
 }

@@ -321,7 +321,7 @@ Rectangle {
     ScaleMenu {
         anchors.centerIn: parent
         id: idScaleMenu
-        controller: idController
+        pageReader: idPageReader
     }
 
     Controller {

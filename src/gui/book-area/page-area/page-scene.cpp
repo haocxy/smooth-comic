@@ -220,7 +220,7 @@ void PageScene::setScaleMode(ScaleMode scaleMode)
 {
     if (scaleMode_ != scaleMode) {
         scaleMode_ = scaleMode;
-
+        emit scaleModeChanged();
         layoutPages();
     }
 }

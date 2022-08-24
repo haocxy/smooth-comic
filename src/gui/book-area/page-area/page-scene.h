@@ -79,6 +79,8 @@ public:
 signals:
     void cmdUpdate();
 
+    void scaleModeChanged();
+
 private:
     void reset();
 

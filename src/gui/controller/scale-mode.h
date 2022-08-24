@@ -3,7 +3,9 @@
 
 namespace myapp {
 
-enum class ScaleMode {
+using ScaleModeBaseType = int;
+
+enum class ScaleMode : ScaleModeBaseType {
     RawSize,
     AutoFitAreaSize,
     AutoFitAreaWidth,
