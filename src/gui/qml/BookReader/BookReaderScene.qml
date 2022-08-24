@@ -103,6 +103,7 @@ Rectangle {
                 Layout.rightMargin: 8
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
+                iconHeight: GlobalStyle.topBarIconHeight
                 text: "\ue5c4"
                 onClicked: {
                     window.goBack()
@@ -156,6 +157,11 @@ Rectangle {
         RowLayout {
             id: idBottomBarLayout
             anchors.fill: parent
+            Item {
+                id: idBottomLeftStrech
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
             MyToolButton {
                 Layout.topMargin: 12
                 Layout.bottomMargin: 12
@@ -163,16 +169,34 @@ Rectangle {
                 Layout.rightMargin: 8
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
-                text: "\ue5c4"
-                onClicked: {
-                    window.goBack()
-                }
+                iconHeight: GlobalStyle.bottomBarIconHeight
+                text: "\ue5c4"; onClicked: window.goBack()
+            }
+            MyToolButton {
+                Layout.topMargin: 12
+                Layout.bottomMargin: 12
+                Layout.leftMargin: 8
+                Layout.rightMargin: 8
+                Layout.fillHeight: true
+                Layout.preferredWidth: height
+                iconHeight: GlobalStyle.bottomBarIconHeight
+                text: "\ue8ff"; onClicked: {}
+            }
+            Item {
+                id: idBottomRightStrech
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
         }
 
         function inWindowMoveArea(gpos: point): bool {
-            var lpos = idBottomBarLayout.mapFromGlobal(gpos)
-            return !idBottomBarLayout.childAt(lpos.x, lpos.y)
+            if (idBottomLeftStrech.contains(idBottomLeftStrech.mapFromGlobal(gpos))) {
+                return true
+            }
+            if (idBottomRightStrech.contains(idBottomRightStrech.mapFromGlobal(gpos))) {
+                return true
+            }
+            return false
         }
     }
 
@@ -287,7 +311,9 @@ Rectangle {
 
     }
 
-
+    ScaleMenu {
+        controller: idController
+    }
 
     Controller {
         id: idController

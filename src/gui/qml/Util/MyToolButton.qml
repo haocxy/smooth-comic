@@ -7,6 +7,8 @@ import myapp.Global
 Rectangle {
     id: idRoot
     required property string text
+    required property int iconHeight
+
     signal clicked
 
     // 外部的整个矩形实际是边框，为了确保边框的内外都是有弧度的，通过两层矩形实现
@@ -25,7 +27,7 @@ Rectangle {
             anchors.centerIn: parent
             font {
                 family: "Material Icons"
-                pixelSize: 26
+                pixelSize: iconHeight
             }
             text: idRoot.text
             color: GlobalStyle.iconColor

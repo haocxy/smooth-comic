@@ -86,6 +86,7 @@ Rectangle {
                     Layout.fillHeight: true
                     Layout.preferredWidth: height
                     id: idBackBtn
+                    iconHeight: GlobalStyle.topBarIconHeight
                     text: "\ue5c4"
                     onClicked: {
                         idFileChooser.goBack()
