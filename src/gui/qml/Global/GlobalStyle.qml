@@ -25,4 +25,5 @@ QtObject {
     property int popMenuContentRowHeight: 24
     property int popMenuSegGap: 8
     property color popMenuBgColor: "#eaeaea"
+    property int popMenuRadius: 16
 }

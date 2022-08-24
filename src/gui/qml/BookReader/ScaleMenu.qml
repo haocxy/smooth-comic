@@ -14,7 +14,10 @@ Popup {
     height: segCount * GlobalStyle.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * GlobalStyle.popMenuContentRowHeight + (segCount - 1) * GlobalStyle.popMenuSegGap
     modal: true
     padding: GlobalStyle.popMenuContentMargin
-    background: Rectangle { color: GlobalStyle.popMenuBgColor }
+    background: Rectangle {
+        color: GlobalStyle.popMenuBgColor
+        radius: GlobalStyle.popMenuRadius
+    }
 
     ButtonGroup { id: buttons }
 
