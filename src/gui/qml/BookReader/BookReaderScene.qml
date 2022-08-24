@@ -175,6 +175,7 @@ Rectangle {
                 text: "\ue5c4"; onClicked: window.goBack()
             }
             MyToolButton {
+                // scale
                 Layout.topMargin: 12
                 Layout.bottomMargin: 12
                 Layout.leftMargin: 8
@@ -182,7 +183,7 @@ Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
                 iconHeight: GlobalStyle.bottomBarIconHeight
-                text: "\ue8ff"; onClicked: {}
+                text: "\ue8b6"; onClicked: {}
             }
             Item {
                 id: idBottomRightStrech
