@@ -142,6 +142,10 @@ Rectangle {
         width: idRoot.width
         height: idRoot.state === "read" ? idRoot.height : idRoot.height - idTopBar.height - idBottomBar.height
         controller: idController
+
+        Component.onCompleted: {
+            idController.filePath = Qt.binding(function() {return idRoot.comicPath})
+        }
     }
 
     ToolBar {
@@ -323,6 +327,5 @@ Rectangle {
     Controller {
         id: idController
         guiEngine: $engine
-        filePath: comicPath
     }
 }
