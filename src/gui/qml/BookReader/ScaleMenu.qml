@@ -10,7 +10,7 @@ Popup {
     property int segCount: 2
 
     id: root
-    width: 320
+    width: 260
     height: segCount * GlobalStyle.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * GlobalStyle.popMenuContentRowHeight + (segCount - 1) * GlobalStyle.popMenuSegGap
     modal: true
     padding: GlobalStyle.popMenuContentMargin

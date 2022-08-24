@@ -21,7 +21,7 @@ QtObject {
     // popup菜单中区域标题中的文本像素尺寸
     property int popMenuTitleTextPixSize: 24
     property int popMenuTitleAreaHeight: 40
-    property int popMenuContentMargin: 24
-    property int popMenuContentRowHeight: 32
-    property int popMenuSegGap: 16
+    property int popMenuContentMargin: 16
+    property int popMenuContentRowHeight: 24
+    property int popMenuSegGap: 8
 }
