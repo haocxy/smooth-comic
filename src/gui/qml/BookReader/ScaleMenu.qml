@@ -3,13 +3,18 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import myapp
+import myapp.Global
 
 Popup {
     required property var pageReader
+    property int segCount: 2
+
     id: root
     width: 320
-    height: 400
+    height: segCount * GlobalStyle.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * GlobalStyle.popMenuContentRowHeight + (segCount - 1) * GlobalStyle.popMenuSegGap
     modal: true
+    padding: GlobalStyle.popMenuContentMargin
+
 
     ButtonGroup {
         id: buttons
@@ -20,9 +25,13 @@ Popup {
         id: rootLayout
         Text {
             Layout.fillWidth: true; Layout.fillHeight: true
+            antialiasing: true
+            font { pixelSize: GlobalStyle.popMenuTitleTextPixSize }
             text: qsTr("Auto Scale")
+            verticalAlignment: Text.AlignVCenter
         }
         GridLayout {
+            id: autoScaleAreaLayout
             Layout.fillWidth: true; Layout.fillHeight: true
             columns: 2
             ScaleMenuItem {
@@ -54,11 +63,18 @@ Popup {
                 text: qsTr("Adjust Height")
             }
         }
+        Item {
+            Layout.fillWidth: true
+            Layout.preferredHeight: GlobalStyle.popMenuSegGap
+        }
         Text {
             Layout.fillWidth: true; Layout.fillHeight: true
+            font { pixelSize: GlobalStyle.popMenuTitleTextPixSize }
             text: qsTr("Fix Scale")
+            verticalAlignment: Text.AlignVCenter
         }
         GridLayout {
+            id: fixedScaleAreaLayout
             Layout.fillWidth: true; Layout.fillHeight: true
             columns: 2
             ScaleMenuItem {
