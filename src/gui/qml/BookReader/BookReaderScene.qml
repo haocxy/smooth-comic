@@ -13,12 +13,14 @@ Rectangle {
     function switchState() {
         if (state == "controll") {
             state = "read"
+            idTopBarAnimOnY.stop()
             idTopBarAnimOnY.from = idTopBar.y
             idTopBarAnimOnY.to = -idTopBar.height
             idTopBarAnimOnY.start()
         } else {
             window.switchToNormalState()
             state = "controll"
+            idTopBarAnimOnY.stop()
             idTopBarAnimOnY.from = idTopBar.y
             idTopBarAnimOnY.to = 0
             idTopBarAnimOnY.start()
