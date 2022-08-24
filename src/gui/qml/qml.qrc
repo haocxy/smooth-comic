@@ -18,5 +18,6 @@
         <file>Util/qmldir</file>
         <file>WindowStateSwitcher/WindowButton.qml</file>
         <file>BookReader/ScaleMenu.qml</file>
+        <file>BookReader/ScaleMenuItem.qml</file>
     </qresource>
 </RCC>

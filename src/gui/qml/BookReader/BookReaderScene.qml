@@ -135,6 +135,12 @@ Rectangle {
         }
     }
 
+    ScaleMenu {
+        anchors.centerIn: parent
+        id: idScaleMenu
+        pageReader: idPageReader
+    }
+
     PageReader {
         id: idPageReader
         x: 0
@@ -316,12 +322,6 @@ Rectangle {
                                }
         }
 
-    }
-
-    ScaleMenu {
-        anchors.centerIn: parent
-        id: idScaleMenu
-        pageReader: idPageReader
     }
 
     Controller {
