@@ -10,4 +10,5 @@ QtObject {
     property color iconColor: "white"
     property color readerBgColor4ControllState: "white"
     property color readerBgColor4ReadState: "black"
+    property color titleBarColor4ReadState: "#3f3f3f"
 }

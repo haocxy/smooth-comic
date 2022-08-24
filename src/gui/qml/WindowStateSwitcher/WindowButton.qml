@@ -6,13 +6,14 @@ import myapp.Global
 Rectangle {
     id: idRoot
     required property string text
+    required property color bgColor
+
     signal clicked
 
     property bool mouseOverByFramelessWindow: false
-
     property bool mouseOver: mouseOverByFramelessWindow || idMouseArea.containsMouse
 
-    color: mouseOver ? GlobalStyle.titleBarColor.lighter(1.3) : GlobalStyle.titleBarColor
+    color: bgColor
 
     Text {
         anchors.centerIn: parent

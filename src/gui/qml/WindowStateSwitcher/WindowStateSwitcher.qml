@@ -5,10 +5,14 @@ import myapp.Util
 
 RowLayout {
 
+    required property color btnBgColor
+
     property int btnHMargin: 4
     property int btnVMargin: 0
 
     property real heightFactor: 1.5
+
+    property color hoverColor: btnBgColor.lighter(1.3)
 
     WindowButton {
         // full screen
@@ -19,6 +23,7 @@ RowLayout {
         Layout.fillHeight: true
         Layout.preferredWidth: height * heightFactor
         text: window.isFullScreen ? "\uf1cf" : "\uf1ce"
+        bgColor: mouseOver ? hoverColor : btnBgColor
         onClicked: {
             if (window.isFullScreen) {
                 $window.showNormal()
@@ -38,6 +43,7 @@ RowLayout {
         Layout.preferredWidth: height * heightFactor
         visible: $engine.isWindowed
         text: "\ue15b"
+        bgColor: mouseOver ? hoverColor : btnBgColor
         onClicked: $window.showMinimized()
     }
 
@@ -52,6 +58,7 @@ RowLayout {
         Layout.preferredWidth: height * heightFactor
         visible: $engine.isWindowed
         text: window.isMax ? "\ue3e0" : "\ue835"
+        bgColor: mouseOver ? hoverColor : btnBgColor
         onClicked: {
             if (window.isMax) {
                 $window.showNormal()
@@ -71,6 +78,7 @@ RowLayout {
         Layout.preferredWidth: height * heightFactor
         visible: $engine.isWindowed
         text: "\ue5cd"
+        bgColor: mouseOver ? hoverColor : btnBgColor
         onClicked: $window.close()
     }
 }

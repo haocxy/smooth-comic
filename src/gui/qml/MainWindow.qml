@@ -55,6 +55,14 @@ Item{
         }
     }
 
+    function switchToReadState() {
+        idWindowTitleBar.state = "read"
+    }
+
+    function switchToNormalState() {
+        idWindowTitleBar.state = "normal"
+    }
+
     Connections {
         target: $engine
         function onKeyBackReleased() {
@@ -80,15 +88,33 @@ Item{
             z: 100
             implicitWidth: parent.width
             implicitHeight: GlobalStyle.titleBarHeight
-            color: GlobalStyle.titleBarColor
+            state: "normal"
+            onStateChanged: console.log("qmllog: winTitleBat state: ", state)
             RowLayout {
                 anchors.fill: parent
                 WindowStateSwitcher {
                     id: idWindowStateSwitcher
                     objectName: "windowStateSwitcher"
                     Layout.alignment: Qt.AlignRight
+                    btnBgColor: idWindowTitleBar.color
                 }
             }
+            states: [
+                State {
+                    name: "normal"
+                    PropertyChanges {
+                        target: idWindowTitleBar
+                        color: GlobalStyle.titleBarColor
+                    }
+                },
+                State {
+                    name: "read"
+                    PropertyChanges {
+                        target: idWindowTitleBar
+                        color: GlobalStyle.titleBarColor4ReadState
+                    }
+                }
+            ]
 
             function inWindowMoveArea(gpos: point): bool {
                 return !idWindowStateSwitcher.contains(idWindowStateSwitcher.mapFromGlobal(gpos))

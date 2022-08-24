@@ -13,8 +13,15 @@ Rectangle {
     function switchState() {
         if (state == "controll") {
             state = "read"
+            idTopBarAnimOnY.from = idTopBar.y
+            idTopBarAnimOnY.to = -idTopBar.height
+            idTopBarAnimOnY.start()
         } else {
+            window.switchToNormalState()
             state = "controll"
+            idTopBarAnimOnY.from = idTopBar.y
+            idTopBarAnimOnY.to = 0
+            idTopBarAnimOnY.start()
         }
     }
 
@@ -38,10 +45,6 @@ Rectangle {
                 color: GlobalStyle.readerBgColor4ControllState
             }
             PropertyChanges {
-                target: idTopBar
-                y: 0
-            }
-            PropertyChanges {
                 target: idBottomBar
                 y: idRoot.height - idBottomBar.height
             }
@@ -51,10 +54,6 @@ Rectangle {
             PropertyChanges {
                 target: idRoot
                 color: GlobalStyle.readerBgColor4ReadState
-            }
-            PropertyChanges {
-                target: idTopBar
-                y: -idTopBar.height
             }
             PropertyChanges {
                 target: idBottomBar
@@ -75,6 +74,9 @@ Rectangle {
                     property: "y"
 //                    duration: 100
                 }
+                NumberAnimation {
+                    property: "opacity"
+                }
             }
         }
     ]
@@ -82,7 +84,7 @@ Rectangle {
     ToolBar {
         id: idTopBar
         x: 0
-        y: 0
+        y: state === "read" ? -idTopBar.height : 0
         z: 100
         implicitWidth: parent.width
         implicitHeight: GlobalStyle.topBarHeight
@@ -104,6 +106,22 @@ Rectangle {
                 text: "\ue5c4"
                 onClicked: {
                     window.goBack()
+                }
+            }
+        }
+
+        // 为了让窗口标题栏的状态切换具有连贯性，
+        // 需要确保窗口状态切换开始于顶部栏状态切换的结束时，
+        // 而动画对象的 onFinished 信号无法在和其它机制例如transitions等配合时触发，
+        // 所以对顶部状态栏的状态切换和动画效果单独手动处理，不使用状态机制
+        NumberAnimation on y {
+            id: idTopBarAnimOnY
+            running: false
+            onFinished: {
+                // 这里只处理切换到read状态时的情况
+                // 切换到controll状态时要先切换窗口标题栏的状态
+                if (idRoot.state === "read") {
+                    window.switchToReadState()
                 }
             }
         }
