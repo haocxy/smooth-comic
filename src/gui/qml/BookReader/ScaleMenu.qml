@@ -14,11 +14,9 @@ Popup {
     height: segCount * GlobalStyle.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * GlobalStyle.popMenuContentRowHeight + (segCount - 1) * GlobalStyle.popMenuSegGap
     modal: true
     padding: GlobalStyle.popMenuContentMargin
+    background: Rectangle { color: GlobalStyle.popMenuBgColor }
 
-
-    ButtonGroup {
-        id: buttons
-    }
+    ButtonGroup { id: buttons }
 
     ColumnLayout {
         anchors.fill: parent

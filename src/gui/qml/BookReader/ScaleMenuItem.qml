@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import myapp
+import myapp.Global
 
 Rectangle {
     required property ButtonGroup group
@@ -12,10 +13,12 @@ Rectangle {
     id: root
     implicitWidth: button.implicitWidth
     implicitHeight: button.implicitHeight
+    color: GlobalStyle.popMenuBgColor
 
     RadioButton {
         id: button
         anchors.verticalCenter: parent.verticalCenter
+        background: Rectangle { color: GlobalStyle.popMenuBgColor }
         ButtonGroup.group: group
         text: root.text
         checked: pageReader ? pageReader.scaleMode === scaleMode : false
