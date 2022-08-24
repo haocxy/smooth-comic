@@ -17,6 +17,7 @@ Popup {
     background: Rectangle {
         color: GlobalStyle.popMenuBgColor
         radius: GlobalStyle.popMenuRadius
+        opacity: GlobalStyle.popMenuOpacity
     }
 
     ButtonGroup { id: buttons }
