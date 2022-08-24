@@ -89,7 +89,6 @@ Item{
             implicitWidth: parent.width
             implicitHeight: GlobalStyle.titleBarHeight
             state: "normal"
-            onStateChanged: console.log("qmllog: winTitleBat state: ", state)
             RowLayout {
                 anchors.fill: parent
                 WindowStateSwitcher {
