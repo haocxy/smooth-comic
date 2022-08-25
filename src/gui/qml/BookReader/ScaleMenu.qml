@@ -14,6 +14,8 @@ Rectangle {
     required property real dragMaxY
     required property var pageReader
     property int segCount: 2
+    property real hPinDist: 16
+    property real vPinDist: 16
 
     id: root
     z: ZOrder.popMenu
@@ -29,7 +31,65 @@ Rectangle {
         y = initY
     }
 
+    property int eNotPined: 0
+    property int ePinTop: 1
+    property int ePinBottom: 2
+    property int ePinLeft: 3
+    property int ePinRight: 4
+    property int hPinType: eNotPined
+    property int vPinType: eNotPined
+    property real hPinOffset: 0
+    property real vPinOffset: 0
+
+    onHPinTypeChanged: console.log("qmllog: hPinType: ", hPinType)
+    onVPinTypeChanged: console.log("qmllog: vPinType: ", vPinType)
+    onXChanged: {
+        if (root.x - dragMinX < hPinDist) {
+            hPinType = ePinLeft
+            hPinOffset = root.x - dragMinX
+        } else if (dragMaxX - root.x < hPinDist) {
+            hPinType = ePinRight
+            hPinOffset = root.x - dragMaxX
+        } else {
+            hPinType = eNotPined
+            hPinOffset = 0
+        }
+    }
+    onYChanged: {
+        if (root.y - dragMinY < vPinDist) {
+            vPinType = ePinTop
+            vPinOffset = root.y - dragMinY
+        } else if (dragMaxY - root.y < vPinDist) {
+            vPinType = ePinBottom
+            vPinOffset = root.y - dragMaxY
+        } else {
+            vPinType = eNotPined
+            vPinOffset = 0
+        }
+    }
+    onDragMinXChanged: {
+        if (hPinType === ePinLeft) {
+            root.x = dragMinX + hPinOffset
+        }
+    }
+    onDragMaxXChanged: {
+        if (hPinType === ePinRight) {
+            root.x = dragMaxX + hPinOffset
+        }
+    }
+    onDragMinYChanged: {
+        if (vPinType === ePinTop) {
+            root.y = dragMinY + vPinOffset
+        }
+    }
+    onDragMaxYChanged: {
+        if (vPinType === ePinBottom) {
+            root.y = dragMaxY + vPinOffset
+        }
+    }
+
     MouseArea {
+        id: mouseAreaForDrag
         anchors.fill: parent
         drag.target: parent
         drag.axis: Drag.XAndYAxis

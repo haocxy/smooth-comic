@@ -142,8 +142,8 @@ Rectangle {
         initY: (root.height - height) / 2
         dragMinX: Style.popMenuMargin
         dragMaxX: root.width - width - Style.popMenuMargin
-        dragMinY: Style.popMenuMargin + (root.state === "read" ? 0 : topBar.height)
-        dragMaxY: root.height - height - Style.popMenuMargin - (root.state === "read" ? 0 : bottomBar.height)
+        dragMinY: Style.popMenuMargin + topBar.y + topBar.height
+        dragMaxY: bottomBar.y - height - Style.popMenuMargin
         pageReader: pageReader
     }
 
