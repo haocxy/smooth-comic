@@ -4,41 +4,41 @@ import QtQuick.Layouts
 
 
 Item {
-    id: idEntry
+    id: root
     required property string name
     required property string path
     required property bool isDir
     property int entryStyle: EntryStyle.eCard
-    implicitHeight: idLoader.implicitHeight
+    implicitHeight: loader.implicitHeight
 
     signal shouldOpenDir(string path)
 
     signal shouldOpenFile(string path)
 
     Loader {
-        id: idLoader
-        sourceComponent: idCompCardStyledEntry
-        width: idEntry.width
-        height: idEntry.height
+        id: loader
+        sourceComponent: compCardStyledEntry
+        width: parent.width
+        height: parent.height
     }
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            if (idEntry.isDir) {
-                idEntry.shouldOpenDir(idEntry.path)
+            if (root.isDir) {
+                root.shouldOpenDir(root.path)
             } else {
-                idEntry.shouldOpenFile(idEntry.path)
+                root.shouldOpenFile(root.path)
             }
         }
     }
 
     Component {
-        id: idCompCardStyledEntry
+        id: compCardStyledEntry
         Rectangle {
             property int iconWidth: 64
             property int iconHeight: 72
-            implicitHeight: Math.max(iconHeight + 24, idFileName.contentHeight + 32)
+            implicitHeight: Math.max(iconHeight + 24, entryName.contentHeight + 32)
             color: "white"
             radius: 8
 
@@ -74,10 +74,10 @@ Item {
                     Layout.rightMargin: 16
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    id: idFileName
+                    id: entryName
                     padding: 0
                     antialiasing: true
-                    text: idEntry.name
+                    text: root.name
                     wrapMode: Text.Wrap
                     font.pixelSize: 18
                 }
