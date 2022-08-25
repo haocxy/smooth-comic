@@ -1,19 +1,26 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import "../Global"
 
 Rectangle {
     id: root
     required property string text
-    required property color bgColor
-
-    signal clicked
 
     property bool mouseOverByFramelessWindow: false
     property bool mouseOver: mouseOverByFramelessWindow || mouseArea.containsMouse
+    property color bgColor: mouseOver ? hoverColor : btnBgColor
 
+    Layout.topMargin: btnVMargin
+    Layout.bottomMargin: btnVMargin
+    Layout.leftMargin: btnHMargin
+    Layout.rightMargin: btnHMargin
+    Layout.fillHeight: true
+    Layout.preferredWidth: height * heightFactor
     color: bgColor
+
+    signal clicked
 
     Text {
         anchors.centerIn: parent
