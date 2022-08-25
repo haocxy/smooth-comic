@@ -8,4 +8,5 @@ QtObject {
     property string windowRestore: "\ue3e0"
     property string windowMax: "\ue835"
     property string windowClose: "\ue5cd"
+    property string popMenuClose: "\ue5cd"
 }

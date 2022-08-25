@@ -39,6 +39,23 @@ Rectangle {
         drag.maximumY: dragMaxY
     }
 
+    Text {
+        width: Style.popMenuCloseButtonHeight
+        height: Style.popMenuCloseButtonHeight
+        anchors.top: root.top
+        anchors.right: root.right
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: FontIcon.popMenuClose
+        font.family: FontIcon.fontFamily
+        font.pixelSize: Style.popMenuCloseButtonIconHeight
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: root.visible = false
+        }
+    }
+
     ColumnLayout {
         width: root.width - Style.popMenuContentMargin * 2
         height: root.height - Style.popMenuContentMargin * 2

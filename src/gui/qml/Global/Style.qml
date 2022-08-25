@@ -28,4 +28,7 @@ QtObject {
     property real popMenuOpacity: 1
     property int popMenuRadius: 16
     property int popMenuMargin: 8
+    property int popMenuCloseButtonHeight: 56
+    property int popMenuCloseButtonIconHeight: 32
+    property color popMenuCloseButtonIconColor: "black"
 }
