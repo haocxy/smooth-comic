@@ -2,10 +2,10 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import myapp.FileChooser
-import myapp.BookReader
-import myapp.WindowStateSwitcher
-import myapp.Global
+import "./FileChooser"
+import "./BookReader"
+import "./WindowStateSwitcher"
+import "./Global"
 
 Item{
     id: window

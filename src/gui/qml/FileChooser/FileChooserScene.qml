@@ -4,8 +4,8 @@ import QtQuick.Layouts
 import Qt.labs.platform
 
 import myapp
-import myapp.Global
-import myapp.Util
+import "../Global"
+import "../Util"
 
 Rectangle {
 

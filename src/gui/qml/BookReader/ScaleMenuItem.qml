@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import myapp
-import myapp.Global
+import "../Global"
 
 Item {
     required property ButtonGroup group

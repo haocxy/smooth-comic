@@ -3,8 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import myapp
-import myapp.Global
-import myapp.Util
+import "../Global"
+import "../Util"
 
 Rectangle {
     id: idRoot
