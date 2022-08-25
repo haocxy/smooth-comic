@@ -5,7 +5,7 @@ import QtQuick.Layouts
 import myapp
 import "../Global"
 
-Popup {
+Rectangle {
     required property var pageReader
     property int segCount: 2
 
@@ -13,16 +13,15 @@ Popup {
     z: ZOrder.popMenu
     width: 260
     height: segCount * Style.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * Style.popMenuContentRowHeight + (segCount - 1) * Style.popMenuSegGap
-    modal: true
-    padding: Style.popMenuContentMargin
-    background: Rectangle {
-        color: Style.popMenuBgColor
-        radius: Style.popMenuRadius
-        opacity: Style.popMenuOpacity
-    }
+    color: Style.popMenuBgColor
+    radius: Style.popMenuRadius
+    opacity: Style.popMenuOpacity
+    visible: false
 
     ColumnLayout {
-        anchors.fill: parent
+        width: root.width - Style.popMenuContentMargin * 2
+        height: root.height - Style.popMenuContentMargin * 2
+        anchors.centerIn: root
         id: rootLayout
         Text {
             Layout.fillWidth: true; Layout.fillHeight: true
