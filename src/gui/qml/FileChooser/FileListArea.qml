@@ -4,9 +4,9 @@ import QtQuick.Layouts
 import Qt.labs.platform
 
 Flickable {
-    id: idRoot
+    id: root
     required property var fileChooser
-    property int entryUiItemCount: idEntries.children.length - 1
+    property int entryUiItemCount: entries.children.length - 1
     property int entryGap: 8
     property int viewType: EntryStyle.eIcon
 
@@ -26,20 +26,20 @@ Flickable {
 
         topPadding: entryGap
         bottomPadding: entryGap
-        leftPadding: $engine.isWindowed ? entryGap : idScrollBar.width
+        leftPadding: $engine.isWindowed ? entryGap : scrollBar.width
         rightPadding: $engine.isWindowed ? entryGap : 0
 
         QtObject {
             id: helper
             property int goodEntryWidth: $engine.isWindowed ? 300 : 200
-            property int usableWidth: idRoot.width - idScrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding
+            property int usableWidth: root.width - scrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding
             property int areaWidth: calcAreaWidth()
             property int entryGapPairWidth: calcEntryGapPairWidth()
             property int columnCount: Math.max(1, Math.floor((areaWidth + entryGap) / entryGapPairWidth))
             property int entryWidth: columnCount > 1 ? entryGapPairWidth - entryGap : usableWidth
 
             function calcEntryGapPairWidth() {
-                var vRootWidth = idRoot.width + entryGap
+                var vRootWidth = root.width + entryGap
                 if ($engine.isWindowed) {
                     return Math.min(vRootWidth, goodEntryWidth + entryGap)
                 } else {
@@ -63,7 +63,7 @@ Flickable {
         }
 
         GridLayout {
-            id: idEntries
+            id: entries
 
             implicitWidth: helper.areaWidth
 
@@ -79,15 +79,15 @@ Flickable {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignTop
                     implicitWidth: helper.entryWidth
-                    onShouldOpenDir: p => idRoot.shouldOpenDir(p)
-                    onShouldOpenFile: p => idRoot.shouldOpenFile(p)
+                    onShouldOpenDir: p => root.shouldOpenDir(p)
+                    onShouldOpenFile: p => root.shouldOpenFile(p)
                 }
             }
         }
     }
 
     ScrollBar.vertical: ScrollBar {
-        id: idScrollBar
+        id: scrollBar
         policy: $engine.isWindowed ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
         width: $engine.isWindowed ? 16 : entryGap
     }
