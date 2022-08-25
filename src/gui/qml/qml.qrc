@@ -19,5 +19,6 @@
         <file>WindowStateSwitcher/WindowButton.qml</file>
         <file>BookReader/ScaleMenu.qml</file>
         <file>BookReader/ScaleMenuItem.qml</file>
+        <file>Global/ZOrder.qml</file>
     </qresource>
 </RCC>

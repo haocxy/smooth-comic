@@ -3,13 +3,14 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import myapp
-import myapp.Global
+import "../Global"
 
 Popup {
     required property var pageReader
     property int segCount: 2
 
     id: root
+    z: ZOrder.popMenu
     width: 260
     height: segCount * GlobalStyle.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * GlobalStyle.popMenuContentRowHeight + (segCount - 1) * GlobalStyle.popMenuSegGap
     modal: true
