@@ -36,26 +36,18 @@ Popup {
             Layout.fillWidth: true; Layout.fillHeight: true
             columns: 2
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_RawSize
                 text: qsTr("Raw Size")
             }
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_AutoFitAreaSize
                 text: qsTr("Adjust Size")
             }
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_AutoFitAreaWidth
                 text: qsTr("Adjust Width")
             }
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_AutoFitAreaHeight
                 text: qsTr("Adjust Height")
             }
@@ -75,26 +67,18 @@ Popup {
             Layout.fillWidth: true; Layout.fillHeight: true
             columns: 2
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_FixWidthByRatio
                 text: qsTr("Fix Width Ratio")
             }
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_FixHeightByRatio
                 text: qsTr("Fix Height Ratio")
             }
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_FixWidthByPixel
                 text: qsTr("Fix Width Pixel")
             }
             ScaleMenuItem {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                menu: root
                 scaleMode: PageReader.ScaleMode_FixHeightByPixel
                 text: qsTr("Fix Height Pixel")
             }

@@ -1,15 +1,17 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import myapp
 import "../Global"
 
 Item {
-    required property var menu
     required property var scaleMode
     required property string text
 
     id: root
+    Layout.fillWidth: true
+    Layout.fillHeight: true
     implicitWidth: button.implicitWidth
     implicitHeight: button.implicitHeight
 
@@ -17,9 +19,9 @@ Item {
         id: button
         anchors.centerIn: parent
         background: null
-        ButtonGroup.group: menu.buttons ? menu.buttons : null
+        ButtonGroup.group: buttons ? buttons : null
         text: root.text
-        checked: menu.pageReader ? menu.pageReader.scaleMode === scaleMode : false
-        onClicked: menu.pageReader.scaleMode = scaleMode
+        checked: pageReader ? pageReader.scaleMode === scaleMode : false
+        onClicked: pageReader.scaleMode = scaleMode
     }
 }
