@@ -33,52 +33,52 @@
 <context>
     <name>ScaleMenu</name>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="68"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="128"/>
         <source>Auto Scale</source>
         <translation type="unfinished">自动缩放</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="77"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="137"/>
         <source>Raw Size</source>
         <translation type="unfinished">原始尺寸</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="81"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="141"/>
         <source>Adjust Size</source>
         <translation type="unfinished">适应区域</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="85"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="145"/>
         <source>Adjust Width</source>
         <translation type="unfinished">适应宽度</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="89"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="149"/>
         <source>Adjust Height</source>
         <translation type="unfinished">适应高度</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="99"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="159"/>
         <source>Fix Scale</source>
         <translation type="unfinished">固定缩放</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="108"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="168"/>
         <source>Fix Width Ratio</source>
         <translation type="unfinished">宽度占比</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="112"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="172"/>
         <source>Fix Height Ratio</source>
         <translation type="unfinished">高度占比</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="116"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="176"/>
         <source>Fix Width Pixel</source>
         <translation type="unfinished">宽度像素</translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="120"/>
+        <location filename="../src/gui/qml/BookReader/ScaleMenu.qml" line="180"/>
         <source>Fix Height Pixel</source>
         <translation type="unfinished">高度像素</translation>
     </message>
