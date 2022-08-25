@@ -7,32 +7,32 @@ import "../Global"
 import "../Util"
 
 Rectangle {
-    id: idRoot
+    id: root
     required property string comicPath
 
     function switchState() {
         if (state == "controll") {
             state = "read"
-            idTopBarAnimOnY.stop()
-            idTopBarAnimOnY.from = idTopBar.y
-            idTopBarAnimOnY.to = -idTopBar.height
-            idTopBarAnimOnY.start()
+            topBarAnimOnY.stop()
+            topBarAnimOnY.from = topBar.y
+            topBarAnimOnY.to = -topBar.height
+            topBarAnimOnY.start()
         } else {
             window.switchToNormalState()
             state = "controll"
-            idTopBarAnimOnY.stop()
-            idTopBarAnimOnY.from = idTopBar.y
-            idTopBarAnimOnY.to = 0
-            idTopBarAnimOnY.start()
+            topBarAnimOnY.stop()
+            topBarAnimOnY.from = topBar.y
+            topBarAnimOnY.to = 0
+            topBarAnimOnY.start()
         }
     }
 
     function inWindowMoveArea(gpos: point): bool {
-        if (idTopBar.contains(idTopBar.mapFromGlobal(gpos))) {
-            return idTopBar.inWindowMoveArea(gpos)
+        if (topBar.contains(topBar.mapFromGlobal(gpos))) {
+            return topBar.inWindowMoveArea(gpos)
         }
-        if (idBottomBar.contains(idBottomBar.mapFromGlobal(gpos))) {
-            return idBottomBar.inWindowMoveArea(gpos)
+        if (bottomBar.contains(bottomBar.mapFromGlobal(gpos))) {
+            return bottomBar.inWindowMoveArea(gpos)
         }
         return false
     }
@@ -43,23 +43,23 @@ Rectangle {
         State {
             name: "controll"
             PropertyChanges {
-                target: idRoot
+                target: root
                 color: Style.readerBgColor4ControllState
             }
             PropertyChanges {
-                target: idBottomBar
-                y: idRoot.height - idBottomBar.height
+                target: bottomBar
+                y: root.height - bottomBar.height
             }
         },
         State {
             name: "read"
             PropertyChanges {
-                target: idRoot
+                target: root
                 color: Style.readerBgColor4ReadState
             }
             PropertyChanges {
-                target: idBottomBar
-                y: idRoot.height
+                target: bottomBar
+                y: root.height
             }
         }
     ]
@@ -84,9 +84,9 @@ Rectangle {
     ]
 
     ToolBar {
-        id: idTopBar
+        id: topBar
         x: 0
-        y: state === "read" ? -idTopBar.height : 0
+        y: state === "read" ? -topBar.height : 0
         z: 100
         implicitWidth: parent.width
         implicitHeight: Style.topBarHeight
@@ -96,7 +96,7 @@ Rectangle {
         }
 
         RowLayout {
-            id: idTopBarLayout
+            id: topBarLayout
             anchors.fill: parent
             MyToolButton {
                 Layout.topMargin: 12
@@ -118,46 +118,46 @@ Rectangle {
         // 而动画对象的 onFinished 信号无法在和其它机制例如transitions等配合时触发，
         // 所以对顶部状态栏的状态切换和动画效果单独手动处理，不使用状态机制
         NumberAnimation on y {
-            id: idTopBarAnimOnY
+            id: topBarAnimOnY
             running: false
             onFinished: {
                 // 这里只处理切换到read状态时的情况
                 // 切换到controll状态时要先切换窗口标题栏的状态
-                if (idRoot.state === "read") {
+                if (root.state === "read") {
                     window.switchToReadState()
                 }
             }
         }
 
         function inWindowMoveArea(gpos: point): bool {
-            var lpos = idTopBarLayout.mapFromGlobal(gpos)
-            return !idTopBarLayout.childAt(lpos.x, lpos.y)
+            var lpos = topBarLayout.mapFromGlobal(gpos)
+            return !topBarLayout.childAt(lpos.x, lpos.y)
         }
     }
 
     ScaleMenu {
         anchors.centerIn: parent
-        id: idScaleMenu
-        pageReader: idPageReader
+        id: scaleMenu
+        pageReader: pageReader
     }
 
     PageReader {
-        id: idPageReader
+        id: pageReader
         x: 0
-        y: idRoot.state === "read" ? 0 : idTopBar.height
-        width: idRoot.width
-        height: idRoot.state === "read" ? idRoot.height : idRoot.height - idTopBar.height - idBottomBar.height
-        controller: idController
+        y: root.state === "read" ? 0 : topBar.height
+        width: root.width
+        height: root.state === "read" ? root.height : root.height - topBar.height - bottomBar.height
+        controller: controller
 
         Component.onCompleted: {
-            idController.filePath = Qt.binding(function() {return idRoot.comicPath})
+            controller.filePath = Qt.binding(function() {return root.comicPath})
         }
     }
 
     ToolBar {
-        id: idBottomBar
+        id: bottomBar
         x: 0
-        y: idRoot.height - height
+        y: root.height - height
         z: 100
         implicitWidth: parent.width
         implicitHeight: Style.bottomBarHeight
@@ -167,10 +167,10 @@ Rectangle {
         }
 
         RowLayout {
-            id: idBottomBarLayout
+            id: bottomBarLayout
             anchors.fill: parent
             Item {
-                id: idBottomLeftStrech
+                id: bottomLeftStrech
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
@@ -193,20 +193,20 @@ Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
                 iconHeight: Style.bottomBarIconHeight
-                text: "\ue8b6"; onClicked: idScaleMenu.visible = !idScaleMenu.visible
+                text: "\ue8b6"; onClicked: scaleMenu.visible = !scaleMenu.visible
             }
             Item {
-                id: idBottomRightStrech
+                id: bottomRightStrech
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
         }
 
         function inWindowMoveArea(gpos: point): bool {
-            if (idBottomLeftStrech.contains(idBottomLeftStrech.mapFromGlobal(gpos))) {
+            if (bottomLeftStrech.contains(bottomLeftStrech.mapFromGlobal(gpos))) {
                 return true
             }
-            if (idBottomRightStrech.contains(idBottomRightStrech.mapFromGlobal(gpos))) {
+            if (bottomRightStrech.contains(bottomRightStrech.mapFromGlobal(gpos))) {
                 return true
             }
             return false
@@ -214,7 +214,7 @@ Rectangle {
     }
 
     Item {
-        id: idClickControlls
+        id: clickControlls
         anchors.fill: parent
         opacity: 0
 
@@ -239,7 +239,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
 
             function handle() {
-                idController.switchUpPage()
+                controller.switchUpPage()
             }
         }
 
@@ -252,7 +252,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
 
             function handle() {
-                idController.switchDownPage()
+                controller.switchDownPage()
             }
         }
 
@@ -265,7 +265,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
 
             function handle() {
-                idController.switchLeftPage()
+                controller.switchLeftPage()
             }
         }
 
@@ -278,54 +278,52 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
 
             function handle() {
-                idController.switchRightPage()
+                controller.switchRightPage()
             }
         }
 
     }
 
     PinchArea {
-        id: idPinchArea
         property real currScale: 1
         anchors.fill: parent
 
         onPinchUpdated: e => {
                             if (e.previousScale !== 0) {
-                                idController.relativelyScale(e.scale / e.previousScale)
+                                controller.relativelyScale(e.scale / e.previousScale)
                             }
                         }
 
         MouseArea {
-            id: idMouseArea
             anchors.fill: parent
             onClicked: e => {
-                            if (!idMouseArea.moved) {
-                                idClickControlls.controll(mapToGlobal(e.x, e.y))
+                            if (!moved) {
+                                clickControlls.controll(mapToGlobal(e.x, e.y))
                             }
                         }
             property real prevX: 0
             property real prevY: 0
             property bool moved: false
             onPressed: e => {
-                           idMouseArea.prevX = e.x
-                           idMouseArea.prevY = e.y
-                           idMouseArea.moved = false
+                           prevX = e.x
+                           prevY = e.y
+                           moved = false
                        }
 
             onPositionChanged: e => {
                                    var dx = (e.x - prevX) * Screen.devicePixelRatio
                                    var dy = (e.y - prevY) * Screen.devicePixelRatio
-                                   idController.translateBy(dx, dy)
-                                   idMouseArea.prevX = e.x
-                                   idMouseArea.prevY = e.y
-                                   idMouseArea.moved = true
+                                   controller.translateBy(dx, dy)
+                                   prevX = e.x
+                                   prevY = e.y
+                                   moved = true
                                }
         }
 
     }
 
     Controller {
-        id: idController
+        id: controller
         guiEngine: $engine
     }
 }
