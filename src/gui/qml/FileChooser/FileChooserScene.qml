@@ -9,15 +9,15 @@ import "../Util"
 
 Rectangle {
 
-    id: idWindow
+    id: root
 
     FileChooser {
-        id: idFileChooser
+        id: fileChooser
     }
 
     function localGoBack() {
-        if (idFileChooser.canGoBack) {
-            idFileChooser.goBack()
+        if (fileChooser.canGoBack) {
+            fileChooser.goBack()
             return true
         } else {
             return false
@@ -25,14 +25,14 @@ Rectangle {
     }
 
     function inWindowMoveArea(gpos: point): bool {
-        if (idTopArea.contains(idTopArea.mapFromGlobal(gpos))) {
-            return idTopArea.inWindowMoveArea(gpos)
+        if (topBar.contains(topBar.mapFromGlobal(gpos))) {
+            return topBar.inWindowMoveArea(gpos)
         }
     }
 
     function openDir(path) {
-        idFileChooser.openDir(path, idEntryListArea.contentY)
-        idEntryListArea.contentY = 0
+        fileChooser.openDir(path, entriesArea.contentY)
+        entriesArea.contentY = 0
     }
 
     function openFile(path) {
@@ -43,7 +43,7 @@ Rectangle {
     property real restoredContentY: 0
 
     Connections {
-        target: idFileChooser
+        target: fileChooser
         function onSigStartRestoreContentY(contentY) {
             isRestoringContentY = true
             restoredContentY = contentY
@@ -51,11 +51,11 @@ Rectangle {
     }
 
     Connections {
-        target: idEntryListArea
+        target: entriesArea
         function onContentHeightChanged() {
             if (isRestoringContentY) {
-                if (idEntryListArea.entryUiItemCount === idFileChooser.entryCount()) {
-                    idEntryListArea.contentY = restoredContentY
+                if (entriesArea.entryUiItemCount === fileChooser.entryCount()) {
+                    entriesArea.contentY = restoredContentY
                     isRestoringContentY = false
                 }
             }
@@ -67,7 +67,7 @@ Rectangle {
         spacing: 0
 
         ToolBar {
-            id: idTopArea
+            id: topBar
             z: 100
             implicitWidth: parent.width
             implicitHeight: Style.topBarHeight
@@ -85,22 +85,21 @@ Rectangle {
                     Layout.rightMargin: 8
                     Layout.fillHeight: true
                     Layout.preferredWidth: height
-                    id: idBackBtn
                     iconHeight: Style.topBarIconHeight
                     text: "\ue5c4"
                     onClicked: {
-                        idFileChooser.goBack()
+                        fileChooser.goBack()
                     }
                 }
                 AddrBarArea {
-                    id: idAddrBarArea
+                    id: pathBar
                     Layout.topMargin: 12
                     Layout.bottomMargin: 12
                     Layout.leftMargin: 0
                     Layout.rightMargin: 8
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    dir: idFileChooser.currDir
+                    dir: fileChooser.currDir
                     onShouldOpenDir: p => openDir(p)
                 }
             }
@@ -109,24 +108,24 @@ Rectangle {
                 var lpos = mapFromGlobal(gpos)
                 // 顶部栏的上面一部分和窗口连在一起，所以认为顶部栏的上面也可以用于移动窗口
                 // 如果不把这部分算做可用于移动窗口，体验不好
-                return lpos.y < idAddrBarArea.y
+                return lpos.y < pathBar.y
             }
         }
 
         FileListArea {
-            id: idEntryListArea
-            fileChooser: idFileChooser
-            implicitWidth: idWindow.width
+            id: entriesArea
+            fileChooser: fileChooser
+            implicitWidth: root.width
             Layout.fillHeight: true
-            onShouldOpenDir: p => idWindow.openDir(p)
-            onShouldOpenFile: p => idWindow.openFile(p)
+            onShouldOpenDir: p => root.openDir(p)
+            onShouldOpenFile: p => root.openFile(p)
         }
     }
 
     MouseArea {
         anchors.fill: parent
         onPressed: e => {
-                       idAddrBarArea.removeFocus()
+                       pathBar.removeFocus()
                        e.accepted = false
                    }
     }
