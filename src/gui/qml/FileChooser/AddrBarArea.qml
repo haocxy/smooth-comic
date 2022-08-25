@@ -3,22 +3,20 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
-    id: idRoot
-
     property string dir
 
     signal shouldOpenDir(string dir)
 
     function removeFocus() {
-        idCurrDir.readOnly = true
-        idCurrDir.focus = false
+        pathInput.readOnly = true
+        pathInput.focus = false
     }
 
     MouseArea {
         anchors.fill: parent
         onPressed: e => {
                        var gpos = mapToGlobal(e.x, e.y)
-                       if (!idCurrDir.contains(idCurrDir.mapFromGlobal(
+                       if (!pathInput.contains(pathInput.mapFromGlobal(
                                                    gpos.x, gpos.y))) {
                            removeFocus()
                        }
@@ -35,12 +33,10 @@ Rectangle {
         }
     }
 
-    color: idCurrDir.focus ? idWindow.color : "#f5f5f5"
-
     radius: 8
 
     TextInput {
-        id: idCurrDir
+        id: pathInput
         anchors.fill: parent
         clip: true
         text: dir
@@ -62,7 +58,7 @@ Rectangle {
             anchors.fill: parent
             onPressed: e => {
                            parent.readOnly = false
-                           window.openInputMethod(idCurrDir)
+                           window.openInputMethod(pathInput)
                            e.accepted = true
                        }
         }
