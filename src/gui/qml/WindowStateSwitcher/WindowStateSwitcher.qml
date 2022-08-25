@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-import myapp.Util
+import "../Util"
 
 RowLayout {
 

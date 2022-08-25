@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-import myapp.Global
+import "../Global"
 
 Rectangle {
     id: idRoot
@@ -22,7 +22,7 @@ Rectangle {
             pixelSize: idRoot.height * 0.6
         }
         text: idRoot.text
-        color: GlobalStyle.iconColor
+        color: Style.iconColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }

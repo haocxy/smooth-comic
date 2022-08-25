@@ -44,7 +44,7 @@ Rectangle {
             name: "controll"
             PropertyChanges {
                 target: idRoot
-                color: GlobalStyle.readerBgColor4ControllState
+                color: Style.readerBgColor4ControllState
             }
             PropertyChanges {
                 target: idBottomBar
@@ -55,7 +55,7 @@ Rectangle {
             name: "read"
             PropertyChanges {
                 target: idRoot
-                color: GlobalStyle.readerBgColor4ReadState
+                color: Style.readerBgColor4ReadState
             }
             PropertyChanges {
                 target: idBottomBar
@@ -89,10 +89,10 @@ Rectangle {
         y: state === "read" ? -idTopBar.height : 0
         z: 100
         implicitWidth: parent.width
-        implicitHeight: GlobalStyle.topBarHeight
+        implicitHeight: Style.topBarHeight
         background: Rectangle {
             anchors.fill: parent
-            color: GlobalStyle.titleBarColor
+            color: Style.titleBarColor
         }
 
         RowLayout {
@@ -105,7 +105,7 @@ Rectangle {
                 Layout.rightMargin: 8
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
-                iconHeight: GlobalStyle.topBarIconHeight
+                iconHeight: Style.topBarIconHeight
                 text: "\ue5c4"
                 onClicked: {
                     window.goBack()
@@ -160,10 +160,10 @@ Rectangle {
         y: idRoot.height - height
         z: 100
         implicitWidth: parent.width
-        implicitHeight: GlobalStyle.bottomBarHeight
+        implicitHeight: Style.bottomBarHeight
         background: Rectangle {
             anchors.fill: parent
-            color: GlobalStyle.titleBarColor
+            color: Style.titleBarColor
         }
 
         RowLayout {
@@ -181,7 +181,7 @@ Rectangle {
                 Layout.rightMargin: 8
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
-                iconHeight: GlobalStyle.bottomBarIconHeight
+                iconHeight: Style.bottomBarIconHeight
                 text: "\ue5c4"; onClicked: window.goBack()
             }
             MyToolButton {
@@ -192,7 +192,7 @@ Rectangle {
                 Layout.rightMargin: 8
                 Layout.fillHeight: true
                 Layout.preferredWidth: height
-                iconHeight: GlobalStyle.bottomBarIconHeight
+                iconHeight: Style.bottomBarIconHeight
                 text: "\ue8b6"; onClicked: idScaleMenu.visible = !idScaleMenu.visible
             }
             Item {

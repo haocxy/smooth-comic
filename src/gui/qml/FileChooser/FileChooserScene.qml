@@ -70,10 +70,10 @@ Rectangle {
             id: idTopArea
             z: 100
             implicitWidth: parent.width
-            implicitHeight: GlobalStyle.topBarHeight
+            implicitHeight: Style.topBarHeight
             background: Rectangle {
                 anchors.fill: parent
-                color: GlobalStyle.titleBarColor
+                color: Style.titleBarColor
             }
 
             RowLayout {
@@ -86,7 +86,7 @@ Rectangle {
                     Layout.fillHeight: true
                     Layout.preferredWidth: height
                     id: idBackBtn
-                    iconHeight: GlobalStyle.topBarIconHeight
+                    iconHeight: Style.topBarIconHeight
                     text: "\ue5c4"
                     onClicked: {
                         idFileChooser.goBack()

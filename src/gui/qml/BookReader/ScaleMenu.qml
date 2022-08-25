@@ -12,13 +12,13 @@ Popup {
     id: root
     z: ZOrder.popMenu
     width: 260
-    height: segCount * GlobalStyle.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * GlobalStyle.popMenuContentRowHeight + (segCount - 1) * GlobalStyle.popMenuSegGap
+    height: segCount * Style.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * Style.popMenuContentRowHeight + (segCount - 1) * Style.popMenuSegGap
     modal: true
-    padding: GlobalStyle.popMenuContentMargin
+    padding: Style.popMenuContentMargin
     background: Rectangle {
-        color: GlobalStyle.popMenuBgColor
-        radius: GlobalStyle.popMenuRadius
-        opacity: GlobalStyle.popMenuOpacity
+        color: Style.popMenuBgColor
+        radius: Style.popMenuRadius
+        opacity: Style.popMenuOpacity
     }
 
     ButtonGroup { id: buttons }
@@ -29,7 +29,7 @@ Popup {
         Text {
             Layout.fillWidth: true; Layout.fillHeight: true
             antialiasing: true
-            font { pixelSize: GlobalStyle.popMenuTitleTextPixSize }
+            font { pixelSize: Style.popMenuTitleTextPixSize }
             text: qsTr("Auto Scale")
             verticalAlignment: Text.AlignVCenter
         }
@@ -68,11 +68,11 @@ Popup {
         }
         Item {
             Layout.fillWidth: true
-            Layout.preferredHeight: GlobalStyle.popMenuSegGap
+            Layout.preferredHeight: Style.popMenuSegGap
         }
         Text {
             Layout.fillWidth: true; Layout.fillHeight: true
-            font { pixelSize: GlobalStyle.popMenuTitleTextPixSize }
+            font { pixelSize: Style.popMenuTitleTextPixSize }
             text: qsTr("Fix Scale")
             verticalAlignment: Text.AlignVCenter
         }

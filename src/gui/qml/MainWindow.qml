@@ -87,7 +87,7 @@ Item{
             visible: $engine.isWindowed
             z: 100
             implicitWidth: parent.width
-            implicitHeight: GlobalStyle.titleBarHeight
+            implicitHeight: Style.titleBarHeight
             state: "normal"
             RowLayout {
                 anchors.fill: parent
@@ -103,14 +103,14 @@ Item{
                     name: "normal"
                     PropertyChanges {
                         target: idWindowTitleBar
-                        color: GlobalStyle.titleBarColor
+                        color: Style.titleBarColor
                     }
                 },
                 State {
                     name: "read"
                     PropertyChanges {
                         target: idWindowTitleBar
-                        color: GlobalStyle.titleBarColor4ReadState
+                        color: Style.titleBarColor4ReadState
                     }
                 }
             ]
