@@ -4,14 +4,14 @@ import QtQuick.Controls
 import "../Global"
 
 Rectangle {
-    id: idRoot
+    id: root
     required property string text
     required property color bgColor
 
     signal clicked
 
     property bool mouseOverByFramelessWindow: false
-    property bool mouseOver: mouseOverByFramelessWindow || idMouseArea.containsMouse
+    property bool mouseOver: mouseOverByFramelessWindow || mouseArea.containsMouse
 
     color: bgColor
 
@@ -19,18 +19,18 @@ Rectangle {
         anchors.centerIn: parent
         font {
             family: "Material Icons"
-            pixelSize: idRoot.height * 0.6
+            pixelSize: root.height * 0.6
         }
-        text: idRoot.text
+        text: root.text
         color: Style.iconColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
 
     MouseArea {
-        id: idMouseArea
+        id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: idRoot.clicked()
+        onClicked: root.clicked()
     }
 }
