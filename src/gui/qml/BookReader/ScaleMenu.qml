@@ -6,6 +6,10 @@ import myapp
 import "../Global"
 
 Rectangle {
+    required property real dragMinX
+    required property real dragMaxX
+    required property real dragMinY
+    required property real dragMaxY
     required property var pageReader
     property int segCount: 2
 
@@ -17,6 +21,17 @@ Rectangle {
     radius: Style.popMenuRadius
     opacity: Style.popMenuOpacity
     visible: false
+
+
+    MouseArea {
+        anchors.fill: parent
+        drag.target: parent
+        drag.axis: Drag.XAndYAxis
+        drag.minimumX: dragMinX
+        drag.maximumX: dragMaxX
+        drag.minimumY: dragMinY
+        drag.maximumY: dragMaxY
+    }
 
     ColumnLayout {
         width: root.width - Style.popMenuContentMargin * 2
@@ -83,6 +98,7 @@ Rectangle {
             }
         }
     }
+
 
     ButtonGroup { id: buttons }
 }

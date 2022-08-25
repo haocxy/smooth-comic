@@ -27,4 +27,5 @@ QtObject {
     property color popMenuBgColor: "#eaeaea"
     property real popMenuOpacity: 1
     property int popMenuRadius: 16
+    property int popMenuMargin: 8
 }
