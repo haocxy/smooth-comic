@@ -4,16 +4,23 @@ import QtQuick.Controls
 import myapp
 import myapp.Global
 
-RadioButton {
+Item {
     required property ButtonGroup group
     required property var pageReader
     required property var scaleMode
-    id: button
-    background: Rectangle {
-        color: GlobalStyle.popMenuBgColor
-        opacity: 0
+    required property string text
+
+    id: root
+    implicitWidth: button.implicitWidth
+    implicitHeight: button.implicitHeight
+
+    RadioButton {
+        id: button
+        anchors.centerIn: parent
+        background: null
+        ButtonGroup.group: group
+        text: root.text
+        checked: pageReader ? pageReader.scaleMode === scaleMode : false
+        onClicked: pageReader.scaleMode = scaleMode
     }
-    ButtonGroup.group: group
-    checked: pageReader ? pageReader.scaleMode === scaleMode : false
-    onClicked: pageReader.scaleMode = scaleMode
 }
