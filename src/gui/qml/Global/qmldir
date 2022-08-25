@@ -1,3 +1,4 @@
 module myapp.Global
 singleton Style 1.0 Style.qml
 singleton ZOrder 1.0 ZOrder.qml
+singleton FontIcon 1.0 FontIcon.qml

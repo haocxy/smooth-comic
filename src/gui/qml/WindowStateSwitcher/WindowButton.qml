@@ -25,7 +25,7 @@ Rectangle {
     Text {
         anchors.centerIn: parent
         font {
-            family: "Material Icons"
+            family: FontIcon.fontFamily
             pixelSize: root.height * 0.6
         }
         text: root.text

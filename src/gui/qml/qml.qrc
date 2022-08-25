@@ -19,5 +19,6 @@
         <file>BookReader/ScaleMenuItem.qml</file>
         <file>Global/ZOrder.qml</file>
         <file>Global/Style.qml</file>
+        <file>Global/FontIcon.qml</file>
     </qresource>
 </RCC>

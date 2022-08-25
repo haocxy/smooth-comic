@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../Util"
+import "../Global"
 
 RowLayout {
     required property color btnBgColor
@@ -26,7 +27,7 @@ RowLayout {
     WindowButton {
         // min
         visible: $engine.isWindowed
-        text: "\ue15b"
+        text: FontIcon.windowMin
         bgColor: mouseOver ? hoverColor : btnBgColor
         onClicked: $window.showMinimized()
     }
@@ -35,7 +36,7 @@ RowLayout {
         // max
         objectName: "windowMaxButton"
         visible: $engine.isWindowed
-        text: window.isMax ? "\ue3e0" : "\ue835"
+        text: window.isMax ? FontIcon.windowRestore : FontIcon.windowMax
         onClicked: {
             if (window.isMax) {
                 $window.showNormal()
@@ -48,7 +49,7 @@ RowLayout {
     WindowButton {
         // close
         visible: $engine.isWindowed
-        text: "\ue5cd"
+        text: FontIcon.windowClose
         onClicked: $window.close()
     }
 }
