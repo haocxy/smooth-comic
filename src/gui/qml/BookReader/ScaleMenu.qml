@@ -6,6 +6,8 @@ import myapp
 import "../Global"
 
 Rectangle {
+    required property real initX
+    required property real initY
     required property real dragMinX
     required property real dragMaxX
     required property real dragMinY
@@ -22,6 +24,10 @@ Rectangle {
     opacity: Style.popMenuOpacity
     visible: false
 
+    Component.onCompleted: {
+        x = initX
+        y = initY
+    }
 
     MouseArea {
         anchors.fill: parent

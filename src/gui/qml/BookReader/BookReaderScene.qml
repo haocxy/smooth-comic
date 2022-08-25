@@ -138,15 +138,13 @@ Rectangle {
 
     ScaleMenu {
         id: scaleMenu
+        initX: (root.width - width) / 2
+        initY: (root.height - height) / 2
         dragMinX: Style.popMenuMargin
         dragMaxX: root.width - width - Style.popMenuMargin
         dragMinY: Style.popMenuMargin + (root.state === "read" ? 0 : topBar.height)
         dragMaxY: root.height - height - Style.popMenuMargin - (root.state === "read" ? 0 : bottomBar.height)
         pageReader: pageReader
-        Component.onCompleted: {
-            x = (root.width - width) / 2
-            y = (root.height - height) / 2
-        }
     }
 
     PageReader {
