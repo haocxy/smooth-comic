@@ -10,8 +10,8 @@ Flickable {
     property int entryGap: 8
     property int viewType: EntryStyle.eIcon
 
-    contentWidth: idEntryList.width
-    contentHeight: idEntryList.height
+    contentWidth: entries.width
+    contentHeight: entries.height
     flickableDirection: Flickable.VerticalFlick
 
     z: -100
@@ -20,34 +20,33 @@ Flickable {
 
     signal shouldOpenFile(string path)
 
-    Column {
+    topMargin: entryGap
 
-        id: idEntryList
+    bottomMargin: entryGap
 
-        topPadding: entryGap
-        bottomPadding: entryGap
-        leftPadding: $engine.isWindowed ? entryGap : scrollBar.width
-        rightPadding: $engine.isWindowed ? entryGap : 0
-        GridLayout {
-            id: entries
+    leftMargin: $engine.isWindowed ? entryGap : scrollBar.width
 
-            implicitWidth: helper.areaWidth
+    rightMargin: $engine.isWindowed ? entryGap : 0
 
-            columns: helper.columnCount
+    GridLayout {
+        id: entries
 
-            rowSpacing: entryGap
+        implicitWidth: helper.areaWidth
 
-            columnSpacing: entryGap
+        columns: helper.columnCount
 
-            Repeater {
-                model: fileChooser.entries
-                delegate: FsEntry {
-                    Layout.fillHeight: true
-                    Layout.alignment: Qt.AlignTop
-                    implicitWidth: helper.entryWidth
-                    onShouldOpenDir: p => root.shouldOpenDir(p)
-                    onShouldOpenFile: p => root.shouldOpenFile(p)
-                }
+        rowSpacing: entryGap
+
+        columnSpacing: entryGap
+
+        Repeater {
+            model: fileChooser.entries
+            delegate: FsEntry {
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignTop
+                implicitWidth: helper.entryWidth
+                onShouldOpenDir: p => root.shouldOpenDir(p)
+                onShouldOpenFile: p => root.shouldOpenFile(p)
             }
         }
     }
@@ -61,7 +60,7 @@ Flickable {
     QtObject {
         id: helper
         property int goodEntryWidth: $engine.isWindowed ? 300 : 200
-        property int usableWidth: root.width - scrollBar.width - idEntryList.leftPadding - idEntryList.rightPadding
+        property int usableWidth: root.width - scrollBar.width - root.leftMargin - root.rightMargin
         property int areaWidth: calcAreaWidth()
         property int entryGapPairWidth: calcEntryGapPairWidth()
         property int columnCount: Math.max(1, Math.floor((areaWidth + entryGap) / entryGapPairWidth))
