@@ -20,6 +20,7 @@ Item {
         anchors.centerIn: parent
         background: null
         ButtonGroup.group: buttons ? buttons : null
+        font.pixelSize: Style.popMenuContentTextPixSize
         text: root.text
         checked: pageReader ? pageReader.scaleMode === scaleMode : false
         onClicked: pageReader.scaleMode = scaleMode

@@ -19,16 +19,16 @@ QtObject {
     property color readerBgColor4ReadState: "black"
 
     // popup菜单中区域标题中的文本像素尺寸
-    property int popMenuTitleTextPixSize: 24
-    property int popMenuTitleAreaHeight: 40
-    property int popMenuContentMargin: 16
-    property int popMenuContentRowHeight: 24
+    property color popMenuTitleBarBgColor: titleBarColor
+    property color popMenuTitleBarIconColor: iconColor
+    property int popMenuTitleBarHeight: 40
+    property real popMenuTitleButtonHeightRatio: 0.6
+    property int popMenuContentMargin: 8
+    property int popMenuContentRowHeight: 20
     property int popMenuSegGap: 8
     property color popMenuBgColor: "#eaeaea"
     property real popMenuOpacity: 1
-    property int popMenuRadius: 16
+    property int popMenuRadius: 8
     property int popMenuMargin: 8
-    property int popMenuCloseButtonHeight: 56
-    property int popMenuCloseButtonIconHeight: 32
-    property color popMenuCloseButtonIconColor: "black"
+    property int popMenuContentTextPixSize: 14
 }

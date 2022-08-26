@@ -18,8 +18,8 @@ Rectangle {
 
     id: root
     z: ZOrder.popMenu
-    width: 260
-    height: rootLayout.children.length * Style.popMenuContentRowHeight
+    width: 256
+    height: titleBar.height + rootLayout.children.length * Style.popMenuContentRowHeight + Style.popMenuContentMargin * 2
     color: Style.popMenuBgColor
     radius: Style.popMenuRadius
     opacity: Style.popMenuOpacity
@@ -98,63 +98,78 @@ Rectangle {
         drag.maximumY: dragMaxY
     }
 
-    Text {
-        width: Style.popMenuCloseButtonHeight
-        height: Style.popMenuCloseButtonHeight
-        anchors.top: root.top
-        anchors.right: root.right
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        text: FontIcon.popMenuClose
-        font.family: FontIcon.fontFamily
-        font.pixelSize: Style.popMenuCloseButtonIconHeight
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: root.visible = false
+
+    Rectangle {
+        id: titleBar
+        x: 0; y: 0; width: parent.width; height: Style.popMenuTitleBarHeight
+        color: Style.popMenuTitleBarBgColor
+        radius: { width: 1; color: Style.popMenuRadius }
+        Rectangle {
+           x: 0; y: parent.height - parent.radius
+           width: parent.width; height: parent.radius
+           color: parent.color
+        }
+        Text {
+            width: height
+            height: parent.height
+            anchors.top: parent.top
+            anchors.right: parent.right
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            color: Style.popMenuTitleBarIconColor
+            text: FontIcon.popMenuClose
+            font.family: FontIcon.fontFamily
+            font.pixelSize: Style.popMenuTitleButtonHeightRatio * height
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: root.visible = false
+            }
         }
     }
 
-        GridLayout {
-            id: rootLayout
-            anchors.centerIn: root
-            width: root.width - Style.popMenuContentMargin * 2
-            height: root.height - Style.popMenuContentMargin * 2
-            Layout.fillWidth: true; Layout.fillHeight: true
-            columns: 2
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_RawSize
-                text: qsTr("Raw Size")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_AutoFitAreaSize
-                text: qsTr("Adjust Size")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_AutoFitAreaWidth
-                text: qsTr("Adjust Width")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_AutoFitAreaHeight
-                text: qsTr("Adjust Height")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_FixWidthByRatio
-                text: qsTr("Fix Width Ratio")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_FixHeightByRatio
-                text: qsTr("Fix Height Ratio")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_FixWidthByPixel
-                text: qsTr("Fix Width Pixel")
-            }
-            ScaleMenuItem {
-                scaleMode: PageReader.ScaleMode_FixHeightByPixel
-                text: qsTr("Fix Height Pixel")
-            }
+    GridLayout {
+        id: rootLayout
+        x: Style.popMenuContentMargin
+        y: titleBar.height + Style.popMenuContentMargin
+        width: root.width - Style.popMenuContentMargin * 2
+        height: root.height - Style.popMenuContentMargin * 2 - titleBar.height
+        Layout.fillWidth: true; Layout.fillHeight: true
+        columns: 2
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_RawSize
+            text: qsTr("Raw Size")
         }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_AutoFitAreaSize
+            text: qsTr("Adjust Size")
+        }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_AutoFitAreaWidth
+            text: qsTr("Adjust Width")
+        }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_AutoFitAreaHeight
+            text: qsTr("Adjust Height")
+        }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_FixWidthByRatio
+            text: qsTr("Fix Width Ratio")
+        }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_FixHeightByRatio
+            text: qsTr("Fix Height Ratio")
+        }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_FixWidthByPixel
+            text: qsTr("Fix Width Pixel")
+        }
+        ScaleMenuItem {
+            scaleMode: PageReader.ScaleMode_FixHeightByPixel
+            text: qsTr("Fix Height Pixel")
+        }
+    }
 
 
     ButtonGroup { id: buttons }
