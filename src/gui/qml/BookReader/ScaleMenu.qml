@@ -13,14 +13,13 @@ Rectangle {
     required property real dragMinY
     required property real dragMaxY
     required property var pageReader
-    property int segCount: 2
     property real hPinDist: 16
     property real vPinDist: 16
 
     id: root
     z: ZOrder.popMenu
     width: 260
-    height: segCount * Style.popMenuTitleAreaHeight + (autoScaleAreaLayout.children.length + fixedScaleAreaLayout.children.length) * Style.popMenuContentRowHeight + (segCount - 1) * Style.popMenuSegGap
+    height: rootLayout.children.length * Style.popMenuContentRowHeight
     color: Style.popMenuBgColor
     radius: Style.popMenuRadius
     opacity: Style.popMenuOpacity
@@ -116,20 +115,11 @@ Rectangle {
         }
     }
 
-    ColumnLayout {
-        width: root.width - Style.popMenuContentMargin * 2
-        height: root.height - Style.popMenuContentMargin * 2
-        anchors.centerIn: root
-        id: rootLayout
-        Text {
-            Layout.fillWidth: true; Layout.fillHeight: true
-            antialiasing: true
-            font { pixelSize: Style.popMenuTitleTextPixSize }
-            text: qsTr("Auto Scale")
-            verticalAlignment: Text.AlignVCenter
-        }
         GridLayout {
-            id: autoScaleAreaLayout
+            id: rootLayout
+            anchors.centerIn: root
+            width: root.width - Style.popMenuContentMargin * 2
+            height: root.height - Style.popMenuContentMargin * 2
             Layout.fillWidth: true; Layout.fillHeight: true
             columns: 2
             ScaleMenuItem {
@@ -148,21 +138,6 @@ Rectangle {
                 scaleMode: PageReader.ScaleMode_AutoFitAreaHeight
                 text: qsTr("Adjust Height")
             }
-        }
-        Item {
-            Layout.fillWidth: true
-            Layout.preferredHeight: Style.popMenuSegGap
-        }
-        Text {
-            Layout.fillWidth: true; Layout.fillHeight: true
-            font { pixelSize: Style.popMenuTitleTextPixSize }
-            text: qsTr("Fix Scale")
-            verticalAlignment: Text.AlignVCenter
-        }
-        GridLayout {
-            id: fixedScaleAreaLayout
-            Layout.fillWidth: true; Layout.fillHeight: true
-            columns: 2
             ScaleMenuItem {
                 scaleMode: PageReader.ScaleMode_FixWidthByRatio
                 text: qsTr("Fix Width Ratio")
@@ -180,7 +155,6 @@ Rectangle {
                 text: qsTr("Fix Height Pixel")
             }
         }
-    }
 
 
     ButtonGroup { id: buttons }
