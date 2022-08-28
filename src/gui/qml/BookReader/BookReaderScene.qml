@@ -149,12 +149,8 @@ Rectangle {
 
     PageReader {
         id: pageReader
-        x: 0
-        y: root.state === "read" ? 0 : topBar.height
-        width: root.width
-        height: root.state === "read" ? root.height : root.height - topBar.height - bottomBar.height
+        anchors.fill: parent
         controller: controller
-
         Component.onCompleted: {
             controller.filePath = Qt.binding(function() {return root.comicPath})
         }
