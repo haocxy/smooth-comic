@@ -96,7 +96,7 @@ static qreal goodPrimaryPageOffset(qreal ratioOffset, qreal pageLength, qreal sc
         // 用于保证当页面在该方向上没有超出显示范围时不会发生由浮点数运算或逻辑错误引入的抖动
         return sceneLength / 2;
     } else {
-        return int(std::round(ratioOffset * sceneLength));
+        return ratioOffset * sceneLength;
     }
 }
 
