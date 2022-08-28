@@ -108,9 +108,9 @@ signals:
 
     void cmdTranslateBy(qreal dx, qreal dy);
 
-    void sigScaleRangeUpdated(float min, float max);
+    void sigScaleRangeUpdated(qreal min, qreal max);
 
-    void sigScaleUpdated(float scale);
+    void sigScaleUpdated(qreal scale);
 
     void guiEngineChanged();
 

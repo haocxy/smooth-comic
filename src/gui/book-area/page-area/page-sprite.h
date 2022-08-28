@@ -30,48 +30,48 @@ public:
 
     void draw(QPainter &painter) const;
 
-    float calcMinScale(const QSize &areaSize) const;
+    qreal calcMinScale(const QSizeF &areaSize) const;
 
-    float calcMaxScale(const QSize &areaSize) const;
+    qreal calcMaxScale(const QSizeF &areaSize) const;
 
-    void adjustAreaSize(const QSize &areaSize);
+    void adjustAreaSize(const QSizeF &areaSize);
 
-    void adjustAreaWidth(int areaWidth);
+    void adjustAreaWidth(qreal areaWidth);
 
-    void adjustAreaHeight(int areaHeight);
+    void adjustAreaHeight(qreal areaHeight);
 
     void rotateTo(PageDirection direction);
 
-    float scale() const {
+    qreal scale() const {
         return scale_;
     }
 
-    void setScale(float f);
+    void setScale(qreal f);
 
-    void moveTo(const QPoint &pos);
+    void moveTo(const QPointF &pos);
 
-    void moveBy(int dx, int dy);
+    void moveBy(qreal dx, qreal dy);
 
-    bool isMovable(const QSize &areaSize) const;
+    bool isMovable(const QSizeF &areaSize) const;
 
-    QPoint pos() const {
+    QPointF pos() const {
         return pos_;
     }
 
-    QSize realSize() const {
-        return QSize(
+    QSizeF realSize() const {
+        return QSizeF(
             rotatedSize_.width() * scale_,
             rotatedSize_.height() * scale_
         );
     }
 
-    QRect spriteRect() const {
+    QRectF spriteRect() const {
         return spriteRectForPos(pos_);
     }
 
-    QRect spriteRectForPos(const QPoint &pos) const {
-        const QSize realSize = this->realSize();
-        QRect rect(QPoint(0, 0), realSize);
+    QRectF spriteRectForPos(const QPointF &pos) const {
+        const QSizeF realSize = this->realSize();
+        QRectF rect(QPointF(0, 0), realSize);
         rect.translate(-realSize.width() * anchor_.x(), -realSize.height() * anchor_.y());
         rect.translate(pos);
         return rect;
@@ -86,14 +86,14 @@ private:
     QPixmap rawImg_;
 
     // 锚点在显示区域的绝对坐标
-    QPoint pos_{ 0, 0 };
+    QPointF pos_{ 0, 0 };
 
     // 锚点，范围为 0 到 1
     QPointF anchor_{ 0.5, 0.5 };
 
     PageDirection dir_{ PageDirection::Up };
 
-    QSize rotatedSize_;
+    QSizeF rotatedSize_;
 
     qreal scale_{ 1 };
 

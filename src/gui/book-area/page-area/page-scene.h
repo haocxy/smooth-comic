@@ -44,7 +44,7 @@ public:
 
     void draw(QPainter &painter) const;
 
-    void updateSceneSize(const QSize &sceneSize);
+    void updateSceneSize(const QSizeF &sceneSize);
 
     void rotatePagesByOneStep();
 
@@ -52,7 +52,7 @@ public:
 
     void setScaleMode(ScaleMode scaleMode);
 
-    void setScale(float scale);
+    void setScale(qreal scale);
 
     void relativelyScale(qreal relativeScale);
 
@@ -62,10 +62,10 @@ public:
 
     bool isPageMovable() const;
 
-    void movePage(int dx, int dy);
+    void movePage(qreal dx, qreal dy);
 
     void translateBy(qreal dx, qreal dy) {
-        movePage(static_cast<int>(std::round(dx)), static_cast<int>(std::round(dy)));
+        movePage(dx, dy);
     }
 
     void jumpTo(PageNum pageNum);
@@ -106,7 +106,7 @@ private:
 
     MoveLock determineMoveLock() const;
 
-    QPoint goodPrimaryPagePoint() const;
+    QPointF goodPrimaryPagePoint() const;
 
     void adjustSpritePos(PageSprite &sprite);
 
@@ -135,17 +135,17 @@ private:
 
     DeclarePtr<PageSprite> primaryPage_;
 
-    QSize sceneSize_;
+    QSizeF sceneSize_;
 
     PageDirection pageDir_{ PageDirection::Up };
 
     ScaleMode scaleMode_{ ScaleMode::AutoFitAreaSize };
 
     // 初始值选择一个比所有可能的值都大的值以保证能够被初始化
-    float minScale_{ std::numeric_limits<float>::max() };
+    qreal minScale_{ std::numeric_limits<qreal>::max() };
 
     // 初始值选择一个比所有可能的值都小的值以保证能够被初始化
-    float maxScale_{ std::numeric_limits<float>::min() };
+    qreal maxScale_{ std::numeric_limits<qreal>::min() };
 
     // 主页面锚点在显示区域的比例坐标，仅由外部逻辑使用
     QPointF primaryPageRatioPos_{ 0, 0 };
@@ -153,7 +153,7 @@ private:
     // 主页面按比例计算的页面尺寸，仅由外部逻辑使用
     std::optional<QSizeF> primaryPageRatioSize_;
 
-    std::optional<QSize> primaryPagePixelSize_;
+    std::optional<QSizeF> primaryPagePixelSize_;
 
     StrongHandle<PageScene> handle_;
 };

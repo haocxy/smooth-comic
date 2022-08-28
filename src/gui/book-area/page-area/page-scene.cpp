@@ -68,7 +68,7 @@ PageScene::MoveLock PageScene::determineMoveLock() const
     switch (scaleMode_) {
     case ScaleMode::RawSize:
     {
-        const QSize realSize = primaryPage_->realSize();
+        const QSizeF realSize = primaryPage_->realSize();
         const bool hOver = realSize.width() > sceneSize_.width();
         const bool vOver = realSize.height() > sceneSize_.height();
         if (hOver && vOver) {
@@ -89,7 +89,7 @@ PageScene::MoveLock PageScene::determineMoveLock() const
     }
 }
 
-static int goodPrimaryPageOffset(qreal ratioOffset, int pageLength, int sceneLength)
+static qreal goodPrimaryPageOffset(qreal ratioOffset, qreal pageLength, qreal sceneLength)
 {
     if (pageLength <= sceneLength) {
         // 这个逻辑很重要！
@@ -100,40 +100,40 @@ static int goodPrimaryPageOffset(qreal ratioOffset, int pageLength, int sceneLen
     }
 }
 
-QPoint PageScene::goodPrimaryPagePoint() const
+QPointF PageScene::goodPrimaryPagePoint() const
 {
-    const int sw = sceneSize_.width();
-    const int sh = sceneSize_.height();
+    const qreal sw = sceneSize_.width();
+    const qreal sh = sceneSize_.height();
 
     const qreal rx = primaryPageRatioPos_.x();
     const qreal ry = primaryPageRatioPos_.y();
 
-    const QSize realSize = primaryPage_->realSize();
+    const QSizeF realSize = primaryPage_->realSize();
 
-    const int goodX = goodPrimaryPageOffset(rx, realSize.width(), sceneSize_.width());
-    const int goodY = goodPrimaryPageOffset(ry, realSize.height(), sceneSize_.height());
+    const qreal goodX = goodPrimaryPageOffset(rx, realSize.width(), sceneSize_.width());
+    const qreal goodY = goodPrimaryPageOffset(ry, realSize.height(), sceneSize_.height());
 
-    return QPoint(goodX, goodY);
+    return QPointF(goodX, goodY);
 }
 
 void PageScene::adjustSpritePos(PageSprite &sprite)
 {
     if (sprite.isMovable(sceneSize_)) {
 
-        QPoint targetPos = goodPrimaryPagePoint();
+        QPointF targetPos = goodPrimaryPagePoint();
 
         // 如果四周有多余的空间，则调整页面位置以利用
-        QRect tryRect = sprite.spriteRectForPos(targetPos);
+        QRectF tryRect = sprite.spriteRectForPos(targetPos);
 
         bool topMoved = false;
         if (tryRect.top() > 0) {
-            const int dy = -tryRect.top();
+            const qreal dy = -tryRect.top();
             targetPos.ry() += dy;
             tryRect.translate(0, dy);
             topMoved = true;
         }
         if (tryRect.bottom() < sceneSize_.height()) {
-            const int space = sceneSize_.height() - tryRect.bottom() - 1;
+            const qreal space = sceneSize_.height() - tryRect.bottom() - 1;
             if (topMoved) {
                 targetPos.ry() += space / 2;
             } else {
@@ -143,13 +143,13 @@ void PageScene::adjustSpritePos(PageSprite &sprite)
 
         bool leftMoved = false;
         if (tryRect.left() > 0) {
-            const int dx = -tryRect.left();
+            const qreal dx = -tryRect.left();
             targetPos.rx() += dx;
             tryRect.translate(dx, 0);
             leftMoved = true;
         }
         if (tryRect.right() < sceneSize_.width()) {
-            const int space = sceneSize_.width() - tryRect.right() - 1;
+            const qreal space = sceneSize_.width() - tryRect.right() - 1;
             if (leftMoved) {
                 targetPos.rx() += space / 2;
             } else {
@@ -158,20 +158,20 @@ void PageScene::adjustSpritePos(PageSprite &sprite)
         }
         sprite.moveTo(targetPos);
     } else {
-        sprite.moveTo(QPoint(sceneSize_.width() / 2, sceneSize_.height() / 2));
+        sprite.moveTo(QPointF(sceneSize_.width() / 2, sceneSize_.height() / 2));
     }
 }
 
 void PageScene::savePrimaryPageRatioPos()
 {
-    const QPoint pos = primaryPage_->pos();
+    const QPointF pos = primaryPage_->pos();
     primaryPageRatioPos_.setX(qreal(pos.x()) / sceneSize_.width());
     primaryPageRatioPos_.setY(qreal(pos.y()) / sceneSize_.height());
 }
 
 void PageScene::savePrimaryPageRatioSize()
 {
-    const QSize realSize = primaryPage_->realSize();
+    const QSizeF realSize = primaryPage_->realSize();
     primaryPageRatioSize_ = QSizeF(
         qreal(realSize.width()) / sceneSize_.width(),
         qreal(realSize.height()) / sceneSize_.height()
@@ -187,7 +187,7 @@ void PageScene::savePrimaryPageRatioSize(bool recalcRatioWidth, bool recalcRatio
 
     if (recalcRatioWidth || recalcRatioHeight) {
 
-        const QSize realSize = primaryPage_->realSize();
+        const QSizeF realSize = primaryPage_->realSize();
 
         if (recalcRatioWidth) {
             primaryPageRatioSize_->setWidth(qreal(realSize.width()) / sceneSize_.width());
@@ -201,13 +201,13 @@ void PageScene::savePrimaryPageRatioSize(bool recalcRatioWidth, bool recalcRatio
 
 void PageScene::savePrimaryPageRatioWidth()
 {
-    const QSize realSize = primaryPage_->realSize();
+    const QSizeF realSize = primaryPage_->realSize();
     primaryPageRatioSize_->setWidth(qreal(realSize.width()) / sceneSize_.width());
 }
 
 void PageScene::savePrimaryPageRatioHeight()
 {
-    const QSize realSize = primaryPage_->realSize();
+    const QSizeF realSize = primaryPage_->realSize();
     primaryPageRatioSize_->setHeight(qreal(realSize.height()) / sceneSize_.height());
 }
 
@@ -225,7 +225,7 @@ void PageScene::setScaleMode(ScaleMode scaleMode)
     }
 }
 
-static float boundScale(float scale, float min, float max)
+static qreal boundScale(qreal scale, qreal min, qreal max)
 {
     if (scale < min) [[unlikely]] {
         return min;
@@ -238,10 +238,10 @@ static float boundScale(float scale, float min, float max)
     return scale;
 }
 
-void PageScene::setScale(float scale)
+void PageScene::setScale(qreal scale)
 {
     if (primaryPage_) {
-        const float boundedScale = boundScale(scale, minScale_, maxScale_);
+        const qreal boundedScale = boundScale(scale, minScale_, maxScale_);
         if (primaryPage_->scale() != boundedScale) {
             primaryPage_->setScale(boundedScale);
             savePrimaryPagePixelSize();
@@ -262,14 +262,14 @@ void PageScene::relativelyScale(qreal relativeScale)
 void PageScene::zoomIn()
 {
     if (primaryPage_) {
-        setScale(primaryPage_->scale() + 0.1f);
+        setScale(primaryPage_->scale() + 0.1);
     }
 }
 
 void PageScene::zoomOut()
 {
     if (primaryPage_) {
-        setScale(primaryPage_->scale() - 0.1f);
+        setScale(primaryPage_->scale() - 0.1);
     }
 }
 
@@ -278,7 +278,7 @@ bool PageScene::isPageMovable() const
     return primaryPage_ && primaryPage_->isMovable(sceneSize_);
 }
 
-static int boundMoveVal(int x, int max)
+static qreal boundMoveVal(qreal x, qreal max)
 {
     if (x < 0) [[unlikely]] {
         return 0;
@@ -295,14 +295,14 @@ static int boundMoveVal(int x, int max)
     return x;
 }
 
-void PageScene::movePage(int dx, int dy)
+void PageScene::movePage(qreal dx, qreal dy)
 {
     if (primaryPage_) {
-        const QRect spriteRect = primaryPage_->spriteRect();
+        const QRectF spriteRect = primaryPage_->spriteRect();
 
         const MoveLock lock = determineMoveLock();
 
-        int realDX = 0;
+        qreal realDX = 0;
         if (lock != MoveLock::LockHorizontal) {
             if (dx > 0) {
                 realDX = boundMoveVal(dx, -spriteRect.left());
@@ -311,7 +311,7 @@ void PageScene::movePage(int dx, int dy)
             }
         }
 
-        int realDY = 0;
+        qreal realDY = 0;
         if (lock != MoveLock::LocakVertical) {
             if (dy > 0) {
                 realDY = boundMoveVal(dy, -spriteRect.top());
@@ -410,7 +410,7 @@ void PageScene::setPrimaryPage(DeclarePtr<PageSprite> &&sprite)
     emit cmdUpdate();
 }
 
-void PageScene::updateSceneSize(const QSize &sceneSize)
+void PageScene::updateSceneSize(const QSizeF &sceneSize)
 {
     sceneSize_ = sceneSize;
 
@@ -456,12 +456,12 @@ void PageScene::updateScaleRange()
 
         // 缩放范围只变大，保证已经选择的缩放比例不会变成无效值
 
-        const float minScale = primaryPage_->calcMinScale(sceneSize_);
+        const qreal minScale = primaryPage_->calcMinScale(sceneSize_);
         if (minScale < minScale_) {
             minScale_ = minScale;
         }
 
-        const float maxScale = primaryPage_->calcMaxScale(sceneSize_);
+        const qreal maxScale = primaryPage_->calcMaxScale(sceneSize_);
         if (maxScale > maxScale_) {
             maxScale_ = maxScale;
         }
@@ -479,7 +479,7 @@ void PageScene::layoutPages()
 
 void PageScene::layoutPage(PageSprite &sprite)
 {
-    const float oldScale = sprite.scale();
+    const qreal oldScale = sprite.scale();
 
     // 调整页面方向
     sprite.rotateTo(pageDir_);
@@ -503,7 +503,7 @@ void PageScene::layoutPage(PageSprite &sprite)
     // 保存页面像素大小
     savePrimaryPagePixelSize();
 
-    const float newScale = sprite.scale();
+    const qreal newScale = sprite.scale();
     if (oldScale != newScale) {
         emit controller_.sigScaleUpdated(newScale);
     }
@@ -529,14 +529,14 @@ void PageScene::adjustPageSize(PageSprite &sprite)
         break;
     case ScaleMode::FixWidthByRatio:
         if (primaryPageRatioSize_) {
-            sprite.adjustAreaWidth(std::round(sceneSize_.width() * primaryPageRatioSize_->width()));
+            sprite.adjustAreaWidth(sceneSize_.width() * primaryPageRatioSize_->width());
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }
         break;
     case ScaleMode::FixHeightByRatio:
         if (primaryPageRatioSize_) {
-            sprite.adjustAreaHeight(std::round(sceneSize_.height() * primaryPageRatioSize_->height()));
+            sprite.adjustAreaHeight(sceneSize_.height() * primaryPageRatioSize_->height());
         } else {
             sprite.adjustAreaSize(sceneSize_);
         }

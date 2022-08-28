@@ -57,7 +57,7 @@ void PageReaderQuickItem::updateSceneSize()
 {
     if (scene_) {
         const QSizeF s = this->size() * qApp->devicePixelRatio();
-        scene_->updateSceneSize(QSize(s.width(), s.height()));
+        scene_->updateSceneSize(s);
     }
 }
 
