@@ -20,5 +20,6 @@
         <file>Global/ZOrder.qml</file>
         <file>Global/Style.qml</file>
         <file>Global/FontIcon.qml</file>
+        <file>BookReader/ControlButton.qml</file>
     </qresource>
 </RCC>

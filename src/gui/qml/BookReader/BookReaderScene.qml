@@ -93,12 +93,13 @@ Rectangle {
         background: Rectangle {
             anchors.fill: parent
             color: Style.titleBarColor
+            opacity: Style.readControlAreaBgOpacity
         }
 
         RowLayout {
             id: topBarLayout
             anchors.fill: parent
-            MyToolButton {
+            ControlButton {
                 Layout.topMargin: 12
                 Layout.bottomMargin: 12
                 Layout.leftMargin: 8
@@ -166,6 +167,7 @@ Rectangle {
         background: Rectangle {
             anchors.fill: parent
             color: Style.titleBarColor
+            opacity: Style.readControlAreaBgOpacity
         }
 
         RowLayout {
@@ -176,7 +178,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
-            MyToolButton {
+            ControlButton {
                 Layout.topMargin: 12
                 Layout.bottomMargin: 12
                 Layout.leftMargin: 8
@@ -186,7 +188,7 @@ Rectangle {
                 iconHeight: Style.bottomBarIconHeight
                 text: "\ue5c4"; onClicked: window.goBack()
             }
-            MyToolButton {
+            ControlButton {
                 // scale
                 Layout.topMargin: 12
                 Layout.bottomMargin: 12

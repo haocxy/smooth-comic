@@ -18,6 +18,8 @@ QtObject {
     property color readerBgColor4ControllState: "white"
     property color readerBgColor4ReadState: "black"
 
+    property real readControlAreaBgOpacity: 0.9
+
     // popup菜单中区域标题中的文本像素尺寸
     property color popMenuTitleBarBgColor: titleBarColor
     property color popMenuTitleBarIconColor: iconColor
