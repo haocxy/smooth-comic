@@ -67,7 +67,7 @@ void PageSprite::draw(QPainter &painter) const
 
     painter.setTransform(matrix_);
 
-    painter.drawPixmap(QRect(x, y, w, h), rawImg_);
+    painter.drawPixmap(QRectF(x, y, w, h), rawImg_, QRectF(QPointF(0, 0), rawImg_.size()));
 }
 
 static qreal calcScaleForAdjustAreaSize(const QSizeF &imgSize, const QSizeF &areaSize)
