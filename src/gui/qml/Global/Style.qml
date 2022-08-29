@@ -15,7 +15,7 @@ QtObject {
 
     property color iconColor: "white"
 
-    property color readerBgColor4ControllState: "white"
+    property color readerBgColor4ControllState: "#f7f5f5"
     property color readerBgColor4ReadState: "black"
 
     property real readControlAreaBgOpacity: 0.9
