@@ -81,14 +81,36 @@ static qreal calcScaleForAdjustAreaSize(const QSizeF &imgSize, const QSizeF &are
     }
 }
 
+static qreal doCalcMaxScale(const QSizeF &imgSize, const QSizeF &areaSize)
+{
+    if (imgSize.width() > 0 && areaSize.width() > 0) {
+        const qreal scaleW = areaSize.width() / imgSize.width();
+        const qreal scaleH = areaSize.height() / imgSize.height();
+        return std::max(scaleW, scaleH);
+    } else {
+        return 1;
+    }
+}
+
+static qreal doCalcMinScale(const QSizeF &imgSize, const QSizeF &areaSize)
+{
+    if (imgSize.width() > 0 && areaSize.width() > 0) {
+        const qreal scaleW = areaSize.width() / imgSize.width();
+        const qreal scaleH = areaSize.height() / imgSize.height();
+        return std::min(scaleW, scaleH);
+    } else {
+        return 1;
+    }
+}
+
 qreal PageSprite::calcMinScale(const QSizeF &areaSize) const
 {
-    return std::min(0.5, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize / 2));
+    return std::min(0.5, doCalcMinScale(rawImg_.size(), areaSize / 2));
 }
 
 qreal PageSprite::calcMaxScale(const QSizeF &areaSize) const
 {
-    return std::max(2.0, calcScaleForAdjustAreaSize(rawImg_.size(), areaSize * 2));
+    return std::max(2.0, doCalcMaxScale(rawImg_.size(), areaSize * 2));
 }
 
 void PageSprite::adjustAreaSize(const QSizeF &areaSize)
