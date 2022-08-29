@@ -292,36 +292,36 @@ Rectangle {
         property real currScale: 1
         anchors.fill: parent
 
-        onPinchUpdated: e => {
-                            if (e.previousScale !== 0) {
-                                controller.relativelyScale(e.scale / e.previousScale)
-                            }
-                        }
+        onPinchUpdated: function(e) {
+            if (e.previousScale !== 0) {
+                controller.relativelyScale(e.scale / e.previousScale)
+            }
+        }
 
         MouseArea {
             anchors.fill: parent
-            onClicked: e => {
-                            if (!moved) {
-                                clickControlls.controll(mapToGlobal(e.x, e.y))
-                            }
-                        }
+            onClicked: function(e) {
+                if (!moved) {
+                    clickControlls.controll(mapToGlobal(e.x, e.y))
+                }
+            }
+
             property real prevX: 0
             property real prevY: 0
             property bool moved: false
-            onPressed: e => {
-                           prevX = e.x
-                           prevY = e.y
-                           moved = false
-                       }
-
-            onPositionChanged: e => {
-                                   var dx = (e.x - prevX) * Screen.devicePixelRatio
-                                   var dy = (e.y - prevY) * Screen.devicePixelRatio
-                                   controller.translateBy(dx, dy)
-                                   prevX = e.x
-                                   prevY = e.y
-                                   moved = true
-                               }
+            onPressed: function(e) {
+                prevX = e.x
+                prevY = e.y
+                moved = false
+            }
+            onPositionChanged: function(e) {
+                var dx = (e.x - prevX) * Screen.devicePixelRatio
+                var dy = (e.y - prevY) * Screen.devicePixelRatio
+                controller.translateBy(dx, dy)
+                prevX = e.x
+                prevY = e.y
+                moved = true
+            }
         }
 
     }
