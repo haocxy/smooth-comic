@@ -34,10 +34,6 @@ static fs::path selectDefaultBaseCacheDir()
         return SystemUtil::userHome();
     }
 
-    if (fs::exists("D:/")) {
-        return "D:/";
-    }
-
     return "C:/";
 }
 
