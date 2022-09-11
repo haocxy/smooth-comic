@@ -1,4 +1,6 @@
-# Smooth Comic 跨平台的全能漫画阅读器
+# Smooth Comic
+
+# 跨平台的全能漫画阅读器
 
 ## 软件截图
 
