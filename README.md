@@ -2,6 +2,6 @@
 
 ## 软件截图
 
-![](D:\code\smooth-comic\img\screenshot-windows-01.png)
+![](img/screenshot-windows-01.png)
 
-![](D:\code\smooth-comic\img\screenshot-android-01.jpg)
+![](img/screenshot-android-01.jpg)
