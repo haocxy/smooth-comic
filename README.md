@@ -41,7 +41,7 @@ TODO
 
 ## 下载
 
-TODO
+[v0.0.1-alpha](https://gitee.com/haocxy/smooth-comic/releases/tag/v0.0.1-alpha)
 
 ## 操作方式
 
