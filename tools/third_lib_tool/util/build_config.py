@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional
 
@@ -34,7 +34,11 @@ class BuildConfig:
     cmakeCommand: Optional[str] = None
     cmakeGenerator: Optional[str] = None
     cmakeMakeProgram: Optional[str] = None
-    runtime: RuntimeInfo = RuntimeInfo()
-    lib: LibInfo = LibInfo()
+    runtime: RuntimeInfo = field(
+        default_factory=lambda: RuntimeInfo()
+    )
+    lib: LibInfo = field(
+        default_factory=lambda: LibInfo()
+    )
 
 
