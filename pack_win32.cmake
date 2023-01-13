@@ -1,3 +1,5 @@
+install(DIRECTORY "$<TARGET_FILE_DIR:${appName}>/" DESTINATION ".")
+
 file(GLOB_RECURSE style_files "styles/*")
 install(FILES ${style_files} DESTINATION "styles")
 
@@ -28,25 +30,9 @@ function(addPreparedDLL libName)
     install(FILES "${pathOfLib}" DESTINATION ".")
 endfunction()
 
-function(addQtPlugin libName pluginPath)
-    find_file(pathOfLib "${libName}"
-        PATH_SUFFIXES "plugins/${pluginPath}"
-        NO_CACHE
-    )
-    if(NOT pathOfLib)
-        message(FATAL_ERROR "Cannot find Qt Plugin: ${libName}")
-    endif()
-    message(STATUS "Qt Plugin [${libName}] Found: [${pathOfLib}]")
-    install(FILES "${pathOfLib}" DESTINATION "plugins/${pluginPath}")
-endfunction()
-
 addPreparedDLL(zlib.dll)
 addPreparedDLL(liblzma.dll)
 addPreparedDLL(archive.dll)
-
-addSystemDLL(Qt6Core.dll)
-addSystemDLL(Qt6Gui.dll)
-addSystemDLL(Qt6Widgets.dll)
 
 addSystemDLL(MSVCP140.dll)
 addSystemDLL(MSVCP140_1.dll)
@@ -54,20 +40,6 @@ addSystemDLL(MSVCP140_2.dll)
 addSystemDLL(MSVCP140_ATOMIC_WAIT.dll)
 addSystemDLL(VCRUNTIME140.dll)
 addSystemDLL(VCRUNTIME140_1.dll)
-
-addQtPlugin(qwindows.dll platforms)
-addQtPlugin(qwindowsvistastyle.dll styles)
-
-addQtPlugin(qgif.dll imageformats)
-addQtPlugin(qicns.dll imageformats)
-addQtPlugin(qico.dll imageformats)
-addQtPlugin(qjpeg.dll imageformats)
-addQtPlugin(qpdf.dll imageformats)
-addQtPlugin(qsvg.dll imageformats)
-addQtPlugin(qtga.dll imageformats)
-addQtPlugin(qtiff.dll imageformats)
-addQtPlugin(qwbmp.dll imageformats)
-addQtPlugin(qwebp.dll imageformats)
 
 set(CPACK_GENERATOR ZIP)
 set(CPACK_PACKAGE_NAME ${appName})

@@ -33,3 +33,18 @@ endif()
 add_custom_command(TARGET ${appName} POST_BUILD
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/update_output_dir.py ${prepareDir}/install $<TARGET_FILE_DIR:${appName}>
 )
+
+find_program(qtDeployToolPath windeployqt)
+message(STATUS "qtDeployToolPath: ${qtDeployToolPath}")
+
+add_custom_command(TARGET ${appName} POST_BUILD
+    COMMAND ${qtDeployToolPath} $<TARGET_FILE_DIR:${appName}>
+        --qmldir ${CMAKE_SOURCE_DIR}/src
+        --release
+        --no-translations
+        --no-system-d3d-compiler
+        --no-virtualkeyboard
+        --no-compiler-runtime
+        --no-opengl-sw
+        --verbose 1
+)
