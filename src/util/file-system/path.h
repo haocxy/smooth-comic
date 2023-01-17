@@ -7,9 +7,9 @@
 #include "path-impl.h"
 
 
-namespace myapp::vfs {
+namespace myapp::file_system {
 
-/** 虚拟路径 */
+/** 路径 */
 class Path {
 public:
     Path(uptr<PathImpl>&& pathImpl)

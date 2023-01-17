@@ -1,6 +1,6 @@
 #pragma once
 
-namespace myapp::vfs {
+namespace myapp::file_system {
 
 class PathImpl {
 public:
