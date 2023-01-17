@@ -9,8 +9,6 @@
 
 namespace myapp::vfs {
 
-class PathImpl;
-
 /** 虚拟路径 */
 class Path {
 public:
