@@ -12,6 +12,8 @@ namespace myapp::file_system {
 /** 路径 */
 class Path {
 public:
+    Path() {}
+
     Path(uptr<PathImpl>&& pathImpl)
         : impl_(std::move(pathImpl)) {
         assert(impl_);
